@@ -1,27 +1,29 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { ThemeProvider } from '@/contexts/ThemeContext'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Header from "@/components/shared/Header";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Mini IELTS Score',
-  description: 'Practice IELTS Speaking and Writing with AI-powered scoring',
-}
+  title: "ANISH TOEIC - Speaking & Writing Lab",
+  description: "TOEIC Speaking and Writing Assessment Platform",
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider>
-          {children}
+          <Header />
+          <main className="min-h-screen">{children}</main>
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
