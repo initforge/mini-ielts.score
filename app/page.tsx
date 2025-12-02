@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { SpeakingTab } from '@/components/speaking/SpeakingTab'
-import { WritingTab } from '@/components/writing/WritingTab'
-import { Header } from '@/components/shared/Header'
+import SpeakingTab from '@/components/speaking/SpeakingTab'
+import WritingTab from '@/components/writing/WritingTab'
+import Header from '@/components/shared/Header'
 import { SpeakingProvider } from '@/contexts/SpeakingContext'
 import { WritingProvider } from '@/contexts/WritingContext'
 
