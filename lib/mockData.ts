@@ -108,7 +108,7 @@ export const speakingQuestions: SpeakingQuestion[] = [
 
 // Writing Questions (8 questions across 3 parts)
 export const writingQuestions: WritingQuestion[] = [
-  // Part 1: Write a sentence based on a picture (5 questions)
+  // Part 1: Write a sentence based on a picture (5 questions) - Total 5 minutes
   {
     id: "w1",
     part: 1,
@@ -180,7 +180,7 @@ export const writingQuestions: WritingQuestion[] = [
     id: "w8",
     part: 3,
     questionNumber: 8,
-    questionText: "Do you agree or disagree with the following statement? 'Technology has made our lives better.' Write an essay expressing your opinion. Your response should be at least 150 words.",
+    questionText: "Some people believe that students should be required to wear school uniforms. Others think that students should be free to choose their own clothes. What is your opinion? Write an essay. Your response should be at least 150 words.",
     minWords: 150,
     instructions: "Write a well-organized essay with an introduction, body paragraphs, and a conclusion. Support your opinion with examples.",
     timeLimit: 30 * 60, // 30 minutes
@@ -193,8 +193,9 @@ export const speakingTexts: Record<string, string> = {
   s2: "The annual conference will be held at the Grand Convention Center from March 15th to March 17th. Registration opens on January 10th, and early bird discounts are available until February 1st. All attendees are required to complete the online registration form and submit payment by March 1st.",
 };
 
-// Sample email for Part 2 Writing question
-export const writingEmailPrompt = `Subject: Request for Meeting
+// Sample email for Part 2 Writing questions
+export const writingEmailPrompts: Record<number, string> = {
+  6: `Subject: Request for Meeting
 
 Dear Team,
 
@@ -208,4 +209,27 @@ Looking forward to your response.
 
 Best regards,
 Sarah Johnson
-Project Manager`;
+Project Manager`,
+  7: `Subject: Inquiry About Product Availability
+
+Dear Customer Service Team,
+
+I am writing to inquire about the availability of your new product line that was recently launched. I am particularly interested in the specifications and pricing for bulk orders.
+
+Could you please provide me with detailed information about:
+1. Product specifications and features
+2. Pricing for orders of 100 units or more
+3. Estimated delivery time
+4. Payment terms and conditions
+
+I would appreciate it if you could send me a detailed quotation at your earliest convenience.
+
+Thank you for your time and consideration.
+
+Best regards,
+John Smith
+Procurement Manager`,
+};
+
+// Backward compatibility
+export const writingEmailPrompt = writingEmailPrompts[6];

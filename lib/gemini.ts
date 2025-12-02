@@ -2,9 +2,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Lazy initialization - only check API key when functions are called
 function getGenAI() {
-  if (!process.env.GEMINI_API_KEY) {
-    throw new Error("GEMINI_API_KEY is not set in environment variables");
-  }
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error("GEMINI_API_KEY is not set in environment variables");
+}
   return new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { WritingExamState, WritingAnswer, WritingGradingResponse } from "@/lib/types";
 import { writingQuestions } from "@/lib/mockData";
 
@@ -8,40 +8,40 @@ interface WritingContextType {
   state: WritingExamState;
   currentQuestion: typeof writingQuestions[0] | null;
   startExam: () => void;
-  startPart: (part: WritingPart) => void;
   setCurrentQuestion: (index: number) => void;
   saveAnswer: (answer: WritingAnswer) => void;
   updateTimeRemaining: (seconds: number) => void;
   finishExam: () => void;
   setResults: (results: WritingGradingResponse) => void;
   resetExam: () => void;
-  markDirectionPlayed: (part: WritingPart) => void;
+  canNavigateToQuestion: (index: number) => boolean;
+  getQuestionTimeRemaining: (questionIndex: number) => number | null;
 }
 
 const WritingContext = createContext<WritingContextType | undefined>(undefined);
 
 const STORAGE_KEY = "toeic-writing-exam-state";
-const PART1_DURATION = 5 * 60; // 5 minutes for questions 1-5
-const PART2_Q6_DURATION = 10 * 60; // 10 minutes for question 6
-const PART2_Q7_DURATION = 10 * 60; // 10 minutes for question 7
-const PART3_Q8_DURATION = 30 * 60; // 30 minutes for question 8
+const PART1_TOTAL_TIME = 5 * 60; // 5 minutes for questions 1-5
+const QUESTION6_TIME = 10 * 60; // 10 minutes for question 6
+const QUESTION7_TIME = 10 * 60; // 10 minutes for question 7
+const QUESTION8_TIME = 30 * 60; // 30 minutes for question 8
 
 export function WritingProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<WritingExamState>({
     currentQuestionIndex: 0,
     answers: [],
     isFinished: false,
-    timeRemaining: 0,
-    part1TimeRemaining: PART1_DURATION,
-    part2Question6TimeRemaining: PART2_Q6_DURATION,
-    part2Question7TimeRemaining: PART2_Q7_DURATION,
-    part3Question8TimeRemaining: PART3_Q8_DURATION,
-    partDirectionsPlayed: {
-      1: false,
-      2: false,
-      3: false,
-    },
+    timeRemaining: PART1_TOTAL_TIME, // Start with Part 1 time
   });
+  
+  // Track individual question timers
+  const [questionTimers, setQuestionTimers] = useState<Record<number, number>>({});
+  const questionTimersRef = useRef<Record<number, number>>({});
+  
+  // Sync ref with state
+  useEffect(() => {
+    questionTimersRef.current = questionTimers;
+  }, [questionTimers]);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -62,145 +62,99 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
-  // Timer effect - handles different timers for different parts
+  // Timer effect - handles both overall timer and individual question timers
   useEffect(() => {
-    if (state.isFinished || !state.currentPartStarted) return;
+    if (state.isFinished || !state.startTime) return;
 
     const interval = setInterval(() => {
       setState((prev) => {
         const currentQ = writingQuestions[prev.currentQuestionIndex];
         if (!currentQ) return prev;
-
-        let updated = { ...prev };
-
-        // Handle Part 1 timer (questions 1-5)
-        if (currentQ.part === 1 && prev.part1TimeRemaining !== undefined) {
-          if (prev.part1TimeRemaining <= 1) {
-            return { ...prev, isFinished: true, part1TimeRemaining: 0 };
+        
+        // For questions 1-5, use shared Part 1 timer
+        if (currentQ.questionNumber <= 5) {
+          if (prev.timeRemaining <= 1) {
+            return { ...prev, isFinished: true, timeRemaining: 0 };
           }
-          updated.part1TimeRemaining = prev.part1TimeRemaining - 1;
-          updated.timeRemaining = updated.part1TimeRemaining;
+          return { ...prev, timeRemaining: prev.timeRemaining - 1 };
         }
-        // Handle Part 2 Question 6 timer
-        else if (currentQ.id === "w6" && prev.part2Question6TimeRemaining !== undefined) {
-          if (prev.part2Question6TimeRemaining <= 1) {
-            return { ...prev, isFinished: true, part2Question6TimeRemaining: 0 };
+        
+        // For questions 6, 7, 8, use individual timers
+        if (currentQ.timeLimit) {
+          const currentTimer = questionTimersRef.current[prev.currentQuestionIndex] ?? currentQ.timeLimit;
+          const newTime = currentTimer - 1;
+          
+          if (newTime <= 0) {
+            // Auto move to next question or finish
+            if (currentQ.questionNumber === 6 && prev.currentQuestionIndex < writingQuestions.length - 1) {
+              // Auto move to question 7
+              const nextQ = writingQuestions[prev.currentQuestionIndex + 1];
+              const newTimers = { ...questionTimersRef.current };
+              if (nextQ?.timeLimit) {
+                newTimers[prev.currentQuestionIndex + 1] = nextQ.timeLimit;
+              }
+              setQuestionTimers(newTimers);
+              return {
+                ...prev,
+                currentQuestionIndex: prev.currentQuestionIndex + 1,
+                timeRemaining: nextQ?.timeLimit || 0,
+              };
+            } else {
+              return { ...prev, isFinished: true, timeRemaining: 0 };
+            }
           }
-          updated.part2Question6TimeRemaining = prev.part2Question6TimeRemaining - 1;
-          updated.timeRemaining = updated.part2Question6TimeRemaining;
+          
+          // Update timer
+          const newTimers = {
+            ...questionTimersRef.current,
+            [prev.currentQuestionIndex]: newTime,
+          };
+          setQuestionTimers(newTimers);
+          
+          return { ...prev, timeRemaining: newTime };
         }
-        // Handle Part 2 Question 7 timer
-        else if (currentQ.id === "w7" && prev.part2Question7TimeRemaining !== undefined) {
-          if (prev.part2Question7TimeRemaining <= 1) {
-            return { ...prev, isFinished: true, part2Question7TimeRemaining: 0 };
-          }
-          updated.part2Question7TimeRemaining = prev.part2Question7TimeRemaining - 1;
-          updated.timeRemaining = updated.part2Question7TimeRemaining;
-        }
-        // Handle Part 3 Question 8 timer
-        else if (currentQ.id === "w8" && prev.part3Question8TimeRemaining !== undefined) {
-          if (prev.part3Question8TimeRemaining <= 1) {
-            return { ...prev, isFinished: true, part3Question8TimeRemaining: 0 };
-          }
-          updated.part3Question8TimeRemaining = prev.part3Question8TimeRemaining - 1;
-          updated.timeRemaining = updated.part3Question8TimeRemaining;
-        }
-
-        return updated;
+        
+        return prev;
       });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [state.isFinished, state.currentPartStarted, state.currentQuestionIndex]);
+  }, [state.isFinished, state.startTime]);
 
   const startExam = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
+    setState({
       currentQuestionIndex: 0,
       answers: [],
       isFinished: false,
       startTime: new Date(),
-      timeRemaining: PART1_DURATION,
-      part1TimeRemaining: PART1_DURATION,
-      part2Question6TimeRemaining: PART2_Q6_DURATION,
-      part2Question7TimeRemaining: PART2_Q7_DURATION,
-      part3Question8TimeRemaining: PART3_Q8_DURATION,
-      currentPartStarted: undefined,
-      partDirectionsPlayed: {
-        1: false,
-        2: false,
-        3: false,
-      },
-    }));
-  }, []);
-
-  const startPart = useCallback((part: WritingPart) => {
-    setState((prev) => {
-      const updated = { ...prev, currentPartStarted: part };
-      const currentQ = writingQuestions[prev.currentQuestionIndex];
-      
-      if (part === 1) {
-        updated.part1TimeRemaining = PART1_DURATION;
-        updated.timeRemaining = PART1_DURATION;
-      } else if (part === 2) {
-        // Part 2 has two questions with separate timers
-        if (currentQ?.id === "w6") {
-          updated.part2Question6TimeRemaining = PART2_Q6_DURATION;
-          updated.timeRemaining = PART2_Q6_DURATION;
-        } else if (currentQ?.id === "w7") {
-          updated.part2Question7TimeRemaining = PART2_Q7_DURATION;
-          updated.timeRemaining = PART2_Q7_DURATION;
-        }
-      } else if (part === 3 && currentQ?.id === "w8") {
-        updated.part3Question8TimeRemaining = PART3_Q8_DURATION;
-        updated.timeRemaining = PART3_Q8_DURATION;
-      }
-      
-      return updated;
+      timeRemaining: PART1_TOTAL_TIME, // Start with Part 1 time
     });
+    setQuestionTimers({});
   }, []);
 
   const setCurrentQuestion = useCallback((index: number) => {
-    setState((prev) => {
-      const newIndex = Math.max(0, Math.min(index, writingQuestions.length - 1));
-      const newQuestion = writingQuestions[newIndex];
-      const currentQ = writingQuestions[prev.currentQuestionIndex];
-      
-      // Check if navigation is allowed
-      // Questions 1-5 can navigate freely
-      // Question 6-7 cannot go back, question 7 cannot go back to 6
-      if (currentQ && newQuestion) {
-        // If trying to go from question 7 back to 6, block it
-        if (currentQ.id === "w7" && newQuestion.id === "w6") {
-          return prev;
-        }
-        // If trying to go from question 6 back to previous questions, block it
-        if (currentQ.id === "w6" && newQuestion.questionNumber < 6) {
-          return prev;
-        }
-        // If trying to go from question 7 back to previous questions, block it
-        if (currentQ.id === "w7" && newQuestion.questionNumber < 7) {
-          return prev;
-        }
-      }
-      
-      // Update timer based on new question
-      let updated = {
-        ...prev,
-        currentQuestionIndex: newIndex,
+    const targetQ = writingQuestions[index];
+    if (!targetQ) return;
+    
+    // Initialize timer for questions 6, 7, 8 if not already set
+    if (targetQ.timeLimit && !questionTimersRef.current[index]) {
+      const newTimers = {
+        ...questionTimersRef.current,
+        [index]: targetQ.timeLimit,
       };
+      setQuestionTimers(newTimers);
+    }
+    
+    setState((prev) => {
+      const timerValue = targetQ.timeLimit 
+        ? (questionTimersRef.current[index] ?? targetQ.timeLimit)
+        : prev.timeRemaining;
       
-      if (newQuestion.part === 1 && updated.part1TimeRemaining !== undefined) {
-        updated.timeRemaining = updated.part1TimeRemaining;
-      } else if (newQuestion.id === "w6" && updated.part2Question6TimeRemaining !== undefined) {
-        updated.timeRemaining = updated.part2Question6TimeRemaining;
-      } else if (newQuestion.id === "w7" && updated.part2Question7TimeRemaining !== undefined) {
-        updated.timeRemaining = updated.part2Question7TimeRemaining;
-      } else if (newQuestion.id === "w8" && updated.part3Question8TimeRemaining !== undefined) {
-        updated.timeRemaining = updated.part3Question8TimeRemaining;
-      }
-      
-      return updated;
+      return {
+        ...prev,
+        currentQuestionIndex: Math.max(0, Math.min(index, writingQuestions.length - 1)),
+        timeRemaining: timerValue,
+      };
     });
   }, []);
 
@@ -245,29 +199,55 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
       currentQuestionIndex: 0,
       answers: [],
       isFinished: false,
-      timeRemaining: 0,
-      part1TimeRemaining: PART1_DURATION,
-      part2Question6TimeRemaining: PART2_Q6_DURATION,
-      part2Question7TimeRemaining: PART2_Q7_DURATION,
-      part3Question8TimeRemaining: PART3_Q8_DURATION,
-      partDirectionsPlayed: {
-        1: false,
-        2: false,
-        3: false,
-      },
+      timeRemaining: PART1_TOTAL_TIME,
     });
+    setQuestionTimers({});
     localStorage.removeItem(STORAGE_KEY);
   }, []);
 
-  const markDirectionPlayed = useCallback((part: WritingPart) => {
-    setState((prev) => ({
-      ...prev,
-      partDirectionsPlayed: {
-        ...prev.partDirectionsPlayed,
-        [part]: true,
-      },
-    }));
-  }, []);
+  // Check if can navigate to a question
+  const canNavigateToQuestion = useCallback((index: number) => {
+    const targetQ = writingQuestions[index];
+    if (!targetQ) return false;
+    
+    // Questions 1-5: can navigate freely
+    if (targetQ.questionNumber <= 5) return true;
+    
+    // Question 6: can always access
+    if (targetQ.questionNumber === 6) return true;
+    
+    // Question 7: can only access if question 6 is completed
+    if (targetQ.questionNumber === 7) {
+      const q6Answer = state.answers.find(a => a.questionId === "w6");
+      return q6Answer && q6Answer.text.trim().length > 0;
+    }
+    
+    // Question 8: can access if question 7 is completed
+    if (targetQ.questionNumber === 8) {
+      const q7Answer = state.answers.find(a => a.questionId === "w7");
+      return q7Answer && q7Answer.text.trim().length > 0;
+    }
+    
+    return false;
+  }, [state.answers]);
+
+  // Get time remaining for a specific question
+  const getQuestionTimeRemaining = useCallback((questionIndex: number) => {
+    const question = writingQuestions[questionIndex];
+    if (!question) return null;
+    
+    // Questions 1-5: use shared Part 1 timer
+    if (question.questionNumber <= 5) {
+      return state.timeRemaining;
+    }
+    
+    // Questions 6, 7, 8: use individual timer
+    if (question.timeLimit) {
+      return questionTimersRef.current[questionIndex] ?? question.timeLimit;
+    }
+    
+    return null;
+  }, [state.timeRemaining]);
 
   const currentQuestion = writingQuestions[state.currentQuestionIndex] || null;
 
@@ -277,14 +257,14 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
         state,
         currentQuestion,
         startExam,
-        startPart,
         setCurrentQuestion,
         saveAnswer,
         updateTimeRemaining,
         finishExam,
         setResults,
         resetExam,
-        markDirectionPlayed,
+        canNavigateToQuestion,
+        getQuestionTimeRemaining,
       }}
     >
       {children}

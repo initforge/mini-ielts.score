@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, CheckCircle2, Image as ImageIcon, Clock, FileText, HelpCircle, Play, Volume2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle2, Image as ImageIcon, Clock, FileText, HelpCircle } from "lucide-react";
 import { useWriting } from "@/contexts/WritingContext";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,10 +10,10 @@ import QuestionNavigator from "./QuestionNavigator";
 import WordCountEditor from "./WordCountEditor";
 import Timer from "@/components/shared/Timer";
 import ProgressBar from "@/components/shared/ProgressBar";
-import { writingQuestions, writingEmailPrompt } from "@/lib/mockData";
+import { writingQuestions, writingEmailPrompts } from "@/lib/mockData";
 import { countWords, cn } from "@/lib/utils";
 import Image from "next/image";
-import { QuestionStatus, WritingPart } from "@/lib/types";
+import { QuestionStatus } from "@/lib/types";
 
 export default function WritingTab() {
   const {
@@ -23,15 +23,13 @@ export default function WritingTab() {
     saveAnswer,
     finishExam,
     startExam,
-    startPart,
-    markDirectionPlayed,
+    canNavigateToQuestion,
+    getQuestionTimeRemaining,
   } = useWriting();
 
   const [currentText, setCurrentText] = useState("");
   const [questionStatuses, setQuestionStatuses] = useState<Record<string, QuestionStatus>>({});
   const [imageError, setImageError] = useState(false);
-  const [isPlayingDirection, setIsPlayingDirection] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Load current answer
   useEffect(() => {
@@ -62,62 +60,6 @@ export default function WritingTab() {
     setQuestionStatuses(statuses);
   }, [state.answers]);
 
-  // Get direction audio URL for each part
-  const getDirectionAudioUrl = (part: WritingPart): string => {
-    // Placeholder URLs - replace with actual audio files
-    return `/audio/writing-part${part}-direction.mp3`;
-  };
-
-  // Check if question 7 should be visible (only if question 6 is completed)
-  const isQuestion7Visible = () => {
-    const q6Answer = state.answers.find((a) => a.questionId === "w6");
-    return q6Answer && countWords(q6Answer.text) >= 50;
-  };
-
-  // Check if current question should show direction
-  const shouldShowDirection = () => {
-    if (!currentQuestion) return false;
-    
-    // Check if direction has been played for this part
-    const directionPlayed = state.partDirectionsPlayed?.[currentQuestion.part];
-    const partStarted = state.currentPartStarted === currentQuestion.part;
-    
-    // Show direction if not played yet, or if part hasn't started
-    return !directionPlayed || !partStarted;
-  };
-
-  const handlePlayDirection = () => {
-    if (!currentQuestion) return;
-    
-    setIsPlayingDirection(true);
-    const audioUrl = getDirectionAudioUrl(currentQuestion.part);
-    
-    // Create audio element
-    const audio = new Audio(audioUrl);
-    audioRef.current = audio;
-    
-    audio.onended = () => {
-      setIsPlayingDirection(false);
-      markDirectionPlayed(currentQuestion.part);
-    };
-    
-    audio.onerror = () => {
-      setIsPlayingDirection(false);
-      // If audio fails, just mark as played and allow start
-      markDirectionPlayed(currentQuestion.part);
-    };
-    
-    audio.play().catch(() => {
-      setIsPlayingDirection(false);
-      markDirectionPlayed(currentQuestion.part);
-    });
-  };
-
-  const handleStartPart = () => {
-    if (!currentQuestion) return;
-    startPart(currentQuestion.part);
-  };
-
   if (!currentQuestion) {
     return (
       <Card>
@@ -144,54 +86,41 @@ export default function WritingTab() {
   const progress = ((state.currentQuestionIndex + 1) / writingQuestions.length) * 100;
   
   // Calculate time progress based on current question
+  const currentQ = currentQuestion;
   let timeProgress = 0;
-  if (currentQuestion) {
-    if (currentQuestion.part === 1 && state.part1TimeRemaining !== undefined) {
-      const total = 5 * 60;
-      timeProgress = ((total - state.part1TimeRemaining) / total) * 100;
-    } else if (currentQuestion.id === "w6" && state.part2Question6TimeRemaining !== undefined) {
-      const total = 10 * 60;
-      timeProgress = ((total - state.part2Question6TimeRemaining) / total) * 100;
-    } else if (currentQuestion.id === "w7" && state.part2Question7TimeRemaining !== undefined) {
-      const total = 10 * 60;
-      timeProgress = ((total - state.part2Question7TimeRemaining) / total) * 100;
-    } else if (currentQuestion.id === "w8" && state.part3Question8TimeRemaining !== undefined) {
-      const total = 30 * 60;
-      timeProgress = ((total - state.part3Question8TimeRemaining) / total) * 100;
+  if (currentQ) {
+    if (currentQ.questionNumber <= 5) {
+      // Part 1: 5 minutes total
+      timeProgress = ((5 * 60 - state.timeRemaining) / (5 * 60)) * 100;
+    } else if (currentQ.timeLimit) {
+      const questionTime = getQuestionTimeRemaining(state.currentQuestionIndex);
+      if (questionTime !== null) {
+        timeProgress = ((currentQ.timeLimit - questionTime) / currentQ.timeLimit) * 100;
+      }
     }
   }
-
-  // Navigation logic: questions 1-5 can navigate freely, 6-7 cannot go back
-  const canGoNext = () => {
-    if (!currentQuestion) return false;
-    
-    // Can't go next if at last question
+  
+  // Navigation logic
+  const canGoNext = (() => {
     if (state.currentQuestionIndex >= writingQuestions.length - 1) return false;
-    
-    // Question 6 can only go to 7 if 6 is completed
-    if (currentQuestion.id === "w6") {
-      return isQuestion7Visible();
+    // For questions 6-7, can only go next if current question is completed
+    if (currentQ && (currentQ.questionNumber === 6 || currentQ.questionNumber === 7)) {
+      const currentAnswer = state.answers.find(a => a.questionId === currentQ.id);
+      return currentAnswer && currentAnswer.text.trim().length > 0;
     }
-    
-    // Question 7 cannot go to previous questions
-    if (currentQuestion.id === "w7") {
-      return state.currentQuestionIndex < writingQuestions.length - 1;
-    }
-    
     return true;
-  };
-
-  const canGoPrev = () => {
-    if (!currentQuestion) return false;
-    
-    // Can't go back from question 6 or 7
-    if (currentQuestion.id === "w6" || currentQuestion.id === "w7") {
-      return false;
-    }
-    
-    // Questions 1-5 can navigate freely
-    return state.currentQuestionIndex > 0;
-  };
+  })();
+  
+  const canGoPrev = (() => {
+    if (state.currentQuestionIndex <= 0) return false;
+    // Cannot go back from question 7 to question 6
+    if (currentQ && currentQ.questionNumber === 7) return false;
+    // Cannot go back from question 8 to question 7
+    if (currentQ && currentQ.questionNumber === 8) return false;
+    // For questions 1-5, can navigate freely
+    if (currentQ && currentQ.questionNumber <= 5) return true;
+    return false;
+  })();
 
   const handleTextChange = (text: string) => {
     setCurrentText(text);
@@ -207,34 +136,30 @@ export default function WritingTab() {
   };
 
   const handleNext = () => {
-    if (canGoNext()) {
-      // If moving from question 6 to 7, ensure question 6 is completed
-      if (currentQuestion?.id === "w6") {
-        const q6Answer = state.answers.find((a) => a.questionId === "w6");
-        if (!q6Answer || countWords(q6Answer.text) < 50) {
-          alert("Please complete question 6 (at least 50 words) before proceeding to question 7.");
-          return;
-        }
+    if (!canGoNext) return;
+    
+    const nextIndex = state.currentQuestionIndex + 1;
+    const nextQ = writingQuestions[nextIndex];
+    
+    // For question 6, check if can navigate to question 7
+    if (currentQ && currentQ.questionNumber === 6) {
+      const currentAnswer = state.answers.find(a => a.questionId === currentQ.id);
+      if (!currentAnswer || currentAnswer.text.trim().length === 0) {
+        alert("Please complete question 6 before proceeding to question 7.");
+        return;
       }
-      
-      const nextIndex = state.currentQuestionIndex + 1;
-      const nextQuestion = writingQuestions[nextIndex];
-      
+    }
+    
+    if (canNavigateToQuestion(nextIndex)) {
       setCurrentQuestion(nextIndex);
-      
-      // If moving to question 7, start the timer for question 7 if not already started
-      if (nextQuestion?.id === "w7" && state.currentPartStarted !== 2) {
-        // Question 7 needs its own timer, but it's still part 2
-        // The timer will be managed separately in the context
-        startPart(2);
-      }
+    } else {
+      alert("You must complete the previous question before proceeding.");
     }
   };
 
   const handlePrev = () => {
-    if (canGoPrev()) {
-      setCurrentQuestion(state.currentQuestionIndex - 1);
-    }
+    if (!canGoPrev) return;
+    setCurrentQuestion(state.currentQuestionIndex - 1);
   };
 
   const handleFinish = () => {
@@ -266,54 +191,6 @@ export default function WritingTab() {
   const currentAnswer = state.answers.find((a) => a.questionId === currentQuestion.id);
   const wordCount = countWords(currentText);
   const isAnswered = currentAnswer && wordCount >= currentQuestion.minWords;
-  const showDirection = shouldShowDirection();
-  const partStarted = state.currentPartStarted === currentQuestion.part;
-
-  // Show direction screen if needed
-  if (showDirection) {
-    return (
-      <Card className="max-w-2xl mx-auto">
-        <CardContent className="p-8 text-center">
-          <div className="mb-6">
-            <Volume2 className="h-16 w-16 mx-auto text-indigo-500 mb-4" />
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">
-              Part {currentQuestion.part} - Directions
-            </h2>
-            <p className="text-slate-700">
-              Listen to the directions for Part {currentQuestion.part}
-            </p>
-          </div>
-          
-          <Button
-            onClick={handlePlayDirection}
-            disabled={isPlayingDirection}
-            size="lg"
-            className="gap-2"
-          >
-            {isPlayingDirection ? (
-              <>
-                <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                Playing...
-              </>
-            ) : (
-              <>
-                <Play className="h-4 w-4" />
-                Play Directions
-              </>
-            )}
-          </Button>
-          
-          {state.partDirectionsPlayed?.[currentQuestion.part] && !partStarted && (
-            <div className="mt-6">
-              <Button onClick={handleStartPart} size="lg" variant="default">
-                Start Part {currentQuestion.part}
-              </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <div>
@@ -328,9 +205,21 @@ export default function WritingTab() {
             <Clock className="h-4 w-4" />
             <span className="text-sm font-medium">Time Remaining</span>
             <Timer
-              initialSeconds={state.timeRemaining}
-              onComplete={finishExam}
-              showWarning={state.timeRemaining <= 600}
+              initialSeconds={currentQ && currentQ.timeLimit ? (getQuestionTimeRemaining(state.currentQuestionIndex) || currentQ.timeLimit) : state.timeRemaining}
+              onComplete={() => {
+                // Auto move to next question for question 6
+                if (currentQ && currentQ.questionNumber === 6 && canGoNext) {
+                  handleNext();
+                } else {
+                  finishExam();
+                }
+              }}
+              showWarning={(() => {
+                const timeRemaining = currentQ && currentQ.timeLimit 
+                  ? (getQuestionTimeRemaining(state.currentQuestionIndex) || currentQ.timeLimit)
+                  : state.timeRemaining;
+                return timeRemaining <= 600;
+              })()}
               warningThreshold={600}
               className="text-white"
             />
@@ -364,9 +253,15 @@ export default function WritingTab() {
             <CardContent>
               <QuestionNavigator
                 currentIndex={state.currentQuestionIndex}
-                onQuestionClick={setCurrentQuestion}
+                onQuestionClick={(index) => {
+                  if (canNavigateToQuestion(index)) {
+                    setCurrentQuestion(index);
+                  } else {
+                    alert("You must complete the previous question before proceeding.");
+                  }
+                }}
                 questionStatuses={questionStatuses}
-                answers={state.answers}
+                canNavigateToQuestion={canNavigateToQuestion}
               />
             </CardContent>
           </Card>
@@ -429,7 +324,9 @@ export default function WritingTab() {
                 <Card className="bg-slate-50 border border-slate-200">
                   <CardContent className="p-4">
                     <div className="mb-2 text-sm font-semibold text-slate-900">Email to respond to:</div>
-                    <div className="whitespace-pre-wrap text-slate-700">{writingEmailPrompt}</div>
+                    <div className="whitespace-pre-wrap text-slate-700">
+                      {writingEmailPrompts[currentQuestion.questionNumber] || writingEmailPrompts[6]}
+                    </div>
                   </CardContent>
                 </Card>
               )}
@@ -477,7 +374,7 @@ export default function WritingTab() {
             <Button
               variant="outline"
               onClick={handlePrev}
-              disabled={!canGoPrev()}
+              disabled={!canGoPrev}
               className="gap-2 flex-1 sm:flex-initial border-slate-300 text-slate-900 hover:bg-slate-50 hover:border-slate-400"
             >
               <ChevronLeft className="h-4 w-4 text-slate-900" />
@@ -495,7 +392,7 @@ export default function WritingTab() {
             <Button
               variant="outline"
               onClick={handleNext}
-              disabled={!canGoNext()}
+              disabled={!canGoNext}
               className="gap-2 flex-1 sm:flex-initial border-slate-300 text-slate-900 hover:bg-slate-50 hover:border-slate-400"
             >
               Next
