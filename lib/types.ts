@@ -21,6 +21,7 @@ export interface WritingQuestion {
   imageUrl?: string;
   minWords: number;
   instructions?: string;
+  timeLimit?: number; // in seconds, for individual question timing
 }
 
 // Answer Types
@@ -115,7 +116,13 @@ export interface WritingExamState {
   answers: WritingAnswer[];
   isFinished: boolean;
   startTime?: Date;
-  timeRemaining: number; // in seconds (60 minutes = 3600 seconds)
+  timeRemaining: number; // in seconds
+  part1TimeRemaining?: number; // Part 1: 5 minutes total for questions 1-5
+  part2Question6TimeRemaining?: number; // Part 2 Question 6: 10 minutes
+  part2Question7TimeRemaining?: number; // Part 2 Question 7: 10 minutes
+  part3Question8TimeRemaining?: number; // Part 3 Question 8: 30 minutes
+  currentPartStarted?: WritingPart; // Track which part has been started
+  partDirectionsPlayed?: Record<WritingPart, boolean>; // Track if direction audio has been played
   results?: WritingGradingResponse;
 }
 

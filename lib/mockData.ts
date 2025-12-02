@@ -155,7 +155,7 @@ export const writingQuestions: WritingQuestion[] = [
     instructions: "Write a complete sentence describing what you see in the picture.",
   },
   
-  // Part 2: Respond to a written request (1 question)
+  // Part 2: Respond to a written request (2 questions)
   {
     id: "w6",
     part: 2,
@@ -163,24 +163,27 @@ export const writingQuestions: WritingQuestion[] = [
     questionText: "Read the email below. Write a response to the email. Your response should be at least 50 words.",
     minWords: 50,
     instructions: "Write an appropriate email response. Include a greeting, address all points in the original email, and close appropriately.",
+    timeLimit: 10 * 60, // 10 minutes
   },
-  
-  // Part 3: Write an opinion essay (2 questions)
   {
     id: "w7",
-    part: 3,
+    part: 2,
     questionNumber: 7,
-    questionText: "Do you agree or disagree with the following statement? 'Technology has made our lives better.' Write an essay expressing your opinion. Your response should be at least 150 words.",
-    minWords: 150,
-    instructions: "Write a well-organized essay with an introduction, body paragraphs, and a conclusion. Support your opinion with examples.",
+    questionText: "Read the email below. Write a response to the email. Your response should be at least 50 words.",
+    minWords: 50,
+    instructions: "Write an appropriate email response. Include a greeting, address all points in the original email, and close appropriately.",
+    timeLimit: 10 * 60, // 10 minutes
   },
+  
+  // Part 3: Write an opinion essay (1 question)
   {
     id: "w8",
     part: 3,
     questionNumber: 8,
-    questionText: "Some people believe that students should be required to wear school uniforms. Others think that students should be free to choose their own clothes. What is your opinion? Write an essay. Your response should be at least 150 words.",
+    questionText: "Do you agree or disagree with the following statement? 'Technology has made our lives better.' Write an essay expressing your opinion. Your response should be at least 150 words.",
     minWords: 150,
     instructions: "Write a well-organized essay with an introduction, body paragraphs, and a conclusion. Support your opinion with examples.",
+    timeLimit: 30 * 60, // 30 minutes
   },
 ];
 
