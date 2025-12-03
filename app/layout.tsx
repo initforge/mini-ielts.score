@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/shared/Header";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import StorageCleanup from "@/components/shared/StorageCleanup";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider>
+          <StorageCleanup />
           <Header />
           <main className="min-h-screen">{children}</main>
         </ThemeProvider>

@@ -43,9 +43,20 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
     questionTimersRef.current = questionTimers;
   }, [questionTimers]);
 
-  // Load from localStorage on mount
+  // Load from sessionStorage on mount, migrate from localStorage if needed
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    let saved = sessionStorage.getItem(STORAGE_KEY);
+    
+    // Migration: Check localStorage and move to sessionStorage if exists
+    if (!saved) {
+      const oldData = localStorage.getItem(STORAGE_KEY);
+      if (oldData) {
+        sessionStorage.setItem(STORAGE_KEY, oldData);
+        localStorage.removeItem(STORAGE_KEY);
+        saved = oldData;
+      }
+    }
+    
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -57,9 +68,9 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Save to localStorage whenever state changes
+  // Save to sessionStorage whenever state changes
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
   // Timer effect - handles both overall timer and individual question timers
@@ -202,7 +213,7 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
       timeRemaining: PART1_TOTAL_TIME,
     });
     setQuestionTimers({});
-    localStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(STORAGE_KEY);
   }, []);
 
   // Check if can navigate to a question

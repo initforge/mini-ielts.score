@@ -27,9 +27,20 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
     isFinished: false,
   });
 
-  // Load from localStorage on mount
+  // Load from sessionStorage on mount, migrate from localStorage if needed
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    let saved = sessionStorage.getItem(STORAGE_KEY);
+    
+    // Migration: Check localStorage and move to sessionStorage if exists
+    if (!saved) {
+      const oldData = localStorage.getItem(STORAGE_KEY);
+      if (oldData) {
+        sessionStorage.setItem(STORAGE_KEY, oldData);
+        localStorage.removeItem(STORAGE_KEY);
+        saved = oldData;
+      }
+    }
+    
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -42,9 +53,9 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Save to localStorage whenever state changes
+  // Save to sessionStorage whenever state changes
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
   const startExam = useCallback(() => {
@@ -104,7 +115,7 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
       isRecording: false,
       isFinished: false,
     });
-    localStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(STORAGE_KEY);
   }, []);
 
   const currentQuestion = speakingQuestions[state.currentQuestionIndex] || null;

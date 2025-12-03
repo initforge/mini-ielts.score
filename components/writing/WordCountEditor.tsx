@@ -26,13 +26,13 @@ export default function WordCountEditor({
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Auto-save to localStorage (silent, no UI indication)
+    // Auto-save to sessionStorage (silent, no UI indication)
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
 
     saveTimeoutRef.current = setTimeout(() => {
-      localStorage.setItem(`writing-answer-${questionId}`, value);
+      sessionStorage.setItem(`writing-answer-${questionId}`, value);
     }, 1000);
 
     return () => {
@@ -42,9 +42,21 @@ export default function WordCountEditor({
     };
   }, [value, questionId]);
 
-  // Load from localStorage on mount
+  // Load from sessionStorage on mount, migrate from localStorage if needed
   useEffect(() => {
-    const saved = localStorage.getItem(`writing-answer-${questionId}`);
+    const storageKey = `writing-answer-${questionId}`;
+    let saved = sessionStorage.getItem(storageKey);
+    
+    // Migration: Check localStorage and move to sessionStorage if exists
+    if (!saved) {
+      const oldData = localStorage.getItem(storageKey);
+      if (oldData) {
+        sessionStorage.setItem(storageKey, oldData);
+        localStorage.removeItem(storageKey);
+        saved = oldData;
+      }
+    }
+    
     if (saved && !value) {
       onChange(saved);
     }
