@@ -217,7 +217,7 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Check if can navigate to a question
-  const canNavigateToQuestion = useCallback((index: number) => {
+  const canNavigateToQuestion = useCallback((index: number): boolean => {
     const targetQ = writingQuestions[index];
     if (!targetQ) return false;
     
@@ -230,13 +230,13 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
     // Question 7: can only access if question 6 is completed
     if (targetQ.questionNumber === 7) {
       const q6Answer = state.answers.find(a => a.questionId === "w6");
-      return q6Answer && q6Answer.text.trim().length > 0;
+      return !!(q6Answer && q6Answer.text.trim().length > 0);
     }
     
     // Question 8: can access if question 7 is completed
     if (targetQ.questionNumber === 8) {
       const q7Answer = state.answers.find(a => a.questionId === "w7");
-      return q7Answer && q7Answer.text.trim().length > 0;
+      return !!(q7Answer && q7Answer.text.trim().length > 0);
     }
     
     return false;
