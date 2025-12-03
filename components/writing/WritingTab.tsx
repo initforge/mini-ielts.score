@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, CheckCircle2, Image as ImageIcon, Clock, Fil
 import { useWriting } from "@/contexts/WritingContext";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Modal from "@/components/ui/modal";
 import QuestionNavigator from "./QuestionNavigator";
 import WordCountEditor from "./WordCountEditor";
 import Timer from "@/components/shared/Timer";
@@ -30,6 +31,11 @@ export default function WritingTab() {
   const [currentText, setCurrentText] = useState("");
   const [questionStatuses, setQuestionStatuses] = useState<Record<string, QuestionStatus>>({});
   const [imageError, setImageError] = useState(false);
+  const [showFinishModal, setShowFinishModal] = useState(false);
+  const [showNoAnswerModal, setShowNoAnswerModal] = useState(false);
+  const [showIncompleteModal, setShowIncompleteModal] = useState(false);
+  const [showNavigationModal, setShowNavigationModal] = useState(false);
+  const [navigationMessage, setNavigationMessage] = useState("");
 
   // Load current answer
   useEffect(() => {
@@ -145,7 +151,8 @@ export default function WritingTab() {
     if (currentQ && currentQ.questionNumber === 6) {
       const currentAnswer = state.answers.find(a => a.questionId === currentQ.id);
       if (!currentAnswer || currentAnswer.text.trim().length === 0) {
-        alert("Please complete question 6 before proceeding to question 7.");
+        setNavigationMessage("Please complete question 6 before proceeding to question 7.");
+        setShowNavigationModal(true);
         return;
       }
     }
@@ -153,7 +160,8 @@ export default function WritingTab() {
     if (canNavigateToQuestion(nextIndex)) {
       setCurrentQuestion(nextIndex);
     } else {
-      alert("You must complete the previous question before proceeding.");
+      setNavigationMessage("You must complete the previous question before proceeding.");
+      setShowNavigationModal(true);
     }
   };
 
@@ -163,6 +171,12 @@ export default function WritingTab() {
   };
 
   const handleFinish = () => {
+    // Check if there are any answers
+    if (state.answers.length === 0) {
+      setShowNoAnswerModal(true);
+      return;
+    }
+
     const allAnswered = writingQuestions.every((q) => {
       const answer = state.answers.find((a) => a.questionId === q.id);
       return answer && countWords(answer.text) >= q.minWords;
@@ -173,27 +187,67 @@ export default function WritingTab() {
         const answer = state.answers.find((a) => a.questionId === q.id);
         return !answer || countWords(answer.text) < q.minWords;
       });
-      if (
-        !confirm(
-          `You have ${unanswered.length} question(s) that don't meet the minimum word requirement. Are you sure you want to finish?`
-        )
-      ) {
-        return;
-      }
-    } else {
-      if (!confirm("Are you sure you want to finish the writing test? You cannot go back after finishing.")) {
-        return;
-      }
+      setShowIncompleteModal(true);
+      return;
     }
+
+    setShowFinishModal(true);
+  };
+
+  const confirmFinish = () => {
     finishExam();
+    setShowFinishModal(false);
   };
 
   const currentAnswer = state.answers.find((a) => a.questionId === currentQuestion.id);
   const wordCount = countWords(currentText);
   const isAnswered = currentAnswer && wordCount >= currentQuestion.minWords;
 
+  const unansweredCount = writingQuestions.filter((q) => {
+    const answer = state.answers.find((a) => a.questionId === q.id);
+    return !answer || countWords(answer.text) < q.minWords;
+  }).length;
+
   return (
     <div>
+      {/* Modals */}
+      <Modal
+        isOpen={showNoAnswerModal}
+        onClose={() => setShowNoAnswerModal(false)}
+        title="No Answers Submitted"
+        message="Please write at least one answer before finishing the test."
+        type="alert"
+        confirmText="OK"
+      />
+      <Modal
+        isOpen={showIncompleteModal}
+        onClose={() => setShowIncompleteModal(false)}
+        title="Incomplete Answers"
+        message={`You have ${unansweredCount} question(s) that don't meet the minimum word requirement. Are you sure you want to finish?`}
+        type="confirm"
+        onConfirm={confirmFinish}
+        confirmText="Finish Anyway"
+        cancelText="Continue"
+      />
+      <Modal
+        isOpen={showFinishModal}
+        onClose={() => setShowFinishModal(false)}
+        title="Finish Writing Test"
+        message="Are you sure you want to finish the writing test? You cannot go back after finishing."
+        type="confirm"
+        onConfirm={confirmFinish}
+        confirmText="Finish"
+        cancelText="Cancel"
+      />
+      <Modal
+        isOpen={showNavigationModal}
+        onClose={() => setShowNavigationModal(false)}
+        title="Cannot Proceed"
+        message={navigationMessage}
+        type="alert"
+        confirmText="OK"
+      />
+
       {/* Header Strip - Gradient band */}
       <div className="mb-6 rounded-t-3xl bg-gradient-to-r from-indigo-500 via-violet-500 to-sky-500 h-14 flex items-center justify-between px-6 shadow-lg">
         <div className="flex items-center gap-4">
@@ -257,7 +311,8 @@ export default function WritingTab() {
                   if (canNavigateToQuestion(index)) {
                     setCurrentQuestion(index);
                   } else {
-                    alert("You must complete the previous question before proceeding.");
+                    setNavigationMessage("You must complete the previous question before proceeding.");
+                    setShowNavigationModal(true);
                   }
                 }}
                 questionStatuses={questionStatuses}

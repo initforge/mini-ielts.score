@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Mic, Square, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Modal from "@/components/ui/modal";
 import Timer from "@/components/shared/Timer";
 import { cn, formatTime, blobToBase64 } from "@/lib/utils";
 
@@ -23,6 +24,7 @@ export default function AudioRecorder({
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [showErrorModal, setShowErrorModal] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -87,7 +89,7 @@ export default function AudioRecorder({
       }, 1000);
     } catch (error) {
       console.error("Error starting recording:", error);
-      alert("Failed to access microphone. Please check your permissions.");
+      setShowErrorModal(true);
     }
   };
 
@@ -128,6 +130,14 @@ export default function AudioRecorder({
 
   return (
     <div className="space-y-6">
+      <Modal
+        isOpen={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        title="Microphone Access Error"
+        message="Failed to access microphone. Please check your permissions and try again."
+        type="alert"
+        confirmText="OK"
+      />
       {/* Recording Button */}
       <div className="flex flex-col items-center gap-4">
         <motion.button

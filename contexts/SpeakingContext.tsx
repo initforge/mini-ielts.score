@@ -44,9 +44,20 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Convert date strings back to Date objects
-        if (parsed.startTime) parsed.startTime = new Date(parsed.startTime);
-        setState(parsed);
+        // Reset to default if exam was finished (new session)
+        if (parsed.isFinished) {
+          setState({
+            currentQuestionIndex: 0,
+            answers: [],
+            isRecording: false,
+            isFinished: false,
+          });
+          sessionStorage.removeItem(STORAGE_KEY);
+        } else {
+          // Convert date strings back to Date objects
+          if (parsed.startTime) parsed.startTime = new Date(parsed.startTime);
+          setState(parsed);
+        }
       } catch (e) {
         console.error("Failed to load speaking exam state:", e);
       }

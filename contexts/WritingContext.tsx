@@ -60,8 +60,20 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed.startTime) parsed.startTime = new Date(parsed.startTime);
-        setState(parsed);
+        // Reset to default if exam was finished (new session)
+        if (parsed.isFinished) {
+          setState({
+            currentQuestionIndex: 0,
+            answers: [],
+            isFinished: false,
+            timeRemaining: PART1_TOTAL_TIME,
+          });
+          setQuestionTimers({});
+          sessionStorage.removeItem(STORAGE_KEY);
+        } else {
+          if (parsed.startTime) parsed.startTime = new Date(parsed.startTime);
+          setState(parsed);
+        }
       } catch (e) {
         console.error("Failed to load writing exam state:", e);
       }

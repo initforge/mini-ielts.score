@@ -8,6 +8,7 @@ import { WritingProvider, useWriting } from "@/contexts/WritingContext";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Modal from "@/components/ui/modal";
 import SpeakingTab from "@/components/speaking/SpeakingTab";
 import SpeakingResults from "@/components/speaking/SpeakingResults";
 import WritingTab from "@/components/writing/WritingTab";
@@ -20,10 +21,11 @@ function SpeakingContent() {
   const { state, resetExam, setResults } = useSpeaking();
   const [isGrading, setIsGrading] = useState(false);
   const [gradingError, setGradingError] = useState<string | null>(null);
+  const [showNoAnswerModal, setShowNoAnswerModal] = useState(false);
 
   const handleGrade = async () => {
     if (state.answers.length === 0) {
-      alert("Please record at least one answer before grading.");
+      setShowNoAnswerModal(true);
       return;
     }
 
@@ -73,14 +75,23 @@ function SpeakingContent() {
 
   if (state.isFinished && !state.results) {
     return (
-      <Card>
-        <CardContent className="p-8 text-center">
-          <h2 className="mb-4 text-2xl font-bold text-slate-900">
-            Speaking Test Completed
-          </h2>
-          <p className="mb-6 text-slate-700">
-            {state.answers.length} answer(s) recorded. Click the button below to get your results.
-          </p>
+      <>
+        <Modal
+          isOpen={showNoAnswerModal}
+          onClose={() => setShowNoAnswerModal(false)}
+          title="No Answers Recorded"
+          message="Please record at least one answer before grading."
+          type="alert"
+          confirmText="OK"
+        />
+        <Card>
+          <CardContent className="p-8 text-center">
+            <h2 className="mb-4 text-2xl font-bold text-slate-900">
+              Speaking Test Completed
+            </h2>
+            <p className="mb-6 text-slate-700">
+              {state.answers.length} answer(s) recorded. Click the button below to get your results.
+            </p>
           {gradingError && (
             <div className="mb-4 rounded-lg bg-error/20 p-4 text-error">
               {gradingError}
@@ -103,6 +114,7 @@ function SpeakingContent() {
           </Button>
         </CardContent>
       </Card>
+      </>
     );
   }
 
@@ -113,10 +125,11 @@ function WritingContent() {
   const { state, resetExam, setResults } = useWriting();
   const [isGrading, setIsGrading] = useState(false);
   const [gradingError, setGradingError] = useState<string | null>(null);
+  const [showNoAnswerModal, setShowNoAnswerModal] = useState(false);
 
   const handleGrade = async () => {
     if (state.answers.length === 0) {
-      alert("Please write at least one answer before grading.");
+      setShowNoAnswerModal(true);
       return;
     }
 
@@ -175,14 +188,23 @@ function WritingContent() {
 
   if (state.isFinished && !state.results) {
     return (
-      <Card>
-        <CardContent className="p-8 text-center">
-          <h2 className="mb-4 text-2xl font-bold text-slate-900">
-            Writing Test Completed
-          </h2>
-          <p className="mb-6 text-slate-700">
-            {state.answers.length} answer(s) submitted. Click the button below to get your results.
-          </p>
+      <>
+        <Modal
+          isOpen={showNoAnswerModal}
+          onClose={() => setShowNoAnswerModal(false)}
+          title="No Answers Submitted"
+          message="Please write at least one answer before grading."
+          type="alert"
+          confirmText="OK"
+        />
+        <Card>
+          <CardContent className="p-8 text-center">
+            <h2 className="mb-4 text-2xl font-bold text-slate-900">
+              Writing Test Completed
+            </h2>
+            <p className="mb-6 text-slate-700">
+              {state.answers.length} answer(s) submitted. Click the button below to get your results.
+            </p>
           {gradingError && (
             <div className="mb-4 rounded-lg bg-error/20 p-4 text-error">
               {gradingError}
@@ -205,6 +227,7 @@ function WritingContent() {
           </Button>
         </CardContent>
       </Card>
+      </>
     );
   }
 

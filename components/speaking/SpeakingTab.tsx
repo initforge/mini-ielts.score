@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, CheckCircle2, Image as ImageIcon, FileText, 
 import { useSpeaking } from "@/contexts/SpeakingContext";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Modal from "@/components/ui/modal";
 import QuestionStepper from "./QuestionStepper";
 import AudioRecorder from "./AudioRecorder";
 import Timer from "@/components/shared/Timer";
@@ -27,6 +28,8 @@ export default function SpeakingTab() {
   const [preparationTime, setPreparationTime] = useState<number | null>(null);
   const [isPreparing, setIsPreparing] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [showFinishModal, setShowFinishModal] = useState(false);
+  const [showNoAnswerModal, setShowNoAnswerModal] = useState(false);
 
   if (!currentQuestion) {
     return (
@@ -86,9 +89,17 @@ export default function SpeakingTab() {
   };
 
   const handleFinish = () => {
-    if (confirm("Are you sure you want to finish the speaking test? You cannot go back after finishing.")) {
-      finishExam();
+    // Check if there are any answers
+    if (state.answers.length === 0) {
+      setShowNoAnswerModal(true);
+      return;
     }
+    setShowFinishModal(true);
+  };
+
+  const confirmFinish = () => {
+    finishExam();
+    setShowFinishModal(false);
   };
 
   const startPreparation = () => {
@@ -103,6 +114,26 @@ export default function SpeakingTab() {
 
   return (
     <div>
+      {/* Modals */}
+      <Modal
+        isOpen={showNoAnswerModal}
+        onClose={() => setShowNoAnswerModal(false)}
+        title="No Answers Recorded"
+        message="Please record at least one answer before finishing the test."
+        type="alert"
+        confirmText="OK"
+      />
+      <Modal
+        isOpen={showFinishModal}
+        onClose={() => setShowFinishModal(false)}
+        title="Finish Speaking Test"
+        message="Are you sure you want to finish the speaking test? You cannot go back after finishing."
+        type="confirm"
+        onConfirm={confirmFinish}
+        confirmText="Finish"
+        cancelText="Cancel"
+      />
+
       {/* Header */}
       <div className="mb-6">
         <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
