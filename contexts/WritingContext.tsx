@@ -17,6 +17,10 @@ interface WritingContextType {
   resetExam: () => void;
   canNavigateToQuestion: (index: number) => boolean;
   getQuestionTimeRemaining: (questionIndex: number) => number | null;
+  setQuestionText: (questionId: string, text: string) => void;
+  setPartImage: (part: number, imageData: string | null) => void;
+  startTimer: () => void;
+  lockAnswers: () => void;
 }
 
 const WritingContext = createContext<WritingContextType | undefined>(undefined);
