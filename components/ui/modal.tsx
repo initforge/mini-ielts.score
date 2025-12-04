@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "./button";
@@ -45,21 +46,23 @@ export default function Modal({
     onClose();
   };
 
-  return (
+  if (!isOpen || typeof window === "undefined") return null;
+
+  const modalContent = (
     <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={type === "alert" ? onClose : undefined}
-            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-          />
-          
-          {/* Modal */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <>
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={type === "alert" ? onClose : undefined}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+          style={{ zIndex: 999998 }}
+        />
+        
+        {/* Modal */}
+        <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 999999 }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -104,7 +107,8 @@ export default function Modal({
             </motion.div>
           </div>
         </>
-      )}
     </AnimatePresence>
   );
+
+  return createPortal(modalContent, document.body);
 }

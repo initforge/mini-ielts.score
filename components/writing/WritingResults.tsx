@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, AlertCircle, Lightbulb } from "lucide-react";
+import { CheckCircle2, AlertCircle, Lightbulb, XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ResultCard from "@/components/shared/ResultCard";
 import RubricCard from "@/components/shared/RubricCard";
 import { WritingGradingResponse } from "@/lib/types";
 import { staggerContainer, staggerItem } from "@/lib/animations";
-import { cn } from "@/lib/utils";
+import { cn, countWords } from "@/lib/utils";
+import { writingQuestions } from "@/lib/mockData";
 
 interface WritingResultsProps {
   results: WritingGradingResponse;
@@ -19,6 +21,7 @@ export default function WritingResults({ results }: WritingResultsProps) {
     questionId: string;
     index: number;
   } | null>(null);
+  const [activeTab, setActiveTab] = useState("part1");
 
   const criteriaArray = [
     results.criteria.grammar,
@@ -26,6 +29,18 @@ export default function WritingResults({ results }: WritingResultsProps) {
     results.criteria.organization,
     results.criteria.taskFulfillment,
   ];
+
+  // Helper to check if answer is empty or invalid
+  const isAnswerInvalid = (questionId: string, text: string): boolean => {
+    if (!text || text.trim().length === 0) return true;
+    const wordCount = countWords(text);
+    // Consider answers with less than 3 words as potentially invalid
+    if (wordCount < 3) return true;
+    // Check for nonsensical patterns (all same character, etc.)
+    const uniqueChars = new Set(text.trim().toLowerCase()).size;
+    if (uniqueChars < 3) return true;
+    return false;
+  };
 
   const renderHighlightedText = (highlightedAnswer: typeof results.highlightedAnswers[0]) => {
     const { text, errors } = highlightedAnswer;
@@ -87,6 +102,20 @@ export default function WritingResults({ results }: WritingResultsProps) {
     );
   };
 
+  // Get answers for each part
+  const part1Answers = results.highlightedAnswers.filter(a => {
+    const q = writingQuestions.find(q => q.id === a.questionId);
+    return q && q.part === 1;
+  });
+  const part2Answers = results.highlightedAnswers.filter(a => {
+    const q = writingQuestions.find(q => q.id === a.questionId);
+    return q && q.part === 2;
+  });
+  const part3Answers = results.highlightedAnswers.filter(a => {
+    const q = writingQuestions.find(q => q.id === a.questionId);
+    return q && q.part === 3;
+  });
+
   return (
     <div className="space-y-8">
       {/* Overall Score */}
@@ -95,6 +124,177 @@ export default function WritingResults({ results }: WritingResultsProps) {
         score={results.overallScore}
         maxScore={200}
       />
+
+      {/* Results Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="part1">Part 1 (Q1-5)</TabsTrigger>
+          <TabsTrigger value="part2">Part 2 (Q6-7)</TabsTrigger>
+          <TabsTrigger value="part3">Part 3 (Q8)</TabsTrigger>
+        </TabsList>
+
+        {/* Part 1 Tab */}
+        <TabsContent value="part1" className="space-y-6">
+          {results.part1 && (
+            <ResultCard
+              title="Part 1 Score"
+              score={results.part1.overallScore}
+              maxScore={200}
+            />
+          )}
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-slate-900">Question Scores</h3>
+            {part1Answers.map((answer, index) => {
+              const question = writingQuestions.find(q => q.id === answer.questionId);
+              const score = results.part1?.scores.find(s => s.questionId === answer.questionId);
+              const isInvalid = isAnswerInvalid(answer.questionId, answer.text);
+              
+              return (
+                <Card key={answer.questionId} className={cn(
+                  isInvalid && "border-red-300 bg-red-50/50"
+                )}>
+                  <CardContent className="p-4">
+                    <div className="mb-2 flex items-center justify-between">
+                      <div className="text-sm font-semibold text-slate-900">
+                        Question {question?.questionNumber || index + 1}
+                      </div>
+                      {isInvalid ? (
+                        <div className="flex items-center gap-2 text-red-600">
+                          <XCircle className="h-4 w-4" />
+                          <span className="text-sm font-medium">No answer / Invalid</span>
+                        </div>
+                      ) : (
+                        <div className="text-sm font-bold text-slate-900">
+                          Score: {score?.score || 0} / 200
+                        </div>
+                      )}
+                    </div>
+                    {isInvalid ? (
+                      <div className="text-red-700 italic">
+                        No valid answer provided
+                      </div>
+                    ) : (
+                      <>
+                        <div className="mb-2 text-slate-700">{renderHighlightedText(answer)}</div>
+                        {score?.feedback && (
+                          <p className="text-sm text-slate-600 mt-2">{score.feedback}</p>
+                        )}
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </TabsContent>
+
+        {/* Part 2 Tab */}
+        <TabsContent value="part2" className="space-y-6">
+          {results.part2 && (
+            <ResultCard
+              title="Part 2 Score"
+              score={results.part2.overallScore}
+              maxScore={200}
+            />
+          )}
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-slate-900">Question Scores</h3>
+            {part2Answers.map((answer, index) => {
+              const question = writingQuestions.find(q => q.id === answer.questionId);
+              const score = results.part2?.scores.find(s => s.questionId === answer.questionId);
+              const isInvalid = isAnswerInvalid(answer.questionId, answer.text);
+              
+              return (
+                <Card key={answer.questionId} className={cn(
+                  isInvalid && "border-red-300 bg-red-50/50"
+                )}>
+                  <CardContent className="p-4">
+                    <div className="mb-2 flex items-center justify-between">
+                      <div className="text-sm font-semibold text-slate-900">
+                        Question {question?.questionNumber || index + 1}
+                      </div>
+                      {isInvalid ? (
+                        <div className="flex items-center gap-2 text-red-600">
+                          <XCircle className="h-4 w-4" />
+                          <span className="text-sm font-medium">No answer / Invalid</span>
+                        </div>
+                      ) : (
+                        <div className="text-sm font-bold text-slate-900">
+                          Score: {score?.score || 0} / 200
+                        </div>
+                      )}
+                    </div>
+                    {isInvalid ? (
+                      <div className="text-red-700 italic">
+                        No valid answer provided
+                      </div>
+                    ) : (
+                      <>
+                        <div className="mb-2 text-slate-700">{renderHighlightedText(answer)}</div>
+                        {score?.feedback && (
+                          <p className="text-sm text-slate-600 mt-2">{score.feedback}</p>
+                        )}
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </TabsContent>
+
+        {/* Part 3 Tab */}
+        <TabsContent value="part3" className="space-y-6">
+          {results.part3 && (
+            <ResultCard
+              title="Part 3 Score"
+              score={results.part3.score}
+              maxScore={200}
+            />
+          )}
+          <div className="space-y-4">
+            {part3Answers.map((answer) => {
+              const isInvalid = isAnswerInvalid(answer.questionId, answer.text);
+              
+              return (
+                <Card key={answer.questionId} className={cn(
+                  isInvalid && "border-red-300 bg-red-50/50"
+                )}>
+                  <CardContent className="p-4">
+                    <div className="mb-2 flex items-center justify-between">
+                      <div className="text-sm font-semibold text-slate-900">
+                        Question 8 (Essay)
+                      </div>
+                      {isInvalid ? (
+                        <div className="flex items-center gap-2 text-red-600">
+                          <XCircle className="h-4 w-4" />
+                          <span className="text-sm font-medium">No answer / Invalid</span>
+                        </div>
+                      ) : (
+                        <div className="text-sm font-bold text-slate-900">
+                          Score: {results.part3?.score || 0} / 200
+                        </div>
+                      )}
+                    </div>
+                    {isInvalid ? (
+                      <div className="text-red-700 italic">
+                        No valid answer provided
+                      </div>
+                    ) : (
+                      <>
+                        <div className="mb-2 text-slate-700">{renderHighlightedText(answer)}</div>
+                        {results.part3?.feedback && (
+                          <p className="text-sm text-slate-600 mt-2">{results.part3.feedback}</p>
+                        )}
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </TabsContent>
+      </Tabs>
 
       {/* Criteria Grid */}
       <div>

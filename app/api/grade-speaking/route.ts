@@ -5,7 +5,14 @@ import { SpeakingAnswer } from "@/lib/types";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { answers }: { answers: SpeakingAnswer[] } = body;
+    const { answers, apiKey }: { answers: SpeakingAnswer[]; apiKey?: string } = body;
+
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "Gemini API key is required. Please connect your API key in the header." },
+        { status: 400 }
+      );
+    }
 
     if (!answers || !Array.isArray(answers) || answers.length === 0) {
       return NextResponse.json(
@@ -20,7 +27,7 @@ export async function POST(request: NextRequest) {
         let transcript = answer.transcript;
         
         if (!transcript && answer.audioBase64) {
-          transcript = await transcribeAudio(answer.audioBase64, "audio/webm");
+          transcript = await transcribeAudio(answer.audioBase64, "audio/webm", apiKey);
         }
 
         return {
@@ -114,7 +121,7 @@ Return your evaluation as a JSON object with this exact structure:
 
 Return ONLY the JSON object, no additional text or markdown formatting.`;
 
-    const responseText = await generateContent(prompt);
+    const responseText = await generateContent(prompt, apiKey);
     
     // Parse JSON response (handle markdown code blocks if present)
     let jsonText = responseText.trim();

@@ -1,6 +1,6 @@
 import { SpeakingQuestion, WritingQuestion } from "./types";
 
-// Speaking Questions (11 questions across 6 parts)
+// Speaking Questions (11 questions across 5 parts)
 export const speakingQuestions: SpeakingQuestion[] = [
   // Part 1: Read a text aloud (2 questions)
   {
@@ -8,98 +8,104 @@ export const speakingQuestions: SpeakingQuestion[] = [
     part: 1,
     questionNumber: 1,
     questionText: "Read the following text aloud:",
+    preparationTime: 45,
     responseTime: 45,
-    instructions: "You will have 45 seconds to read the text aloud. Pronounce each word clearly.",
+    instructions: "You will have 45 seconds to prepare, then 45 seconds to read the text aloud. Pronounce each word clearly.",
   },
   {
     id: "s2",
     part: 1,
     questionNumber: 2,
     questionText: "Read the following text aloud:",
+    preparationTime: 45,
     responseTime: 45,
-    instructions: "You will have 45 seconds to read the text aloud. Pay attention to intonation.",
+    instructions: "You will have 45 seconds to prepare, then 45 seconds to read the text aloud. Pay attention to intonation.",
   },
   
-  // Part 2: Describe a picture (1 question)
+  // Part 2: Describe a picture (2 questions)
   {
     id: "s3",
     part: 2,
     questionNumber: 3,
     questionText: "Describe the picture in as much detail as possible.",
-    imageUrl: "/images/speaking-pic1.jpg",
-    responseTime: 45,
-    instructions: "Describe what you see in the picture. Include details about people, objects, and activities.",
+    preparationTime: 30,
+    responseTime: 30,
+    instructions: "You will have 30 seconds to prepare, then 30 seconds to describe the picture.",
+  },
+  {
+    id: "s4",
+    part: 2,
+    questionNumber: 4,
+    questionText: "Describe the picture in as much detail as possible.",
+    preparationTime: 30,
+    responseTime: 30,
+    instructions: "You will have 30 seconds to prepare, then 30 seconds to describe the picture.",
   },
   
   // Part 3: Respond to questions (3 questions)
   {
-    id: "s4",
-    part: 3,
-    questionNumber: 4,
-    questionText: "What is your favorite way to relax after a long day?",
-    responseTime: 15,
-    instructions: "Answer the question clearly and provide specific details.",
-  },
-  {
     id: "s5",
     part: 3,
     questionNumber: 5,
-    questionText: "How do you usually commute to work or school?",
+    questionText: "What do you usually do after work?",
+    preparationTime: 3,
     responseTime: 15,
-    instructions: "Answer the question clearly and provide specific details.",
+    instructions: "You will have 3 seconds to prepare after hearing the question, then 15 seconds to respond.",
   },
   {
     id: "s6",
     part: 3,
     questionNumber: 6,
-    questionText: "What kind of music do you enjoy listening to?",
+    questionText: "Describe a hobby you enjoy.",
+    preparationTime: 3,
     responseTime: 15,
-    instructions: "Answer the question clearly and provide specific details.",
+    instructions: "You will have 3 seconds to prepare after hearing the question, then 15 seconds to respond.",
+  },
+  {
+    id: "s7",
+    part: 3,
+    questionNumber: 7,
+    questionText: "Do you prefer studying alone or with a group?",
+    preparationTime: 3,
+    responseTime: 15,
+    instructions: "You will have 3 seconds to prepare after hearing the question, then 15 seconds to respond.",
   },
   
   // Part 4: Respond to questions using information provided (3 questions)
   {
-    id: "s7",
-    part: 4,
-    questionNumber: 7,
-    questionText: "According to the schedule, what time does the meeting start?",
-    responseTime: 15,
-    instructions: "Use the information provided to answer the question.",
-  },
-  {
     id: "s8",
     part: 4,
     questionNumber: 8,
-    questionText: "Where will the conference be held?",
-    responseTime: 15,
-    instructions: "Use the information provided to answer the question.",
+    questionText: "What time does the first train leave?",
+    preparationTime: 3,
+    responseTime: 30,
+    instructions: "You will have 3 seconds to prepare, then 30 seconds to respond using the information provided.",
   },
   {
     id: "s9",
     part: 4,
     questionNumber: 9,
-    questionText: "Who should attendees contact for more information?",
-    responseTime: 15,
-    instructions: "Use the information provided to answer the question.",
+    questionText: "Which option is cheaper for a group of 4?",
+    preparationTime: 3,
+    responseTime: 30,
+    instructions: "You will have 3 seconds to prepare, then 30 seconds to respond using the information provided.",
   },
-  
-  // Part 5: Propose a solution (1 question)
   {
     id: "s10",
-    part: 5,
+    part: 4,
     questionNumber: 10,
-    questionText: "A colleague is having trouble meeting project deadlines. Propose a solution to help them manage their time better.",
-    preparationTime: 30,
-    responseTime: 60,
-    instructions: "You will have 30 seconds to prepare, then 60 seconds to propose your solution.",
+    questionText: "Your friend wants to join a workshop. Which one do you recommend and why?",
+    preparationTime: 15,
+    responseTime: 30,
+    instructions: "You will have 15 seconds to prepare, then 30 seconds to respond using the information provided.",
   },
   
-  // Part 6: Express an opinion (1 question)
+  // Part 5: Express an opinion (1 question)
   {
     id: "s11",
-    part: 6,
+    part: 5,
     questionNumber: 11,
-    questionText: "Do you think remote work is more effective than working in an office? Express your opinion with reasons.",
+    questionText: "Do you agree that children should start learning English early?",
     preparationTime: 15,
     responseTime: 60,
     instructions: "You will have 15 seconds to prepare, then 60 seconds to express your opinion.",
@@ -180,7 +186,7 @@ export const writingQuestions: WritingQuestion[] = [
     id: "w8",
     part: 3,
     questionNumber: 8,
-    questionText: "Some people believe that students should be required to wear school uniforms. Others think that students should be free to choose their own clothes. What is your opinion? Write an essay. Your response should be at least 150 words.",
+    questionText: "Write an opinion essay based on the question provided.",
     minWords: 150,
     instructions: "Write a well-organized essay with an introduction, body paragraphs, and a conclusion. Support your opinion with examples.",
     timeLimit: 30 * 60, // 30 minutes

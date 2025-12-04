@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { speakingQuestions } from "@/lib/mockData";
 
 interface QuestionStepperProps {
-  currentIndex: number;
+  currentIndex: number | null; // null means no question selected
   onQuestionClick: (index: number) => void;
   answers: Array<{ questionId: string }>;
 }
@@ -16,7 +16,7 @@ export default function QuestionStepper({
   onQuestionClick,
   answers,
 }: QuestionStepperProps) {
-  const parts = [1, 2, 3, 4, 5, 6];
+  const parts = [1, 2, 3, 4, 5]; // Removed Part 6
   
   const getQuestionsForPart = (part: number) => {
     return speakingQuestions.filter((q) => q.part === part);
@@ -40,7 +40,7 @@ export default function QuestionStepper({
             <div className="flex flex-wrap gap-2">
               {partQuestions.map((question, idx) => {
                 const questionIndex = partStartIndex + idx;
-                const isCurrent = questionIndex === currentIndex;
+                const isCurrent = currentIndex !== null && questionIndex === currentIndex;
                 const isAnswered = isQuestionAnswered(question.id);
                 
                 return (

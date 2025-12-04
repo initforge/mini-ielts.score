@@ -131,6 +131,27 @@ export const mockSpeakingResults: SpeakingGradingResponse = {
 
 export const mockWritingResults: WritingGradingResponse = {
   overallScore: 172,
+  part1: {
+    scores: [
+      { questionId: "w1", score: 175, feedback: "Clear and grammatically correct sentence." },
+      { questionId: "w2", score: 170, feedback: "Good description with appropriate vocabulary." },
+      { questionId: "w3", score: 180, feedback: "Excellent sentence structure and clarity." },
+      { questionId: "w4", score: 165, feedback: "Good attempt, could use more descriptive words." },
+      { questionId: "w5", score: 175, feedback: "Well-written sentence with good grammar." },
+    ],
+    overallScore: 173,
+  },
+  part2: {
+    scores: [
+      { questionId: "w6", score: 180, feedback: "Excellent email response with appropriate tone." },
+      { questionId: "w7", score: 175, feedback: "Good email response addressing all points." },
+    ],
+    overallScore: 177,
+  },
+  part3: {
+    score: 170,
+    feedback: "Well-structured essay with clear arguments and examples.",
+  },
   criteria: {
     grammar: {
       name: "Grammar",

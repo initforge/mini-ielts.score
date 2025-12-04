@@ -8,11 +8,20 @@ interface SpeakingContextType {
   state: SpeakingExamState;
   currentQuestion: typeof speakingQuestions[0] | null;
   startExam: () => void;
-  setCurrentQuestion: (index: number) => void;
+  setCurrentQuestion: (index: number | null) => void;
+  clearQuestionSelection: () => void;
   saveAnswer: (answer: SpeakingAnswer) => void;
   finishExam: () => void;
   setResults: (results: SpeakingGradingResponse) => void;
   resetExam: () => void;
+  // New functions for user input
+  setQuestionText: (questionId: string, text: string) => void;
+  setQuestionImage: (questionId: string, imageData: string | null) => void;
+  startPreparationTimer: () => void;
+  startResponseTimer: () => void;
+  lockRecording: () => void;
+  setStartTime: () => void;
+  resetTimerState: () => void;
 }
 
 const SpeakingContext = createContext<SpeakingContextType | undefined>(undefined);
@@ -21,10 +30,15 @@ const STORAGE_KEY = "toeic-speaking-exam-state";
 
 export function SpeakingProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<SpeakingExamState>({
-    currentQuestionIndex: 0,
+    currentQuestionIndex: null, // Start with no question selected
     answers: [],
     isRecording: false,
     isFinished: false,
+    questions: {},
+    images: {},
+    isLocked: false,
+    preparationTimerStarted: false,
+    responseTimerStarted: false,
   });
 
   // Load from sessionStorage on mount, migrate from localStorage if needed
@@ -47,16 +61,16 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
         // Reset to default if exam was finished (new session)
         if (parsed.isFinished) {
           setState({
-            currentQuestionIndex: 0,
+            currentQuestionIndex: null,
             answers: [],
             isRecording: false,
             isFinished: false,
           });
           sessionStorage.removeItem(STORAGE_KEY);
         } else {
-          // Convert date strings back to Date objects
-          if (parsed.startTime) parsed.startTime = new Date(parsed.startTime);
-          setState(parsed);
+        // Convert date strings back to Date objects
+        if (parsed.startTime) parsed.startTime = new Date(parsed.startTime);
+        setState(parsed);
         }
       } catch (e) {
         console.error("Failed to load speaking exam state:", e);
@@ -71,18 +85,41 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
 
   const startExam = useCallback(() => {
     setState({
-      currentQuestionIndex: 0,
+      currentQuestionIndex: null, // Don't auto-select question
       answers: [],
       isRecording: false,
       isFinished: false,
-      startTime: new Date(),
+      startTime: undefined, // Don't set startTime yet - wait for instruction modal
+      questions: {},
+      images: {},
+      isLocked: false,
+      preparationTimerStarted: false,
+      responseTimerStarted: false,
     });
   }, []);
 
-  const setCurrentQuestion = useCallback((index: number) => {
+  const setCurrentQuestion = useCallback((index: number | null) => {
+    if (index === null) {
+      setState((prev) => ({
+        ...prev,
+        currentQuestionIndex: null,
+      }));
+    } else {
+      setState((prev) => ({
+        ...prev,
+        currentQuestionIndex: Math.max(0, Math.min(index, speakingQuestions.length - 1)),
+      }));
+    }
+  }, []);
+
+  // Clear question selection (sets to null)
+  const clearQuestionSelection = useCallback(() => {
     setState((prev) => ({
       ...prev,
-      currentQuestionIndex: Math.max(0, Math.min(index, speakingQuestions.length - 1)),
+      currentQuestionIndex: null,
+      preparationTimerStarted: false,
+      responseTimerStarted: false,
+      isLocked: false,
     }));
   }, []);
 
@@ -121,15 +158,99 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
 
   const resetExam = useCallback(() => {
     setState({
-      currentQuestionIndex: 0,
+      currentQuestionIndex: null,
       answers: [],
       isRecording: false,
       isFinished: false,
+      questions: {},
+      images: {},
+      isLocked: false,
+      preparationTimerStarted: false,
+      responseTimerStarted: false,
     });
     sessionStorage.removeItem(STORAGE_KEY);
   }, []);
 
-  const currentQuestion = speakingQuestions[state.currentQuestionIndex] || null;
+  // Set question text (user input)
+  const setQuestionText = useCallback((questionId: string, text: string) => {
+    setState((prev) => ({
+      ...prev,
+      questions: {
+        ...prev.questions,
+        [questionId]: text,
+      },
+    }));
+  }, []);
+
+  // Set question image
+  const setQuestionImage = useCallback((questionId: string, imageData: string | null) => {
+    setState((prev) => {
+      const newImages = { ...prev.images };
+      if (imageData) {
+        newImages[questionId] = imageData;
+      } else {
+        delete newImages[questionId];
+      }
+      return {
+        ...prev,
+        images: newImages,
+      };
+    });
+  }, []);
+
+  // Start preparation timer
+  const startPreparationTimer = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      preparationTimerStarted: true,
+    }));
+  }, []);
+
+  // Start response timer
+  const startResponseTimer = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      preparationTimerStarted: false,
+      responseTimerStarted: true,
+    }));
+  }, []);
+
+  // Lock recording when time expires
+  const lockRecording = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      isLocked: true,
+      isRecording: false,
+      responseTimerStarted: false,
+    }));
+  }, []);
+
+  // Set startTime when user clicks "Bắt đầu" in instruction modal
+  const setStartTime = useCallback(() => {
+    setState((prev) => {
+      // Only set if not already set
+      if (prev.startTime) return prev;
+      return {
+        ...prev,
+        startTime: new Date(),
+      };
+    });
+  }, []);
+
+  // Reset timer state (used when navigating between questions)
+  const resetTimerState = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      preparationTimerStarted: false,
+      responseTimerStarted: false,
+      isLocked: false,
+    }));
+  }, []);
+
+  const currentQuestion = 
+    state.currentQuestionIndex !== null 
+      ? speakingQuestions[state.currentQuestionIndex] || null
+      : null;
 
   return (
     <SpeakingContext.Provider
@@ -138,10 +259,18 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
         currentQuestion,
         startExam,
         setCurrentQuestion,
+        clearQuestionSelection,
         saveAnswer,
         finishExam,
         setResults,
         resetExam,
+        setQuestionText,
+        setQuestionImage,
+        startPreparationTimer,
+        startResponseTimer,
+        lockRecording,
+        setStartTime,
+        resetTimerState,
       }}
     >
       {children}

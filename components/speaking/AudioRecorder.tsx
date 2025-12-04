@@ -12,16 +12,19 @@ interface AudioRecorderProps {
   maxDuration: number; // in seconds
   onRecordingComplete: (audioBlob: Blob, audioBase64: string) => void;
   disabled?: boolean;
+  isLocked?: boolean;
 }
 
 export default function AudioRecorder({
   maxDuration,
   onRecordingComplete,
   disabled = false,
+  isLocked = false,
 }: AudioRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [actualDuration, setActualDuration] = useState<number | null>(null); // Actual audio duration from audio element
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -31,6 +34,7 @@ export default function AudioRecorder({
   const streamRef = useRef<MediaStream | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const recordingStartTimeRef = useRef<number | null>(null); // Track actual recording start time
 
   useEffect(() => {
     return () => {
@@ -68,6 +72,13 @@ export default function AudioRecorder({
         const url = URL.createObjectURL(blob);
         setAudioUrl(url);
 
+        // Calculate actual duration from audio element
+        const audio = new Audio(url);
+        audio.addEventListener('loadedmetadata', () => {
+          const duration = Math.floor(audio.duration);
+          setActualDuration(duration);
+        });
+
         const base64 = await blobToBase64(blob);
         onRecordingComplete(blob, base64);
       };
@@ -75,18 +86,24 @@ export default function AudioRecorder({
       mediaRecorder.start();
       setIsRecording(true);
       setTimeElapsed(0);
+      
+      // Store actual recording start time for accurate timer
+      recordingStartTimeRef.current = Date.now();
 
-      // Start timer
+      // Start timer - use Date.now() for accurate timing
       timerIntervalRef.current = setInterval(() => {
-        setTimeElapsed((prev) => {
-          const newTime = prev + 1;
-          if (newTime >= maxDuration) {
+        if (recordingStartTimeRef.current) {
+          const elapsed = Math.floor((Date.now() - recordingStartTimeRef.current) / 1000);
+          const remaining = maxDuration - elapsed;
+          
+          if (remaining <= 0) {
             stopRecording();
-            return maxDuration;
+            setTimeElapsed(maxDuration);
+          } else {
+            setTimeElapsed(elapsed);
           }
-          return newTime;
-        });
-      }, 1000);
+        }
+      }, 100); // Update every 100ms for smoother display
     } catch (error) {
       console.error("Error starting recording:", error);
       setShowErrorModal(true);
@@ -102,6 +119,13 @@ export default function AudioRecorder({
       setIsRecording(false);
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+      // Calculate final elapsed time
+      if (recordingStartTimeRef.current) {
+        const finalElapsed = Math.floor((Date.now() - recordingStartTimeRef.current) / 1000);
+        setTimeElapsed(finalElapsed);
+        recordingStartTimeRef.current = null;
       }
     }
   };
@@ -119,9 +143,26 @@ export default function AudioRecorder({
   };
 
   useEffect(() => {
-    if (audioRef.current) {
+    if (audioRef.current && audioUrl) {
       audioRef.current.onended = () => setIsPlaying(false);
       audioRef.current.onpause = () => setIsPlaying(false);
+      
+      // Get actual duration when audio is loaded
+      const updateDuration = () => {
+        if (audioRef.current && !isNaN(audioRef.current.duration)) {
+          const duration = Math.floor(audioRef.current.duration);
+          setActualDuration(duration);
+        }
+      };
+      
+      audioRef.current.addEventListener('loadedmetadata', updateDuration);
+      if (audioRef.current.readyState >= 1) {
+        updateDuration();
+      }
+      
+      return () => {
+        audioRef.current?.removeEventListener('loadedmetadata', updateDuration);
+      };
     }
   }, [audioUrl]);
 
@@ -142,17 +183,19 @@ export default function AudioRecorder({
       <div className="flex flex-col items-center gap-4">
         <motion.button
           onClick={isRecording ? stopRecording : startRecording}
-          disabled={disabled || (audioBlob !== null && !isRecording)}
+          disabled={disabled || isLocked || (audioBlob !== null && !isRecording)}
           className={cn(
             "relative flex h-24 w-24 items-center justify-center rounded-full transition-all duration-200",
-            isRecording
+            isLocked
+              ? "bg-slate-400 cursor-not-allowed opacity-50"
+              : isRecording
               ? "bg-error shadow-lg shadow-error/50"
               : "bg-brand-primary text-brand-bg shadow-lg border border-brand-primary",
             "hover:scale-105 active:scale-95",
-            (disabled || (audioBlob !== null && !isRecording)) && "opacity-50 cursor-not-allowed"
+            (disabled || isLocked || (audioBlob !== null && !isRecording)) && "opacity-50 cursor-not-allowed"
           )}
-          whileHover={!disabled && !(audioBlob !== null && !isRecording) ? { scale: 1.05 } : {}}
-          whileTap={!disabled && !(audioBlob !== null && !isRecording) ? { scale: 0.95 } : {}}
+          whileHover={!disabled && !isLocked && !(audioBlob !== null && !isRecording) ? { scale: 1.05 } : {}}
+          whileTap={!disabled && !isLocked && !(audioBlob !== null && !isRecording) ? { scale: 0.95 } : {}}
         >
           {isRecording ? (
             <>
@@ -194,6 +237,15 @@ export default function AudioRecorder({
         </div>
       )}
 
+      {/* Locked State */}
+      {isLocked && !isRecording && (
+        <div className="flex flex-col items-center gap-2">
+          <div className="text-center text-red-600 font-medium">
+            Time expired - Recording locked
+          </div>
+        </div>
+      )}
+
       {/* Playback Controls */}
       {audioBlob && !isRecording && (
         <div className="flex items-center justify-center gap-4">
@@ -224,7 +276,7 @@ export default function AudioRecorder({
       {/* Time Display */}
       {!isRecording && audioBlob && (
         <div className="text-center text-sm text-text-muted">
-          Recording completed ({formatTime(timeElapsed)})
+          Recording completed ({formatTime(actualDuration !== null ? actualDuration : timeElapsed)})
         </div>
       )}
     </div>

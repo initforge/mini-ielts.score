@@ -11,6 +11,7 @@ interface WordCountEditorProps {
   questionId: string;
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 export default function WordCountEditor({
@@ -20,6 +21,7 @@ export default function WordCountEditor({
   questionId,
   placeholder = "Type your answer here...",
   className,
+  disabled = false,
 }: WordCountEditorProps) {
   const [showShake, setShowShake] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -42,28 +44,13 @@ export default function WordCountEditor({
     };
   }, [value, questionId]);
 
-  // Load from sessionStorage on mount, migrate from localStorage if needed
-  useEffect(() => {
-    const storageKey = `writing-answer-${questionId}`;
-    let saved = sessionStorage.getItem(storageKey);
-    
-    // Migration: Check localStorage and move to sessionStorage if exists
-    if (!saved) {
-      const oldData = localStorage.getItem(storageKey);
-      if (oldData) {
-        sessionStorage.setItem(storageKey, oldData);
-        localStorage.removeItem(storageKey);
-        saved = oldData;
-      }
-    }
-    
-    if (saved && !value) {
-      onChange(saved);
-    }
-  }, [questionId, onChange, value]);
+  // Load from sessionStorage on mount only once per questionId
+  // REMOVED: Auto-load logic to prevent conflicts with parent component state
+  // Parent component (WritingTab) handles loading from state.answers
+  // This component only handles saving to sessionStorage
 
   const wordCount = countWords(value);
-  const isBelowMinimum = wordCount < minWords;
+  // Removed minWords validation - just show word count
 
   const triggerShake = () => {
     setShowShake(true);
@@ -77,9 +64,11 @@ export default function WordCountEditor({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        disabled={disabled}
         className={cn(
           "min-h-[300px] w-full rounded-xl border border-slate-300 bg-slate-50 p-4 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200 resize-none",
-          showShake && "animate-shake"
+          showShake && "animate-shake",
+          disabled && "cursor-not-allowed opacity-50 bg-slate-100"
         )}
         animate={showShake ? { x: [0, -10, 10, -10, 10, 0] } : {}}
       />

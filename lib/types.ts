@@ -1,5 +1,5 @@
 // Question Types
-export type SpeakingPart = 1 | 2 | 3 | 4 | 5 | 6;
+export type SpeakingPart = 1 | 2 | 3 | 4 | 5;
 export type WritingPart = 1 | 2 | 3;
 
 export interface SpeakingQuestion {
@@ -38,10 +38,16 @@ export interface SpeakingAnswer {
 export interface WritingAnswer {
   questionId: string;
   questionType: WritingPart;
-  questionText: string;
+  questionText: string; // User input question text
   text: string;
   wordCount: number;
   savedAt?: Date;
+}
+
+export interface WritingQuestionInput {
+  questionId: string;
+  questionText: string; // User input
+  imageUrl?: string; // For Q1-5, Q6-7
 }
 
 // Grading Response Types
@@ -75,6 +81,26 @@ export interface SpeakingGradingResponse {
 
 export interface WritingGradingResponse {
   overallScore: number; // 0-200
+  part1?: {
+    scores: Array<{
+      questionId: string;
+      score: number;
+      feedback: string;
+    }>;
+    overallScore: number;
+  };
+  part2?: {
+    scores: Array<{
+      questionId: string;
+      score: number;
+      feedback: string;
+    }>;
+    overallScore: number;
+  };
+  part3?: {
+    score: number;
+    feedback: string;
+  };
   criteria: {
     grammar: CriteriaScore;
     vocabularyRange: CriteriaScore;
@@ -103,21 +129,39 @@ export interface WritingGradingResponse {
 
 // Exam State Types
 export interface SpeakingExamState {
-  currentQuestionIndex: number;
+  currentQuestionIndex: number | null; // null means no question selected
   answers: SpeakingAnswer[];
   isRecording: boolean;
   isFinished: boolean;
   startTime?: Date;
   results?: SpeakingGradingResponse;
+  // New fields for user input
+  questions?: Record<string, string>; // questionId -> questionText
+  images?: Record<string, string>; // questionId -> imageData (base64)
+  isLocked?: boolean; // Lock recording when time expires
+  preparationTimerStarted?: boolean;
+  responseTimerStarted?: boolean;
+}
+
+export interface SpeakingQuestionInput {
+  questionId: string;
+  questionText: string; // User input
+  imageUrl?: string; // For Q3, Q4, Q8-10
 }
 
 export interface WritingExamState {
-  currentQuestionIndex: number;
+  currentQuestionIndex: number | null; // null means no question selected
   answers: WritingAnswer[];
   isFinished: boolean;
   startTime?: Date;
   timeRemaining: number; // in seconds (60 minutes = 3600 seconds)
   results?: WritingGradingResponse;
+  // New fields for user input
+  questions?: Record<string, string>; // questionId -> questionText
+  images?: Record<number, string>; // part -> imageData (base64)
+  isTimerRunning?: boolean;
+  timerStartedAt?: Date;
+  isLocked?: boolean; // Lock answers when time is up
 }
 
 // UI State Types

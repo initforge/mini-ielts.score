@@ -5,7 +5,24 @@ import { WritingAnswer } from "@/lib/types";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { parts }: { parts: { part1: WritingAnswer[]; part2: WritingAnswer[]; part3: WritingAnswer[] } } = body;
+    const { 
+      parts, 
+      questions, 
+      images,
+      apiKey
+    }: { 
+      parts: { part1: WritingAnswer[]; part2: WritingAnswer[]; part3: WritingAnswer[] };
+      questions?: Record<string, string>;
+      images?: Record<number, string>;
+      apiKey?: string;
+    } = body;
+
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "Gemini API key is required. Please connect your API key in the header." },
+        { status: 400 }
+      );
+    }
 
     if (!parts) {
       return NextResponse.json(
@@ -31,6 +48,7 @@ For each response, identify and highlight errors with:
 Student Responses:
 
 Part 1 (Picture Descriptions):
+${images?.[1] ? `Image provided for Part 1 (base64 encoded)\n` : ''}
 ${parts.part1.map((answer, index) => `
 Question ${index + 1}:
 Question: ${answer.questionText}
@@ -39,6 +57,7 @@ Word Count: ${answer.wordCount}
 `).join("\n")}
 
 Part 2 (Email Response):
+${images?.[2] ? `Image provided for Part 2 (base64 encoded)\n` : ''}
 ${parts.part2.map((answer, index) => `
 Question ${index + 1}:
 Question: ${answer.questionText}
@@ -57,6 +76,55 @@ Word Count: ${answer.wordCount}
 Return your evaluation as a JSON object with this exact structure:
 {
   "overallScore": <number 0-200>,
+  "part1": {
+    "scores": [
+      {
+        "questionId": "w1",
+        "score": <number 0-200>,
+        "feedback": "<feedback for question 1>"
+      },
+      {
+        "questionId": "w2",
+        "score": <number 0-200>,
+        "feedback": "<feedback for question 2>"
+      },
+      {
+        "questionId": "w3",
+        "score": <number 0-200>,
+        "feedback": "<feedback for question 3>"
+      },
+      {
+        "questionId": "w4",
+        "score": <number 0-200>,
+        "feedback": "<feedback for question 4>"
+      },
+      {
+        "questionId": "w5",
+        "score": <number 0-200>,
+        "feedback": "<feedback for question 5>"
+      }
+    ],
+    "overallScore": <number 0-200>
+  },
+  "part2": {
+    "scores": [
+      {
+        "questionId": "w6",
+        "score": <number 0-200>,
+        "feedback": "<feedback for question 6>"
+      },
+      {
+        "questionId": "w7",
+        "score": <number 0-200>,
+        "feedback": "<feedback for question 7>"
+      }
+    ],
+    "overallScore": <number 0-200>
+  },
+  "part3": {
+    "score": <number 0-200>,
+    "feedback": "<feedback for question 8 essay>"
+  },
   "criteria": {
     "grammar": {
       "name": "Grammar",
@@ -125,7 +193,7 @@ For highlightedAnswers, include ALL answers from all parts. For each answer, ide
 
 Return ONLY the JSON object, no additional text or markdown formatting.`;
 
-    const responseText = await generateContent(prompt);
+    const responseText = await generateContent(prompt, apiKey);
     
     // Parse JSON response (handle markdown code blocks if present)
     let jsonText = responseText.trim();

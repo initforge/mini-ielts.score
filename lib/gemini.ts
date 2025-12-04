@@ -1,11 +1,13 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Lazy initialization - only check API key when functions are called
-function getGenAI() {
-if (!process.env.GEMINI_API_KEY) {
-  throw new Error("GEMINI_API_KEY is not set in environment variables");
+function getGenAI(apiKey?: string) {
+  // Try provided API key first, then environment variable
+  const key = apiKey || process.env.GEMINI_API_KEY;
+  if (!key) {
+    throw new Error("GEMINI_API_KEY is not set. Please connect your Gemini API key in the header.");
 }
-  return new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  return new GoogleGenerativeAI(key);
 }
 
 export async function transcribeAudio(audioBase64: string, mimeType: string = "audio/webm"): Promise<string> {
@@ -37,9 +39,9 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
   }
 }
 
-export async function generateContent(prompt: string): Promise<string> {
+export async function generateContent(prompt: string, apiKey?: string): Promise<string> {
   try {
-    const genAI = getGenAI();
+    const genAI = getGenAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const result = await model.generateContent(prompt);
     const response = await result.response;

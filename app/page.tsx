@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { SpeakingProvider, useSpeaking } from "@/contexts/SpeakingContext";
@@ -33,6 +33,13 @@ function SpeakingContent() {
     setGradingError(null);
 
     try {
+      const apiKey = typeof window !== "undefined" ? localStorage.getItem("GEMINI_API_KEY") : null;
+      if (!apiKey) {
+        setGradingError("Please connect your Gemini API key first.");
+        setIsGrading(false);
+        return;
+      }
+
       const response = await fetch("/api/grade-speaking", {
         method: "POST",
         headers: {
@@ -40,6 +47,7 @@ function SpeakingContent() {
         },
         body: JSON.stringify({
           answers: state.answers,
+          apiKey,
         }),
       });
 
@@ -84,14 +92,14 @@ function SpeakingContent() {
           type="alert"
           confirmText="OK"
         />
-        <Card>
-          <CardContent className="p-8 text-center">
-            <h2 className="mb-4 text-2xl font-bold text-slate-900">
-              Speaking Test Completed
-            </h2>
-            <p className="mb-6 text-slate-700">
-              {state.answers.length} answer(s) recorded. Click the button below to get your results.
-            </p>
+      <Card>
+        <CardContent className="p-8 text-center">
+          <h2 className="mb-4 text-2xl font-bold text-slate-900">
+            Speaking Test Completed
+          </h2>
+          <p className="mb-6 text-slate-700">
+            {state.answers.length} answer(s) recorded. Click the button below to get your results.
+          </p>
           {gradingError && (
             <div className="mb-4 rounded-lg bg-error/20 p-4 text-error">
               {gradingError}
@@ -142,6 +150,13 @@ function WritingContent() {
       const part2 = state.answers.filter((a) => a.questionType === 2);
       const part3 = state.answers.filter((a) => a.questionType === 3);
 
+      const apiKey = typeof window !== "undefined" ? localStorage.getItem("GEMINI_API_KEY") : null;
+      if (!apiKey) {
+        setGradingError("Please connect your Gemini API key first.");
+        setIsGrading(false);
+        return;
+      }
+
       const response = await fetch("/api/grade-writing", {
         method: "POST",
         headers: {
@@ -153,6 +168,9 @@ function WritingContent() {
             part2,
             part3,
           },
+          questions: state.questions,
+          images: state.images,
+          apiKey,
         }),
       });
 
@@ -197,14 +215,14 @@ function WritingContent() {
           type="alert"
           confirmText="OK"
         />
-        <Card>
-          <CardContent className="p-8 text-center">
-            <h2 className="mb-4 text-2xl font-bold text-slate-900">
-              Writing Test Completed
-            </h2>
-            <p className="mb-6 text-slate-700">
-              {state.answers.length} answer(s) submitted. Click the button below to get your results.
-            </p>
+      <Card>
+        <CardContent className="p-8 text-center">
+          <h2 className="mb-4 text-2xl font-bold text-slate-900">
+            Writing Test Completed
+          </h2>
+          <p className="mb-6 text-slate-700">
+            {state.answers.length} answer(s) submitted. Click the button below to get your results.
+          </p>
           {gradingError && (
             <div className="mb-4 rounded-lg bg-error/20 p-4 text-error">
               {gradingError}
@@ -234,12 +252,43 @@ function WritingContent() {
   return <WritingTab />;
 }
 
+// Wrapper component to handle tab switching and reset logic
+function TabContentWrapper({ activeTab }: { activeTab: string }) {
+  const { clearQuestionSelection: clearSpeakingSelection } = useSpeaking();
+  const { clearQuestionSelection: clearWritingSelection } = useWriting();
+  const [prevTab, setPrevTab] = useState(activeTab);
+
+  // Reset question selection when switching tabs
+  useEffect(() => {
+    if (prevTab !== activeTab) {
+      // Clear question selection for the tab being hidden
+      if (prevTab === "speaking") {
+        clearSpeakingSelection();
+        // Clear shown instructions for speaking
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem("speaking-shown-instructions");
+        }
+      } else if (prevTab === "writing") {
+        clearWritingSelection();
+        // Clear shown instructions for writing
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem("writing-shown-instructions");
+        }
+      }
+      setPrevTab(activeTab);
+    }
+  }, [activeTab, prevTab, clearSpeakingSelection, clearWritingSelection]);
+
+  return null;
+}
+
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("speaking");
+  const [activeTab, setActiveTab] = useState("");
 
   return (
     <SpeakingProvider>
       <WritingProvider>
+        <TabContentWrapper activeTab={activeTab} />
         {/* Layer 1 - App background (navy dark with grid) */}
         <div 
           className="min-h-screen"
@@ -262,25 +311,44 @@ export default function Home() {
                   </TabsList>
                 </div>
 
-                <TabsContent value="speaking">
+                {!activeTab ? (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
+                    className="flex items-center justify-center min-h-[400px]"
                   >
-                    <SpeakingContent />
+                    <Card className="bg-slate-50 border border-slate-200">
+                      <CardContent className="p-12 text-center">
+                        <p className="text-lg text-slate-600">
+                          Vui lòng chọn tab Speaking hoặc Writing để bắt đầu làm bài
+                        </p>
+                      </CardContent>
+                    </Card>
                   </motion.div>
-                </TabsContent>
+                ) : (
+                  <>
+                    <TabsContent value="speaking">
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <SpeakingContent />
+                      </motion.div>
+                    </TabsContent>
 
-                <TabsContent value="writing">
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <WritingContent />
-                  </motion.div>
-                </TabsContent>
+                    <TabsContent value="writing">
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <WritingContent />
+                      </motion.div>
+                    </TabsContent>
+                  </>
+                )}
               </Tabs>
             </div>
           </div>

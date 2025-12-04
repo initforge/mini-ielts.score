@@ -7,7 +7,7 @@ import { writingQuestions } from "@/lib/mockData";
 import { QuestionStatus } from "@/lib/types";
 
 interface QuestionNavigatorProps {
-  currentIndex: number;
+  currentIndex: number | null; // null means no question selected
   onQuestionClick: (index: number) => void;
   questionStatuses: Record<string, QuestionStatus>;
   canNavigateToQuestion?: (index: number) => boolean;
@@ -50,10 +50,15 @@ export default function QuestionNavigator({
             <div className="space-y-1">
               {partQuestions.map((question, idx) => {
                 const questionIndex = partStartIndex + idx;
-                const isCurrent = questionIndex === currentIndex;
+                const isCurrent = currentIndex !== null && questionIndex === currentIndex;
                 const status = questionStatuses[question.id];
                 const canNavigate = canNavigateToQuestion ? canNavigateToQuestion(questionIndex) : true;
                 const isDisabled = !canNavigate && !isCurrent;
+                
+                // Hide Q7 if Q6 is not answered (for Part 2)
+                if (part === 2 && question.questionNumber === 7 && !canNavigate && !isCurrent) {
+                  return null;
+                }
 
                 return (
                   <motion.button
