@@ -422,20 +422,20 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
       return true;
     }
     
-    // Q6: Can navigate from Q1-5 or if already on Q6
+    // Q6: Can navigate from Q1-5 or if already on Q6, but cannot go back from Q7
     if (targetQ.questionNumber === 6) {
+      // Cannot go back from Q7 to Q6
+      if (currentQ && currentQ.questionNumber === 7) {
+        return false;
+      }
       if (currentQ && currentQ.questionNumber <= 5) {
         return true; // Can navigate from Q1-5 to Q6
       }
       return state.currentQuestionIndex === 5; // Only from Q1-5
     }
     
-    // Q7: Only accessible if Q6 has an answer, and cannot go back from Q7 to Q6
+    // Q7: Only accessible if Q6 has an answer
     if (targetQ.questionNumber === 7) {
-      // Cannot go back from Q7 to Q6
-      if (currentQ && currentQ.questionNumber === 7 && targetQ.questionNumber === 6) {
-        return false;
-      }
       // Only accessible if Q6 has an answer
       const q6Answer = state.answers.find(a => a.questionId === "w6");
       if (!q6Answer || !q6Answer.text.trim()) {
