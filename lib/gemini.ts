@@ -10,9 +10,9 @@ function getGenAI(apiKey?: string) {
   return new GoogleGenerativeAI(key);
 }
 
-export async function transcribeAudio(audioBase64: string, mimeType: string = "audio/webm"): Promise<string> {
+export async function transcribeAudio(audioBase64: string, mimeType: string = "audio/webm", apiKey?: string): Promise<string> {
   try {
-    const genAI = getGenAI();
+    const genAI = getGenAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     
     // Convert base64 to buffer
