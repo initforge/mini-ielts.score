@@ -384,7 +384,7 @@ You will have 30 minutes to plan, write, and revise your essay.`;
             <Clock className="h-4 w-4" />
             <span className="text-sm font-medium">Time Remaining</span>
             <Timer
-              initialSeconds={currentQ && currentQ.timeLimit ? (getQuestionTimeRemaining(state.currentQuestionIndex) || currentQ.timeLimit) : state.timeRemaining}
+              initialSeconds={currentQ && currentQ.timeLimit && state.currentQuestionIndex !== null ? (getQuestionTimeRemaining(state.currentQuestionIndex) || currentQ.timeLimit) : state.timeRemaining}
               onComplete={() => {
                 // Auto move to next question for question 6
                 if (currentQ && currentQ.questionNumber === 6 && canGoNext) {
@@ -394,7 +394,7 @@ You will have 30 minutes to plan, write, and revise your essay.`;
                 }
               }}
               showWarning={(() => {
-                const timeRemaining = currentQ && currentQ.timeLimit 
+                const timeRemaining = currentQ && currentQ.timeLimit && state.currentQuestionIndex !== null
                   ? (getQuestionTimeRemaining(state.currentQuestionIndex) || currentQ.timeLimit)
                   : state.timeRemaining;
                 return timeRemaining <= 600;
