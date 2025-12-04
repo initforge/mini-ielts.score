@@ -97,7 +97,8 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
           
           // If timer is running, restore part start times based on current question
           if (parsed.isTimerRunning && parsed.timerStartedAt && parsed.currentQuestionIndex !== null) {
-            const currentQ = writingQuestions[parsed.currentQuestionIndex];
+            const questionIndex = parsed.currentQuestionIndex; // Store in local variable for type narrowing
+            const currentQ = writingQuestions[questionIndex];
             if (currentQ) {
               const now = new Date();
               // For Q1-5, use main start time
@@ -107,7 +108,7 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
                 // For Q6-8, estimate start time based on remaining time
                 const remaining = parsed.timeRemaining;
                 const estimatedStart = new Date(now.getTime() - (currentQ.timeLimit - remaining) * 1000);
-                setPartStartTimes(prev => ({ ...prev, [parsed.currentQuestionIndex]: estimatedStart }));
+                setPartStartTimes(prev => ({ ...prev, [questionIndex]: estimatedStart }));
               }
             }
           }
@@ -388,7 +389,8 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => {
       // Initialize start time for current question
       if (prev.currentQuestionIndex !== null) {
-        setPartStartTimes(prevTimes => ({ ...prevTimes, [prev.currentQuestionIndex]: now }));
+        const questionIndex = prev.currentQuestionIndex; // Store in local variable for type narrowing
+        setPartStartTimes(prevTimes => ({ ...prevTimes, [questionIndex]: now }));
       }
       return {
         ...prev,
