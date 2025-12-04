@@ -96,7 +96,7 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
         setState(parsed);
           
           // If timer is running, restore part start times based on current question
-          if (parsed.isTimerRunning && parsed.timerStartedAt) {
+          if (parsed.isTimerRunning && parsed.timerStartedAt && parsed.currentQuestionIndex !== null) {
             const currentQ = writingQuestions[parsed.currentQuestionIndex];
             if (currentQ) {
               const now = new Date();
@@ -139,7 +139,8 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
         if (!prev.timerStartedAt) return prev;
         
         if (prev.currentQuestionIndex === null) return prev;
-        const currentQ = writingQuestions[prev.currentQuestionIndex];
+        const currentQuestionIndex = prev.currentQuestionIndex; // Store in local variable for type narrowing
+        const currentQ = writingQuestions[currentQuestionIndex];
         if (!currentQ) return prev;
 
         const now = new Date();
@@ -157,10 +158,10 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
         // For questions 6, 7, 8, use individual timers based on when that question started
         if (currentQ.timeLimit) {
           // Get when this question's timer started
-          const questionStartTime = partStartTimesRef.current[prev.currentQuestionIndex];
+          const questionStartTime = partStartTimesRef.current[currentQuestionIndex];
           if (!questionStartTime) {
             // If no start time set, initialize it now
-            setPartStartTimes(prevTimes => ({ ...prevTimes, [prev.currentQuestionIndex]: now }));
+            setPartStartTimes(prevTimes => ({ ...prevTimes, [currentQuestionIndex]: now }));
             return { ...prev, timeRemaining: currentQ.timeLimit };
           }
           
@@ -169,18 +170,18 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
           
           if (remaining <= 0) {
             // Auto move to next question or finish
-            if (currentQ.questionNumber === 6 && prev.currentQuestionIndex < writingQuestions.length - 1) {
-              const nextQ = writingQuestions[prev.currentQuestionIndex + 1];
+            if (currentQ.questionNumber === 6 && currentQuestionIndex < writingQuestions.length - 1) {
+              const nextQ = writingQuestions[currentQuestionIndex + 1];
               const newTimers = { ...questionTimersRef.current };
               if (nextQ?.timeLimit) {
-                newTimers[prev.currentQuestionIndex + 1] = nextQ.timeLimit;
+                newTimers[currentQuestionIndex + 1] = nextQ.timeLimit;
               }
               setQuestionTimers(newTimers);
               // Set start time for next question
-              setPartStartTimes(prevTimes => ({ ...prevTimes, [prev.currentQuestionIndex + 1]: now }));
+              setPartStartTimes(prevTimes => ({ ...prevTimes, [currentQuestionIndex + 1]: now }));
               return {
                 ...prev,
-                currentQuestionIndex: prev.currentQuestionIndex + 1,
+                currentQuestionIndex: currentQuestionIndex + 1,
                 timeRemaining: nextQ?.timeLimit || 0,
               };
             } else {
@@ -190,7 +191,7 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
 
           const newTimers = {
             ...questionTimersRef.current,
-            [prev.currentQuestionIndex]: remaining,
+            [currentQuestionIndex]: remaining,
           };
           setQuestionTimers(newTimers);
           return { ...prev, timeRemaining: remaining };
@@ -386,7 +387,9 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
     const now = new Date();
     setState((prev) => {
       // Initialize start time for current question
-      setPartStartTimes(prevTimes => ({ ...prevTimes, [prev.currentQuestionIndex]: now }));
+      if (prev.currentQuestionIndex !== null) {
+        setPartStartTimes(prevTimes => ({ ...prevTimes, [prev.currentQuestionIndex]: now }));
+      }
       return {
         ...prev,
         isTimerRunning: true,
