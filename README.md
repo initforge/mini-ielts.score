@@ -1,98 +1,78 @@
-# TOEIC Speaking & Writing Web App
+# TOEIC Speaking & Writing Lab
 
-A comprehensive web application for TOEIC Speaking and Writing assessment, powered by Google Gemini AI.
+Ứng dụng đánh giá TOEIC Speaking và Writing sử dụng React + Vite + Vercel Serverless Functions.
 
-## Features
+## Tech Stack
 
-- **TOEIC Speaking Test**: 11 questions across 6 parts with audio recording and AI-powered grading
-- **TOEIC Writing Test**: 8 questions across 3 parts with word count tracking and AI-powered grading
-- **Real-time Audio Recording**: Browser-based audio recording with playback functionality
-- **AI Grading**: Comprehensive evaluation using Google Gemini AI with detailed feedback
-- **Progress Tracking**: Visual progress indicators and question navigation
-- **Auto-save**: Automatic saving of answers to localStorage
-- **Responsive Design**: Mobile-friendly interface with elegant dark theme
+- **Frontend**: React 18 + Vite + TypeScript
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
+- **Backend**: Vercel Serverless Functions
+- **AI**: Google Gemini API
 
-## Prerequisites
+## Development
 
-- Node.js 18+ and npm
-- Google Gemini API key
-
-## Setup
-
-1. Install dependencies:
 ```bash
+# Install dependencies
 npm install
-```
 
-2. Create a `.env.local` file in the root directory:
-```
-GEMINI_API_KEY=your_gemini_api_key_here
-```
-
-3. Run the development server:
-```bash
+# Run development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+## Deployment
+
+### Vercel
+
+1. Push code lên GitHub/GitLab
+2. Import project vào Vercel
+3. Vercel sẽ tự động detect và deploy:
+   - Frontend: Build từ `vite.config.ts`
+   - API Routes: Tự động detect từ folder `/api`
+
+### Environment Variables
+
+Không cần setup environment variables vì API key được lưu trong localStorage của user.
 
 ## Project Structure
 
 ```
-app/
-├── layout.tsx              # Global layout with header
-├── page.tsx                # Main page with tab navigation
-├── api/
-│   ├── grade-speaking/     # Speaking grading API
-│   ├── grade-writing/      # Writing grading API
-│   └── transcribe/         # Audio transcription API
-├── components/
-│   ├── speaking/           # Speaking test components
-│   ├── writing/            # Writing test components
-│   ├── shared/             # Shared UI components
-│   └── ui/                 # Base UI components
-├── contexts/               # React Context providers
-└── lib/                    # Utilities and types
+├── api/                    # Vercel serverless functions
+│   ├── grade-speaking.ts
+│   ├── grade-writing.ts
+│   └── lib/                # Shared lib for API
+├── src/
+│   ├── components/         # React components
+│   ├── contexts/           # React contexts
+│   ├── lib/                # Utilities và types
+│   ├── App.tsx             # Main app component
+│   ├── main.tsx            # Entry point
+│   └── index.css           # Global styles
+├── public/                 # Static assets
+├── index.html
+├── vite.config.ts
+├── tailwind.config.ts
+└── vercel.json             # Vercel config
 ```
 
-## Usage
+## Features
 
-### Speaking Test
+- ✅ TOEIC Speaking test với audio recording
+- ✅ TOEIC Writing test với word count
+- ✅ Image upload cho questions
+- ✅ Real-time grading với Gemini AI
+- ✅ Detailed feedback và scoring
+- ✅ Dark/Light theme
+- ✅ Responsive design
 
-1. Click "Start Speaking Test"
-2. Navigate through questions using the question stepper
-3. Record your responses using the microphone button
-4. Review your recordings before proceeding
-5. Click "Finish Test" when done
-6. Click "Get Results" to receive AI-powered feedback
+## Notes
 
-### Writing Test
-
-1. Click "Start Writing Test"
-2. Navigate through questions using the question navigator
-3. Type your responses in the editor
-4. Monitor word count requirements
-5. Answers are auto-saved to localStorage
-6. Click "Finish Test" when done
-7. Click "Get Results" to receive AI-powered feedback
-
-## Technology Stack
-
-- **Next.js 14**: React framework with App Router
-- **TypeScript**: Type-safe development
-- **Tailwind CSS**: Utility-first CSS framework
-- **Framer Motion**: Animation library
-- **Google Gemini AI**: AI-powered grading and transcription
-- **Lucide React**: Icon library
-
-## Design System
-
-The app uses the ANISH TOEIC brand colors:
-- Deep navy background (#021B3A)
-- Bright blue accents (#1D8CFF)
-- Cyan highlights (#4ED0FF)
-- Purple-blue buttons (#7C5CFF)
-
-## License
-
-This project is for educational purposes.
+- API routes được deploy như Vercel serverless functions
+- Frontend được build thành static files và deploy lên Vercel CDN
+- Tất cả state được lưu trong sessionStorage/localStorage (client-side)
