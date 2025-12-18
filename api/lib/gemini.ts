@@ -1,8 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Danh sách model ưu tiên (có fallback theo thứ tự)
-// Ưu tiên model 2.5 trước rồi mới tới 2.0 / 1.5 / 1.0
-const DEFAULT_TEXT_MODEL_CHAIN = "gemini-2.5-flash,gemini-2.0-flash-exp,gemini-1.5-flash,gemini-1.5-pro,gemini-1.5-flash-8b,gemini-1.0-pro";
+// Ưu tiên model mới nhất: 3.0 → 2.5 → 2.0 → 1.5 → 1.0
+const DEFAULT_TEXT_MODEL_CHAIN = "gemini-3.0-pro,gemini-2.5-flash,gemini-2.0-flash-exp,gemini-1.5-flash,gemini-1.5-pro,gemini-1.5-flash-8b,gemini-1.0-pro";
 
 function buildModelChain(envChain?: string | null, envSingle?: string | null, fallbackChain: string = DEFAULT_TEXT_MODEL_CHAIN): string[] {
   const parts: string[] = [];
@@ -76,13 +76,14 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
           },
         ]);
         const response = await result.response;
-        console.log("[Gemini] Transcription successful with model:", modelName);
+        console.log("[Gemini] ✅ Transcription successful with model:", modelName);
         return response.text().trim();
       } catch (err: any) {
         lastError = err;
-        console.error("[Gemini] Transcription model failed:", modelName, err?.status, err?.message);
+        console.error("[Gemini] ❌ Transcription model failed:", modelName, "status:", err?.status, "message:", err?.message);
         // 404 → model không tồn tại / không hỗ trợ → thử model tiếp theo
-        if (err?.status === 404) {
+        // 503 → model overloaded → thử model tiếp theo
+        if (err?.status === 404 || err?.status === 503) {
           continue;
         }
         // Lỗi khác → ném luôn
@@ -160,13 +161,14 @@ export async function generateContent(
         const model = genAI.getGenerativeModel({ model: modelName });
         const result = await model.generateContent(fullPrompt);
         const response = await result.response;
-        console.log("[Gemini] generateContent success with model:", modelName);
+        console.log("[Gemini] ✅ generateContent success with model:", modelName);
         return response.text();
       } catch (err: any) {
         lastError = err;
-        console.error("[Gemini] generateContent model failed:", modelName, err?.status, err?.message);
+        console.error("[Gemini] ❌ generateContent model failed:", modelName, "status:", err?.status, "message:", err?.message);
         // 404 → model không tồn tại / không hỗ trợ → thử model tiếp theo
-        if (err?.status === 404) {
+        // 503 → model overloaded → thử model tiếp theo
+        if (err?.status === 404 || err?.status === 503) {
           continue;
         }
         // Lỗi khác → ném luôn
@@ -260,17 +262,19 @@ export async function generateContentWithMedia(
           { text: fullPrompt },
         ]);
         const response = await result.response;
-        console.log("[Gemini] generateContentWithMedia success with model:", modelName);
+        console.log("[Gemini] ✅ generateContentWithMedia success with model:", modelName);
         return response.text();
       } catch (err: any) {
         lastError = err;
         console.error(
-          "[Gemini] generateContentWithMedia model failed:",
+          "[Gemini] ❌ generateContentWithMedia model failed:",
           modelName,
-          err?.status,
-          err?.message
+          "status:", err?.status,
+          "message:", err?.message
         );
-        if (err?.status === 404) {
+        // 404 → model không tồn tại / không hỗ trợ → thử model tiếp theo
+        // 503 → model overloaded → thử model tiếp theo
+        if (err?.status === 404 || err?.status === 503) {
           continue;
         }
         throw err;

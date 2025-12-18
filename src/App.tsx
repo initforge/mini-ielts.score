@@ -73,7 +73,7 @@ function SpeakingContent() {
         } else if (data.code === "PERMISSION_DENIED") {
           setGradingError("API key không có quyền truy cập. Vui lòng kiểm tra quyền của API key.");
         } else if (data.code === "MODEL_NOT_FOUND") {
-          setGradingError("Model không khả dụng. Hãy vào Settings môi trường hoặc cập nhật API key model mới (ưu tiên: gemini-2.5-flash, sau đó tới gemini-1.5-flash).");
+          setGradingError("Model không khả dụng (đã thử từ Gemini 3.0 → 2.5 → 1.5). Hãy kiểm tra project API key hoặc bật thêm model trong Google AI Studio.");
         } else {
           setGradingError(data.error || "Có lỗi xảy ra khi chấm điểm. Vui lòng thử lại.");
         }
@@ -230,7 +230,7 @@ function WritingContent() {
         } else if (data.code === "PERMISSION_DENIED") {
           setGradingError("API key không có quyền truy cập. Vui lòng kiểm tra quyền của API key.");
         } else if (data.code === "MODEL_NOT_FOUND") {
-          setGradingError("Model không khả dụng. Hãy vào Settings môi trường hoặc cập nhật API key model mới (đề xuất: gemini-1.5-flash-002).");
+          setGradingError("Model không khả dụng (đã thử từ Gemini 3.0 → 2.5 → 1.5). Hãy kiểm tra project API key hoặc bật thêm model trong Google AI Studio.");
         } else {
           setGradingError(data.error || "Có lỗi xảy ra khi chấm điểm. Vui lòng thử lại.");
         }
