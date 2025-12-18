@@ -317,6 +317,12 @@ Return your evaluation as a JSON object with this exact structure:
 }
 
 Important:
+- ALL feedback text MUST be in Vietnamese (tự nhiên, rõ ràng, không quá dài dòng), bao gồm:
+  - "feedback" cho từng câu hỏi
+  - "explanation" trong "criteria"
+  - "strengths" và "weaknesses"
+  - "errors.explanation" cho từng lỗi
+- Không dịch hoặc thay đổi tên key JSON (overallScore, partScores, criteria, strengths, weaknesses, errors, ...). Chỉ nội dung chuỗi (string) bên trong mới dùng tiếng Việt.
 - Calculate part scores from question scores
 - Calculate overall score using weighted sum: Part1*40 + Part2*60 + Part3*100, then normalize to 0-200
 - Criteria explanations are feedback only, NO scores

@@ -213,12 +213,17 @@ Return your evaluation as a JSON object with this exact structure:
     }
   },
   "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
-  "weaknesses": ["<weakness 1>", "<weakness 2>", "<weakness 3>"]
+      "weaknesses": ["<weakness 1>", "<weakness 2>", "<weakness 3>"]
 }
 
 Important:
 - Calculate part scores from question scores
 - Calculate overall score using weighted sum: Part1*20 + Part2*20 + Part3*40 + Part4*60 + Part5*30 + Part6*30, then normalize to 0-200
+- ALL feedback text MUST be in Vietnamese (natural, dễ hiểu, không quá dài dòng), bao gồm:
+  - "feedback" cho từng câu hỏi
+  - "explanation" trong "criteria"
+  - "strengths" và "weaknesses"
+- Không dịch hoặc thay đổi tên key JSON (overallScore, partScores, criteria, strengths, weaknesses, ...). Chỉ nội dung chuỗi (string) bên trong mới dùng tiếng Việt.
 - Criteria explanations are feedback only, NO scores
 - Strengths and weaknesses should be concise and comprehensive
 - Return ONLY the JSON object, no additional text or markdown formatting.`;
