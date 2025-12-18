@@ -52,7 +52,17 @@ function SpeakingContent() {
         }),
       });
 
-      const data = await response.json();
+      // Đọc raw text trước để tránh crash khi body rỗng / không phải JSON
+      const rawText = await response.text();
+      let data: any = null;
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch (parseError) {
+        console.error("Failed to parse speaking grading response:", parseError, rawText);
+        setGradingError("Có lỗi xảy ra khi đọc phản hồi từ server. Vui lòng thử lại.");
+        setIsGrading(false);
+        return;
+      }
 
       // Handle API errors with specific codes
       if (!response.ok) {
@@ -199,7 +209,17 @@ function WritingContent() {
         }),
       });
 
-      const data = await response.json();
+      // Đọc raw text trước để tránh crash khi body rỗng / không phải JSON
+      const rawText = await response.text();
+      let data: any = null;
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch (parseError) {
+        console.error("Failed to parse writing grading response:", parseError, rawText);
+        setGradingError("Có lỗi xảy ra khi đọc phản hồi từ server. Vui lòng thử lại.");
+        setIsGrading(false);
+        return;
+      }
 
       // Handle API errors with specific codes
       if (!response.ok) {
