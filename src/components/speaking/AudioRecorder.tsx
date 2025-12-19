@@ -239,13 +239,28 @@ export default function AudioRecorder({
   const stopRecording = () => {
     // Always attempt to stop mediaRecorder if it exists.
     // We DON'T depend on React state here because timeouts may capture stale isRecording.
-    if (!mediaRecorderRef.current) return;
+    if (!mediaRecorderRef.current) {
+      console.warn(`[AudioRecorder] stopRecording called but mediaRecorderRef.current is null`);
+      return;
+    }
 
-      mediaRecorderRef.current.stop();
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
+    console.log(`[AudioRecorder] Stopping recording... Current chunks: ${audioChunksRef.current.length}`);
+    
+    // Request final data chunk trước khi stop để đảm bảo không mất chunk cuối
+    if (mediaRecorderRef.current.state !== 'inactive') {
+      try {
+        mediaRecorderRef.current.requestData();
+        console.log(`[AudioRecorder] Requested final data chunk`);
+      } catch (e) {
+        console.warn(`[AudioRecorder] Could not request final data:`, e);
       }
-      setIsRecording(false);
+    }
+    
+    mediaRecorderRef.current.stop();
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+    }
+    setIsRecording(false);
     onRecordingChange?.(false);
     if (stopTimeoutRef.current !== null) {
       window.clearTimeout(stopTimeoutRef.current);
