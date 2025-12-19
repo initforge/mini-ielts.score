@@ -52,12 +52,20 @@ function getGenAI(apiKey?: string) {
     throw new Error("GEMINI_API_KEY is not set. Please connect your Gemini API key in the header.");
   }
   
-  // Validate API key format (should not be empty and should be a string)
-  if (typeof key !== 'string' || key.trim().length === 0) {
+  // Trim whitespace and validate
+  const trimmedKey = typeof key === 'string' ? key.trim() : String(key).trim();
+  if (trimmedKey.length === 0) {
     throw new Error("Invalid API key format. Please check your Gemini API key.");
   }
   
-  return new GoogleGenerativeAI(key.trim());
+  // Log API key status (first 10 chars only for security)
+  if (apiKey) {
+    console.log(`[Gemini] Using provided API key (length: ${trimmedKey.length}, prefix: ${trimmedKey.substring(0, 10)}...)`);
+  } else {
+    console.log(`[Gemini] Using environment API key (length: ${trimmedKey.length}, prefix: ${trimmedKey.substring(0, 10)}...)`);
+  }
+  
+  return new GoogleGenerativeAI(trimmedKey);
 }
 
 export async function transcribeAudio(audioBase64: string, mimeType: string = "audio/webm", apiKey?: string): Promise<string> {
@@ -135,6 +143,19 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
       } catch (err: any) {
         lastError = err;
         console.error("[Gemini] ❌ Transcription model failed:", modelName, "status:", err?.status, "message:", err?.message);
+        
+        // 400 với API_KEY_INVALID → không thử model tiếp theo, throw luôn
+        if (err?.status === 400) {
+          const errorInfo = err?.errorDetails?.find((e: any) => e['@type']?.includes('ErrorInfo'));
+          if (errorInfo?.reason === 'API_KEY_INVALID') {
+            throw new GeminiError(
+              "API key không hợp lệ. Vui lòng kiểm tra lại API key của bạn.",
+              "API_KEY_INVALID",
+              400
+            );
+          }
+        }
+        
         // 404 → model không tồn tại / không hỗ trợ → thử model tiếp theo
         // 503 → model overloaded → thử model tiếp theo
         if (err?.status === 404 || err?.status === 503) {
@@ -153,6 +174,11 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
         404
       );
     }
+    
+    // Nếu tất cả model đều fail nhưng không phải 404
+    if (lastError) {
+      throw lastError;
+    }
 
     throw new Error("Failed to transcribe audio");
   } catch (error: any) {
@@ -160,6 +186,18 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
 
     if (error instanceof GeminiError) {
       throw error;
+    }
+    
+    // Xử lý lỗi API key
+    if (error?.status === 400) {
+      const errorInfo = error?.errorDetails?.find((e: any) => e['@type']?.includes('ErrorInfo'));
+      if (errorInfo?.reason === 'API_KEY_INVALID') {
+        throw new GeminiError(
+          "API key không hợp lệ. Vui lòng kiểm tra lại API key của bạn.",
+          "API_KEY_INVALID",
+          400
+        );
+      }
     }
 
     if (error?.status === 404) {
