@@ -202,7 +202,7 @@ Transcript: ${answer.transcript}`;
 
 Return your evaluation as a JSON object with this exact structure:
 {
-  "overallScore": <number 0-200, calculated from weighted part scores>,
+  "overallScore": <number 0-200, sum of all part scores>,
   "partScores": [
     {
       "part": <number 1-6>,
@@ -210,13 +210,13 @@ Return your evaluation as a JSON object with this exact structure:
         {
           "questionId": "<question id>",
           "questionNumber": <number>,
-          "score": <number 0-200>,
+          "score": <number, see scoring scale below>,
           "transcript": "<transcript text>",
           "feedback": "<brief feedback for this question>"
         },
         ...
       ],
-      "partScore": <number 0-200, average or weighted of question scores>
+      "partScore": <number, sum of question scores in this part>
     },
     ...
   ],
@@ -250,11 +250,20 @@ Return your evaluation as a JSON object with this exact structure:
       "weaknesses": ["<weakness 1>", "<weakness 2>", "<weakness 3>"]
 }
 
+SCORING SCALE (CRITICAL - Use these exact ranges):
+- Part 1 (Q1-2): Each question scored 0-10. Part total = sum of question scores (max 20).
+- Part 2 (Q3): Single question scored 0-20. Part total = question score (max 20).
+- Part 3 (Q4-6): Each question scored 0-13. Part total = sum of question scores (max 40).
+- Part 4 (Q7-9): Each question scored 0-20. Part total = sum of question scores (max 60).
+- Part 5 (Q10): Single question scored 0-30. Part total = question score (max 30).
+- Part 6 (Q11): Single question scored 0-30. Part total = question score (max 30).
+
 Important:
 - ONLY evaluate questions that are provided in "Student Responses by Part" above. Do NOT create scores for questions that are not listed.
 - For each part, ONLY include questionScores for questions that have transcripts in the input.
-- Calculate part scores from question scores (only for questions that were actually answered)
-- Calculate overall score using weighted sum: Part1*20 + Part2*20 + Part3*40 + Part4*60 + Part5*30 + Part6*30, then normalize to 0-200
+- Score each question using the scale above (NOT 0-200).
+- Calculate partScore as the SUM of question scores in that part (only for questions that were actually answered).
+- Calculate overallScore as the SUM of all partScores (max 200).
 - ALL feedback text MUST be in Vietnamese (natural, dễ hiểu, không quá dài dòng), bao gồm:
   - "feedback" cho từng câu hỏi
   - "explanation" trong "criteria"
@@ -290,25 +299,19 @@ Important:
       });
     }
 
-    // Chuẩn hoá điểm theo phân bố PART_WEIGHTS
-    // - Mỗi câu vẫn được AI chấm 0-200
-    // - Mỗi part lấy trung bình điểm trên SỐ CÂU CHUẨN của part (câu thiếu tính như 0) trên thang 0-200
-    // - Sau đó scale về thang tối đa của part (PART_WEIGHTS[part])
-    // - Overall score = tổng(partScore_scaled của tất cả part) → tối đa 200
-    const EXPECTED_QUESTIONS_PER_PART: Record<number, number> = {
-      1: 2, // Q1-2
-      2: 1, // Q3
-      3: 3, // Q4-6
-      4: 3, // Q7-9
-      5: 1, // Q10
-      6: 1, // Q11
-    };
+    // AI đã chấm điểm theo đúng format của từng part:
+    // - Part 1: mỗi câu 0-10, part = tổng
+    // - Part 2: 0-20
+    // - Part 3: mỗi câu 0-13, part = tổng
+    // - Part 4: mỗi câu 0-20, part = tổng
+    // - Part 5: 0-30
+    // - Part 6: 0-30
+    // Chỉ cần lấy điểm từ AI response và cộng tổng, không cần scale
 
     const normalizedPartScores: any[] = [];
     let overallScoreSum = 0;
 
     for (const part of Object.keys(PART_WEIGHTS).map((p) => Number(p))) {
-      const expectedCount = EXPECTED_QUESTIONS_PER_PART[part] ?? 0;
       const existingPart =
         rawResult.partScores?.find((p: any) => p.part === part) || {
           part,
@@ -325,7 +328,6 @@ Important:
       // Nếu không có câu nào được làm trong part này → điểm = 0
       if (validQuestionScores.length === 0) {
         normalizedPartScores.push({
-          ...existingPart,
           part,
           partScore: 0,
           questionScores: [],
@@ -333,42 +335,27 @@ Important:
         continue;
       }
       
-      const sumScores = validQuestionScores.reduce(
+      // Tính partScore = tổng điểm các câu đã làm
+      // AI đã chấm đúng format rồi (0-10 cho Part 1, 0-13 cho Part 3, etc.)
+      const partScore = validQuestionScores.reduce(
         (sum, q) => {
           const score = typeof q.score === "number" ? q.score : 0;
-          console.log(`[grade-speaking] Part ${part}, Question ${q.questionId}: score=${score}/200`);
+          console.log(`[grade-speaking] Part ${part}, Question ${q.questionId}: score=${score}`);
           return sum + score;
         },
         0
       );
 
-      // Tính điểm dựa trên số câu thực tế có answer
-      const actualCount = validQuestionScores.length;
-      const avgScore = sumScores / actualCount; // Trung bình điểm các câu đã làm (trên thang 200)
-      const clampedAvg = Math.max(0, Math.min(200, Math.round(avgScore)));
+      console.log(`[grade-speaking] Part ${part}: partScore=${partScore} (sum of ${validQuestionScores.length} questions)`);
       
-      console.log(`[grade-speaking] Part ${part}: sumScores=${sumScores}, actualCount=${actualCount}, avgScore=${avgScore}, clampedAvg=${clampedAvg}`);
-
-      // Điểm tối đa của part (theo bảng 20/20/40/60/30/30)
-      const partMax = PART_WEIGHTS[part] || 0;
-      
-      // Tính điểm part: scale từ thang 200 về thang partMax
-      // Ví dụ: Part 3 có 40 điểm tối đa, nếu làm 1 câu được 92/200
-      // → partScore = (92/200) * 40 = 18.4 ≈ 18 điểm
-      const scaledPartScore =
-        partMax > 0 ? Math.round((clampedAvg / 200) * partMax) : 0;
-
-      console.log(`[grade-speaking] Part ${part}: actualCount=${actualCount}, avgScore=${avgScore}/200, scaledPartScore=${scaledPartScore}/${partMax}`);
-      
-      overallScoreSum += scaledPartScore;
+      overallScoreSum += partScore;
 
       // Chỉ trả về questionScores cho những câu có answer thực sự
       const filteredQuestionScores = questionScores.filter(q => validQuestionIds.has(q.questionId));
 
-      // Luôn tính lại partScore, không dùng từ AI response
       normalizedPartScores.push({
         part,
-        partScore: scaledPartScore, // Luôn dùng giá trị đã tính lại
+        partScore: partScore, // Tổng điểm các câu đã làm
         questionScores: filteredQuestionScores,
       });
     }
