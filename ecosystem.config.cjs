@@ -4,8 +4,7 @@ module.exports = {
     {
       name: 'mini-ielts-score',
       script: 'server/index.ts',
-      interpreter: 'node',
-      interpreter_args: '-r tsx',
+      interpreter: '/usr/bin/tsx',
       instances: 'max', // Tự động dùng tất cả CPU cores (hoặc số cụ thể như 2, 4)
       exec_mode: 'cluster', // Cluster mode để dùng nhiều CPU cores
       env: {
