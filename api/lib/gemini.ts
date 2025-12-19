@@ -58,6 +58,10 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
   try {
     const genAI = getGenAI(apiKey);
 
+    // Log audio quality metrics
+    const audioSizeKB = Math.round(audioBase64.length * 3 / 4 / 1024); // Approximate size (base64 is ~33% larger)
+    console.log(`[Gemini] Transcribing audio: size=${audioSizeKB}KB, mimeType=${mimeType}`);
+
     let lastError: any = null;
 
     for (const modelName of AUDIO_MODEL_CANDIDATES) {
@@ -72,7 +76,19 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
             },
           },
           {
-            text: "Transcribe this audio recording. Return only the transcript text without any additional commentary.",
+            text: `Transcribe this TOEIC Speaking test audio recording with maximum accuracy.
+
+Requirements:
+- Transcribe EVERY word you hear, even if unclear or mumbled
+- Preserve natural speech patterns, including fillers (um, uh, er) if present
+- Maintain proper capitalization (sentence starts, proper nouns)
+- Include punctuation marks (periods, commas, question marks) based on natural pauses and intonation
+- Do NOT add words that were not spoken
+- Do NOT correct grammar or pronunciation - transcribe exactly what you hear
+- If a word is unclear, transcribe your best guess but do not skip it
+- Return ONLY the transcript text, no additional commentary or explanations
+
+This is a test recording, so accuracy is critical for fair evaluation.`,
           },
         ]);
         const response = await result.response;
