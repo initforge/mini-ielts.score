@@ -2,6 +2,12 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import { generateContent, generateContentWithMedia, GeminiError } from './lib/gemini';
 import { WritingAnswer } from './lib/types';
 
+// Cấu hình timeout cho Vercel serverless function
+// Free tier: max 10s, Pro: max 60s
+export const config = {
+  maxDuration: 60, // 60 giây cho Pro plan, hoặc 10s cho Free tier
+};
+
 // Part weight mapping (ảnh hưởng trong 200 điểm)
 const PART_WEIGHTS: Record<number, number> = {
   1: 40, // Part 1: Q1-5 (5 câu) ~ 40 điểm
@@ -343,7 +349,18 @@ Important:
       jsonText = jsonText.replace(/^```\s*/, "").replace(/\s*```$/, "");
     }
 
-    const rawResult = JSON.parse(jsonText) || {};
+    let rawResult: any = {};
+    try {
+      rawResult = JSON.parse(jsonText) || {};
+    } catch (parseError: any) {
+      console.error("Failed to parse Gemini JSON response:", parseError);
+      console.error("Response text:", jsonText.substring(0, 500));
+      return response.status(500).json({
+        error: "Gemini API trả về response không hợp lệ. Vui lòng thử lại.",
+        code: "INVALID_RESPONSE",
+        details: parseError?.message || "JSON parse error"
+      });
+    }
 
     // Chuẩn hoá điểm theo PART_WEIGHTS cho Writing
     // - Mỗi câu vẫn được AI chấm 0-200
@@ -401,8 +418,14 @@ Important:
     };
 
     return response.status(200).json(normalizedResult);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Grading error:", error);
+    
+    // Đảm bảo response chưa được gửi trước khi trả về error
+    if (response.headersSent) {
+      console.error("Response already sent, cannot send error response");
+      return;
+    }
     
     // Handle specific Gemini errors
     if (error instanceof GeminiError) {
@@ -412,8 +435,27 @@ Important:
       });
     }
     
-    return response.status(500).json(
-      { error: "Failed to grade writing responses" }
-    );
+    // Handle JSON parse errors
+    if (error instanceof SyntaxError && error.message.includes("JSON")) {
+      return response.status(500).json({
+        error: "Lỗi khi xử lý phản hồi từ Gemini API. Vui lòng thử lại.",
+        code: "PARSE_ERROR",
+        details: error.message
+      });
+    }
+    
+    // Handle timeout errors (có thể xảy ra trên Vercel)
+    if (error?.code === "ETIMEDOUT" || error?.message?.includes("timeout")) {
+      return response.status(504).json({
+        error: "Request timeout. Vui lòng thử lại với ít câu hỏi hơn hoặc kiểm tra kết nối.",
+        code: "TIMEOUT"
+      });
+    }
+    
+    return response.status(500).json({
+      error: "Failed to grade writing responses",
+      code: "UNKNOWN_ERROR",
+      details: process.env.NODE_ENV === "development" ? error?.message : undefined
+    });
   }
 }
