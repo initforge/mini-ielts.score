@@ -21,13 +21,16 @@ npm install
 echo "🔨 Building application..."
 npm run build
 
+# Update Nginx config nếu có thay đổi
+if [ -f "nginx/nginx.conf" ]; then
+    echo "📝 Updating Nginx config..."
+    cp nginx/nginx.conf /etc/nginx/sites-available/mini-ielts-score
+    nginx -t && systemctl reload nginx
+fi
+
 # Restart PM2
 echo "🔄 Restarting PM2..."
 pm2 restart ecosystem.config.cjs
-
-# Reload Nginx (nếu có thay đổi config)
-echo "🔄 Reloading Nginx..."
-nginx -t && systemctl reload nginx
 
 echo "✅ Update completed!"
 
