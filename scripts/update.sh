@@ -25,6 +25,12 @@ npm run build
 if [ -f "nginx/nginx.conf" ]; then
     echo "📝 Updating Nginx config..."
     cp nginx/nginx.conf /etc/nginx/sites-available/mini-ielts-score
+    # Disable default site nếu tồn tại
+    if [ -f "/etc/nginx/sites-enabled/default" ]; then
+        rm -f /etc/nginx/sites-enabled/default
+    fi
+    # Ensure symlink exists
+    ln -sf /etc/nginx/sites-available/mini-ielts-score /etc/nginx/sites-enabled/mini-ielts-score
     nginx -t && systemctl reload nginx
 fi
 
