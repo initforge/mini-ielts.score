@@ -172,19 +172,25 @@ Scoring:
 - Overall score is weighted sum of part scores
 - Criteria are for feedback only, not scored separately`;
 
-    // Construct prompt
+    // Construct prompt - chỉ gửi những câu có transcript
     const prompt = `Evaluate the following TOEIC Speaking responses.
 
 Student Responses by Part:
-${Object.entries(answersByPart).map(([part, partAnswers]) => `
+${Object.entries(answersByPart).map(([part, partAnswers]) => {
+  // Chỉ lấy những câu có transcript (đã được transcribe thành công)
+  const answersWithTranscript = partAnswers.filter(a => a.transcript && a.transcript.trim().length > 0);
+  if (answersWithTranscript.length === 0) return `Part ${part}: No valid responses.`;
+  
+  return `
 Part ${part}:
-${partAnswers.map((answer, idx) => {
+${answersWithTranscript.map((answer, idx) => {
   const questionText = questions?.[answer.questionId] || answer.questionText;
   return `Question ${answer.questionId}:
 Question: ${questionText}
-Transcript: ${answer.transcript || "No transcript available"}`;
+Transcript: ${answer.transcript}`;
 }).join("\n\n")}
-`).join("\n\n")}
+`;
+}).filter(partText => !partText.includes("No valid responses")).join("\n\n")}
 
 Return your evaluation as a JSON object with this exact structure:
 {
@@ -301,12 +307,19 @@ Important:
         };
 
       const questionScores: any[] = existingPart.questionScores || [];
-      const sumScores = questionScores.reduce(
+      
+      // Chỉ tính điểm cho những câu có answer thực sự (có trong validAnswersInput)
+      const validQuestionIds = new Set(validAnswersInput.map(a => a.questionId));
+      const validQuestionScores = questionScores.filter(q => validQuestionIds.has(q.questionId));
+      
+      const sumScores = validQuestionScores.reduce(
         (sum, q) => sum + (typeof q.score === "number" ? q.score : 0),
         0
       );
 
-      const denom = expectedCount > 0 ? expectedCount : Math.max(questionScores.length, 1);
+      // Tính điểm dựa trên số câu thực tế có answer, không phải số câu chuẩn
+      const actualCount = validQuestionScores.length;
+      const denom = actualCount > 0 ? actualCount : 1;
       const avgScore = denom > 0 ? sumScores / denom : 0;
       const clampedAvg = Math.max(0, Math.min(200, Math.round(avgScore)));
 
