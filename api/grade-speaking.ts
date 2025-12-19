@@ -48,13 +48,22 @@ export default async function handler(
       const hasResponse =
         (answer.transcript && answer.transcript.trim().length > 0) ||
         (answer.audioBase64 && answer.audioBase64.trim().length > 0);
-      if (!hasResponse) return false;
+      if (!hasResponse) {
+        console.log(`[grade-speaking] Answer ${answer.questionId} skipped: no transcript or audioBase64`);
+        return false;
+      }
 
       const questionText = questions?.[answer.questionId] || answer.questionText;
       const hasQuestionText =
         typeof questionText === "string" && questionText.trim().length > 0;
 
-      return hasQuestionText;
+      if (!hasQuestionText) {
+        console.log(`[grade-speaking] Answer ${answer.questionId} skipped: no question text`);
+        return false;
+      }
+
+      console.log(`[grade-speaking] Answer ${answer.questionId} valid: hasAudio=${!!answer.audioBase64}, hasTranscript=${!!answer.transcript}`);
+      return true;
     });
 
     // Nếu không có câu trả lời hợp lệ nào → không gọi Gemini, trả về thông báo
@@ -73,7 +82,18 @@ export default async function handler(
         let transcript = answer.transcript;
         
         if (!transcript && answer.audioBase64) {
-          transcript = await transcribeAudio(answer.audioBase64, "audio/webm", apiKey);
+          console.log(`[grade-speaking] Transcribing audio for question ${answer.questionId}, audioBase64 length: ${answer.audioBase64.length}`);
+          try {
+            transcript = await transcribeAudio(answer.audioBase64, "audio/webm", apiKey);
+            console.log(`[grade-speaking] ✅ Transcription successful for question ${answer.questionId}, transcript length: ${transcript.length}`);
+          } catch (error: any) {
+            console.error(`[grade-speaking] ❌ Transcription failed for question ${answer.questionId}:`, error);
+            throw error;
+          }
+        } else if (transcript) {
+          console.log(`[grade-speaking] Using existing transcript for question ${answer.questionId}`);
+        } else {
+          console.log(`[grade-speaking] ⚠️ No transcript and no audioBase64 for question ${answer.questionId}`);
         }
 
         return {
