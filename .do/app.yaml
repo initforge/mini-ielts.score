@@ -1,0 +1,24 @@
+name: mini-ielts-score
+region: sgp
+services:
+  - name: web
+    github:
+      repo: initforge/mini-ielts.score
+      branch: master
+      deploy_on_push: true
+    build_command: npm install && npm run build
+    run_command: npm start
+    health_check:
+      http_path: /
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    http_port: 3000
+    routes:
+      - path: /
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+

@@ -1,8 +1,14 @@
 import http from 'http';
 import { URL } from 'url';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { pathToFileURL } from 'url';
 
 // Simple dev server to handle API requests locally
 // This wraps Vercel serverless functions for local development
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 interface VercelRequest {
   method: string;
@@ -33,13 +39,27 @@ function createVercelResponse(): VercelResponse {
   return res;
 }
 
-// Dynamically import handlers
-async function loadHandler(path: string) {
-  const module = await import(path);
-  return module.default;
+// Dynamically import handlers với đường dẫn tuyệt đối
+async function loadHandler(relativePath: string) {
+  try {
+    // Chuyển đường dẫn tương đối thành tuyệt đối
+    const absolutePath = join(__dirname, relativePath);
+    const fileUrl = pathToFileURL(absolutePath).href;
+    const module = await import(fileUrl);
+    
+    if (!module.default) {
+      throw new Error(`Handler không có default export: ${relativePath}`);
+    }
+    
+    return module.default;
+  } catch (error) {
+    console.error(`[Dev Server] Lỗi khi load handler từ ${relativePath}:`, error);
+    throw error;
+  }
 }
 
-const PORT = 3001;
+// Dùng port riêng cho dev API server để tránh đụng với process khác
+const PORT = 4000;
 
 const server = http.createServer(async (req, res) => {
   // CORS headers

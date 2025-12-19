@@ -29,6 +29,10 @@ dist-ssr
 .env.production.local
 .env.development.local
 
-# Next.js (removed, but keep in gitignore for safety)
-.next
-out
+# Backup files
+*.backup
+backup-*.tar.gz
+backup-*.sql
+
+# PM2
+.pm2

@@ -241,7 +241,18 @@ Important:
       jsonText = jsonText.replace(/^```\s*/, "").replace(/\s*```$/, "");
     }
 
-    const rawResult = JSON.parse(jsonText) || {};
+    let rawResult: any = {};
+    try {
+      rawResult = JSON.parse(jsonText) || {};
+    } catch (parseError: any) {
+      console.error("Failed to parse Gemini JSON response (speaking):", parseError);
+      console.error("Response text:", jsonText.substring(0, 500));
+      return response.status(500).json({
+        error: "Gemini API trả về response không hợp lệ. Vui lòng thử lại.",
+        code: "INVALID_RESPONSE",
+        details: parseError?.message || "JSON parse error"
+      });
+    }
 
     // Chuẩn hoá điểm theo phân bố PART_WEIGHTS
     // - Mỗi câu vẫn được AI chấm 0-200
