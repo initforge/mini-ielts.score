@@ -83,33 +83,60 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
             },
           },
           {
-            text: `Transcribe this TOEIC Speaking test audio recording with maximum accuracy.
+            text: `You are transcribing a TOEIC Speaking test audio recording. This is a high-quality recording of a student speaking English.
 
-Requirements:
-- Transcribe EVERY word you hear, even if unclear or mumbled
+CRITICAL INSTRUCTIONS:
+- Listen carefully to the ENTIRE audio from start to finish
+- Transcribe EVERY word you hear, even if the audio quality is imperfect
+- If you hear speech (even faint or unclear), transcribe it - do NOT return "[silence]" or "[background noise]" if there is actual speech
+- Only indicate silence if there is truly NO speech in the entire recording
 - Preserve natural speech patterns, including fillers (um, uh, er) if present
 - Maintain proper capitalization (sentence starts, proper nouns)
 - Include punctuation marks (periods, commas, question marks) based on natural pauses and intonation
 - Do NOT add words that were not spoken
 - Do NOT correct grammar or pronunciation - transcribe exactly what you hear
 - If a word is unclear, transcribe your best guess but do not skip it
-- Return ONLY the transcript text, no additional commentary or explanations
+- If the audio contains background noise BUT ALSO contains speech, transcribe the speech and ignore the noise description
+
+OUTPUT FORMAT:
+- Return ONLY the transcript text
+- No additional commentary, no "[silence]" markers, no "[background noise]" unless there is truly no speech
+- If you cannot hear any speech at all, return exactly: "[NO_SPEECH_DETECTED]"
 
 This is a test recording, so accuracy is critical for fair evaluation.`,
           },
         ]);
         const response = await result.response;
-        const transcript = response.text().trim();
+        let transcript = response.text().trim();
         const wordCount = transcript.split(/\s+/).filter(w => w.length > 0).length;
         console.log(`[Gemini] ✅ Transcription successful with model: ${modelName}`);
         console.log(`[Gemini] Transcript: "${transcript}" (${transcript.length} chars, ${wordCount} words)`);
         
+        // Detect silence-only transcripts
+        const silencePatterns = [
+          /^\[silence\]/i,
+          /^\[background.*sounds?\]/i,
+          /^silence/i,
+          /^no speech/i,
+          /^no audio/i,
+          /^background noise/i,
+        ];
+        
+        const isSilenceOnly = silencePatterns.some(pattern => pattern.test(transcript)) && wordCount < 10;
+        
         // Validate transcript quality: nếu quá ngắn (chỉ có fillers như "Hmm", "Um") thì có thể transcription failed
         // Audio 8 giây nói tiếng Anh bình thường sẽ có ít nhất 10-15 từ
-        const minExpectedWords = Math.max(3, Math.floor(audioSizeKB * 2)); // Rough estimate: ~2 words per KB
+        const minExpectedWords = Math.max(5, Math.floor(audioSizeKB * 1.5)); // Adjusted: ~1.5 words per KB (more realistic)
         if (wordCount < minExpectedWords && audioSizeKB > 10) {
           console.warn(`[Gemini] ⚠️ WARNING: Transcript seems too short: ${wordCount} words for ${audioSizeKB}KB audio. Expected at least ${minExpectedWords} words.`);
           console.warn(`[Gemini] ⚠️ This might indicate transcription quality issues. Audio may be corrupted or format not well supported.`);
+        }
+        
+        // Nếu transcript chỉ có silence/background noise → có vấn đề nghiêm trọng
+        if (isSilenceOnly && audioSizeKB > 20) {
+          console.error(`[Gemini] ❌ ERROR: Transcript indicates silence/background noise only ("${transcript}") but audio is ${audioSizeKB}KB.`);
+          console.error(`[Gemini] ❌ Possible causes: 1) Audio format (${normalizedMimeType}) not well supported, 2) Audio corrupted during encoding, 3) Microphone not capturing speech properly.`);
+          // Không throw error, nhưng log để debug
         }
         
         // Nếu transcript chỉ có fillers (Hmm, Um, Uh, Er) và audio > 5KB → có thể có vấn đề
