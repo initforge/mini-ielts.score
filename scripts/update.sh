@@ -9,9 +9,11 @@ cd $APP_DIR
 
 echo "🔄 Updating application..."
 
-# Pull latest code
+# Pull latest code (stash local changes if any)
 echo "📥 Pulling latest code..."
+git stash 2>/dev/null || true
 git pull origin master
+git stash pop 2>/dev/null || true
 
 # Install dependencies
 echo "📦 Installing dependencies..."
