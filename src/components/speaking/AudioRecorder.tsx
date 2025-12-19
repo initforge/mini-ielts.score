@@ -202,7 +202,10 @@ export default function AudioRecorder({
       // Store actual recording start time BEFORE starting recorder
       recordingStartTimeRef.current = Date.now();
       
-      mediaRecorder.start();
+      // Start recording với timeslice để đảm bảo chunks được gửi đều (mỗi 1 giây)
+      // Điều này giúp tránh mất chunks khi recording dài
+      mediaRecorder.start(1000); // timeslice: 1000ms = 1 second
+      console.log(`[AudioRecorder] Started recording with timeslice=1000ms, maxDuration=${maxDuration}s`);
       setIsRecording(true);
       onRecordingChange?.(true);
       setTimeElapsed(0);
