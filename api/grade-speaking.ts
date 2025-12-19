@@ -322,31 +322,53 @@ Important:
       const validQuestionIds = new Set(validAnswersInput.map(a => a.questionId));
       const validQuestionScores = questionScores.filter(q => validQuestionIds.has(q.questionId));
       
+      // Nếu không có câu nào được làm trong part này → điểm = 0
+      if (validQuestionScores.length === 0) {
+        normalizedPartScores.push({
+          ...existingPart,
+          part,
+          partScore: 0,
+          questionScores: [],
+        });
+        continue;
+      }
+      
       const sumScores = validQuestionScores.reduce(
-        (sum, q) => sum + (typeof q.score === "number" ? q.score : 0),
+        (sum, q) => {
+          const score = typeof q.score === "number" ? q.score : 0;
+          console.log(`[grade-speaking] Part ${part}, Question ${q.questionId}: score=${score}/200`);
+          return sum + score;
+        },
         0
       );
 
-      // Tính điểm dựa trên số câu thực tế có answer, không phải số câu chuẩn
+      // Tính điểm dựa trên số câu thực tế có answer
       const actualCount = validQuestionScores.length;
-      const denom = actualCount > 0 ? actualCount : 1;
-      const avgScore = denom > 0 ? sumScores / denom : 0;
+      const avgScore = sumScores / actualCount; // Trung bình điểm các câu đã làm (trên thang 200)
       const clampedAvg = Math.max(0, Math.min(200, Math.round(avgScore)));
+      
+      console.log(`[grade-speaking] Part ${part}: sumScores=${sumScores}, actualCount=${actualCount}, avgScore=${avgScore}, clampedAvg=${clampedAvg}`);
 
       // Điểm tối đa của part (theo bảng 20/20/40/60/30/30)
       const partMax = PART_WEIGHTS[part] || 0;
+      
+      // Tính điểm part: scale từ thang 200 về thang partMax
+      // Ví dụ: Part 3 có 40 điểm tối đa, nếu làm 1 câu được 92/200
+      // → partScore = (92/200) * 40 = 18.4 ≈ 18 điểm
       const scaledPartScore =
         partMax > 0 ? Math.round((clampedAvg / 200) * partMax) : 0;
 
+      console.log(`[grade-speaking] Part ${part}: actualCount=${actualCount}, avgScore=${avgScore}/200, scaledPartScore=${scaledPartScore}/${partMax}`);
+      
       overallScoreSum += scaledPartScore;
 
       // Chỉ trả về questionScores cho những câu có answer thực sự
       const filteredQuestionScores = questionScores.filter(q => validQuestionIds.has(q.questionId));
 
+      // Luôn tính lại partScore, không dùng từ AI response
       normalizedPartScores.push({
-        ...existingPart,
         part,
-        partScore: scaledPartScore,
+        partScore: scaledPartScore, // Luôn dùng giá trị đã tính lại
         questionScores: filteredQuestionScores,
       });
     }

@@ -51,7 +51,13 @@ function getGenAI(apiKey?: string) {
   if (!key) {
     throw new Error("GEMINI_API_KEY is not set. Please connect your Gemini API key in the header.");
   }
-  return new GoogleGenerativeAI(key);
+  
+  // Validate API key format (should not be empty and should be a string)
+  if (typeof key !== 'string' || key.trim().length === 0) {
+    throw new Error("Invalid API key format. Please check your Gemini API key.");
+  }
+  
+  return new GoogleGenerativeAI(key.trim());
 }
 
 export async function transcribeAudio(audioBase64: string, mimeType: string = "audio/webm", apiKey?: string): Promise<string> {
