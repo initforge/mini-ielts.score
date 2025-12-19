@@ -139,9 +139,8 @@ export default function AudioRecorder({
       audioChunksRef.current = [];
 
       mediaRecorder.ondataavailable = (event) => {
-        if (event.data && event.data.size > 0) {
+        if (event.data.size > 0) {
           audioChunksRef.current.push(event.data);
-          console.log(`[AudioRecorder] Received chunk: size=${event.data.size} bytes, total chunks=${audioChunksRef.current.length}`);
         }
       };
 
@@ -150,62 +149,26 @@ export default function AudioRecorder({
           window.clearTimeout(stopTimeoutRef.current);
           stopTimeoutRef.current = null;
         }
-        
-        // Đảm bảo tất cả chunks đã được thu thập
-        console.log(`[AudioRecorder] Recording stopped. Total chunks: ${audioChunksRef.current.length}`);
-        const totalSize = audioChunksRef.current.reduce((sum, chunk) => sum + chunk.size, 0);
-        console.log(`[AudioRecorder] Total audio size: ${totalSize} bytes (~${Math.round(totalSize / 1024)}KB)`);
-        
         const blob = new Blob(audioChunksRef.current, { type: mimeTypeRef.current });
-        console.log(`[AudioRecorder] Created blob: size=${blob.size} bytes, type=${blob.type}`);
-        
-        // Validate blob size
-        if (blob.size === 0) {
-          console.error(`[AudioRecorder] ❌ ERROR: Blob size is 0! Chunks may be missing.`);
-          return;
-        }
-        
-        if (blob.size < totalSize * 0.9) {
-          console.warn(`[AudioRecorder] ⚠️ WARNING: Blob size (${blob.size}) is significantly smaller than total chunks size (${totalSize}). Some chunks may be missing.`);
-        }
-        
         setAudioBlob(blob);
         const url = URL.createObjectURL(blob);
         setAudioUrl(url);
 
-        // Calculate actual duration from audio element và validate
+        // Calculate actual duration from audio element
         const audio = new Audio(url);
         audio.addEventListener('loadedmetadata', () => {
           const duration = Math.floor(audio.duration);
-          console.log(`[AudioRecorder] Audio loaded: duration=${duration}s, blobSize=${blob.size} bytes`);
-          
-          // Validate duration matches expected
-          if (recordingStartTimeRef.current) {
-            const expectedDuration = Math.floor((Date.now() - recordingStartTimeRef.current) / 1000);
-            if (Math.abs(duration - expectedDuration) > 2) {
-              console.warn(`[AudioRecorder] ⚠️ WARNING: Audio duration (${duration}s) doesn't match expected (${expectedDuration}s). Audio may be truncated.`);
-            }
-          }
-          
           setActualDuration(duration);
-        });
-        
-        audio.addEventListener('error', (e) => {
-          console.error(`[AudioRecorder] ❌ ERROR: Audio playback error:`, e);
         });
 
         const base64 = await blobToBase64(blob);
-        console.log(`[AudioRecorder] Converted to base64: length=${base64.length} chars (~${Math.round(base64.length * 3 / 4 / 1024)}KB)`);
         onRecordingComplete(blob, base64);
       };
 
       // Store actual recording start time BEFORE starting recorder
       recordingStartTimeRef.current = Date.now();
       
-      // Start recording với timeslice để đảm bảo chunks được gửi đều (mỗi 1 giây)
-      // Điều này giúp tránh mất chunks khi recording dài
-      mediaRecorder.start(1000); // timeslice: 1000ms = 1 second
-      console.log(`[AudioRecorder] Started recording with timeslice=1000ms, maxDuration=${maxDuration}s`);
+      mediaRecorder.start();
       setIsRecording(true);
       onRecordingChange?.(true);
       setTimeElapsed(0);
@@ -239,28 +202,13 @@ export default function AudioRecorder({
   const stopRecording = () => {
     // Always attempt to stop mediaRecorder if it exists.
     // We DON'T depend on React state here because timeouts may capture stale isRecording.
-    if (!mediaRecorderRef.current) {
-      console.warn(`[AudioRecorder] stopRecording called but mediaRecorderRef.current is null`);
-      return;
-    }
+    if (!mediaRecorderRef.current) return;
 
-    console.log(`[AudioRecorder] Stopping recording... Current chunks: ${audioChunksRef.current.length}`);
-    
-    // Request final data chunk trước khi stop để đảm bảo không mất chunk cuối
-    if (mediaRecorderRef.current.state !== 'inactive') {
-      try {
-        mediaRecorderRef.current.requestData();
-        console.log(`[AudioRecorder] Requested final data chunk`);
-      } catch (e) {
-        console.warn(`[AudioRecorder] Could not request final data:`, e);
+      mediaRecorderRef.current.stop();
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
       }
-    }
-    
-    mediaRecorderRef.current.stop();
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
-    }
-    setIsRecording(false);
+      setIsRecording(false);
     onRecordingChange?.(false);
     if (stopTimeoutRef.current !== null) {
       window.clearTimeout(stopTimeoutRef.current);

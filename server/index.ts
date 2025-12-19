@@ -30,23 +30,6 @@ app.get('/health', (req, res) => {
 // API Routes
 app.post('/api/grade-speaking', async (req, res) => {
   try {
-    // Log request body size để debug
-    const bodySize = JSON.stringify(req.body).length;
-    const bodySizeKB = Math.round(bodySize / 1024);
-    console.log(`[Express] POST /api/grade-speaking: bodySize=${bodySizeKB}KB, hasAnswers=${!!req.body?.answers}, answersCount=${req.body?.answers?.length || 0}`);
-    
-    // Log audioBase64 info nếu có
-    if (req.body?.answers && Array.isArray(req.body.answers)) {
-      req.body.answers.forEach((answer: any) => {
-        if (answer.audioBase64) {
-          const audioSizeKB = Math.round(answer.audioBase64.length * 3 / 4 / 1024);
-          console.log(`[Express] Answer ${answer.questionId}: audioBase64 length=${answer.audioBase64.length}, ~${audioSizeKB}KB`);
-        } else {
-          console.log(`[Express] Answer ${answer.questionId}: NO audioBase64`);
-        }
-      });
-    }
-    
     // Convert Express request to Vercel-like format
     const vercelReq = {
       method: req.method,
