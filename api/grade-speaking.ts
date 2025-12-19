@@ -82,10 +82,18 @@ export default async function handler(
         let transcript = answer.transcript;
         
         if (!transcript && answer.audioBase64) {
-          console.log(`[grade-speaking] Transcribing audio for question ${answer.questionId}, audioBase64 length: ${answer.audioBase64.length}`);
+          const audioSizeKB = Math.round(answer.audioBase64.length * 3 / 4 / 1024);
+          console.log(`[grade-speaking] Transcribing audio for question ${answer.questionId}, audioBase64 length: ${answer.audioBase64.length} chars (~${audioSizeKB}KB)`);
           try {
             transcript = await transcribeAudio(answer.audioBase64, "audio/webm", apiKey);
-            console.log(`[grade-speaking] ✅ Transcription successful for question ${answer.questionId}, transcript length: ${transcript.length}`);
+            const wordCount = transcript.split(/\s+/).filter(w => w.length > 0).length;
+            console.log(`[grade-speaking] ✅ Transcription successful for question ${answer.questionId}`);
+            console.log(`[grade-speaking] Transcript: "${transcript.substring(0, 200)}${transcript.length > 200 ? '...' : ''}" (${transcript.length} chars, ${wordCount} words)`);
+            
+            // Warning nếu transcript quá ngắn so với audio size
+            if (wordCount < 5 && audioSizeKB > 10) {
+              console.warn(`[grade-speaking] ⚠️ WARNING: Very short transcript (${wordCount} words) for ${audioSizeKB}KB audio. Possible transcription issue.`);
+            }
           } catch (error: any) {
             console.error(`[grade-speaking] ❌ Transcription failed for question ${answer.questionId}:`, error);
             throw error;
@@ -103,55 +111,9 @@ export default async function handler(
       })
     );
 
-    // Filter out invalid transcripts (only fillers, too short, or meaningless)
-    const FILLER_WORDS = new Set(['hmm', 'um', 'uh', 'er', 'ah', 'oh', 'eh', 'mm', 'mhm', 'yeah', 'yes', 'no', 'ok', 'okay']);
-    const MIN_VALID_WORDS = 3; // Ít nhất 3 từ để coi là câu trả lời hợp lệ
-    
-    const validTranscribedAnswers = transcribedAnswers.filter((answer) => {
-      const transcript = (answer.transcript || "").trim();
-      
-      // Nếu không có transcript → skip
-      if (!transcript || transcript.length === 0) {
-        console.log(`[grade-speaking] Answer ${answer.questionId} skipped: empty transcript after transcription`);
-        return false;
-      }
-
-      // Normalize: lowercase, remove punctuation for comparison
-      const normalized = transcript.toLowerCase().replace(/[.,!?;:]/g, '').trim();
-      const words = normalized.split(/\s+/).filter(w => w.length > 0);
-      
-      // Nếu chỉ có 1-2 từ và toàn là fillers → skip
-      if (words.length < MIN_VALID_WORDS) {
-        const allFillers = words.every(w => FILLER_WORDS.has(w));
-        if (allFillers) {
-          console.log(`[grade-speaking] Answer ${answer.questionId} skipped: transcript "${transcript}" is only fillers (${words.length} words)`);
-          return false;
-        }
-      }
-
-      // Nếu transcript quá ngắn (< 10 ký tự) và chỉ là fillers → skip
-      if (transcript.length < 10 && words.length <= 2 && words.every(w => FILLER_WORDS.has(w))) {
-        console.log(`[grade-speaking] Answer ${answer.questionId} skipped: transcript "${transcript}" too short and only fillers`);
-        return false;
-      }
-
-      console.log(`[grade-speaking] Answer ${answer.questionId} has valid transcript: "${transcript.substring(0, 50)}${transcript.length > 50 ? '...' : ''}" (${words.length} words)`);
-      return true;
-    });
-
-    // Nếu sau khi filter không còn câu trả lời hợp lệ nào
-    if (validTranscribedAnswers.length === 0) {
-      return response.status(200).json({
-        incomplete: true,
-        message:
-          "Không có câu trả lời hợp lệ sau khi transcribe. Các câu trả lời chỉ chứa âm thanh biểu cảm (Hmm, Um, Uh...) hoặc quá ngắn. Vui lòng trả lời đầy đủ các câu hỏi.",
-        incompleteQuestionIds: answers.map((a) => a.questionId),
-      });
-    }
-
     // Group answers by part
-    const answersByPart: Record<number, typeof validTranscribedAnswers> = {};
-    validTranscribedAnswers.forEach((answer) => {
+    const answersByPart: Record<number, typeof transcribedAnswers> = {};
+    transcribedAnswers.forEach((answer) => {
       const part = answer.questionType;
       if (!answersByPart[part]) {
         answersByPart[part] = [];
@@ -356,8 +318,8 @@ Important:
 
       const questionScores: any[] = existingPart.questionScores || [];
       
-      // Chỉ tính điểm cho những câu có answer thực sự (có trong validTranscribedAnswers sau khi filter)
-      const validQuestionIds = new Set(validTranscribedAnswers.map(a => a.questionId));
+      // Chỉ tính điểm cho những câu có answer thực sự (có trong validAnswersInput)
+      const validQuestionIds = new Set(validAnswersInput.map(a => a.questionId));
       const validQuestionScores = questionScores.filter(q => validQuestionIds.has(q.questionId));
       
       const sumScores = validQuestionScores.reduce(

@@ -62,6 +62,13 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
     const audioSizeKB = Math.round(audioBase64.length * 3 / 4 / 1024); // Approximate size (base64 is ~33% larger)
     console.log(`[Gemini] Transcribing audio: size=${audioSizeKB}KB, mimeType=${mimeType}`);
 
+    // Normalize mimeType - remove codec info if present (Gemini may not support it)
+    let normalizedMimeType = mimeType;
+    if (mimeType.includes(';codecs=')) {
+      normalizedMimeType = mimeType.split(';')[0];
+      console.log(`[Gemini] Normalized mimeType from ${mimeType} to ${normalizedMimeType}`);
+    }
+
     let lastError: any = null;
 
     for (const modelName of AUDIO_MODEL_CANDIDATES) {
@@ -72,7 +79,7 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
           {
             inlineData: {
               data: audioBase64,
-              mimeType: mimeType,
+              mimeType: normalizedMimeType,
             },
           },
           {
@@ -92,8 +99,26 @@ This is a test recording, so accuracy is critical for fair evaluation.`,
           },
         ]);
         const response = await result.response;
-        console.log("[Gemini] ✅ Transcription successful with model:", modelName);
-        return response.text().trim();
+        const transcript = response.text().trim();
+        const wordCount = transcript.split(/\s+/).filter(w => w.length > 0).length;
+        console.log(`[Gemini] ✅ Transcription successful with model: ${modelName}`);
+        console.log(`[Gemini] Transcript: "${transcript}" (${transcript.length} chars, ${wordCount} words)`);
+        
+        // Validate transcript quality: nếu quá ngắn (chỉ có fillers như "Hmm", "Um") thì có thể transcription failed
+        // Audio 8 giây nói tiếng Anh bình thường sẽ có ít nhất 10-15 từ
+        const minExpectedWords = Math.max(3, Math.floor(audioSizeKB * 2)); // Rough estimate: ~2 words per KB
+        if (wordCount < minExpectedWords && audioSizeKB > 10) {
+          console.warn(`[Gemini] ⚠️ WARNING: Transcript seems too short: ${wordCount} words for ${audioSizeKB}KB audio. Expected at least ${minExpectedWords} words.`);
+          console.warn(`[Gemini] ⚠️ This might indicate transcription quality issues. Audio may be corrupted or format not well supported.`);
+        }
+        
+        // Nếu transcript chỉ có fillers (Hmm, Um, Uh, Er) và audio > 5KB → có thể có vấn đề
+        const fillerOnlyPattern = /^(Hmm|Um|Uh|Er|Ah|Oh)[\s.,!?]*$/i;
+        if (fillerOnlyPattern.test(transcript) && audioSizeKB > 5) {
+          console.error(`[Gemini] ❌ ERROR: Transcript contains only fillers ("${transcript}") but audio is ${audioSizeKB}KB. Transcription likely failed or audio corrupted.`);
+        }
+        
+        return transcript;
       } catch (err: any) {
         lastError = err;
         console.error("[Gemini] ❌ Transcription model failed:", modelName, "status:", err?.status, "message:", err?.message);

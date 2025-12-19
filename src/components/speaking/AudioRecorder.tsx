@@ -42,6 +42,7 @@ export default function AudioRecorder({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const recordingStartTimeRef = useRef<number | null>(null); // Track actual recording start time
   const stopTimeoutRef = useRef<number | null>(null); // Hard cap recording duration
+  const mimeTypeRef = useRef<string>("audio/webm"); // Store mimeType for blob creation
 
   // Load saved audio from IndexedDB when switching questions so playback is per-question
   useEffect(() => {
@@ -100,10 +101,40 @@ export default function AudioRecorder({
 
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Request high-quality audio
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+          sampleRate: 44100, // High quality sample rate
+        }
+      });
       streamRef.current = stream;
 
-      const mediaRecorder = new MediaRecorder(stream);
+      // Try to use better codec if available
+      let mimeType = "audio/webm";
+      const codecs = [
+        "audio/webm;codecs=opus",
+        "audio/webm",
+        "audio/mp4",
+        "audio/ogg;codecs=opus",
+      ];
+      
+      for (const codec of codecs) {
+        if (MediaRecorder.isTypeSupported(codec)) {
+          mimeType = codec;
+          console.log(`[AudioRecorder] Using codec: ${mimeType}`);
+          break;
+        }
+      }
+      
+      mimeTypeRef.current = mimeType;
+
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: mimeType,
+        audioBitsPerSecond: 128000, // Higher bitrate for better quality
+      });
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
 
@@ -118,7 +149,7 @@ export default function AudioRecorder({
           window.clearTimeout(stopTimeoutRef.current);
           stopTimeoutRef.current = null;
         }
-        const blob = new Blob(audioChunksRef.current, { type: "audio/webm" });
+        const blob = new Blob(audioChunksRef.current, { type: mimeTypeRef.current });
         setAudioBlob(blob);
         const url = URL.createObjectURL(blob);
         setAudioUrl(url);
