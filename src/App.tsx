@@ -45,26 +45,29 @@ function SpeakingContent() {
       
       const answersWithAudio = await Promise.all(
         state.answers.map(async (answer) => {
+          // Tạo answer object không có audioBlob (không thể serialize)
+          const { audioBlob, ...answerWithoutBlob } = answer;
+          
           // Nếu đã có audioBase64, giữ nguyên
           if (answer.audioBase64) {
-            return answer;
+            return answerWithoutBlob;
           }
           
           // Nếu không có audioBase64 nhưng có audioBlob, convert
-          if (answer.audioBlob) {
-            const audioBase64 = await blobToBase64(answer.audioBlob);
-            return { ...answer, audioBase64 };
+          if (audioBlob) {
+            const audioBase64 = await blobToBase64(audioBlob);
+            return { ...answerWithoutBlob, audioBase64 };
           }
           
           // Nếu không có cả 2, thử load từ IndexedDB
-          const audioBlob = await getAudio(answer.questionId);
-          if (audioBlob) {
-            const audioBase64 = await blobToBase64(audioBlob);
-            return { ...answer, audioBase64 };
+          const audioBlobFromDB = await getAudio(answer.questionId);
+          if (audioBlobFromDB) {
+            const audioBase64 = await blobToBase64(audioBlobFromDB);
+            return { ...answerWithoutBlob, audioBase64 };
           }
           
-          // Không có audio, trả về answer như cũ
-          return answer;
+          // Không có audio, trả về answer không có audioBlob
+          return answerWithoutBlob;
         })
       );
 
