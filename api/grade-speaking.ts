@@ -62,7 +62,15 @@ export default async function handler(
         return false;
       }
 
-      console.log(`[grade-speaking] Answer ${answer.questionId} valid: hasAudio=${!!answer.audioBase64}, hasTranscript=${!!answer.transcript}`);
+      // Log chi tiết audioBase64 để debug
+      if (answer.audioBase64) {
+        const audioSizeKB = Math.round(answer.audioBase64.length * 3 / 4 / 1024);
+        const firstChars = answer.audioBase64.substring(0, 50);
+        const lastChars = answer.audioBase64.substring(answer.audioBase64.length - 50);
+        console.log(`[grade-speaking] Answer ${answer.questionId} valid: hasAudio=true, audioSize=${audioSizeKB}KB, first50chars="${firstChars}...", last50chars="...${lastChars}"`);
+      } else {
+        console.log(`[grade-speaking] Answer ${answer.questionId} valid: hasAudio=false, hasTranscript=${!!answer.transcript}`);
+      }
       return true;
     });
 

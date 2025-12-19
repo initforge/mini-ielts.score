@@ -74,7 +74,21 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
 
     // Log audio quality metrics
     const audioSizeKB = Math.round(audioBase64.length * 3 / 4 / 1024); // Approximate size (base64 is ~33% larger)
-    console.log(`[Gemini] Transcribing audio: size=${audioSizeKB}KB, mimeType=${mimeType}`);
+    const firstChars = audioBase64.substring(0, 30);
+    const lastChars = audioBase64.substring(audioBase64.length - 30);
+    console.log(`[Gemini] Transcribing audio: size=${audioSizeKB}KB, mimeType=${mimeType}, base64Length=${audioBase64.length}`);
+    console.log(`[Gemini] Audio base64 sample: first30="${firstChars}...", last30="...${lastChars}"`);
+    
+    // Validate base64 format
+    if (!audioBase64 || audioBase64.trim().length === 0) {
+      throw new Error("Audio base64 is empty");
+    }
+    
+    // Check if base64 is valid (should only contain base64 characters)
+    const base64Regex = /^[A-Za-z0-9+/=]+$/;
+    if (!base64Regex.test(audioBase64)) {
+      console.error(`[Gemini] ⚠️ WARNING: Audio base64 contains invalid characters! First 100 chars: "${audioBase64.substring(0, 100)}"`);
+    }
 
     // Normalize mimeType - remove codec info if present (Gemini may not support it)
     let normalizedMimeType = mimeType;
