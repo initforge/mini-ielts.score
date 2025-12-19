@@ -74,20 +74,23 @@ export default function SpeakingResults({ results }: SpeakingResultsProps) {
               <CardContent className="space-y-4">
                 {partScore.questionScores.map((qScore) => {
                   const question = speakingQuestions.find(q => q.id === qScore.questionId);
-                  // Điểm tối đa cho mỗi câu trong part = partMax / số câu chuẩn
-                  const expectedCount =
-                    partScore.part === 1 || partScore.part === 3 || partScore.part === 4
-                      ? (partScore.part === 1 ? 2 : 3)
-                      : 1;
-                  const questionMax =
-                    expectedCount > 0
-                      ? Math.round(
-                          (partMaxScores[partScore.part] ?? 200) / expectedCount
-                        )
-                      : partMaxScores[partScore.part] ?? 200;
-                  const scaledQuestionScore = Math.round(
-                    ((qScore.score ?? 0) / 200) * questionMax
-                  );
+                  // AI đã chấm đúng format rồi, không cần scale:
+                  // - Part 1: mỗi câu 0-10
+                  // - Part 2: 0-20
+                  // - Part 3: mỗi câu 0-13
+                  // - Part 4: mỗi câu 0-20
+                  // - Part 5: 0-30
+                  // - Part 6: 0-30
+                  const questionMaxScores: Record<number, number> = {
+                    1: 10, // Part 1: mỗi câu 0-10
+                    2: 20, // Part 2: 0-20
+                    3: 13, // Part 3: mỗi câu 0-13
+                    4: 20, // Part 4: mỗi câu 0-20
+                    5: 30, // Part 5: 0-30
+                    6: 30, // Part 6: 0-30
+                  };
+                  const questionMax = questionMaxScores[partScore.part] ?? 20;
+                  const questionScore = Math.round(qScore.score ?? 0);
                   return (
                     <motion.div
                       key={qScore.questionId}
@@ -102,7 +105,7 @@ export default function SpeakingResults({ results }: SpeakingResultsProps) {
                               Question {qScore.questionNumber || question?.questionNumber || qScore.questionId}
                             </div>
                             <div className="text-sm font-bold text-black">
-                              Score: {scaledQuestionScore} / {questionMax}
+                              Score: {questionScore} / {questionMax}
                             </div>
                           </div>
                           {qScore.transcript && (
