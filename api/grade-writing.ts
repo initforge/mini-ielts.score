@@ -5,7 +5,7 @@ import { WritingAnswer } from './lib/types';
 // Cấu hình timeout cho Vercel serverless function
 // Free tier: max 10s, Pro: max 60s
 export const config = {
-  maxDuration: 60, // 60 giây cho Pro plan, hoặc 10s cho Free tier
+  maxDuration: 10, // 60 giây cho Pro plan, hoặc 10s cho Free tier
 };
 
 // Part weight mapping (ảnh hưởng trong 200 điểm)
@@ -504,3 +504,4 @@ Important:
     }
   }
 }
+
