@@ -165,21 +165,22 @@ export default function AudioRecorder({
         onRecordingComplete(blob, base64);
       };
 
+      // Store actual recording start time BEFORE starting recorder
+      recordingStartTimeRef.current = Date.now();
+      
       mediaRecorder.start();
       setIsRecording(true);
       onRecordingChange?.(true);
       setTimeElapsed(0);
-      
-      // Store actual recording start time for accurate timer
-      recordingStartTimeRef.current = Date.now();
 
-      // Hard stop after maxDuration seconds in case Timer UI is throttled / tab is background
+      // Hard stop after EXACT maxDuration seconds (no buffer to ensure accuracy)
       if (stopTimeoutRef.current !== null) {
         window.clearTimeout(stopTimeoutRef.current);
       }
       stopTimeoutRef.current = window.setTimeout(() => {
+        console.log(`[AudioRecorder] Hard stop timeout triggered after ${maxDuration}s`);
         stopRecording();
-      }, maxDuration * 1000 + 250); // small buffer
+      }, maxDuration * 1000); // Exact duration, no buffer
     } catch (error: any) {
       console.error("Error starting recording:", error);
       // Check if it's a permission/HTTPS issue
@@ -351,6 +352,17 @@ export default function AudioRecorder({
               onComplete={handleTimerComplete}
               showWarning={true}
               warningThreshold={10}
+              onTick={(remaining) => {
+                // Sync timer with actual recording time
+                if (recordingStartTimeRef.current) {
+                  const actualElapsed = Math.floor((Date.now() - recordingStartTimeRef.current) / 1000);
+                  const actualRemaining = Math.max(0, maxDuration - actualElapsed);
+                  // If timer is off by more than 1 second, force sync
+                  if (Math.abs(actualRemaining - remaining) > 1) {
+                    console.log(`[AudioRecorder] Timer sync: timer=${remaining}s, actual=${actualRemaining}s`);
+                  }
+                }
+              }}
             />
           </div>
         </div>

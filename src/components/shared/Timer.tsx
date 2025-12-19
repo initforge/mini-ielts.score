@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { cn, formatTime } from "@/lib/utils";
 
@@ -21,10 +21,12 @@ export default function Timer({
 }: TimerProps) {
   const [seconds, setSeconds] = useState(initialSeconds);
   const isWarning = showWarning && seconds <= warningThreshold && seconds > 0;
+  const startTimeRef = useRef<number | null>(null);
 
   // Reset timer when initialSeconds changes (e.g., new recording starts)
   useEffect(() => {
     setSeconds(initialSeconds);
+    startTimeRef.current = Date.now();
   }, [initialSeconds]);
 
   useEffect(() => {
@@ -33,19 +35,44 @@ export default function Timer({
       return;
     }
 
-    const interval = setInterval(() => {
-      setSeconds((prev) => {
-        const newValue = prev - 1;
-        onTick?.(newValue);
-        if (newValue <= 0) {
-          onComplete?.();
-        }
-        return newValue;
-      });
-    }, 1000);
+    if (!startTimeRef.current) {
+      startTimeRef.current = Date.now();
+    }
 
-    return () => clearInterval(interval);
-  }, [seconds, onComplete, onTick]);
+    // Use more accurate timing with drift correction
+    let expectedTime = startTimeRef.current + 1000;
+    
+    let timeoutId: NodeJS.Timeout;
+    
+    const tick = () => {
+      const now = Date.now();
+      const drift = now - expectedTime;
+      
+      // Calculate remaining seconds based on actual elapsed time from start
+      const elapsed = Math.floor((now - (startTimeRef.current || now)) / 1000);
+      const remaining = Math.max(0, initialSeconds - elapsed);
+      
+      if (remaining <= 0) {
+        setSeconds(0);
+        onComplete?.();
+        return;
+      }
+      
+      // Update state if value changed
+      if (remaining !== seconds) {
+        setSeconds(remaining);
+        onTick?.(remaining);
+      }
+      
+      // Schedule next tick with drift correction
+      expectedTime += 1000;
+      const delay = Math.max(0, 1000 - drift);
+      timeoutId = setTimeout(tick, delay);
+    };
+    
+    timeoutId = setTimeout(tick, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [seconds, initialSeconds, onComplete, onTick]);
 
   return (
     <motion.div
