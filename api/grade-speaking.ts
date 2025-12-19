@@ -243,7 +243,9 @@ Return your evaluation as a JSON object with this exact structure:
 }
 
 Important:
-- Calculate part scores from question scores
+- ONLY evaluate questions that are provided in "Student Responses by Part" above. Do NOT create scores for questions that are not listed.
+- For each part, ONLY include questionScores for questions that have transcripts in the input.
+- Calculate part scores from question scores (only for questions that were actually answered)
 - Calculate overall score using weighted sum: Part1*20 + Part2*20 + Part3*40 + Part4*60 + Part5*30 + Part6*30, then normalize to 0-200
 - ALL feedback text MUST be in Vietnamese (natural, dễ hiểu, không quá dài dòng), bao gồm:
   - "feedback" cho từng câu hỏi
@@ -330,11 +332,14 @@ Important:
 
       overallScoreSum += scaledPartScore;
 
+      // Chỉ trả về questionScores cho những câu có answer thực sự
+      const filteredQuestionScores = questionScores.filter(q => validQuestionIds.has(q.questionId));
+
       normalizedPartScores.push({
         ...existingPart,
         part,
         partScore: scaledPartScore,
-        questionScores,
+        questionScores: filteredQuestionScores,
       });
     }
 
