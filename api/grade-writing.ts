@@ -19,35 +19,51 @@ export default async function handler(
   request: VercelRequest,
   response: VercelResponse,
 ) {
-  if (request.method !== 'POST') {
-    return response.status(405).json({ error: 'Method not allowed' });
-  }
-
+  // Wrap toàn bộ handler để đảm bảo luôn trả về JSON response
   try {
-    const body = request.body;
-    const { 
-      parts, 
-      questions, 
-      images,
-      apiKey
-    }: { 
-      parts: { part1: WritingAnswer[]; part2: WritingAnswer[]; part3: WritingAnswer[] };
-      questions?: Record<string, string>;
-      images?: Record<number, string>;
-      apiKey?: string;
-    } = body;
-
-    if (!apiKey) {
-      return response.status(400).json(
-        { error: "Gemini API key is required. Please connect your API key in the header." }
-      );
+    console.log('[grade-writing] Handler called, method:', request.method);
+    
+    // Set headers sớm để đảm bảo response là JSON
+    response.setHeader('Content-Type', 'application/json');
+    
+    if (request.method !== 'POST') {
+      console.log('[grade-writing] Method not allowed:', request.method);
+      return response.status(405).json({ error: 'Method not allowed' });
     }
+    
+    console.log('[grade-writing] Processing POST request');
 
-    if (!parts) {
-      return response.status(400).json(
-        { error: "parts object is required" }
-      );
-    }
+    try {
+      const body = request.body;
+      console.log('[grade-writing] Request body received, has parts:', !!body?.parts);
+      
+      const { 
+        parts, 
+        questions, 
+        images,
+        apiKey
+      }: { 
+        parts: { part1: WritingAnswer[]; part2: WritingAnswer[]; part3: WritingAnswer[] };
+        questions?: Record<string, string>;
+        images?: Record<number, string>;
+        apiKey?: string;
+      } = body;
+
+      if (!apiKey) {
+        console.log('[grade-writing] Missing API key');
+        return response.status(400).json(
+          { error: "Gemini API key is required. Please connect your API key in the header." }
+        );
+      }
+
+      if (!parts) {
+        console.log('[grade-writing] Missing parts object');
+        return response.status(400).json(
+          { error: "parts object is required" }
+        );
+      }
+      
+      console.log('[grade-writing] Validating answers...');
 
     // Lọc các câu trả lời hợp lệ:
     // - Có answer.text không rỗng
@@ -336,10 +352,13 @@ Important:
 - Strengths and weaknesses should be concise and comprehensive
 - Return ONLY the JSON object, no additional text or markdown formatting.`;
 
+    console.log('[grade-writing] Calling Gemini API, has media:', mediaParts.length > 0);
     const responseText =
       mediaParts.length > 0
         ? await generateContentWithMedia(mediaParts, prompt, apiKey, rubricText)
         : await generateContent(prompt, apiKey, rubricText);
+    
+    console.log('[grade-writing] Gemini API response received, length:', responseText?.length || 0);
     
     // Parse JSON response (handle markdown code blocks if present)
     let jsonText = responseText.trim();
@@ -417,6 +436,7 @@ Important:
       partScores: normalizedPartScores,
     };
 
+    console.log('[grade-writing] Successfully processed, overallScore:', overallScore);
     return response.status(200).json(normalizedResult);
   } catch (error: any) {
     console.error("Grading error:", error);
@@ -452,10 +472,35 @@ Important:
       });
     }
     
-    return response.status(500).json({
-      error: "Failed to grade writing responses",
-      code: "UNKNOWN_ERROR",
-      details: process.env.NODE_ENV === "development" ? error?.message : undefined
-    });
+    // Wrap return trong try-catch để đảm bảo không có lỗi khi gửi response
+    try {
+      return response.status(500).json({
+        error: "Failed to grade writing responses",
+        code: "UNKNOWN_ERROR",
+        details: process.env.NODE_ENV === "development" ? error?.message : undefined
+      });
+    } catch (responseError: any) {
+      console.error("Error sending error response:", responseError);
+      // Nếu không thể gửi response, log lỗi
+    }
+    } // Đóng inner try-catch
+  } catch (outerError: any) {
+    // Catch mọi lỗi có thể xảy ra, kể cả lỗi trong quá trình khởi tạo
+    console.error("Fatal error in handler:", outerError);
+    console.error("Error stack:", outerError?.stack);
+    
+    // Đảm bảo luôn trả về JSON, ngay cả khi có lỗi nghiêm trọng
+    if (!response.headersSent) {
+      try {
+        return response.status(500).json({
+          error: "Lỗi hệ thống nghiêm trọng. Vui lòng thử lại sau.",
+          code: "FATAL_ERROR",
+          message: process.env.NODE_ENV === "development" ? outerError?.message : undefined
+        });
+      } catch (finalError) {
+        // Nếu không thể gửi response, log lỗi
+        console.error("Cannot send error response:", finalError);
+      }
+    }
   }
 }
