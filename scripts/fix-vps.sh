@@ -20,16 +20,16 @@ fi
 TSX_PATH=$(which tsx)
 echo "✅ tsx found at: $TSX_PATH"
 
-# 2. Update ecosystem.config.cjs với path đúng
+# 2. Update ecosystem.config.cjs với cách chạy tsx trực tiếp
 echo "📝 Updating PM2 config..."
-cat > ecosystem.config.cjs << 'EOF'
+cat > ecosystem.config.cjs << EOF
 // PM2 ecosystem config for production
 module.exports = {
   apps: [
     {
       name: 'mini-ielts-score',
-      script: 'server/index.ts',
-      interpreter: '/usr/bin/tsx',
+      script: '$TSX_PATH',
+      args: 'server/index.ts',
       instances: 1,
       exec_mode: 'fork',
       env: {
@@ -48,12 +48,6 @@ module.exports = {
   ],
 };
 EOF
-
-# Update interpreter path nếu tsx ở chỗ khác
-if [ "$TSX_PATH" != "/usr/bin/tsx" ]; then
-    echo "⚠️  tsx is at $TSX_PATH, updating config..."
-    sed -i "s|interpreter: '/usr/bin/tsx'|interpreter: '$TSX_PATH'|g" ecosystem.config.cjs
-fi
 
 # 3. Pull latest code
 echo "📥 Pulling latest code..."
