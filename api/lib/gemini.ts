@@ -102,7 +102,17 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
     for (const modelName of AUDIO_MODEL_CANDIDATES) {
       try {
         console.log("[Gemini] Transcribe trying model:", modelName);
-        const model = genAI.getGenerativeModel({ model: modelName });
+        console.log(`[Gemini] Sending audio to Gemini: base64Length=${audioBase64.length}, first20="${audioBase64.substring(0, 20)}", last20="${audioBase64.substring(audioBase64.length - 20)}"`);
+        
+        const model = genAI.getGenerativeModel({ 
+          model: modelName,
+          // Tăng timeout cho transcription
+          generationConfig: {
+            maxOutputTokens: 8192,
+          },
+        });
+        
+        const startTime = Date.now();
         const result = await model.generateContent([
           {
             inlineData: {
@@ -115,6 +125,8 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
           },
         ]);
         const response = await result.response;
+        const elapsed = Date.now() - startTime;
+        console.log(`[Gemini] Transcription API call took ${elapsed}ms`);
         let transcript = response.text().trim();
         const wordCount = transcript.split(/\s+/).filter(w => w.length > 0).length;
         console.log(`[Gemini] ✅ Transcription successful with model: ${modelName}`);
