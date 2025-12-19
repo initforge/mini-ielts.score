@@ -39,13 +39,42 @@ function SpeakingContent() {
         return;
       }
 
+      // Load audioBase64 từ IndexedDB cho những answer không có audioBase64
+      const { getAudio } = await import("@/lib/audioStorage");
+      const { blobToBase64 } = await import("@/lib/utils");
+      
+      const answersWithAudio = await Promise.all(
+        state.answers.map(async (answer) => {
+          // Nếu đã có audioBase64, giữ nguyên
+          if (answer.audioBase64) {
+            return answer;
+          }
+          
+          // Nếu không có audioBase64 nhưng có audioBlob, convert
+          if (answer.audioBlob) {
+            const audioBase64 = await blobToBase64(answer.audioBlob);
+            return { ...answer, audioBase64 };
+          }
+          
+          // Nếu không có cả 2, thử load từ IndexedDB
+          const audioBlob = await getAudio(answer.questionId);
+          if (audioBlob) {
+            const audioBase64 = await blobToBase64(audioBlob);
+            return { ...answer, audioBase64 };
+          }
+          
+          // Không có audio, trả về answer như cũ
+          return answer;
+        })
+      );
+
       const response = await fetch("/api/grade-speaking", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          answers: state.answers,
+          answers: answersWithAudio,
           questions: state.questions,
           images: state.images,
           apiKey,
