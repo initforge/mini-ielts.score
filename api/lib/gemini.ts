@@ -83,27 +83,7 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
             },
           },
           {
-            text: `You are transcribing a TOEIC Speaking test audio recording. This is a high-quality recording of a student speaking English.
-
-CRITICAL INSTRUCTIONS:
-- Listen carefully to the ENTIRE audio from start to finish
-- Transcribe EVERY word you hear, even if the audio quality is imperfect
-- If you hear speech (even faint or unclear), transcribe it - do NOT return "[silence]" or "[background noise]" if there is actual speech
-- Only indicate silence if there is truly NO speech in the entire recording
-- Preserve natural speech patterns, including fillers (um, uh, er) if present
-- Maintain proper capitalization (sentence starts, proper nouns)
-- Include punctuation marks (periods, commas, question marks) based on natural pauses and intonation
-- Do NOT add words that were not spoken
-- Do NOT correct grammar or pronunciation - transcribe exactly what you hear
-- If a word is unclear, transcribe your best guess but do not skip it
-- If the audio contains background noise BUT ALSO contains speech, transcribe the speech and ignore the noise description
-
-OUTPUT FORMAT:
-- Return ONLY the transcript text
-- No additional commentary, no "[silence]" markers, no "[background noise]" unless there is truly no speech
-- If you cannot hear any speech at all, return exactly: "[NO_SPEECH_DETECTED]"
-
-This is a test recording, so accuracy is critical for fair evaluation.`,
+            text: "Transcribe this audio recording. Return only the transcript text without any additional commentary.",
           },
         ]);
         const response = await result.response;
