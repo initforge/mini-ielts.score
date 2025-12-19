@@ -149,9 +149,21 @@ export default function AudioRecorder({
       stopTimeoutRef.current = window.setTimeout(() => {
         stopRecording();
       }, maxDuration * 1000 + 250); // small buffer
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error starting recording:", error);
-      setShowErrorModal(true);
+      // Check if it's a permission/HTTPS issue
+      const isPermissionError = error?.name === 'NotAllowedError' || 
+                                error?.name === 'NotReadableError' ||
+                                error?.message?.includes('getUserMedia') ||
+                                !navigator.mediaDevices?.getUserMedia;
+      
+      if (isPermissionError && window.location.protocol === 'http:') {
+        setShowErrorModal(true);
+        // Update error message to mention HTTPS requirement
+        console.warn('Microphone access requires HTTPS. Please use HTTPS or localhost.');
+      } else {
+        setShowErrorModal(true);
+      }
     }
   };
 
@@ -245,7 +257,11 @@ export default function AudioRecorder({
         isOpen={showErrorModal}
         onClose={() => setShowErrorModal(false)}
         title="Microphone Access Error"
-        message="Failed to access microphone. Please check your permissions and try again."
+        message={
+          window.location.protocol === 'http:' && window.location.hostname !== 'localhost'
+            ? "Microphone access requires HTTPS connection. Please contact administrator to setup SSL certificate, or use localhost for development."
+            : "Failed to access microphone. Please check your browser permissions and allow microphone access when prompted."
+        }
         type="alert"
         confirmText="OK"
       />
