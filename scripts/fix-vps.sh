@@ -57,29 +57,66 @@ git pull origin master
 echo "📦 Installing dependencies..."
 npm install
 
-# 5. Build application
-echo "🔨 Building application..."
+# 5. Clean build artifacts để tránh mismatch
+echo "🧹 Cleaning old build artifacts..."
+rm -rf dist
+rm -rf node_modules/.vite
+
+# 6. Build application (fresh build)
+echo "🔨 Building application (fresh build)..."
 npm run build
 
-# 6. Stop PM2 nếu đang chạy
+# 7. Verify build output
+echo "✅ Verifying build output..."
+if [ ! -f "dist/index.html" ]; then
+    echo "❌ ERROR: dist/index.html not found after build!"
+    exit 1
+fi
+
+# Extract referenced files from index.html
+REF_JS=$(grep -oP 'src="/assets/\K[^"]+' dist/index.html | head -1)
+REF_CSS=$(grep -oP 'href="/assets/\K[^"]+' dist/index.html | head -1)
+
+echo "📄 index.html references:"
+echo "   JS: $REF_JS"
+echo "   CSS: $REF_CSS"
+
+# Check if files exist
+if [ ! -f "dist/assets/$REF_JS" ]; then
+    echo "❌ ERROR: Referenced JS file not found: dist/assets/$REF_JS"
+    exit 1
+fi
+
+if [ ! -f "dist/assets/$REF_CSS" ]; then
+    echo "❌ ERROR: Referenced CSS file not found: dist/assets/$REF_CSS"
+    exit 1
+fi
+
+echo "✅ Build verification passed!"
+
+# 8. Stop PM2 nếu đang chạy
 echo "🛑 Stopping PM2..."
 pm2 stop mini-ielts-score 2>/dev/null || true
 pm2 delete mini-ielts-score 2>/dev/null || true
 
-# 7. Start PM2 với config mới
+# 9. Start PM2 với config mới
 echo "🚀 Starting PM2..."
 pm2 start ecosystem.config.cjs
 
-# 8. Save PM2 process list
+# 10. Save PM2 process list
 pm2 save
 
-# 9. Check PM2 status
+# 11. Check PM2 status
 echo "📊 PM2 Status:"
 pm2 status
 
-# 10. Show recent logs
+# 12. Show recent logs
 echo "📋 Recent logs:"
 pm2 logs mini-ielts-score --lines 20 --nostream
+
+# 13. Reload Nginx để đảm bảo serve đúng static files
+echo "🔄 Reloading Nginx..."
+nginx -t && systemctl reload nginx || echo "⚠️ Nginx reload failed, check config manually"
 
 echo "✅ Fix completed!"
 
