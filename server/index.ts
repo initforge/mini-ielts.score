@@ -14,13 +14,22 @@ import gradeWritingHandler from '../api/grade-writing.ts';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Resolve dist directory path (absolute path để tránh lỗi với tsx)
+const distPath = path.resolve(__dirname, '../dist');
+const indexPath = path.resolve(distPath, 'index.html');
+
+// Log paths để debug
+console.log(`📁 __dirname: ${__dirname}`);
+console.log(`📁 distPath: ${distPath}`);
+console.log(`📁 indexPath: ${indexPath}`);
+
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Serve static files from dist folder (production build)
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(distPath));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -92,7 +101,15 @@ app.post('/api/grade-writing', async (req, res) => {
 
 // Serve React app for all other routes (SPA routing)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
+  // Sử dụng absolute path đã resolve ở trên
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error(`❌ Error sending index.html: ${err.message}`);
+      console.error(`   Requested path: ${req.path}`);
+      console.error(`   Resolved indexPath: ${indexPath}`);
+      res.status(500).send('Error loading application');
+    }
+  });
 });
 
 app.listen(PORT, () => {
