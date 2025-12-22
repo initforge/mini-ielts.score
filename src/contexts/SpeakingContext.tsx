@@ -55,11 +55,6 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
     })();
   }, []);
 
-  // Save to sessionStorage whenever state changes
-  useEffect(() => {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }, [state]);
-
   const startExam = useCallback(() => {
     setState({
       currentQuestionIndex: null, // Don't auto-select question

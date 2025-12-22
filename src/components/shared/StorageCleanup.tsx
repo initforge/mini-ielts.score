@@ -8,7 +8,6 @@ export default function StorageCleanup() {
   useEffect(() => {
     // List of keys that should be in sessionStorage, not localStorage
     const keysToMigrate = [
-      "toeic-speaking-exam-state",
       "toeic-writing-exam-state",
     ];
 

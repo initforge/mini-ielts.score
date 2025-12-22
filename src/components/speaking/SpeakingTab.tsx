@@ -458,8 +458,8 @@ export default function SpeakingTab() {
                 placeholder="Paste your question here..."
               />
 
-              {/* Part 1 (Q1-5): Image Upload - Separate for each question - Only show if no image uploaded */}
-              {currentQuestion.part === 1 && currentQuestion.questionNumber === 1 && !state.images?.[currentQuestion.id] && (
+              {/* Part 1 (Q1-5): Image Upload - Separate for each question */}
+              {currentQuestion.part === 1 && currentQuestion.questionNumber === 1 && (
                 <CollapsibleImageUpload
                   part={1}
                   value={state.images?.[currentQuestion.id]}
@@ -467,7 +467,7 @@ export default function SpeakingTab() {
                   label="Upload Image (for Q1)"
                 />
               )}
-              {currentQuestion.part === 1 && currentQuestion.questionNumber === 2 && !state.images?.[currentQuestion.id] && (
+              {currentQuestion.part === 1 && currentQuestion.questionNumber === 2 && (
                 <CollapsibleImageUpload
                   part={1}
                   value={state.images?.[currentQuestion.id]}
@@ -475,7 +475,7 @@ export default function SpeakingTab() {
                   label="Upload Image (for Q2)"
                 />
               )}
-              {currentQuestion.part === 1 && currentQuestion.questionNumber === 3 && !state.images?.[currentQuestion.id] && (
+              {currentQuestion.part === 1 && currentQuestion.questionNumber === 3 && (
                 <CollapsibleImageUpload
                   part={1}
                   value={state.images?.[currentQuestion.id]}
@@ -483,7 +483,7 @@ export default function SpeakingTab() {
                   label="Upload Image (for Q3)"
                 />
               )}
-              {currentQuestion.part === 1 && currentQuestion.questionNumber === 4 && !state.images?.[currentQuestion.id] && (
+              {currentQuestion.part === 1 && currentQuestion.questionNumber === 4 && (
                 <CollapsibleImageUpload
                   part={1}
                   value={state.images?.[currentQuestion.id]}
@@ -491,7 +491,7 @@ export default function SpeakingTab() {
                   label="Upload Image (for Q4)"
                 />
               )}
-              {currentQuestion.part === 1 && currentQuestion.questionNumber === 5 && !state.images?.[currentQuestion.id] && (
+              {currentQuestion.part === 1 && currentQuestion.questionNumber === 5 && (
                 <CollapsibleImageUpload
                   part={1}
                   value={state.images?.[currentQuestion.id]}
@@ -527,8 +527,8 @@ export default function SpeakingTab() {
                 </Card>
               )}
 
-              {/* Part 2 (Q3-4): Image Upload - Separate for Q3 and Q4 - Only show if no image */}
-              {currentQuestion.part === 2 && currentQuestion.questionNumber === 3 && !state.images?.[currentQuestion.id] && (
+              {/* Part 2 (Q3-4): Image Upload - Separate for Q3 and Q4 */}
+              {currentQuestion.part === 2 && currentQuestion.questionNumber === 3 && (
                 <CollapsibleImageUpload
                   part={2}
                   value={state.images?.[currentQuestion.id]}
@@ -536,7 +536,7 @@ export default function SpeakingTab() {
                   label="Upload Image (for Q3)"
                 />
               )}
-              {currentQuestion.part === 2 && currentQuestion.questionNumber === 4 && !state.images?.[currentQuestion.id] && (
+              {currentQuestion.part === 2 && currentQuestion.questionNumber === 4 && (
                 <CollapsibleImageUpload
                   part={2}
                   value={state.images?.[currentQuestion.id]}
@@ -546,8 +546,8 @@ export default function SpeakingTab() {
               )}
 
 
-              {/* Part 4 (Q8-10): Shared Image Upload - Only show if no image */}
-              {currentQuestion.part === 4 && !state.images?.["part4"] && (
+              {/* Part 4 (Q8-10): Shared Image Upload */}
+              {currentQuestion.part === 4 && (
                 <CollapsibleImageUpload
                   part={4}
                   value={state.images?.["part4"]}
