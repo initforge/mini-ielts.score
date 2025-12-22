@@ -126,63 +126,81 @@ export default function ImageUpload({
     };
   }, [handleFile]);
 
-  return (
-    <Card className="bg-slate-50 border border-slate-200 mb-4">
-      <CardContent className="p-4">
+  // Nếu label rỗng (dùng trong CollapsibleImageUpload) → không render Card wrapper
+  const hasLabel = label && label.trim();
+  
+  const content = (
+    <>
+      {/* Chỉ hiển thị label nếu có giá trị (để tránh duplicate khi dùng trong CollapsibleImageUpload) */}
+      {hasLabel && (
         <div className="flex items-center gap-2 mb-2">
           <ImageIcon className="h-4 w-4 text-slate-600" />
           <label className="text-sm font-semibold text-slate-900">
             {label}
           </label>
         </div>
-        
-        {preview ? (
-          <div className="relative">
-            <div className="relative h-64 w-full overflow-hidden rounded-lg border-2 border-slate-300 bg-slate-100">
-              <img
-                src={preview}
-                alt="Uploaded image"
-                className="h-full w-full object-contain"
-              />
-            </div>
-            <button
-              onClick={handleRemove}
-              className="absolute top-2 right-2 rounded-full bg-error p-2 text-white hover:bg-error/90 transition-colors"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-        ) : (
-          <div
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onPaste={handlePaste}
-            onClick={handleClick}
-            tabIndex={0}
-            className={cn(
-              "image-upload-area relative border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500",
-              isDragging
-                ? "border-indigo-500 bg-indigo-50"
-                : "border-slate-300 bg-slate-100 hover:border-indigo-400 hover:bg-slate-50"
-            )}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleFileSelect}
-              className="hidden"
+      )}
+      
+      {preview ? (
+        <div className="relative">
+          <div className="relative h-64 w-full overflow-hidden rounded-lg border-2 border-slate-300 bg-slate-100">
+            <img
+              src={preview}
+              alt="Uploaded image"
+              className="h-full w-full object-contain"
             />
-            <Upload className="h-12 w-12 mx-auto mb-4 text-slate-400" />
-            <p className="text-slate-700 font-medium mb-2">
-              Click to upload or drag and drop
-            </p>
-            <p className="text-sm text-slate-500">
-              PNG, JPG, GIF up to 10MB
-            </p>
           </div>
-        )}
+          <button
+            onClick={handleRemove}
+            className="absolute top-2 right-2 rounded-full bg-error p-2 text-white hover:bg-error/90 transition-colors"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      ) : (
+        <div
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onPaste={handlePaste}
+          onClick={handleClick}
+          tabIndex={0}
+          className={cn(
+            "image-upload-area relative border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500",
+            isDragging
+              ? "border-indigo-500 bg-indigo-50"
+              : "border-slate-300 bg-slate-100 hover:border-indigo-400 hover:bg-slate-50"
+          )}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+          <Upload className="h-12 w-12 mx-auto mb-4 text-slate-400" />
+          <p className="text-slate-700 font-medium mb-2">
+            Click to upload or drag and drop
+          </p>
+          <p className="text-sm text-slate-500">
+            PNG, JPG, GIF up to 10MB
+          </p>
+        </div>
+      )}
+    </>
+  );
+
+  // Nếu không có label → không render Card wrapper (dùng trong CollapsibleImageUpload)
+  if (!hasLabel) {
+    return <div className="mb-4">{content}</div>;
+  }
+
+  // Có label → render Card wrapper (dùng trực tiếp)
+  return (
+    <Card className="bg-slate-50 border border-slate-200 mb-4">
+      <CardContent className="p-4">
+        {content}
       </CardContent>
     </Card>
   );
