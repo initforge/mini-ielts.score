@@ -21,6 +21,7 @@ interface SpeakingContextType {
   lockRecording: () => void;
   setStartTime: () => void;
   resetTimerState: () => void;
+  updateTranscript: (questionId: string, transcript: string) => void;
 }
 
 const SpeakingContext = createContext<SpeakingContextType | undefined>(undefined);
@@ -41,18 +42,12 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
     audioUrls: {}, // Store audio URLs for playback
   });
 
-  // On fresh load we ALWAYS treat it as a new session:
-  // - clear any persisted speaking state
-  // - clear all stored audio recordings
+  // On fresh load: chỉ xóa sessionStorage (không xóa audio để giữ lại data đã làm)
+  // Audio chỉ được xóa khi user bấm "Start New Test" hoặc "Reset Exam"
   useEffect(() => {
-    (async () => {
-      sessionStorage.removeItem(STORAGE_KEY);
-      try {
-        await clearAllAudio();
-      } catch (error) {
-        console.error("Failed to clear audio from IndexedDB on app load:", error);
-      }
-    })();
+    sessionStorage.removeItem(STORAGE_KEY);
+    // KHÔNG xóa audio ở đây để giữ lại 11 câu đã làm khi deploy code mới
+    // Audio sẽ được xóa khi user bấm "Start New Test" hoặc "Reset Exam"
   }, []);
 
   const startExam = useCallback(() => {
@@ -245,6 +240,27 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
+  // Update transcript for an answer (used when receiving partial transcripts from backend)
+  const updateTranscript = useCallback((questionId: string, transcript: string) => {
+    setState((prev) => {
+      const existingIndex = prev.answers.findIndex((a) => a.questionId === questionId);
+      if (existingIndex >= 0) {
+        const newAnswers = [...prev.answers];
+        newAnswers[existingIndex] = {
+          ...newAnswers[existingIndex],
+          transcript,
+        };
+        return {
+          ...prev,
+          answers: newAnswers,
+        };
+      }
+      // Nếu chưa có answer → chỉ log warning, không tạo mới (vì answer phải được tạo khi user làm bài)
+      console.warn(`[SpeakingContext] updateTranscript: Answer not found for questionId ${questionId}. Transcript will be lost.`);
+      return prev;
+    });
+  }, []);
+
   const currentQuestion = 
     state.currentQuestionIndex !== null 
       ? speakingQuestions[state.currentQuestionIndex] || null
@@ -269,6 +285,7 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
         lockRecording,
         setStartTime,
         resetTimerState,
+        updateTranscript,
       }}
     >
       {children}

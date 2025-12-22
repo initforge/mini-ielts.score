@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { generateContent, generateContentWithMedia, transcribeAudio, GeminiError } from './lib/gemini';
+import { generateContent, generateContentWithMedia, transcribeAudio, transcribeMultipleAudio, GeminiError } from './lib/gemini';
 import { SpeakingAnswer } from './lib/types';
 
 // Part weight mapping (ảnh hưởng trong 200 điểm)
@@ -11,6 +11,16 @@ const PART_WEIGHTS: Record<number, number> = {
   5: 30, // Part 5: Q10 (1 câu) ~ 30 điểm
   6: 30, // Part 6: Q11 (1 câu) ~ 30 điểm
 };
+
+// Batch transcribe config
+const BATCH_SIZE = 6; // Số câu audio gửi trong 1 request (Gemini hỗ trợ tối đa ~10 file/request)
+const BATCH_DELAY_MS = 60_000; // Đợi 60s giữa các batch để reset quota (5 req/phút → cần 60s để reset)
+const RATE_LIMIT_RETRY_DELAY_MS = 5_000; // đợi thêm trước khi retry khi gặp 429
+const RATE_LIMIT_MAX_RETRIES = 2; // số lần thử lại tối đa cho một batch
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export default async function handler(
   request: VercelRequest,
@@ -84,40 +94,145 @@ export default async function handler(
       });
     }
 
-    // Transcribe all audio recordings cho các câu hợp lệ
-    const transcribedAnswers = await Promise.all(
-      validAnswersInput.map(async (answer) => {
-        let transcript = answer.transcript;
-        
-        if (!transcript && answer.audioBase64) {
-          const audioSizeKB = Math.round(answer.audioBase64.length * 3 / 4 / 1024);
-          console.log(`[grade-speaking] Transcribing audio for question ${answer.questionId}, audioBase64 length: ${answer.audioBase64.length} chars (~${audioSizeKB}KB)`);
+    // Batch transcribe: chia thành các batch và gửi nhiều audio cùng lúc
+    const transcribedAnswers: SpeakingAnswer[] = [];
+    
+    // Tách các câu cần transcribe (có audioBase64 nhưng chưa có transcript)
+    const answersToTranscribe = validAnswersInput.filter(
+      (answer) => !answer.transcript && answer.audioBase64
+    );
+    const answersWithTranscript = validAnswersInput.filter(
+      (answer) => answer.transcript && answer.transcript.trim().length > 0
+    );
+
+    // Thêm các câu đã có transcript vào kết quả
+    answersWithTranscript.forEach((answer) => {
+      transcribedAnswers.push(answer);
+      console.log(`[grade-speaking] Using existing transcript for question ${answer.questionId}`);
+    });
+
+    // Nếu có câu cần transcribe → chia batch và gọi Gemini
+    if (answersToTranscribe.length > 0) {
+      // Chia thành batch (mỗi batch tối đa BATCH_SIZE câu)
+      const batches: Array<typeof answersToTranscribe> = [];
+      for (let i = 0; i < answersToTranscribe.length; i += BATCH_SIZE) {
+        batches.push(answersToTranscribe.slice(i, i + BATCH_SIZE));
+      }
+
+      console.log(`[grade-speaking] Transcribing ${answersToTranscribe.length} questions in ${batches.length} batch(es)`);
+
+      // Xử lý từng batch
+      for (let batchIndex = 0; batchIndex < batches.length; batchIndex++) {
+        const batch = batches[batchIndex];
+        console.log(`[grade-speaking] Processing batch ${batchIndex + 1}/${batches.length} (${batch.length} questions)`);
+
+        // Chuẩn bị data cho batch transcribe
+        const audioBatch = batch.map((answer) => ({
+          questionId: answer.questionId,
+          audioBase64: answer.audioBase64!,
+          mimeType: "audio/webm",
+        }));
+
+        let transcriptMap: Record<string, string> = {};
+        let attempt = 0;
+
+        // Retry loop để handle RATE_LIMIT (429)
+        let batchTranscriptionError: any = null;
+        while (attempt <= RATE_LIMIT_MAX_RETRIES) {
           try {
-            transcript = await transcribeAudio(answer.audioBase64, "audio/webm", apiKey);
-            const wordCount = transcript.split(/\s+/).filter(w => w.length > 0).length;
-            console.log(`[grade-speaking] ✅ Transcription successful for question ${answer.questionId}`);
-            console.log(`[grade-speaking] Transcript: "${transcript.substring(0, 200)}${transcript.length > 200 ? '...' : ''}" (${transcript.length} chars, ${wordCount} words)`);
+            transcriptMap = await transcribeMultipleAudio(audioBatch, apiKey);
             
-            // Warning nếu transcript quá ngắn so với audio size
-            if (wordCount < 5 && audioSizeKB > 10) {
-              console.warn(`[grade-speaking] ⚠️ WARNING: Very short transcript (${wordCount} words) for ${audioSizeKB}KB audio. Possible transcription issue.`);
-            }
+            // Log kết quả từng câu trong batch
+            batch.forEach((answer) => {
+              const transcript = transcriptMap[answer.questionId] || "";
+              const wordCount = transcript.split(/\s+/).filter((w) => w.length > 0).length;
+              const audioSizeKB = Math.round((answer.audioBase64?.length || 0) * 3 / 4 / 1024);
+              
+              console.log(`[grade-speaking] ✅ Transcription successful for question ${answer.questionId}`);
+              console.log(
+                `[grade-speaking] Transcript: "${transcript.substring(0, 200)}${
+                  transcript.length > 200 ? "..." : ""
+                }" (${transcript.length} chars, ${wordCount} words)`,
+              );
+
+              // Warning nếu transcript quá ngắn
+              if (wordCount < 5 && audioSizeKB > 10) {
+                console.warn(
+                  `[grade-speaking] ⚠️ WARNING: Very short transcript (${wordCount} words) for ${audioSizeKB}KB audio. Possible transcription issue.`,
+                );
+              }
+            });
+
+            batchTranscriptionError = null; // Clear error on success
+            break; // Success, exit retry loop
           } catch (error: any) {
-            console.error(`[grade-speaking] ❌ Transcription failed for question ${answer.questionId}:`, error);
-            throw error;
+            attempt++;
+            batchTranscriptionError = error;
+            if (error instanceof GeminiError && error.code === "RATE_LIMIT" && attempt <= RATE_LIMIT_MAX_RETRIES) {
+              console.warn(
+                `[grade-speaking] ⚠️ Rate limit hit for batch ${batchIndex + 1}, retrying (attempt ${attempt}/${RATE_LIMIT_MAX_RETRIES})...`,
+              );
+              await sleep(RATE_LIMIT_RETRY_DELAY_MS);
+              continue;
+            }
+            // Không phải RATE_LIMIT hoặc đã hết retry → break để xử lý bên ngoài
+            console.error(`[grade-speaking] ❌ Batch transcription failed for batch ${batchIndex + 1}:`, error);
+            break;
           }
-        } else if (transcript) {
-          console.log(`[grade-speaking] Using existing transcript for question ${answer.questionId}`);
-        } else {
-          console.log(`[grade-speaking] ⚠️ No transcript and no audioBase64 for question ${answer.questionId}`);
         }
 
-        return {
-          ...answer,
-          transcript: transcript || "",
-        };
-      })
-    );
+        // Nếu batch fail sau khi retry hết → có thể là daily limit
+        if (batchTranscriptionError) {
+          // Nếu đã retry hết (attempt > MAX_RETRIES) mà vẫn gặp RATE_LIMIT → có thể là daily limit
+          // (per-minute limit thường chỉ cần đợi vài giây là được)
+          const isDailyLimit = batchTranscriptionError instanceof GeminiError && 
+                               batchTranscriptionError.code === "RATE_LIMIT" && 
+                               attempt > RATE_LIMIT_MAX_RETRIES;
+          
+          if (isDailyLimit) {
+            // Trả về partial result với transcript đã có + failed questionIds
+            const partialTranscripts = transcribedAnswers
+              .filter((a) => a.transcript && a.transcript.trim().length > 0)
+              .map((a) => ({
+                questionId: a.questionId,
+                transcript: a.transcript!,
+              }));
+            
+            const failedQuestionIds = batch.map((a) => a.questionId);
+            
+            console.log(`[grade-speaking] ⚠️ Daily quota exceeded. Returning partial transcripts for ${partialTranscripts.length} questions.`);
+            console.log(`[grade-speaking] Failed questionIds: ${failedQuestionIds.join(", ")}`);
+
+            return response.status(200).json({
+              incomplete: true,
+              code: "QUOTA_EXCEEDED",
+              message: "Đã vượt quá giới hạn quota ngày của API key này. Vui lòng nhập API key khác để tiếp tục chấm các câu còn lại.",
+              partialTranscripts,
+              failedQuestionIds,
+              completedQuestionIds: partialTranscripts.map((p) => p.questionId),
+            });
+          } else {
+            // Lỗi khác (không phải daily limit) → throw để handler xử lý
+            throw batchTranscriptionError;
+          }
+        }
+
+        // Thêm transcript vào answers
+        batch.forEach((answer) => {
+          const transcript = transcriptMap[answer.questionId] || "";
+          transcribedAnswers.push({
+            ...answer,
+            transcript,
+          });
+        });
+
+        // Đợi giữa các batch để reset quota (trừ batch cuối)
+        if (batchIndex < batches.length - 1) {
+          console.log(`[grade-speaking] Waiting ${BATCH_DELAY_MS / 1000}s before next batch to reset quota...`);
+          await sleep(BATCH_DELAY_MS);
+        }
+      }
+    }
 
     // Group answers by part
     const answersByPart: Record<number, typeof transcribedAnswers> = {};
@@ -355,7 +470,7 @@ Important:
       );
 
       console.log(`[grade-speaking] Part ${part}: partScore=${partScore} (sum of ${validQuestionScores.length} questions)`);
-      
+
       overallScoreSum += partScore;
 
       // Chỉ trả về questionScores cho những câu có answer thực sự

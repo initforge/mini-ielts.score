@@ -10,17 +10,25 @@ import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import Header from "@/components/shared/Header";
 import StorageCleanup from "@/components/shared/StorageCleanup";
+import GeminiKeyInput from "@/components/shared/GeminiKeyInput";
 import SpeakingTab from "@/components/speaking/SpeakingTab";
 import SpeakingResults from "@/components/speaking/SpeakingResults";
+import SpeakingResultsLoading from "@/components/speaking/SpeakingResultsLoading";
 import WritingTab from "@/components/writing/WritingTab";
 import WritingResults from "@/components/writing/WritingResults";
 import { SpeakingGradingResponse, WritingGradingResponse } from "@/lib/types";
 
 function SpeakingContent() {
-  const { state, resetExam, setResults } = useSpeaking();
+  const { state, resetExam, setResults, updateTranscript } = useSpeaking();
   const [isGrading, setIsGrading] = useState(false);
   const [gradingError, setGradingError] = useState<string | null>(null);
   const [showNoAnswerModal, setShowNoAnswerModal] = useState(false);
+  const [showGeminiModal, setShowGeminiModal] = useState(false);
+  const [quotaExceededInfo, setQuotaExceededInfo] = useState<{
+    completedCount: number;
+    failedCount: number;
+    failedQuestionIds: string[];
+  } | null>(null);
 
   const handleGrade = async () => {
     if (state.answers.length === 0) {
@@ -113,13 +121,37 @@ function SpeakingContent() {
         return;
       }
       
-      // Check for incomplete data response
+      // Check for incomplete data response (quota exceeded với partial transcripts)
+      if (data.incomplete && data.code === "QUOTA_EXCEEDED" && data.partialTranscripts) {
+        // Lưu partial transcripts vào state
+        const partialTranscripts: Array<{ questionId: string; transcript: string }> = data.partialTranscripts || [];
+        partialTranscripts.forEach(({ questionId, transcript }) => {
+          updateTranscript(questionId, transcript);
+        });
+
+        // Lưu thông tin để hiển thị UI
+        setQuotaExceededInfo({
+          completedCount: partialTranscripts.length,
+          failedCount: data.failedQuestionIds?.length || 0,
+          failedQuestionIds: data.failedQuestionIds || [],
+        });
+
+        setGradingError(
+          data.message || "Đã vượt quá giới hạn quota ngày. Vui lòng nhập API key khác để tiếp tục."
+        );
+        setIsGrading(false);
+        return;
+      }
+
+      // Check for other incomplete responses
       if (data.incomplete) {
         setGradingError(data.message || "Chưa đầy đủ thông tin. Vui lòng hoàn thành tất cả các câu hỏi.");
         setIsGrading(false);
         return;
       }
 
+      // Clear quota exceeded info on success
+      setQuotaExceededInfo(null);
       const results: SpeakingGradingResponse = data;
       setResults(results);
     } catch (error) {
@@ -145,6 +177,23 @@ function SpeakingContent() {
   }
 
   if (state.isFinished && !state.results) {
+    // Khi đang grading: hiển thị luôn layout kết quả với skeleton loading
+    if (isGrading) {
+      return (
+        <>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-slate-900">Speaking Test Results</h2>
+            <Button variant="outline" disabled className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Đang chấm...
+            </Button>
+          </div>
+          <SpeakingResultsLoading />
+        </>
+      );
+    }
+
+    // Khi đã hoàn thành bài nhưng chưa bấm chấm điểm
     return (
       <>
         <Modal
@@ -155,40 +204,42 @@ function SpeakingContent() {
           type="alert"
           confirmText="OK"
         />
-      <Card>
-        <CardContent className="p-8 text-center">
-          <h2 className="mb-4 text-2xl font-bold text-slate-900">
-            Speaking Test Completed
-          </h2>
-          <p className="mb-6 text-slate-700">
-            {state.answers.length} answer(s) recorded. Click the button below to get your results.
-          </p>
-          {gradingError && (
-            <div className={`mb-4 rounded-lg p-4 ${
-              gradingError.includes("Chưa đầy đủ") 
-                ? "bg-green-100 text-green-700 border border-green-300" 
-                : "bg-error/20 text-error"
-            }`}>
-              {gradingError}
-            </div>
-          )}
-          <Button
-            onClick={handleGrade}
-            disabled={isGrading}
-            size="lg"
-            className="gap-2"
-          >
-            {isGrading ? (
-              <>
-                <Loader2 className="h-5 w-5 animate-spin" />
-                Grading...
-              </>
-            ) : (
-              "Get Results"
+        <Card>
+          <CardContent className="p-8 text-center">
+            <h2 className="mb-4 text-2xl font-bold text-slate-900">
+              Speaking Test Completed
+            </h2>
+            <p className="mb-6 text-slate-700">
+              {state.answers.length} answer(s) recorded. Click the button below to get your results.
+            </p>
+            {gradingError && (
+              <div
+                className={`mb-4 rounded-lg p-4 ${
+                  gradingError.includes("Chưa đầy đủ")
+                    ? "bg-green-100 text-green-700 border border-green-300"
+                    : "bg-error/20 text-error"
+                }`}
+              >
+                {gradingError}
+              </div>
             )}
-          </Button>
-        </CardContent>
-      </Card>
+            <Button
+              onClick={handleGrade}
+              disabled={isGrading}
+              size="lg"
+              className="gap-2"
+            >
+              {isGrading ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Grading...
+                </>
+              ) : (
+                "Get Results"
+              )}
+            </Button>
+          </CardContent>
+        </Card>
       </>
     );
   }
@@ -324,26 +375,67 @@ function WritingContent() {
             <div className={`mb-4 rounded-lg p-4 ${
               gradingError.includes("Chưa đầy đủ") 
                 ? "bg-green-100 text-green-700 border border-green-300" 
+                : quotaExceededInfo
+                ? "bg-yellow-50 text-yellow-800 border border-yellow-300"
                 : "bg-error/20 text-error"
             }`}>
-              {gradingError}
+              <div className="space-y-2">
+                <p>{gradingError}</p>
+                {quotaExceededInfo && (
+                  <div className="mt-3 text-sm">
+                    <p className="font-semibold mb-1">Tiến độ hiện tại:</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      <li className="text-green-700">
+                        ✅ Đã transcribe thành công: {quotaExceededInfo.completedCount} câu
+                      </li>
+                      <li className="text-yellow-700">
+                        ⏳ Còn lại cần transcribe: {quotaExceededInfo.failedCount} câu
+                      </li>
+                    </ul>
+                    <p className="mt-2 text-xs text-yellow-600">
+                      Sau khi nhập API key mới, hệ thống sẽ chỉ transcribe các câu còn lại, không cần làm lại từ đầu.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           )}
-          <Button
-            onClick={handleGrade}
-            disabled={isGrading}
-            size="lg"
-            className="gap-2"
-          >
-            {isGrading ? (
-              <>
-                <Loader2 className="h-5 w-5 animate-spin" />
-                Grading...
-              </>
-            ) : (
-              "Get Results"
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            {quotaExceededInfo && (
+              <Button
+                onClick={() => setShowGeminiModal(true)}
+                variant="outline"
+                size="lg"
+                className="gap-2 border-yellow-400 text-yellow-700 hover:bg-yellow-50"
+              >
+                Đổi API Key
+              </Button>
             )}
-          </Button>
+            <Button
+              onClick={handleGrade}
+              disabled={isGrading}
+              size="lg"
+              className="gap-2"
+            >
+              {isGrading ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Grading...
+                </>
+              ) : quotaExceededInfo ? (
+                "Tiếp tục chấm với API key mới"
+              ) : (
+                "Get Results"
+              )}
+            </Button>
+          </div>
+          <GeminiKeyInput
+            isOpen={showGeminiModal}
+            onClose={() => {
+              setShowGeminiModal(false);
+              // Sau khi đổi key, có thể tự động retry nếu user muốn
+            }}
+          />
         </CardContent>
       </Card>
       </>

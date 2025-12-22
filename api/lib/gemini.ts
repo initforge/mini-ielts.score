@@ -202,6 +202,15 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
       throw error;
     }
     
+    // Quota / rate limit
+    if (error?.status === 429) {
+      throw new GeminiError(
+        "Đã vượt quá giới hạn request khi transcribe audio. Vui lòng thử lại sau hoặc sử dụng API key khác.",
+        "RATE_LIMIT",
+        429
+      );
+    }
+
     // Xử lý lỗi API key
     if (error?.status === 400) {
       const errorInfo = error?.errorDetails?.find((e: any) => e['@type']?.includes('ErrorInfo'));
@@ -212,6 +221,201 @@ export async function transcribeAudio(audioBase64: string, mimeType: string = "a
           400
         );
       }
+    }
+
+    if (error?.status === 404) {
+      throw new GeminiError(
+        "Model không khả dụng để transcribe audio. Vui lòng đổi sang model khác hoặc kiểm tra API key.",
+        "MODEL_NOT_FOUND",
+        404
+      );
+    }
+
+    throw new GeminiError(
+      "Lỗi khi transcribe audio bằng Gemini. Vui lòng thử lại sau.",
+      "UNKNOWN",
+      500
+    );
+  }
+}
+
+/**
+ * Transcribe multiple audio files in a single request (batch processing)
+ * Returns a map of questionId -> transcript
+ */
+export async function transcribeMultipleAudio(
+  audioBatch: Array<{ questionId: string; audioBase64: string; mimeType?: string }>,
+  apiKey?: string
+): Promise<Record<string, string>> {
+  if (!audioBatch || audioBatch.length === 0) {
+    return {};
+  }
+
+  try {
+    const genAI = getGenAI(apiKey);
+
+    // Validate và normalize audio data
+    const normalizedBatch = audioBatch.map((item) => {
+      const audioBase64 = item.audioBase64;
+      let mimeType = item.mimeType || "audio/webm";
+      
+      // Normalize mimeType - remove codec info if present
+      if (mimeType.includes(';codecs=')) {
+        mimeType = mimeType.split(';')[0];
+      }
+
+      if (!audioBase64 || audioBase64.trim().length === 0) {
+        throw new Error(`Audio base64 is empty for question ${item.questionId}`);
+      }
+
+      const audioSizeKB = Math.round(audioBase64.length * 3 / 4 / 1024);
+      console.log(`[Gemini] Batch transcribe: question ${item.questionId}, size=${audioSizeKB}KB, mimeType=${mimeType}`);
+
+      return {
+        questionId: item.questionId,
+        audioBase64,
+        mimeType,
+      };
+    });
+
+    // Build prompt để Gemini trả về JSON map
+    const questionIds = normalizedBatch.map((item) => item.questionId).join(", ");
+    const prompt = `Transcribe these ${normalizedBatch.length} audio recordings. Each audio corresponds to a question ID.
+
+Return ONLY a valid JSON object with this exact structure (no markdown, no code blocks, no additional text):
+{
+  "${normalizedBatch[0].questionId}": "transcript text for first audio",
+  "${normalizedBatch[1].questionId}": "transcript text for second audio",
+  ...
+}
+
+Important:
+- Use the question IDs exactly as provided: ${questionIds}
+- Return ONLY the JSON object, nothing else
+- If an audio has no speech or is unclear, return an empty string "" for that questionId
+- Preserve natural speech patterns, punctuation, and capitalization`;
+
+    // Build content array: all audio files + prompt
+    const contentParts: any[] = normalizedBatch.map((item) => ({
+      inlineData: {
+        data: item.audioBase64,
+        mimeType: item.mimeType,
+      },
+    }));
+    contentParts.push({ text: prompt });
+
+    let lastError: any = null;
+
+    // Try models in order
+    for (const modelName of AUDIO_MODEL_CANDIDATES) {
+      try {
+        console.log(`[Gemini] Batch transcribe trying model: ${modelName} (${normalizedBatch.length} audio files)`);
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent(contentParts);
+        const response = await result.response;
+        let responseText = response.text().trim();
+
+        // Parse JSON response (handle markdown code blocks if present)
+        if (responseText.startsWith("```json")) {
+          responseText = responseText.replace(/^```json\s*/, "").replace(/\s*```$/, "");
+        } else if (responseText.startsWith("```")) {
+          responseText = responseText.replace(/^```\s*/, "").replace(/\s*```$/, "");
+        }
+
+        let transcriptMap: Record<string, string> = {};
+        try {
+          transcriptMap = JSON.parse(responseText);
+        } catch (parseError: any) {
+          console.error(`[Gemini] ❌ Failed to parse batch transcript JSON:`, parseError);
+          console.error(`[Gemini] Response text (first 500 chars):`, responseText.substring(0, 500));
+          throw new GeminiError(
+            "Gemini trả về format không hợp lệ. Vui lòng thử lại.",
+            "INVALID_RESPONSE",
+            500
+          );
+        }
+
+        // Validate: tất cả questionId phải có trong response
+        const missingIds = normalizedBatch
+          .map((item) => item.questionId)
+          .filter((id) => !(id in transcriptMap));
+        
+        if (missingIds.length > 0) {
+          console.warn(`[Gemini] ⚠️ Missing transcripts for questions: ${missingIds.join(", ")}`);
+          // Fill missing với empty string
+          missingIds.forEach((id) => {
+            transcriptMap[id] = "";
+          });
+        }
+
+        // Log success
+        const successCount = Object.values(transcriptMap).filter((t) => t && t.trim().length > 0).length;
+        console.log(`[Gemini] ✅ Batch transcription successful with model: ${modelName}`);
+        console.log(`[Gemini] Transcribed ${successCount}/${normalizedBatch.length} questions successfully`);
+
+        return transcriptMap;
+      } catch (err: any) {
+        lastError = err;
+        console.error(`[Gemini] ❌ Batch transcription model failed: ${modelName}`, "status:", err?.status, "message:", err?.message);
+
+        // 400 với API_KEY_INVALID → không thử model tiếp theo
+        if (err?.status === 400) {
+          const errorInfo = err?.errorDetails?.find((e: any) => e['@type']?.includes('ErrorInfo'));
+          if (errorInfo?.reason === 'API_KEY_INVALID') {
+            throw new GeminiError(
+              "API key không hợp lệ. Vui lòng kiểm tra lại API key của bạn.",
+              "API_KEY_INVALID",
+              400
+            );
+          }
+        }
+
+        // 429 → RATE_LIMIT, throw để caller retry
+        if (err?.status === 429) {
+          throw new GeminiError(
+            "Đã vượt quá giới hạn request. Vui lòng thử lại sau hoặc sử dụng API key khác.",
+            "RATE_LIMIT",
+            429
+          );
+        }
+
+        // 404 / 503 → thử model tiếp theo
+        if (err?.status === 404 || err?.status === 503) {
+          continue;
+        }
+
+        // Lỗi khác → throw luôn
+        throw err;
+      }
+    }
+
+    // Nếu tất cả model đều fail
+    if (lastError && lastError.status === 404) {
+      throw new GeminiError(
+        "Không tìm được model Gemini khả dụng để transcribe audio. Vui lòng kiểm tra lại API key.",
+        "MODEL_NOT_FOUND",
+        404
+      );
+    }
+
+    if (lastError) {
+      throw lastError;
+    }
+
+    throw new Error("Failed to transcribe audio batch");
+  } catch (error: any) {
+    console.error("Error transcribing audio batch:", error);
+
+    if (error instanceof GeminiError) {
+      throw error;
+    }
+
+    if (error?.status === 429) {
+      throw new GeminiError(
+        "Đã vượt quá giới hạn request. Vui lòng thử lại sau hoặc sử dụng API key khác.",
+        "RATE_LIMIT",
+        429
+      );
     }
 
     if (error?.status === 404) {
