@@ -130,15 +130,18 @@ function SpeakingContent() {
         });
 
         // Lưu thông tin để hiển thị UI
+        const transcriptsCompleted = data.transcriptsCompleted === true; // Đã transcribe xong, chỉ cần grade lại
         setQuotaExceededInfo({
           completedCount: partialTranscripts.length,
-          failedCount: data.failedQuestionIds?.length || 0,
+          failedCount: transcriptsCompleted ? 0 : (data.failedQuestionIds?.length || 0),
           failedQuestionIds: data.failedQuestionIds || [],
         });
 
-        setGradingError(
-          data.message || "Đã vượt quá giới hạn quota ngày. Vui lòng nhập API key khác để tiếp tục."
-        );
+        const errorMessage = transcriptsCompleted
+          ? "Đã transcribe xong tất cả audio nhưng chưa chấm được do đã vượt quá giới hạn quota ngày. Vui lòng nhập API key khác để tiếp tục chấm điểm (không cần transcribe lại)."
+          : (data.message || "Đã vượt quá giới hạn quota ngày. Vui lòng nhập API key khác để tiếp tục.");
+
+        setGradingError(errorMessage);
         setIsGrading(false);
         return;
       }

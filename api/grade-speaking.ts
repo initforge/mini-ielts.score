@@ -111,7 +111,258 @@ export default async function handler(
       console.log(`[grade-speaking] Using existing transcript for question ${answer.questionId}`);
     });
 
+    // Function để thực hiện grading (tách ra để có thể gọi song song với batch cuối)
+    const performGrading = async (finalTranscribedAnswers: typeof transcribedAnswers) => {
+    // Group answers by part
+      const answersByPart: Record<number, typeof finalTranscribedAnswers> = {};
+      finalTranscribedAnswers.forEach((answer) => {
+      const part = answer.questionType;
+      if (!answersByPart[part]) {
+        answersByPart[part] = [];
+      }
+      answersByPart[part].push(answer);
+    });
+
+    // Chuẩn bị media (ảnh) cho các part có picture / info
+    const mediaParts: Array<{ inlineData: { data: string; mimeType: string } }> = [];
+
+    const pushImage = (key?: string) => {
+      if (!key) return;
+      const imgBase64 = images?.[key];
+      if (!imgBase64) return;
+
+      let mimeType = "image/png";
+      let data = imgBase64;
+
+      if (imgBase64.startsWith("data:")) {
+        const [meta, raw] = imgBase64.split(",", 2);
+        const match = meta.match(/data:(.*?);base64/);
+        if (match && match[1]) {
+          mimeType = match[1];
+        }
+        data = raw || "";
+      }
+
+      if (data && data.trim().length > 0) {
+        mediaParts.push({
+          inlineData: {
+            data,
+            mimeType,
+          },
+        });
+      }
+    };
+
+    // Part 2 – Picture (Q3): mỗi câu có ảnh riêng theo questionId
+    pushImage("s3");
+    // Part 4 – Info response (Q7-9) dùng shared image "part4"
+    pushImage("part4");
+
+    // Rubric text for context caching
+    const rubricText = `TOEIC Speaking Evaluation Rubrics:
+
+Part Distribution (Total 200 points):
+- Part 1 (Read aloud, Q1-2): ~20 points (2 questions)
+- Part 2 (Picture, Q3): ~20 points (1 question)  
+- Part 3 (Q&A, Q5-7): ~40 points (3 questions)
+- Part 4 (Info response, Q8-10): ~60 points (3 questions)
+- Part 5 (Opinion, Q11): ~60 points (1 question)
+
+Evaluation Criteria (Feedback only, NO scores):
+1. Pronunciation (Phát âm): Is pronunciation clear and understandable? Stress, linking, intonation. Don't need to sound native, just understandable. Grammar errors are less severe than unclear pronunciation.
+2. Intonation & Stress (Ngữ điệu – nhấn trọng âm): Do questions go up? Do statements go down? Avoid monotone "robot reading".
+3. Grammar (Ngữ pháp): Basic tenses (present, past). Complete subject-verb sentences. Small errors OK if understandable.
+4. Vocabulary (Từ vựng): Appropriate word choice for context. Don't need advanced words. Know how to paraphrase when stuck.
+5. Coherence & Organization (Mạch lạc): Does answer have intro-body-conclusion? Main ideas and supporting details? Answers the question focus?
+6. Completeness of Response (Độ đầy đủ): Is answer complete? Has examples/reasons/details?
+
+Scoring:
+- Each question gets a score 0-200
+- Part scores are calculated from question scores
+- Overall score is weighted sum of part scores
+- Criteria are for feedback only, not scored separately`;
+
+      // Construct prompt - chỉ gửi những câu có transcript
+      const prompt = `Evaluate the following TOEIC Speaking responses.
+
+Student Responses by Part:
+${Object.entries(answersByPart).map(([part, partAnswers]) => {
+  // Chỉ lấy những câu có transcript (đã được transcribe thành công)
+  const answersWithTranscript = partAnswers.filter(a => a.transcript && a.transcript.trim().length > 0);
+  if (answersWithTranscript.length === 0) return `Part ${part}: No valid responses.`;
+  
+  return `
+Part ${part}:
+${answersWithTranscript.map((answer, idx) => {
+    const questionText = questions?.[answer.questionId] || answer.questionText;
+    return `Question ${answer.questionId}:
+Question: ${questionText}
+Transcript: ${answer.transcript}`;
+  }).join("\n\n")}
+`;
+}).filter(partText => !partText.includes("No valid responses")).join("\n\n")}
+
+Return your evaluation as a JSON object with this exact structure:
+{
+  "overallScore": <number 0-200, sum of all part scores>,
+  "partScores": [
+    {
+      "part": <number 1-6>,
+      "questionScores": [
+        {
+          "questionId": "<question id>",
+          "questionNumber": <number>,
+          "score": <number, see scoring scale below>,
+          "transcript": "<transcript text>",
+          "feedback": "<brief feedback for this question>"
+        },
+        ...
+      ],
+      "partScore": <number, sum of question scores in this part>
+    },
+    ...
+  ],
+  "criteria": {
+    "pronunciation": {
+      "name": "Pronunciation (Phát âm)",
+      "explanation": "<2-3 sentence feedback about pronunciation, no score>"
+    },
+    "intonation": {
+      "name": "Intonation & Stress (Ngữ điệu – nhấn trọng âm)",
+      "explanation": "<2-3 sentence feedback about intonation, no score>"
+    },
+    "grammar": {
+      "name": "Grammar (Ngữ pháp)",
+      "explanation": "<2-3 sentence feedback about grammar, no score>"
+    },
+    "vocabulary": {
+      "name": "Vocabulary (Từ vựng)",
+      "explanation": "<2-3 sentence feedback about vocabulary, no score>"
+    },
+    "coherence": {
+      "name": "Coherence & Organization (Mạch lạc)",
+      "explanation": "<2-3 sentence feedback about coherence, no score>"
+    },
+    "completeness": {
+      "name": "Completeness of Response (Độ đầy đủ)",
+      "explanation": "<2-3 sentence feedback about completeness, no score>"
+    }
+  },
+  "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
+      "weaknesses": ["<weakness 1>", "<weakness 2>", "<weakness 3>"]
+}
+
+SCORING SCALE (CRITICAL - Use these exact ranges):
+- Part 1 (Q1-2): Each question scored 0-10. Part total = sum of question scores (max 20).
+- Part 2 (Q3): Single question scored 0-20. Part total = question score (max 20).
+- Part 3 (Q4-6): Each question scored 0-13. Part total = sum of question scores (max 40).
+- Part 4 (Q7-9): Each question scored 0-20. Part total = sum of question scores (max 60).
+- Part 5 (Q10): Single question scored 0-30. Part total = question score (max 30).
+- Part 6 (Q11): Single question scored 0-30. Part total = question score (max 30).
+
+Important:
+- ONLY evaluate questions that are provided in "Student Responses by Part" above. Do NOT create scores for questions that are not listed.
+- For each part, ONLY include questionScores for questions that have transcripts in the input.
+- Score each question using the scale above (NOT 0-200).
+- Calculate partScore as the SUM of question scores in that part (only for questions that were actually answered).
+- Calculate overallScore as the SUM of all partScores (max 200).
+- ALL feedback text MUST be in Vietnamese (natural, dễ hiểu, không quá dài dòng), bao gồm:
+  - "feedback" cho từng câu hỏi
+  - "explanation" trong "criteria"
+  - "strengths" và "weaknesses"
+- Không dịch hoặc thay đổi tên key JSON (overallScore, partScores, criteria, strengths, weaknesses, ...). Chỉ nội dung chuỗi (string) bên trong mới dùng tiếng Việt.
+- Criteria explanations are feedback only, NO scores
+- Strengths and weaknesses should be concise and comprehensive
+- Return ONLY the JSON object, no additional text or markdown formatting.`;
+
+      const responseText =
+        mediaParts.length > 0
+          ? await generateContentWithMedia(mediaParts, prompt, apiKey, rubricText)
+          : await generateContent(prompt, apiKey, rubricText);
+      
+      // Parse JSON response (handle markdown code blocks if present)
+      let jsonText = responseText.trim();
+      if (jsonText.startsWith("```json")) {
+        jsonText = jsonText.replace(/^```json\s*/, "").replace(/\s*```$/, "");
+      } else if (jsonText.startsWith("```")) {
+        jsonText = jsonText.replace(/^```\s*/, "").replace(/\s*```$/, "");
+      }
+
+      let rawResult: any = {};
+      try {
+        rawResult = JSON.parse(jsonText) || {};
+      } catch (parseError: any) {
+        console.error("Failed to parse Gemini JSON response (speaking):", parseError);
+        console.error("Response text:", jsonText.substring(0, 500));
+        throw new Error("Gemini API trả về response không hợp lệ. Vui lòng thử lại.");
+      }
+
+      // AI đã chấm điểm theo đúng format của từng part:
+      // - Part 1: mỗi câu 0-10, part = tổng
+      // - Part 2: 0-20
+      // - Part 3: mỗi câu 0-13, part = tổng
+      // - Part 4: mỗi câu 0-20, part = tổng
+      // - Part 5: 0-30
+      // - Part 6: 0-30
+      // Chỉ cần lấy điểm từ AI response và cộng tổng, không cần scale
+
+      const normalizedPartScores: any[] = [];
+      let overallScoreSum = 0;
+
+      for (const part of Object.keys(PART_WEIGHTS).map((p) => Number(p))) {
+        const existingPart =
+          rawResult.partScores?.find((p: any) => p.part === part) || {
+            part,
+            questionScores: [],
+            partScore: 0,
+          };
+
+        // Normalize question scores: đảm bảo mỗi câu có score hợp lệ
+        const normalizedQuestionScores = existingPart.questionScores?.map((qs: any) => {
+          let score = typeof qs.score === "number" ? qs.score : 0;
+          // Clamp score theo part
+          if (part === 1) score = Math.max(0, Math.min(10, score));
+          else if (part === 2) score = Math.max(0, Math.min(20, score));
+          else if (part === 3) score = Math.max(0, Math.min(13, score));
+          else if (part === 4) score = Math.max(0, Math.min(20, score));
+          else if (part === 5) score = Math.max(0, Math.min(30, score));
+          else if (part === 6) score = Math.max(0, Math.min(30, score));
+
+          return {
+            questionId: qs.questionId || "",
+            questionNumber: qs.questionNumber || 0,
+            score,
+            transcript: qs.transcript || "",
+            feedback: qs.feedback || "",
+          };
+        }) || [];
+
+        // Tính partScore từ tổng question scores
+        const partScore = normalizedQuestionScores.reduce((sum: number, qs: any) => sum + (qs.score || 0), 0);
+
+        normalizedPartScores.push({
+          part,
+          questionScores: normalizedQuestionScores,
+          partScore,
+        });
+
+        overallScoreSum += partScore;
+      }
+
+      // Clamp overall score
+      const overallScore = Math.max(0, Math.min(200, overallScoreSum));
+
+      return {
+        overallScore,
+        partScores: normalizedPartScores,
+        criteria: rawResult.criteria || {},
+        strengths: rawResult.strengths || [],
+        weaknesses: rawResult.weaknesses || [],
+      };
+    };
+
     // Nếu có câu cần transcribe → chia batch và gọi Gemini
+    let gradePromise: Promise<any> | null = null;
     if (answersToTranscribe.length > 0) {
       // Chia thành batch (mỗi batch tối đa BATCH_SIZE câu)
       const batches: Array<typeof answersToTranscribe> = [];
@@ -124,7 +375,13 @@ export default async function handler(
       // Xử lý từng batch
       for (let batchIndex = 0; batchIndex < batches.length; batchIndex++) {
         const batch = batches[batchIndex];
+        const isLastBatch = batchIndex === batches.length - 1;
         console.log(`[grade-speaking] Processing batch ${batchIndex + 1}/${batches.length} (${batch.length} questions)`);
+
+        // Nếu là batch cuối → chuẩn bị grade request (sẽ gọi sau khi batch xong)
+        if (isLastBatch) {
+          console.log(`[grade-speaking] Will start grade request after last batch completes...`);
+        }
 
         // Chuẩn bị data cho batch transcribe
         const audioBatch = batch.map((answer) => ({
@@ -226,272 +483,73 @@ export default async function handler(
           });
         });
 
+        // Nếu là batch cuối → bắt đầu grade request ngay (song song, không đợi)
+        if (isLastBatch) {
+          console.log(`[grade-speaking] Starting grade request in parallel (all transcripts now available)...`);
+          gradePromise = performGrading([...transcribedAnswers]).catch((error) => {
+            // Lưu error để xử lý sau
+            return { error };
+          });
+        }
+
         // Đợi giữa các batch để reset quota (trừ batch cuối)
-        if (batchIndex < batches.length - 1) {
+        if (!isLastBatch) {
           console.log(`[grade-speaking] Waiting ${BATCH_DELAY_MS / 1000}s before next batch to reset quota...`);
           await sleep(BATCH_DELAY_MS);
         }
       }
-    }
 
-    // Group answers by part
-    const answersByPart: Record<number, typeof transcribedAnswers> = {};
-    transcribedAnswers.forEach((answer) => {
-      const part = answer.questionType;
-      if (!answersByPart[part]) {
-        answersByPart[part] = [];
-      }
-      answersByPart[part].push(answer);
-    });
-
-    // Chuẩn bị media (ảnh) cho các part có picture / info
-    const mediaParts: Array<{ inlineData: { data: string; mimeType: string } }> = [];
-
-    const pushImage = (key?: string) => {
-      if (!key) return;
-      const imgBase64 = images?.[key];
-      if (!imgBase64) return;
-
-      let mimeType = "image/png";
-      let data = imgBase64;
-
-      if (imgBase64.startsWith("data:")) {
-        const [meta, raw] = imgBase64.split(",", 2);
-        const match = meta.match(/data:(.*?);base64/);
-        if (match && match[1]) {
-          mimeType = match[1];
+      // Sau khi tất cả batch xong → đợi grade result (nếu có)
+      if (gradePromise) {
+        console.log(`[grade-speaking] Waiting for grade result...`);
+        const gradeResult = await gradePromise;
+        
+        // Nếu grade fail do 429 → trả về partial result với transcripts đã có
+        if (gradeResult?.error) {
+          const error = gradeResult.error;
+          if (error instanceof GeminiError && error.code === "RATE_LIMIT") {
+            const partialTranscripts = transcribedAnswers
+              .filter((a) => a.transcript && a.transcript.trim().length > 0)
+              .map((a) => ({
+                questionId: a.questionId,
+                transcript: a.transcript!,
+              }));
+            
+            console.log(`[grade-speaking] ⚠️ Daily quota exceeded during grading. All ${partialTranscripts.length} transcripts completed.`);
+            
+            return response.status(200).json({
+              incomplete: true,
+              code: "QUOTA_EXCEEDED",
+              message: "Đã transcribe xong tất cả audio nhưng chưa chấm được do đã vượt quá giới hạn quota ngày. Vui lòng nhập API key khác để tiếp tục chấm điểm (không cần transcribe lại).",
+              partialTranscripts,
+              transcriptsCompleted: true, // Đánh dấu đã transcribe xong
+              failedQuestionIds: [],
+              completedQuestionIds: partialTranscripts.map((p) => p.questionId),
+            });
+          } else {
+            // Lỗi khác → throw
+            throw error;
+          }
         }
-        data = raw || "";
+        
+        // Grade thành công → trả về kết quả
+        return response.status(200).json(gradeResult);
       }
-
-      if (data && data.trim().length > 0) {
-        mediaParts.push({
-          inlineData: {
-            data,
-            mimeType,
-          },
-        });
-      }
-    };
-
-    // Part 2 – Picture (Q3): mỗi câu có ảnh riêng theo questionId
-    pushImage("s3");
-    // Part 4 – Info response (Q7-9) dùng shared image "part4"
-    pushImage("part4");
-
-    // Rubric text for context caching
-    const rubricText = `TOEIC Speaking Evaluation Rubrics:
-
-Part Distribution (Total 200 points):
-- Part 1 (Read aloud, Q1-2): ~20 points (2 questions)
-- Part 2 (Picture, Q3): ~20 points (1 question)  
-- Part 3 (Q&A, Q5-7): ~40 points (3 questions)
-- Part 4 (Info response, Q8-10): ~60 points (3 questions)
-- Part 5 (Opinion, Q11): ~60 points (1 question)
-
-Evaluation Criteria (Feedback only, NO scores):
-1. Pronunciation (Phát âm): Is pronunciation clear and understandable? Stress, linking, intonation. Don't need to sound native, just understandable. Grammar errors are less severe than unclear pronunciation.
-2. Intonation & Stress (Ngữ điệu – nhấn trọng âm): Do questions go up? Do statements go down? Avoid monotone "robot reading".
-3. Grammar (Ngữ pháp): Basic tenses (present, past). Complete subject-verb sentences. Small errors OK if understandable.
-4. Vocabulary (Từ vựng): Appropriate word choice for context. Don't need advanced words. Know how to paraphrase when stuck.
-5. Coherence & Organization (Mạch lạc): Does answer have intro-body-conclusion? Main ideas and supporting details? Answers the question focus?
-6. Completeness of Response (Độ đầy đủ): Is answer complete? Has examples/reasons/details?
-
-Scoring:
-- Each question gets a score 0-200
-- Part scores are calculated from question scores
-- Overall score is weighted sum of part scores
-- Criteria are for feedback only, not scored separately`;
-
-    // Construct prompt - chỉ gửi những câu có transcript
-    const prompt = `Evaluate the following TOEIC Speaking responses.
-
-Student Responses by Part:
-${Object.entries(answersByPart).map(([part, partAnswers]) => {
-  // Chỉ lấy những câu có transcript (đã được transcribe thành công)
-  const answersWithTranscript = partAnswers.filter(a => a.transcript && a.transcript.trim().length > 0);
-  if (answersWithTranscript.length === 0) return `Part ${part}: No valid responses.`;
-  
-  return `
-Part ${part}:
-${answersWithTranscript.map((answer, idx) => {
-  const questionText = questions?.[answer.questionId] || answer.questionText;
-  return `Question ${answer.questionId}:
-Question: ${questionText}
-Transcript: ${answer.transcript}`;
-}).join("\n\n")}
-`;
-}).filter(partText => !partText.includes("No valid responses")).join("\n\n")}
-
-Return your evaluation as a JSON object with this exact structure:
-{
-  "overallScore": <number 0-200, sum of all part scores>,
-  "partScores": [
-    {
-      "part": <number 1-6>,
-      "questionScores": [
-        {
-          "questionId": "<question id>",
-          "questionNumber": <number>,
-          "score": <number, see scoring scale below>,
-          "transcript": "<transcript text>",
-          "feedback": "<brief feedback for this question>"
-        },
-        ...
-      ],
-      "partScore": <number, sum of question scores in this part>
-    },
-    ...
-  ],
-  "criteria": {
-    "pronunciation": {
-      "name": "Pronunciation (Phát âm)",
-      "explanation": "<2-3 sentence feedback about pronunciation, no score>"
-    },
-    "intonation": {
-      "name": "Intonation & Stress (Ngữ điệu – nhấn trọng âm)",
-      "explanation": "<2-3 sentence feedback about intonation, no score>"
-    },
-    "grammar": {
-      "name": "Grammar (Ngữ pháp)",
-      "explanation": "<2-3 sentence feedback about grammar, no score>"
-    },
-    "vocabulary": {
-      "name": "Vocabulary (Từ vựng)",
-      "explanation": "<2-3 sentence feedback about vocabulary, no score>"
-    },
-    "coherence": {
-      "name": "Coherence & Organization (Mạch lạc)",
-      "explanation": "<2-3 sentence feedback about coherence, no score>"
-    },
-    "completeness": {
-      "name": "Completeness of Response (Độ đầy đủ)",
-      "explanation": "<2-3 sentence feedback about completeness, no score>"
-    }
-  },
-  "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
-      "weaknesses": ["<weakness 1>", "<weakness 2>", "<weakness 3>"]
-}
-
-SCORING SCALE (CRITICAL - Use these exact ranges):
-- Part 1 (Q1-2): Each question scored 0-10. Part total = sum of question scores (max 20).
-- Part 2 (Q3): Single question scored 0-20. Part total = question score (max 20).
-- Part 3 (Q4-6): Each question scored 0-13. Part total = sum of question scores (max 40).
-- Part 4 (Q7-9): Each question scored 0-20. Part total = sum of question scores (max 60).
-- Part 5 (Q10): Single question scored 0-30. Part total = question score (max 30).
-- Part 6 (Q11): Single question scored 0-30. Part total = question score (max 30).
-
-Important:
-- ONLY evaluate questions that are provided in "Student Responses by Part" above. Do NOT create scores for questions that are not listed.
-- For each part, ONLY include questionScores for questions that have transcripts in the input.
-- Score each question using the scale above (NOT 0-200).
-- Calculate partScore as the SUM of question scores in that part (only for questions that were actually answered).
-- Calculate overallScore as the SUM of all partScores (max 200).
-- ALL feedback text MUST be in Vietnamese (natural, dễ hiểu, không quá dài dòng), bao gồm:
-  - "feedback" cho từng câu hỏi
-  - "explanation" trong "criteria"
-  - "strengths" và "weaknesses"
-- Không dịch hoặc thay đổi tên key JSON (overallScore, partScores, criteria, strengths, weaknesses, ...). Chỉ nội dung chuỗi (string) bên trong mới dùng tiếng Việt.
-- Criteria explanations are feedback only, NO scores
-- Strengths and weaknesses should be concise and comprehensive
-- Return ONLY the JSON object, no additional text or markdown formatting.`;
-
-    const responseText =
-      mediaParts.length > 0
-        ? await generateContentWithMedia(mediaParts, prompt, apiKey, rubricText)
-        : await generateContent(prompt, apiKey, rubricText);
-    
-    // Parse JSON response (handle markdown code blocks if present)
-    let jsonText = responseText.trim();
-    if (jsonText.startsWith("```json")) {
-      jsonText = jsonText.replace(/^```json\s*/, "").replace(/\s*```$/, "");
-    } else if (jsonText.startsWith("```")) {
-      jsonText = jsonText.replace(/^```\s*/, "").replace(/\s*```$/, "");
     }
 
-    let rawResult: any = {};
-    try {
-      rawResult = JSON.parse(jsonText) || {};
-    } catch (parseError: any) {
-      console.error("Failed to parse Gemini JSON response (speaking):", parseError);
-      console.error("Response text:", jsonText.substring(0, 500));
-      return response.status(500).json({
-        error: "Gemini API trả về response không hợp lệ. Vui lòng thử lại.",
-        code: "INVALID_RESPONSE",
-        details: parseError?.message || "JSON parse error"
-      });
+    // Nếu không có câu cần transcribe (tất cả đã có transcript) → chỉ cần grade
+    if (transcribedAnswers.length > 0) {
+      console.log(`[grade-speaking] All transcripts already available, proceeding to grade...`);
+      const gradeResult = await performGrading(transcribedAnswers);
+      return response.status(200).json(gradeResult);
     }
 
-    // AI đã chấm điểm theo đúng format của từng part:
-    // - Part 1: mỗi câu 0-10, part = tổng
-    // - Part 2: 0-20
-    // - Part 3: mỗi câu 0-13, part = tổng
-    // - Part 4: mỗi câu 0-20, part = tổng
-    // - Part 5: 0-30
-    // - Part 6: 0-30
-    // Chỉ cần lấy điểm từ AI response và cộng tổng, không cần scale
-
-    const normalizedPartScores: any[] = [];
-    let overallScoreSum = 0;
-
-    for (const part of Object.keys(PART_WEIGHTS).map((p) => Number(p))) {
-      const existingPart =
-        rawResult.partScores?.find((p: any) => p.part === part) || {
-          part,
-          questionScores: [],
-          partScore: 0,
-        };
-
-      const questionScores: any[] = existingPart.questionScores || [];
-      
-      // Chỉ tính điểm cho những câu có answer thực sự (có trong validAnswersInput)
-      const validQuestionIds = new Set(validAnswersInput.map(a => a.questionId));
-      const validQuestionScores = questionScores.filter(q => validQuestionIds.has(q.questionId));
-      
-      // Nếu không có câu nào được làm trong part này → điểm = 0
-      if (validQuestionScores.length === 0) {
-        normalizedPartScores.push({
-          part,
-          partScore: 0,
-          questionScores: [],
-        });
-        continue;
-      }
-      
-      // Tính partScore = tổng điểm các câu đã làm
-      // AI đã chấm đúng format rồi (0-10 cho Part 1, 0-13 cho Part 3, etc.)
-      const partScore = validQuestionScores.reduce(
-        (sum, q) => {
-          const score = typeof q.score === "number" ? q.score : 0;
-          console.log(`[grade-speaking] Part ${part}, Question ${q.questionId}: score=${score}`);
-          return sum + score;
-        },
-        0
-      );
-
-      console.log(`[grade-speaking] Part ${part}: partScore=${partScore} (sum of ${validQuestionScores.length} questions)`);
-
-      overallScoreSum += partScore;
-
-      // Chỉ trả về questionScores cho những câu có answer thực sự
-      const filteredQuestionScores = questionScores.filter(q => validQuestionIds.has(q.questionId));
-
-      normalizedPartScores.push({
-        part,
-        partScore: partScore, // Tổng điểm các câu đã làm
-        questionScores: filteredQuestionScores,
-      });
-    }
-
-    const overallScore = Math.max(0, Math.min(200, overallScoreSum));
-
-    const normalizedResult = {
-      ...rawResult,
-      overallScore,
-      partScores: normalizedPartScores,
-    };
-
-    return response.status(200).json(normalizedResult);
+    // Fallback: không nên đến đây (tất cả đã được xử lý ở trên)
+    // Nếu đến đây → có lỗi logic, trả về error
+    return response.status(500).json({
+      error: "Internal error: No valid processing path executed",
+      code: "INTERNAL_ERROR"
+    });
   } catch (error) {
     console.error("Grading error:", error);
     
