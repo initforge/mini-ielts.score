@@ -80,12 +80,12 @@ export default function CollapsibleImageUpload({
               </button>
             </div>
             
-            {/* ImageUpload Component */}
+            {/* ImageUpload Component - không truyền label vì đã có header ở trên */}
             <ImageUpload
               part={part}
               value={value}
               onChange={onChange}
-              label={label}
+              label="" // Không hiển thị label vì đã có ở header
             />
           </motion.div>
         )}

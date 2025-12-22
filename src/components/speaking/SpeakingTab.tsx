@@ -500,32 +500,6 @@ export default function SpeakingTab() {
                 />
               )}
 
-              {/* Display uploaded image for Part 1 (Q1-5) */}
-              {currentQuestion.part === 1 && state.images?.[currentQuestion.id] && (
-                <Card className="bg-slate-50 border border-slate-200">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <ImageIcon className="h-4 w-4 text-slate-600" />
-                      <label className="text-sm font-semibold text-slate-900">
-                        Image (for Q{currentQuestion.questionNumber})
-                      </label>
-                    </div>
-                    <div className="relative h-64 w-full overflow-hidden rounded-lg border-2 border-slate-300 bg-slate-100">
-                      <img
-                        src={state.images[currentQuestion.id]}
-                        alt={`Question ${currentQuestion.questionNumber} image`}
-                        className="h-full w-full object-contain"
-                      />
-                    </div>
-                    <button
-                      onClick={() => setQuestionImage(currentQuestion.id, null)}
-                      className="mt-2 rounded-lg bg-error px-3 py-1 text-sm text-white hover:bg-error/90 transition-colors"
-                    >
-                      Remove Image
-                    </button>
-                  </CardContent>
-                </Card>
-              )}
 
               {/* Part 2 (Q3-4): Image Upload - Separate for Q3 and Q4 */}
               {currentQuestion.part === 2 && currentQuestion.questionNumber === 3 && (

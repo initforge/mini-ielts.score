@@ -2,6 +2,13 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import { generateContent, generateContentWithMedia, transcribeAudio, transcribeMultipleAudio, GeminiError } from './lib/gemini';
 import { SpeakingAnswer } from './lib/types';
 
+// Cấu hình timeout cho Vercel serverless function
+// Free tier: max 10s, Pro: max 60s, Enterprise: max 300s
+// Note: Nếu chạy trên VPS, timeout được điều khiển bởi nginx config
+export const config = {
+  maxDuration: 300, // 300 giây (5 phút) để đủ cho batch transcription + grading
+};
+
 // Part weight mapping (ảnh hưởng trong 200 điểm)
 const PART_WEIGHTS: Record<number, number> = {
   1: 20, // Part 1: Q1-2 (2 câu) ~ 20 điểm
