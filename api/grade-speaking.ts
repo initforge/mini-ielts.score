@@ -182,9 +182,9 @@ export default async function handler(
         }
 
         // Nếu batch fail sau khi retry hết → có thể là daily limit
+        // Logic: Sau khi retry MAX_RETRIES lần mà vẫn 429 → coi như daily limit
+        // (vì per-minute limit thường chỉ cần đợi vài giây là được)
         if (batchTranscriptionError) {
-          // Nếu đã retry hết (attempt > MAX_RETRIES) mà vẫn gặp RATE_LIMIT → có thể là daily limit
-          // (per-minute limit thường chỉ cần đợi vài giây là được)
           const isDailyLimit = batchTranscriptionError instanceof GeminiError && 
                                batchTranscriptionError.code === "RATE_LIMIT" && 
                                attempt > RATE_LIMIT_MAX_RETRIES;

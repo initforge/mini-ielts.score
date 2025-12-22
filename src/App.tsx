@@ -217,27 +217,68 @@ function SpeakingContent() {
                 className={`mb-4 rounded-lg p-4 ${
                   gradingError.includes("Chưa đầy đủ")
                     ? "bg-green-100 text-green-700 border border-green-300"
+                    : quotaExceededInfo
+                    ? "bg-yellow-50 text-yellow-800 border border-yellow-300"
                     : "bg-error/20 text-error"
                 }`}
               >
-                {gradingError}
+                <div className="space-y-2">
+                  <p>{gradingError}</p>
+                  {quotaExceededInfo && (
+                    <div className="mt-3 text-sm">
+                      <p className="font-semibold mb-1">Tiến độ hiện tại:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li className="text-green-700">
+                          ✅ Đã transcribe thành công: {quotaExceededInfo.completedCount} câu
+                        </li>
+                        <li className="text-yellow-700">
+                          ⏳ Còn lại cần transcribe: {quotaExceededInfo.failedCount} câu
+                        </li>
+                      </ul>
+                      <p className="mt-2 text-xs text-yellow-600">
+                        Sau khi nhập API key mới, hệ thống sẽ chỉ transcribe các câu còn lại, không cần làm lại từ đầu.
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
-            <Button
-              onClick={handleGrade}
-              disabled={isGrading}
-              size="lg"
-              className="gap-2"
-            >
-              {isGrading ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Grading...
-                </>
-              ) : (
-                "Get Results"
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              {quotaExceededInfo && (
+                <Button
+                  onClick={() => setShowGeminiModal(true)}
+                  variant="outline"
+                  size="lg"
+                  className="gap-2 border-yellow-400 text-yellow-700 hover:bg-yellow-50"
+                >
+                  Đổi API Key
+                </Button>
               )}
-            </Button>
+              <Button
+                onClick={handleGrade}
+                disabled={isGrading}
+                size="lg"
+                className="gap-2"
+              >
+                {isGrading ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    Grading...
+                  </>
+                ) : quotaExceededInfo ? (
+                  "Tiếp tục chấm với API key mới"
+                ) : (
+                  "Get Results"
+                )}
+              </Button>
+            </div>
+            <GeminiKeyInput
+              isOpen={showGeminiModal}
+              onClose={() => {
+                setShowGeminiModal(false);
+                // Sau khi đổi key, có thể tự động retry nếu user muốn
+              }}
+            />
           </CardContent>
         </Card>
       </>

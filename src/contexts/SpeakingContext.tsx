@@ -42,12 +42,18 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
     audioUrls: {}, // Store audio URLs for playback
   });
 
-  // On fresh load: chỉ xóa sessionStorage (không xóa audio để giữ lại data đã làm)
-  // Audio chỉ được xóa khi user bấm "Start New Test" hoặc "Reset Exam"
+  // On fresh load we ALWAYS treat it as a new session:
+  // - clear any persisted speaking state
+  // - clear all stored audio recordings
   useEffect(() => {
-    sessionStorage.removeItem(STORAGE_KEY);
-    // KHÔNG xóa audio ở đây để giữ lại 11 câu đã làm khi deploy code mới
-    // Audio sẽ được xóa khi user bấm "Start New Test" hoặc "Reset Exam"
+    (async () => {
+      sessionStorage.removeItem(STORAGE_KEY);
+      try {
+        await clearAllAudio();
+      } catch (error) {
+        console.error("Failed to clear audio from IndexedDB on app load:", error);
+      }
+    })();
   }, []);
 
   const startExam = useCallback(() => {
@@ -241,6 +247,7 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Update transcript for an answer (used when receiving partial transcripts from backend)
+  // Chỉ update nếu answer đã tồn tại, không tạo mới để tránh data không đồng bộ
   const updateTranscript = useCallback((questionId: string, transcript: string) => {
     setState((prev) => {
       const existingIndex = prev.answers.findIndex((a) => a.questionId === questionId);
@@ -255,9 +262,10 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
           answers: newAnswers,
         };
       }
-      // Nếu chưa có answer → chỉ log warning, không tạo mới (vì answer phải được tạo khi user làm bài)
-      console.warn(`[SpeakingContext] updateTranscript: Answer not found for questionId ${questionId}. Transcript will be lost.`);
-      return prev;
+      // Nếu chưa có answer → log warning và không tạo mới
+      // (Trong thực tế, answer đã được tạo khi user làm bài qua saveAnswer)
+      console.warn(`[SpeakingContext] updateTranscript: Answer not found for questionId ${questionId}. Transcript will not be saved.`);
+      return prev; // Không thay đổi state
     });
   }, []);
 
