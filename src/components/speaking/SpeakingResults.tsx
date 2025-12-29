@@ -5,13 +5,15 @@ import ResultCard from "@/components/shared/ResultCard";
 import RubricCard from "@/components/shared/RubricCard";
 import { SpeakingGradingResponse } from "@/lib/types";
 import { staggerContainer, staggerItem } from "@/lib/animations";
-import { speakingQuestions } from "@/lib/mockData";
+import { useSpeaking } from "@/contexts/SpeakingContext";
 
 interface SpeakingResultsProps {
   results: SpeakingGradingResponse;
 }
 
 export default function SpeakingResults({ results }: SpeakingResultsProps) {
+  const { filteredQuestions } = useSpeaking();
+  
   const criteriaArray = [
     results.criteria.pronunciation,
     results.criteria.intonation,
@@ -73,21 +75,20 @@ export default function SpeakingResults({ results }: SpeakingResultsProps) {
               </CardHeader>
               <CardContent className="space-y-4">
                 {partScore.questionScores.map((qScore) => {
-                  const question = speakingQuestions.find(q => q.id === qScore.questionId);
+                  const question = filteredQuestions.find(q => q.id === qScore.questionId);
                   // AI đã chấm đúng format rồi, không cần scale:
                   // - Part 1: mỗi câu 0-10
-                  // - Part 2: 0-20
+                  // - Part 2: mỗi câu 0-10
                   // - Part 3: mỗi câu 0-13
                   // - Part 4: mỗi câu 0-20
                   // - Part 5: 0-30
-                  // - Part 6: 0-30
                   const questionMaxScores: Record<number, number> = {
                     1: 10, // Part 1: mỗi câu 0-10
-                    2: 20, // Part 2: 0-20
+                    2: 10, // Part 2: mỗi câu 0-10
                     3: 13, // Part 3: mỗi câu 0-13
                     4: 20, // Part 4: mỗi câu 0-20
                     5: 30, // Part 5: 0-30
-                    6: 30, // Part 6: 0-30
+                    6: 30, // Part 6: 0-30 (deprecated)
                   };
                   const questionMax = questionMaxScores[partScore.part] ?? 20;
                   const questionScore = Math.round(qScore.score ?? 0);

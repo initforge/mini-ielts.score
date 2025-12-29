@@ -11,14 +11,17 @@ import QuestionStepper from "./QuestionStepper";
 import AudioRecorder from "./AudioRecorder";
 import Timer from "@/components/shared/Timer";
 import ProgressBar from "@/components/shared/ProgressBar";
-import { speakingQuestions } from "@/lib/mockData";
+// Removed import - using filteredQuestions from context instead
 import { cn } from "@/lib/utils";
 import { storeAudio } from "@/lib/audioStorage";
+import { SpeakingAudioPlayer } from "./SpeakingAudioPlayer";
+import { speakingAudio } from "@/lib/speakingAudio";
 
 export default function SpeakingTab() {
   const {
     state,
     currentQuestion,
+    filteredQuestions,
     setCurrentQuestion,
     saveAnswer,
     finishExam,
@@ -42,6 +45,10 @@ export default function SpeakingTab() {
   const [showPart4Instruction, setShowPart4Instruction] = useState(false);
   const [showPart5Instruction, setShowPart5Instruction] = useState(false);
   const [hasUserSelectedQuestion, setHasUserSelectedQuestion] = useState(false);
+  
+  // Audio states
+  const [shouldPlayBeginPreparing, setShouldPlayBeginPreparing] = useState(false);
+  const [shouldPlayBeginSpeaking, setShouldPlayBeginSpeaking] = useState(false);
   const [shownInstructions, setShownInstructions] = useState<Set<number>>(() => {
     if (typeof window !== "undefined") {
       const saved = sessionStorage.getItem("speaking-shown-instructions");
@@ -68,9 +75,9 @@ export default function SpeakingTab() {
   }
 
   const progress = state.currentQuestionIndex !== null 
-    ? ((state.currentQuestionIndex + 1) / speakingQuestions.length) * 100 
+    ? ((state.currentQuestionIndex + 1) / filteredQuestions.length) * 100 
     : 0;
-  const canGoNext = state.currentQuestionIndex !== null && state.currentQuestionIndex < speakingQuestions.length - 1;
+  const canGoNext = state.currentQuestionIndex !== null && state.currentQuestionIndex < filteredQuestions.length - 1;
   const canGoPrev = state.currentQuestionIndex !== null && state.currentQuestionIndex > 0;
 
   // Reset hasUserSelectedQuestion when question becomes null (tab switch)
@@ -104,11 +111,22 @@ export default function SpeakingTab() {
     if (prep > 0 && !existingAnswer) {
       setIsPreparing(true);
       setPrepDone(false);
+      // Play begin-preparing audio khi bắt đầu preparation
+      setShouldPlayBeginPreparing(true);
     } else {
       setIsPreparing(false);
       setPrepDone(true);
     }
   }, [currentQuestion?.id, currentQuestion?.preparationTime, resetTimerState, state.answers]);
+
+  // Play begin-speaking khi bắt đầu recording (sau preparation)
+  useEffect(() => {
+    if (prepDone && !isPreparing && isRecordingLocal) {
+      setShouldPlayBeginSpeaking(true);
+    } else {
+      setShouldPlayBeginSpeaking(false);
+    }
+  }, [prepDone, isPreparing, isRecordingLocal]);
 
   // Show instruction modal ONLY when user manually selects a question
   useEffect(() => {
@@ -261,6 +279,7 @@ export default function SpeakingTab() {
         isOpen={showPart1Instruction}
         title="Questions 1-2: Read a text aloud"
         instructions={part1Instructions}
+        part={1}
         onStart={() => {
           setShowPart1Instruction(false);
           handleStartPart();
@@ -270,6 +289,7 @@ export default function SpeakingTab() {
         isOpen={showPart2Instruction}
         title="Questions 3-4: Describe a picture"
         instructions={part2Instructions}
+        part={2}
         onStart={() => {
           setShowPart2Instruction(false);
           handleStartPart();
@@ -279,6 +299,7 @@ export default function SpeakingTab() {
         isOpen={showPart3Instruction}
         title="Questions 5-7: Respond to questions"
         instructions={part3Instructions}
+        part={3}
         onStart={() => {
           setShowPart3Instruction(false);
           handleStartPart();
@@ -288,6 +309,7 @@ export default function SpeakingTab() {
         isOpen={showPart4Instruction}
         title="Questions 8-10: Respond to questions using information provided"
         instructions={part4Instructions}
+        part={4}
         onStart={() => {
           setShowPart4Instruction(false);
           handleStartPart();
@@ -297,11 +319,28 @@ export default function SpeakingTab() {
         isOpen={showPart5Instruction}
         title="Question 11: Express an opinion"
         instructions={part5Instructions}
+        part={5}
         onStart={() => {
           setShowPart5Instruction(false);
           handleStartPart();
         }}
       />
+      
+      {/* Audio Players */}
+      {shouldPlayBeginPreparing && (
+        <SpeakingAudioPlayer
+          src={speakingAudio.system.beginPreparing}
+          autoPlay={true}
+          onEnded={() => setShouldPlayBeginPreparing(false)}
+        />
+      )}
+      {shouldPlayBeginSpeaking && (
+        <SpeakingAudioPlayer
+          src={speakingAudio.system.beginSpeaking}
+          autoPlay={true}
+          onEnded={() => setShouldPlayBeginSpeaking(false)}
+        />
+      )}
 
       {/* Other Modals */}
       <Modal
@@ -332,7 +371,7 @@ export default function SpeakingTab() {
           <div className="text-right">
             <div className="text-sm text-slate-700 font-medium">Question</div>
             <div className="text-xl font-bold text-slate-900">
-              {state.currentQuestionIndex !== null ? state.currentQuestionIndex + 1 : 0} / {speakingQuestions.length}
+              {state.currentQuestionIndex !== null ? state.currentQuestionIndex + 1 : 0} / {filteredQuestions.length}
             </div>
           </div>
         </div>
@@ -361,6 +400,7 @@ export default function SpeakingTab() {
                   setPreparationTime(null);
                 }}
                 answers={state.answers}
+                filteredQuestions={filteredQuestions}
               />
             </CardContent>
           </Card>
@@ -388,7 +428,19 @@ export default function SpeakingTab() {
                     Part {currentQuestion.part} - Question {currentQuestion.questionNumber}
                   </div>
                   <h3 className="text-xl font-bold text-slate-900">
-                    {state.questions?.[currentQuestion.id] || currentQuestion.questionText}
+                    {(() => {
+                      // Nếu có user input question text, ưu tiên dùng
+                      if (state.questions?.[currentQuestion.id]) {
+                        return state.questions[currentQuestion.id];
+                      }
+                      // Tất cả các part: hiển thị mô tả tính chất thay vì questionText mock
+                      if (currentQuestion.part === 1) return "Read the following text aloud";
+                      if (currentQuestion.part === 2) return "Describe the picture in as much detail as possible";
+                      if (currentQuestion.part === 3) return "Respond to the question";
+                      if (currentQuestion.part === 4) return "Respond to the question using information provided";
+                      if (currentQuestion.part === 5) return "Express your opinion about the topic";
+                      return currentQuestion.questionText;
+                    })()}
                   </h3>
                 </div>
                 {isAnswered && (

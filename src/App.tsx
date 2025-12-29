@@ -14,16 +14,19 @@ import GeminiKeyInput from "@/components/shared/GeminiKeyInput";
 import SpeakingTab from "@/components/speaking/SpeakingTab";
 import SpeakingResults from "@/components/speaking/SpeakingResults";
 import SpeakingResultsLoading from "@/components/speaking/SpeakingResultsLoading";
+import QuestionSelector from "@/components/shared/QuestionSelector";
+import { speakingQuestions, writingQuestions } from "@/lib/mockData";
 import WritingTab from "@/components/writing/WritingTab";
 import WritingResults from "@/components/writing/WritingResults";
 import { SpeakingGradingResponse, WritingGradingResponse } from "@/lib/types";
 
 function SpeakingContent() {
-  const { state, resetExam, setResults, updateTranscript } = useSpeaking();
+  const { state, selectedQuestionIds, setSelectedQuestionIds, filteredQuestions, resetExam, setResults, updateTranscript } = useSpeaking();
   const [isGrading, setIsGrading] = useState(false);
   const [gradingError, setGradingError] = useState<string | null>(null);
   const [showNoAnswerModal, setShowNoAnswerModal] = useState(false);
   const [showGeminiModal, setShowGeminiModal] = useState(false);
+  const [hasSelectedQuestions, setHasSelectedQuestions] = useState(false);
   const [quotaExceededInfo, setQuotaExceededInfo] = useState<{
     completedCount: number;
     failedCount: number;
@@ -47,12 +50,18 @@ function SpeakingContent() {
         return;
       }
 
+      // Filter answers: chỉ lấy các câu hỏi đã chọn
+      const filteredQuestionIds = new Set(selectedQuestionIds);
+      const filteredAnswers = state.answers.filter((answer) => 
+        filteredQuestionIds.has(answer.questionId)
+      );
+
       // Load audioBase64 từ IndexedDB cho những answer không có audioBase64
       const { getAudio } = await import("@/lib/audioStorage");
       const { blobToBase64 } = await import("@/lib/utils");
       
       const answersWithAudio = await Promise.all(
-        state.answers.map(async (answer) => {
+        filteredAnswers.map(async (answer) => {
           // Tạo answer object không có audioBlob (không thể serialize)
           const { audioBlob, ...answerWithoutBlob } = answer;
           
@@ -79,6 +88,27 @@ function SpeakingContent() {
         })
       );
 
+      // Filter questions and images: chỉ lấy các câu hỏi đã chọn
+      const filteredQuestionsMap: Record<string, string> = {};
+      const filteredImagesMap: Record<string, string> = {};
+      
+      // Check if any Part 4 question is selected
+      const hasPart4Question = filteredQuestions.some((q) => q.part === 4);
+      
+      filteredQuestions.forEach((q) => {
+        if (state.questions?.[q.id]) {
+          filteredQuestionsMap[q.id] = state.questions[q.id];
+        }
+        if (state.images?.[q.id]) {
+          filteredImagesMap[q.id] = state.images[q.id];
+        }
+      });
+      
+      // Part 4 shared image
+      if (hasPart4Question && state.images?.["part4"]) {
+        filteredImagesMap["part4"] = state.images["part4"];
+      }
+
       const response = await fetch("/api/grade-speaking", {
         method: "POST",
         headers: {
@@ -86,8 +116,8 @@ function SpeakingContent() {
         },
         body: JSON.stringify({
           answers: answersWithAudio,
-          questions: state.questions,
-          images: state.images,
+          questions: filteredQuestionsMap,
+          images: filteredImagesMap,
           apiKey,
         }),
       });
@@ -165,12 +195,31 @@ function SpeakingContent() {
     }
   };
 
+  // Show question selector if not selected yet
+  if (!hasSelectedQuestions) {
+    return (
+      <div>
+        <QuestionSelector
+          questions={speakingQuestions}
+          examType="speaking"
+          onConfirm={(ids) => {
+            setSelectedQuestionIds(ids);
+            setHasSelectedQuestions(true);
+          }}
+        />
+      </div>
+    );
+  }
+
   if (state.isFinished && state.results) {
     return (
       <div>
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-slate-900">Speaking Test Results</h2>
-          <Button variant="outline" onClick={resetExam}>
+          <Button variant="outline" onClick={() => {
+            resetExam();
+            setHasSelectedQuestions(false);
+          }}>
             Start New Test
           </Button>
         </div>
@@ -292,10 +341,11 @@ function SpeakingContent() {
 }
 
 function WritingContent() {
-  const { state, resetExam, setResults } = useWriting();
+  const { state, selectedQuestionIds, setSelectedQuestionIds, filteredQuestions, resetExam, setResults } = useWriting();
   const [isGrading, setIsGrading] = useState(false);
   const [gradingError, setGradingError] = useState<string | null>(null);
   const [showNoAnswerModal, setShowNoAnswerModal] = useState(false);
+  const [hasSelectedQuestions, setHasSelectedQuestions] = useState(false);
 
   const handleGrade = async () => {
     if (state.answers.length === 0) {
@@ -307,10 +357,16 @@ function WritingContent() {
     setGradingError(null);
 
     try {
+      // Filter answers: chỉ lấy các câu hỏi đã chọn
+      const filteredQuestionIds = new Set(selectedQuestionIds);
+      const filteredAnswers = state.answers.filter((answer) => 
+        filteredQuestionIds.has(answer.questionId)
+      );
+
       // Organize answers by part
-      const part1 = state.answers.filter((a) => a.questionType === 1);
-      const part2 = state.answers.filter((a) => a.questionType === 2);
-      const part3 = state.answers.filter((a) => a.questionType === 3);
+      const part1 = filteredAnswers.filter((a) => a.questionType === 1);
+      const part2 = filteredAnswers.filter((a) => a.questionType === 2);
+      const part3 = filteredAnswers.filter((a) => a.questionType === 3);
 
       const apiKey = typeof window !== "undefined" ? localStorage.getItem("GEMINI_API_KEY") : null;
       if (!apiKey) {
@@ -318,6 +374,19 @@ function WritingContent() {
         setIsGrading(false);
         return;
       }
+
+      // Filter questions and images: chỉ lấy các câu hỏi đã chọn
+      const filteredQuestionsMap: Record<string, string> = {};
+      const filteredImagesMap: Record<string, string> = {};
+      
+      filteredQuestions.forEach((q) => {
+        if (state.questions?.[q.id]) {
+          filteredQuestionsMap[q.id] = state.questions[q.id];
+        }
+        if (state.images?.[q.id]) {
+          filteredImagesMap[q.id] = state.images[q.id];
+        }
+      });
 
       const response = await fetch("/api/grade-writing", {
         method: "POST",
@@ -330,8 +399,8 @@ function WritingContent() {
             part2,
             part3,
           },
-          questions: state.questions,
-          images: state.images,
+          questions: filteredQuestionsMap,
+          images: filteredImagesMap,
           apiKey,
         }),
       });
@@ -382,12 +451,31 @@ function WritingContent() {
     }
   };
 
+  // Show question selector if not selected yet
+  if (!hasSelectedQuestions) {
+    return (
+      <div>
+        <QuestionSelector
+          questions={writingQuestions}
+          examType="writing"
+          onConfirm={(ids) => {
+            setSelectedQuestionIds(ids);
+            setHasSelectedQuestions(true);
+          }}
+        />
+      </div>
+    );
+  }
+
   if (state.isFinished && state.results) {
     return (
       <div>
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-slate-900">Writing Test Results</h2>
-          <Button variant="outline" onClick={resetExam} className="text-black">
+          <Button variant="outline" onClick={() => {
+            resetExam();
+            setHasSelectedQuestions(false);
+          }} className="text-black">
             Start New Test
           </Button>
         </div>

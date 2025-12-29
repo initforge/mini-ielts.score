@@ -12,11 +12,11 @@ export const config = {
 // Part weight mapping (ảnh hưởng trong 200 điểm)
 const PART_WEIGHTS: Record<number, number> = {
   1: 20, // Part 1: Q1-2 (2 câu) ~ 20 điểm
-  2: 20, // Part 2: Q3 (1 câu) ~ 20 điểm
-  3: 40, // Part 3: Q4-6 (3 câu) ~ 40 điểm
-  4: 60, // Part 4: Q7-9 (3 câu) ~ 60 điểm
-  5: 30, // Part 5: Q10 (1 câu) ~ 30 điểm
-  6: 30, // Part 6: Q11 (1 câu) ~ 30 điểm
+  2: 20, // Part 2: Q3-4 (2 câu) ~ 20 điểm
+  3: 40, // Part 3: Q5-7 (3 câu) ~ 40 điểm
+  4: 60, // Part 4: Q8-10 (3 câu) ~ 60 điểm
+  5: 30, // Part 5: Q11 (1 câu) ~ 30 điểm
+  6: 30, // Part 6: Q11 (1 câu) ~ 30 điểm (deprecated, không dùng nữa)
 };
 
 // Batch transcribe config
@@ -170,10 +170,10 @@ export default async function handler(
 
 Part Distribution (Total 200 points):
 - Part 1 (Read aloud, Q1-2): ~20 points (2 questions)
-- Part 2 (Picture, Q3): ~20 points (1 question)  
+- Part 2 (Picture, Q3-4): ~20 points (2 questions)  
 - Part 3 (Q&A, Q5-7): ~40 points (3 questions)
 - Part 4 (Info response, Q8-10): ~60 points (3 questions)
-- Part 5 (Opinion, Q11): ~60 points (1 question)
+- Part 5 (Opinion, Q11): ~30 points (1 question)
 
 Evaluation Criteria (Feedback only, NO scores):
 1. Pronunciation (Phát âm): Is pronunciation clear and understandable? Stress, linking, intonation. Don't need to sound native, just understandable. Grammar errors are less severe than unclear pronunciation.
@@ -261,11 +261,11 @@ Return your evaluation as a JSON object with this exact structure:
 
 SCORING SCALE (CRITICAL - Use these exact ranges):
 - Part 1 (Q1-2): Each question scored 0-10. Part total = sum of question scores (max 20).
-- Part 2 (Q3): Single question scored 0-20. Part total = question score (max 20).
-- Part 3 (Q4-6): Each question scored 0-13. Part total = sum of question scores (max 40).
-- Part 4 (Q7-9): Each question scored 0-20. Part total = sum of question scores (max 60).
-- Part 5 (Q10): Single question scored 0-30. Part total = question score (max 30).
-- Part 6 (Q11): Single question scored 0-30. Part total = question score (max 30).
+- Part 2 (Q3-4): Each question scored 0-10. Part total = sum of question scores (max 20).
+- Part 3 (Q5-7): Each question scored 0-13. Part total = sum of question scores (max 40).
+- Part 4 (Q8-10): Each question scored 0-20. Part total = sum of question scores (max 60).
+- Part 5 (Q11): Single question scored 0-30. Part total = question score (max 30).
+- Part 6: Deprecated, không dùng nữa.
 
 Important:
 - ONLY evaluate questions that are provided in "Student Responses by Part" above. Do NOT create scores for questions that are not listed.
@@ -306,11 +306,10 @@ Important:
 
       // AI đã chấm điểm theo đúng format của từng part:
       // - Part 1: mỗi câu 0-10, part = tổng
-      // - Part 2: 0-20
+      // - Part 2: mỗi câu 0-10, part = tổng
       // - Part 3: mỗi câu 0-13, part = tổng
       // - Part 4: mỗi câu 0-20, part = tổng
       // - Part 5: 0-30
-      // - Part 6: 0-30
       // Chỉ cần lấy điểm từ AI response và cộng tổng, không cần scale
 
       const normalizedPartScores: any[] = [];
@@ -329,11 +328,11 @@ Important:
           let score = typeof qs.score === "number" ? qs.score : 0;
           // Clamp score theo part
           if (part === 1) score = Math.max(0, Math.min(10, score));
-          else if (part === 2) score = Math.max(0, Math.min(20, score));
+          else if (part === 2) score = Math.max(0, Math.min(10, score)); // Part 2: mỗi câu 0-10
           else if (part === 3) score = Math.max(0, Math.min(13, score));
           else if (part === 4) score = Math.max(0, Math.min(20, score));
           else if (part === 5) score = Math.max(0, Math.min(30, score));
-          else if (part === 6) score = Math.max(0, Math.min(30, score));
+          else if (part === 6) score = Math.max(0, Math.min(30, score)); // Deprecated
 
           return {
             questionId: qs.questionId || "",

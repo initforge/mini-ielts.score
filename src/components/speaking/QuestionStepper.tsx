@@ -1,23 +1,26 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { speakingQuestions } from "@/lib/mockData";
+import { SpeakingQuestion } from "@/lib/types";
 
 interface QuestionStepperProps {
   currentIndex: number | null; // null means no question selected
   onQuestionClick: (index: number) => void;
   answers: Array<{ questionId: string }>;
+  filteredQuestions: SpeakingQuestion[];
 }
 
 export default function QuestionStepper({
   currentIndex,
   onQuestionClick,
   answers,
+  filteredQuestions,
 }: QuestionStepperProps) {
-  const parts = [1, 2, 3, 4, 5]; // Removed Part 6
+  // Get unique parts from filtered questions
+  const parts = Array.from(new Set(filteredQuestions.map((q) => q.part))).sort((a, b) => a - b);
   
   const getQuestionsForPart = (part: number) => {
-    return speakingQuestions.filter((q) => q.part === part);
+    return filteredQuestions.filter((q) => q.part === part);
   };
 
   const isQuestionAnswered = (questionId: string) => {
@@ -28,7 +31,7 @@ export default function QuestionStepper({
     <div className="space-y-4">
       {parts.map((part) => {
         const partQuestions = getQuestionsForPart(part);
-        const partStartIndex = speakingQuestions.findIndex((q) => q.part === part);
+        const partStartIndex = filteredQuestions.findIndex((q) => q.part === part);
         
         return (
           <div key={part} className="space-y-2">

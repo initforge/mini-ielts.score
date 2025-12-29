@@ -10,7 +10,7 @@ import ImageUpload from "./ImageUpload";
 import QuestionNavigator from "./QuestionNavigator";
 import WordCountEditor from "./WordCountEditor";
 import ProgressBar from "@/components/shared/ProgressBar";
-import { writingQuestions } from "@/lib/mockData";
+// Removed import - using filteredQuestions from context instead
 import { countWords, cn, formatTime } from "@/lib/utils";
 import { QuestionStatus } from "@/lib/types";
 
@@ -20,6 +20,7 @@ export default function WritingTab() {
   const {
     state,
     currentQuestion,
+    filteredQuestions,
     setCurrentQuestion,
     saveAnswer,
     finishExam,
@@ -94,7 +95,7 @@ export default function WritingTab() {
   // Update question statuses (removed minWords check)
   useEffect(() => {
     const statuses: Record<string, QuestionStatus> = {};
-    writingQuestions.forEach((q) => {
+    filteredQuestions.forEach((q) => {
       const answer = state.answers.find((a) => a.questionId === q.id);
       if (answer && answer.text.trim().length > 0) {
         statuses[q.id] = "completed";
@@ -118,7 +119,7 @@ export default function WritingTab() {
   }
 
   const progress = state.currentQuestionIndex !== null 
-    ? ((state.currentQuestionIndex + 1) / writingQuestions.length) * 100 
+    ? ((state.currentQuestionIndex + 1) / filteredQuestions.length) * 100 
     : 0;
   
   // Calculate time progress based on current question
@@ -132,7 +133,7 @@ export default function WritingTab() {
   })();
   
   // Navigation logic - Allow free navigation
-  const canGoNext = state.currentQuestionIndex !== null && state.currentQuestionIndex < writingQuestions.length - 1;
+  const canGoNext = state.currentQuestionIndex !== null && state.currentQuestionIndex < filteredQuestions.length - 1;
   const canGoPrev = state.currentQuestionIndex !== null && state.currentQuestionIndex > 0;
 
   const handleTextChange = (text: string) => {
@@ -140,7 +141,13 @@ export default function WritingTab() {
     setCurrentText(text);
     const wordCount = countWords(text);
     // Use user input question text if available, otherwise use default
-    const questionText = state.questions?.[currentQuestion.id] || currentQuestion.questionText;
+    const questionText = state.questions?.[currentQuestion.id] || (() => {
+      // Tất cả các part: hiển thị mô tả tính chất thay vì questionText mock
+      if (currentQuestion.part === 1) return "Write one sentence about the picture";
+      if (currentQuestion.part === 2) return "Read the email below. Write a response to the email";
+      if (currentQuestion.part === 3) return "Write an opinion essay based on the question provided";
+      return currentQuestion.questionText;
+    })();
     const answer = {
       questionId: currentQuestion.id,
       questionType: currentQuestion.part,
@@ -156,7 +163,7 @@ export default function WritingTab() {
     if (!canGoNext || state.currentQuestionIndex === null) return;
     
     const nextIndex = state.currentQuestionIndex + 1;
-    const nextQ = writingQuestions[nextIndex];
+    const nextQ = filteredQuestions[nextIndex];
     
     // Check if transitioning between parts
     if (currentQ && nextQ && currentQ.part !== nextQ.part) {
@@ -378,6 +385,7 @@ You will have 30 minutes to plan, write, and revise your essay.`;
                   }
                 }}
                 questionStatuses={questionStatuses}
+                filteredQuestions={filteredQuestions}
                 canNavigateToQuestion={canNavigateToQuestion}
               />
             </CardContent>
@@ -406,7 +414,17 @@ You will have 30 minutes to plan, write, and revise your essay.`;
                     <span>Part {currentQuestion.part} - Question {currentQuestion.questionNumber}</span>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900">
-                    {state.questions?.[currentQuestion.id] || currentQuestion.questionText}
+                    {(() => {
+                      // Nếu có user input question text, ưu tiên dùng
+                      if (state.questions?.[currentQuestion.id]) {
+                        return state.questions[currentQuestion.id];
+                      }
+                      // Tất cả các part: hiển thị mô tả tính chất thay vì questionText mock
+                      if (currentQuestion.part === 1) return "Write one sentence about the picture";
+                      if (currentQuestion.part === 2) return "Read the email below. Write a response to the email";
+                      if (currentQuestion.part === 3) return "Write an opinion essay based on the question provided";
+                      return currentQuestion.questionText;
+                    })()}
                   </h3>
                 </div>
                 {isAnswered && (

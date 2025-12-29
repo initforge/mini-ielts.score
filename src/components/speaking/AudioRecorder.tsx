@@ -6,6 +6,8 @@ import Modal from "@/components/ui/modal";
 import Timer from "@/components/shared/Timer";
 import { cn, formatTime, blobToBase64 } from "@/lib/utils";
 import { getAudio } from "@/lib/audioStorage";
+import { SpeakingAudioPlayer } from "./SpeakingAudioPlayer";
+import { speakingAudio } from "@/lib/speakingAudio";
 
 interface AudioRecorderProps {
   maxDuration: number; // in seconds
@@ -35,6 +37,7 @@ export default function AudioRecorder({
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(savedAudioUrl || null);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [shouldPlayBeepOnTimeout, setShouldPlayBeepOnTimeout] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -179,6 +182,8 @@ export default function AudioRecorder({
       }
       stopTimeoutRef.current = window.setTimeout(() => {
         console.log(`[AudioRecorder] Hard stop timeout triggered after ${maxDuration}s`);
+        // Play beep khi timeout
+        setShouldPlayBeepOnTimeout(true);
         stopRecording();
       }, maxDuration * 1000); // Exact duration, no buffer
     } catch (error: any) {
@@ -227,8 +232,18 @@ export default function AudioRecorder({
 
   // Handle timer completion from Timer component
   const handleTimerComplete = () => {
+    // Play beep khi timer complete
+    setShouldPlayBeepOnTimeout(true);
     stopRecording();
   };
+  
+  // Play beep khi isLocked thay đổi (timeout từ bên ngoài)
+  useEffect(() => {
+    if (isLocked && isRecording) {
+      setShouldPlayBeepOnTimeout(true);
+      stopRecording();
+    }
+  }, [isLocked]);
 
   // Auto-start recording when key changes (e.g., after preparation finishes)
   useEffect(() => {
@@ -375,6 +390,15 @@ export default function AudioRecorder({
             Time expired - Recording locked
           </div>
         </div>
+      )}
+      
+      {/* Beep audio khi timeout */}
+      {shouldPlayBeepOnTimeout && (
+        <SpeakingAudioPlayer
+          src={speakingAudio.system.beep}
+          autoPlay={true}
+          onEnded={() => setShouldPlayBeepOnTimeout(false)}
+        />
       )}
 
       {/* Playback Controls - Show if audio exists and NOT recording */}

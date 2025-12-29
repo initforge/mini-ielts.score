@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { Check, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { writingQuestions } from "@/lib/mockData";
-import { QuestionStatus } from "@/lib/types";
+import { WritingQuestion, QuestionStatus } from "@/lib/types";
 
 interface QuestionNavigatorProps {
   currentIndex: number | null; // null means no question selected
   onQuestionClick: (index: number) => void;
   questionStatuses: Record<string, QuestionStatus>;
+  filteredQuestions: WritingQuestion[];
   canNavigateToQuestion?: (index: number) => boolean;
 }
 
@@ -15,12 +15,14 @@ export default function QuestionNavigator({
   currentIndex,
   onQuestionClick,
   questionStatuses,
+  filteredQuestions,
   canNavigateToQuestion,
 }: QuestionNavigatorProps) {
-  const parts = [1, 2, 3];
+  // Get unique parts from filtered questions
+  const parts = Array.from(new Set(filteredQuestions.map((q) => q.part))).sort((a, b) => a - b);
 
   const getQuestionsForPart = (part: number) => {
-    return writingQuestions.filter((q) => q.part === part);
+    return filteredQuestions.filter((q) => q.part === part);
   };
 
   const getStatusIcon = (questionId: string) => {
@@ -38,7 +40,7 @@ export default function QuestionNavigator({
     <div className="space-y-6">
       {parts.map((part) => {
         const partQuestions = getQuestionsForPart(part);
-        const partStartIndex = writingQuestions.findIndex((q) => q.part === part);
+        const partStartIndex = filteredQuestions.findIndex((q) => q.part === part);
 
         return (
           <div key={part} className="space-y-2">

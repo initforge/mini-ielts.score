@@ -8,13 +8,15 @@ import RubricCard from "@/components/shared/RubricCard";
 import { WritingGradingResponse } from "@/lib/types";
 import { staggerContainer, staggerItem } from "@/lib/animations";
 import { cn, countWords } from "@/lib/utils";
-import { writingQuestions } from "@/lib/mockData";
+import { useWriting } from "@/contexts/WritingContext";
 
 interface WritingResultsProps {
   results: WritingGradingResponse;
 }
 
 export default function WritingResults({ results }: WritingResultsProps) {
+  const { filteredQuestions } = useWriting();
+  
   const [hoveredError, setHoveredError] = useState<{
     questionId: string;
     index: number;
@@ -179,7 +181,7 @@ export default function WritingResults({ results }: WritingResultsProps) {
                 </CardContent>
               </Card>
             ) : part1Data.questionScores.map((qScore) => {
-              const question = writingQuestions.find(q => q.id === qScore.questionId);
+              const question = filteredQuestions.find(q => q.id === qScore.questionId);
               const isInvalid = isAnswerInvalid(qScore.questionId, qScore.text);
               
               // Part 1: 5 câu, tổng 40 điểm → mỗi câu tối đa ~8
@@ -275,7 +277,7 @@ export default function WritingResults({ results }: WritingResultsProps) {
                 </CardContent>
               </Card>
             ) : part2Data.questionScores.map((qScore) => {
-              const question = writingQuestions.find(q => q.id === qScore.questionId);
+              const question = filteredQuestions.find(q => q.id === qScore.questionId);
               const isInvalid = isAnswerInvalid(qScore.questionId, qScore.text);
               
               // Part 2: 2 câu, tổng 60 điểm → mỗi câu tối đa ~30

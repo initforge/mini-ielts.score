@@ -5,6 +5,9 @@ import { writingQuestions } from "@/lib/mockData";
 interface WritingContextType {
   state: WritingExamState;
   currentQuestion: typeof writingQuestions[0] | null;
+  selectedQuestionIds: string[];
+  setSelectedQuestionIds: (ids: string[]) => void;
+  filteredQuestions: typeof writingQuestions;
   startExam: () => void;
   setCurrentQuestion: (index: number | null) => void;
   clearQuestionSelection: () => void;
@@ -35,6 +38,10 @@ const PART2_QUESTION_TIME = 10 * 60; // 10 minutes per question for Part 2 (Q6, 
 const PART3_TOTAL_TIME = 30 * 60; // 30 minutes for Part 3 (Q8)
 
 export function WritingProvider({ children }: { children: React.ReactNode }) {
+  const [selectedQuestionIds, setSelectedQuestionIdsState] = useState<string[]>(
+    writingQuestions.map((q) => q.id)
+  );
+
   const [state, setState] = useState<WritingExamState>({
     currentQuestionIndex: null,
     answers: [],
@@ -45,6 +52,22 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
     isTimerRunning: false,
     isLocked: false,
   });
+
+  // Filter questions based on selected question IDs
+  const filteredQuestions = writingQuestions.filter((q) => selectedQuestionIds.includes(q.id));
+
+  const setSelectedQuestionIds = useCallback((ids: string[]) => {
+    setSelectedQuestionIdsState(ids);
+    // Reset exam state when questions change
+    setState((prev) => ({
+      ...prev,
+      currentQuestionIndex: null,
+      answers: [],
+      isFinished: false,
+      questions: {},
+      images: {},
+    }));
+  }, []);
 
   // Track active part - lock navigation to other parts when active
   // IMPORTANT: activePart is ONLY set when user clicks Continue (in startTimer)
@@ -232,13 +255,13 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const targetQ = writingQuestions[index];
+    const targetQ = filteredQuestions[index];
     if (!targetQ) return;
     
     setState((prev) => {
       const isNewPart = prev.currentQuestionIndex !== null && 
         prev.currentQuestionIndex !== index && 
-        writingQuestions[prev.currentQuestionIndex]?.part !== targetQ.part;
+        filteredQuestions[prev.currentQuestionIndex]?.part !== targetQ.part;
       
       // If transitioning to a new part, set timer value but don't start timer yet
       if (isNewPart) {
@@ -342,6 +365,9 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const resetExam = useCallback(() => {
+    // Reset selected questions to default (all questions)
+    setSelectedQuestionIdsState(writingQuestions.map((q) => q.id));
+    
     setState({
       currentQuestionIndex: null,
       answers: [],
@@ -509,7 +535,7 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
 
   const currentQuestion = 
     state.currentQuestionIndex !== null 
-      ? writingQuestions[state.currentQuestionIndex] || null
+      ? filteredQuestions[state.currentQuestionIndex] || null
       : null;
 
   return (
@@ -517,6 +543,9 @@ export function WritingProvider({ children }: { children: React.ReactNode }) {
       value={{
         state,
         currentQuestion,
+        selectedQuestionIds,
+        setSelectedQuestionIds,
+        filteredQuestions,
         startExam,
         setCurrentQuestion,
         clearQuestionSelection,

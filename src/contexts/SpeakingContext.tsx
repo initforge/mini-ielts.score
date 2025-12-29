@@ -6,6 +6,9 @@ import { clearAllAudio } from "@/lib/audioStorage";
 interface SpeakingContextType {
   state: SpeakingExamState;
   currentQuestion: typeof speakingQuestions[0] | null;
+  selectedParts: number[];
+  setSelectedParts: (parts: number[]) => void;
+  filteredQuestions: typeof speakingQuestions;
   startExam: () => void;
   setCurrentQuestion: (index: number | null) => void;
   clearQuestionSelection: () => void;
@@ -29,6 +32,10 @@ const SpeakingContext = createContext<SpeakingContextType | undefined>(undefined
 const STORAGE_KEY = "toeic-speaking-exam-state";
 
 export function SpeakingProvider({ children }: { children: React.ReactNode }) {
+  const [selectedQuestionIds, setSelectedQuestionIdsState] = useState<string[]>(
+    speakingQuestions.map((q) => q.id)
+  );
+  
   const [state, setState] = useState<SpeakingExamState>({
     currentQuestionIndex: null, // Start with no question selected
     answers: [],
@@ -41,6 +48,22 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
     responseTimerStarted: false,
     audioUrls: {}, // Store audio URLs for playback
   });
+
+  // Filter questions based on selected question IDs
+  const filteredQuestions = speakingQuestions.filter((q) => selectedQuestionIds.includes(q.id));
+
+  const setSelectedQuestionIds = useCallback((ids: string[]) => {
+    setSelectedQuestionIdsState(ids);
+    // Reset exam state when questions change
+    setState((prev) => ({
+      ...prev,
+      currentQuestionIndex: null,
+      answers: [],
+      isFinished: false,
+      questions: {},
+      images: {},
+    }));
+  }, []);
 
   // On fresh load we ALWAYS treat it as a new session:
   // - clear any persisted speaking state
@@ -78,12 +101,14 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
         currentQuestionIndex: null,
       }));
     } else {
+      // Use filteredQuestions length
+      const filtered = speakingQuestions.filter((q) => selectedQuestionIds.includes(q.id));
       setState((prev) => ({
         ...prev,
-        currentQuestionIndex: Math.max(0, Math.min(index, speakingQuestions.length - 1)),
+        currentQuestionIndex: Math.max(0, Math.min(index, filtered.length - 1)),
       }));
     }
-  }, []);
+  }, [selectedQuestionIds]);
 
   // Clear question selection (sets to null)
   const clearQuestionSelection = useCallback(() => {
@@ -154,6 +179,9 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       console.error("Failed to clear audio from IndexedDB:", error);
     }
+    
+    // Reset selected questions to default (all questions)
+    setSelectedQuestionIdsState(speakingQuestions.map((q) => q.id));
     
     setState({
       currentQuestionIndex: null,
@@ -271,7 +299,7 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
 
   const currentQuestion = 
     state.currentQuestionIndex !== null 
-      ? speakingQuestions[state.currentQuestionIndex] || null
+      ? filteredQuestions[state.currentQuestionIndex] || null
       : null;
 
   return (
@@ -279,6 +307,9 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
       value={{
         state,
         currentQuestion,
+        selectedQuestionIds,
+        setSelectedQuestionIds,
+        filteredQuestions,
         startExam,
         setCurrentQuestion,
         clearQuestionSelection,

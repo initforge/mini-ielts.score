@@ -54,7 +54,7 @@ export default function Timer({
       
       if (remaining <= 0) {
         setSeconds(0);
-        onComplete?.();
+          onComplete?.();
         return;
       }
       
