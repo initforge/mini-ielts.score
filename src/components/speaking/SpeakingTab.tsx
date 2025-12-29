@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle2, Image as ImageIcon, FileText } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle2, FileText } from "lucide-react";
 import { useSpeaking } from "@/contexts/SpeakingContext";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

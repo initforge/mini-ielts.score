@@ -113,7 +113,7 @@ export default function QuestionSelector({ questions, examType, onConfirm }: Que
           const partQuestions = questionsByPart[part];
           const partQuestionIds = partQuestions.map((q) => q.id);
           const allSelected = partQuestionIds.every((id) => selectedQuestionIds.includes(id));
-          const someSelected = partQuestionIds.some((id) => selectedQuestionIds.includes(id));
+          // const someSelected = partQuestionIds.some((id) => selectedQuestionIds.includes(id));
           const partInfo = partLabels[part] || { title: `Part ${part}`, description: "" };
 
           return (

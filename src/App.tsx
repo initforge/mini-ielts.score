@@ -345,7 +345,12 @@ function WritingContent() {
   const [isGrading, setIsGrading] = useState(false);
   const [gradingError, setGradingError] = useState<string | null>(null);
   const [showNoAnswerModal, setShowNoAnswerModal] = useState(false);
+  const [showGeminiModal, setShowGeminiModal] = useState(false);
   const [hasSelectedQuestions, setHasSelectedQuestions] = useState(false);
+  const [quotaExceededInfo, setQuotaExceededInfo] = useState<{
+    completedCount: number;
+    failedCount: number;
+  } | null>(null);
 
   const handleGrade = async () => {
     if (state.answers.length === 0) {

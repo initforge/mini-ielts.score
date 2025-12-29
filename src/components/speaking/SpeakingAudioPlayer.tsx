@@ -18,7 +18,7 @@ export function SpeakingAudioPlayer({
   preload = 'auto'
 }: SpeakingAudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {

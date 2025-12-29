@@ -8,6 +8,8 @@ interface SpeakingContextType {
   currentQuestion: typeof speakingQuestions[0] | null;
   selectedParts: number[];
   setSelectedParts: (parts: number[]) => void;
+  selectedQuestionIds: string[];
+  setSelectedQuestionIds: (ids: string[]) => void;
   filteredQuestions: typeof speakingQuestions;
   startExam: () => void;
   setCurrentQuestion: (index: number | null) => void;
