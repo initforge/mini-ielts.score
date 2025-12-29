@@ -36,3 +36,6 @@ backup-*.sql
 
 # PM2
 .pm2
+
+# Production audio files (chỉ lưu trên VPS, không commit vào repo)
+public/audio/
