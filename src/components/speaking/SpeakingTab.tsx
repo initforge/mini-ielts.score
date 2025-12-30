@@ -49,25 +49,11 @@ export default function SpeakingTab() {
   // Audio states
   const [shouldPlayBeginPreparing, setShouldPlayBeginPreparing] = useState(false);
   const [shouldPlayBeginSpeaking, setShouldPlayBeginSpeaking] = useState(false);
-  const [shownInstructions, setShownInstructions] = useState<Set<number>>(() => {
-    if (typeof window !== "undefined") {
-      const saved = sessionStorage.getItem("speaking-shown-instructions");
-      if (saved) {
-        try {
-          return new Set(JSON.parse(saved));
-        } catch (e) {
-          return new Set();
-        }
-      }
-    }
-    return new Set();
-  });
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("speaking-shown-instructions", JSON.stringify(Array.from(shownInstructions)));
-    }
-  }, [shownInstructions]);
+  // Lưu trong state cho mỗi phiên làm bài; không persist vào sessionStorage nữa
+  // để tránh case popup đã bị ẩn vĩnh viễn giữa các lần làm bài.
+  const [shownInstructions, setShownInstructions] = useState<Set<number>>(
+    () => new Set()
+  );
 
   if (state.isFinished && state.results) {
     // Results will be shown by parent component
