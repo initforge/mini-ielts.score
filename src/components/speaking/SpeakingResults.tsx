@@ -26,11 +26,10 @@ export default function SpeakingResults({ results }: SpeakingResultsProps) {
   // Group questions by part for display
   const partLabels: Record<number, string> = {
     1: "Part 1 – Read aloud (Q1-2)",
-    2: "Part 2 – Picture (Q3)",
-    3: "Part 3 – Q&A (Q4-6)",
-    4: "Part 4 – Info response (Q7-9)",
-    5: "Part 5 – Opinion (Q10)",
-    6: "Part 6 – Written prompt (Q11)",
+    2: "Part 2 – Picture (Q3-4)",
+    3: "Part 3 – Q&A (Q5-7)",
+    4: "Part 4 – Info response (Q8-10)",
+    5: "Part 5 – Opinion (Q11)",
   };
 
   // Max score per part trên thang 200 overall
@@ -40,7 +39,6 @@ export default function SpeakingResults({ results }: SpeakingResultsProps) {
     3: 40,
     4: 60,
     5: 30,
-    6: 30,
   };
 
   return (
@@ -88,7 +86,6 @@ export default function SpeakingResults({ results }: SpeakingResultsProps) {
                     3: 13, // Part 3: mỗi câu 0-13
                     4: 20, // Part 4: mỗi câu 0-20
                     5: 30, // Part 5: 0-30
-                    6: 30, // Part 6: 0-30 (deprecated)
                   };
                   const questionMax = questionMaxScores[partScore.part] ?? 20;
                   const questionScore = Math.round(qScore.score ?? 0);

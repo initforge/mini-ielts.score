@@ -10,13 +10,13 @@ export const config = {
 };
 
 // Part weight mapping (ảnh hưởng trong 200 điểm)
+// Chỉ dùng để iterate qua các part, không dùng để tính điểm (điểm tính bằng sum)
 const PART_WEIGHTS: Record<number, number> = {
   1: 20, // Part 1: Q1-2 (2 câu) ~ 20 điểm
   2: 20, // Part 2: Q3-4 (2 câu) ~ 20 điểm
   3: 40, // Part 3: Q5-7 (3 câu) ~ 40 điểm
   4: 60, // Part 4: Q8-10 (3 câu) ~ 60 điểm
   5: 30, // Part 5: Q11 (1 câu) ~ 30 điểm
-  6: 30, // Part 6: Q11 (1 câu) ~ 30 điểm (deprecated, không dùng nữa)
 };
 
 // Batch transcribe config
@@ -214,7 +214,7 @@ Return your evaluation as a JSON object with this exact structure:
   "overallScore": <number 0-200, sum of all part scores>,
   "partScores": [
     {
-      "part": <number 1-6>,
+      "part": <number 1-5>,
       "questionScores": [
         {
           "questionId": "<question id>",
@@ -265,7 +265,6 @@ SCORING SCALE (CRITICAL - Use these exact ranges):
 - Part 3 (Q5-7): Each question scored 0-13. Part total = sum of question scores (max 40).
 - Part 4 (Q8-10): Each question scored 0-20. Part total = sum of question scores (max 60).
 - Part 5 (Q11): Single question scored 0-30. Part total = question score (max 30).
-- Part 6: Deprecated, không dùng nữa.
 
 Important:
 - ONLY evaluate questions that are provided in "Student Responses by Part" above. Do NOT create scores for questions that are not listed.
@@ -332,7 +331,6 @@ Important:
           else if (part === 3) score = Math.max(0, Math.min(13, score));
           else if (part === 4) score = Math.max(0, Math.min(20, score));
           else if (part === 5) score = Math.max(0, Math.min(30, score));
-          else if (part === 6) score = Math.max(0, Math.min(30, score)); // Deprecated
 
           return {
             questionId: qs.questionId || "",
