@@ -1,27 +1,20 @@
 #!/bin/bash
 
-# Script tự động pull code và update (không cần username/password)
-# Chạy setup-git-credentials.sh trước (chỉ 1 lần)
+# Script để pull code và update
 # Usage: bash scripts/pull-update.sh
+# Note: Cần điền username/password khi pull
 
 set -e
 
 APP_DIR="/var/www/mini-ielts-score"
 
-echo "🔄 Auto Pull and Update"
-echo "======================"
+echo "🔄 Pull and Update"
+echo "=================="
 echo ""
-
-# Check if git is configured
-if [ ! -d "$APP_DIR/.git" ]; then
-    echo "❌ Not a git repository. Run setup first:"
-    echo "   bash scripts/setup-git-credentials.sh"
-    exit 1
-fi
 
 cd "$APP_DIR"
 
-# Pull latest code
+# Pull latest code (sẽ hỏi username/password)
 echo "📥 Pulling latest code..."
 git pull origin master
 
