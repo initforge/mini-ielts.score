@@ -1,26 +1,18 @@
 #!/bin/bash
 
-# Script tự động: pull code, xóa audio locations cũ, hiển thị hướng dẫn sửa
+# Script để fix audio location trong nginx: xóa cũ và hướng dẫn thêm mới
+# Usage: bash scripts/fix-audio-nginx.sh
 
 set -e
 
-cd /var/www/mini-ielts-score
-
-echo "🔄 Auto-pulling latest code from GitHub..."
-git pull origin master
-
-echo ""
-echo "🔧 Fixing audio location..."
-
 NGINX_CONFIG="/etc/nginx/sites-available/mini-ielts-score"
-BACKUP_FILE="${NGINX_CONFIG}.backup.$(date +%Y%m%d_%H%M%S)"
 
-# Backup
-sudo cp "$NGINX_CONFIG" "$BACKUP_FILE"
-echo "📋 Backup created: $BACKUP_FILE"
+echo "🔧 Fix Audio Location in Nginx"
+echo "=============================="
+echo ""
 
 # Step 1: Remove all existing audio locations
-echo "🗑️  Removing all existing /audio/speaking/ locations..."
+echo "🗑️  Step 1: Removing all existing /audio/speaking/ locations..."
 
 AUDIO_LOC_COUNT=$(sudo grep -c "location /audio/speaking/" "$NGINX_CONFIG" || echo "0")
 echo "   Found $AUDIO_LOC_COUNT existing location(s)"
@@ -69,10 +61,10 @@ PYTHON_REMOVE
 fi
 
 echo ""
-echo "📋 Showing HTTPS block structure..."
+echo "📋 Step 2: Showing nginx structure..."
 echo ""
 
-# Find HTTPS block
+# Show structure
 HTTPS_START=$(sudo grep -n "listen 443" "$NGINX_CONFIG" | head -1 | cut -d: -f1)
 
 if [ -z "$HTTPS_START" ]; then
@@ -81,6 +73,11 @@ if [ -z "$HTTPS_START" ]; then
 fi
 
 echo "📍 HTTPS server block starts at line $HTTPS_START"
+echo ""
+echo "📄 Showing HTTPS block structure (last 30 lines):"
+echo "----------------------------------------"
+sudo tail -n +$HTTPS_START "$NGINX_CONFIG" | head -30 | cat -n
+echo "----------------------------------------"
 echo ""
 
 # Find last location block
@@ -109,19 +106,20 @@ LAST_LOC_LINE=$(sudo awk -v start="$HTTPS_START" '
 ' "$NGINX_CONFIG")
 
 if [ -z "$LAST_LOC_LINE" ]; then
-    echo "⚠️  Could not find location blocks automatically."
-    echo "📝 Please check manually:"
-    echo "   sudo nano $NGINX_CONFIG"
-    echo "   Find HTTPS block (listen 443) and add audio location before closing '}'"
+    echo "⚠️  Could not find location blocks. Please check manually."
+    echo ""
+    echo "📝 Manual steps:"
+    echo "   1. sudo nano $NGINX_CONFIG"
+    echo "   2. Find HTTPS server block (listen 443)"
+    echo "   3. Find the last location block (e.g., location /api/)"
+    echo "   4. Add audio location AFTER that block, BEFORE closing '}'"
 else
     echo "📍 Last location block found at line $LAST_LOC_LINE"
     echo ""
-    echo "📄 Context around last location (showing where to add):"
-    echo "----------------------------------------"
-    sudo sed -n "$((LAST_LOC_LINE - 2)),$((LAST_LOC_LINE + 15))p" "$NGINX_CONFIG" | cat -n | head -20
-    echo "----------------------------------------"
+    echo "📝 Showing context around last location:"
+    sudo sed -n "$((LAST_LOC_LINE - 2)),$((LAST_LOC_LINE + 10))p" "$NGINX_CONFIG" | cat -n
     echo ""
-    echo "💡 Add audio location AFTER line $LAST_LOC_LINE (after the closing '}' of location block)"
+    echo "💡 Add audio location AFTER line $LAST_LOC_LINE"
 fi
 
 echo ""
@@ -143,14 +141,11 @@ cat << 'AUDIO_CONFIG'
 AUDIO_CONFIG
 echo "----------------------------------------"
 echo ""
-echo "✅ Old audio locations removed!"
+echo "✅ Step 1 completed: All old audio locations removed"
+echo "📋 Step 2: Please add audio location manually using the info above"
 echo ""
-echo "📝 Next steps:"
-echo "   1. sudo nano $NGINX_CONFIG"
-echo "   2. Go to line $LAST_LOC_LINE (or find last location block)"
-echo "   3. Add the audio location config above AFTER the location block"
-echo "   4. Save and exit (Ctrl+X, Y, Enter)"
-echo "   5. Test: sudo nginx -t"
-echo "   6. Restart: sudo systemctl restart nginx"
-echo "   7. Test URL: curl -k -I https://165.22.246.35/audio/speaking/system/beep.mp3"
+echo "After adding, test with:"
+echo "  sudo nginx -t"
+echo "  sudo systemctl restart nginx"
+echo "  curl -k -I https://165.22.246.35/audio/speaking/system/beep.mp3"
 
