@@ -6,9 +6,25 @@
 set -e
 
 echo "🔐 Setting up Git credentials for automatic pull..."
+echo ""
+echo "⚠️  Token authentication may not work. Recommended: Use SSH key instead"
+echo "   Run: bash scripts/setup-git-ssh.sh"
+echo ""
+read -p "Continue with token? (y/N): " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Cancelled. Run 'bash scripts/setup-git-ssh.sh' for SSH setup instead."
+    exit 0
+fi
 
 GIT_USERNAME="initforge"
-GIT_TOKEN="ghp_zazskTq0k0QOwRCaHb5DY6jJ1Lmeio17xcR1"
+# Token cần được cung cấp hoặc tạo mới
+if [ -z "$GIT_TOKEN" ]; then
+    echo "❌ GIT_TOKEN not set. Please provide token:"
+    echo "   GIT_TOKEN=your_token bash scripts/setup-git-credentials.sh"
+    echo "   Or create new token at: https://github.com/settings/tokens"
+    exit 1
+fi
 REPO_URL="https://github.com/initforge/mini-ielts.score.git"
 
 # Method 1: Update remote URL với token embedded
