@@ -30,48 +30,39 @@ import sys
 config_file = "/etc/nginx/sites-available/mini-ielts-score"
 
 with open(config_file, 'r') as f:
-    content = f.read()
+    lines = f.readlines()
 
-# Remove all location /audio/speaking/ blocks (including nested)
-# Match from "location /audio/speaking/" to its closing brace
-pattern = r'[ \t]*#?[ \t]*location[ \t]+/audio/speaking/[^{]*\{[^}]*\{[^}]*\}[^}]*\}|[ \t]*#?[ \t]*location[ \t]+/audio/speaking/[^{]*\{[^}]*\}'
+# Remove all location /audio/speaking/ blocks
+result = []
+i = 0
+skip_block = False
+brace_depth = 0
 
-# More robust: match location block with proper brace matching
-def remove_audio_locations(text):
-    lines = text.split('\n')
-    result = []
-    i = 0
-    skip_until_brace = 0
-    brace_depth = 0
+while i < len(lines):
+    line = lines[i]
     
-    while i < len(lines):
-        line = lines[i]
-        
-        # Check if this line starts a location /audio/speaking/ block
-        if re.match(r'[ \t]*#?[ \t]*location[ \t]+/audio/speaking/', line):
-            # Skip this location block
-            skip_until_brace = 1
-            brace_depth = 0
+    # Check if this line starts a location /audio/speaking/ block
+    if re.match(r'[ \t]*#?[ \t]*location[ \t]+/audio/speaking/', line):
+        skip_block = True
+        brace_depth = 0
+        i += 1
+        continue
+    
+    if skip_block:
+        # Count braces to find end of block
+        brace_depth += line.count('{') - line.count('}')
+        if brace_depth <= 0 and '}' in line:
+            skip_block = False
             i += 1
             continue
-        
-        if skip_until_brace:
-            # Count braces to find end of block
-            brace_depth += line.count('{') - line.count('}')
-            if brace_depth <= 0 and '}' in line:
-                skip_until_brace = 0
-                i += 1
-                continue
-        
-        result.append(line)
         i += 1
+        continue
     
-    return '\n'.join(result)
-
-new_content = remove_audio_locations(content)
+    result.append(line)
+    i += 1
 
 with open(config_file, 'w') as f:
-    f.write(new_content)
+    f.writelines(result)
 
 print(f"✅ Removed all audio locations")
 PYTHON_REMOVE
@@ -113,31 +104,69 @@ if https_start is None:
 
 print(f"✅ Found HTTPS block: lines {https_start + 1} to {https_end + 1}")
 
-# Find the last location block at server level (not nested)
-# Look backwards from https_end
-insert_line = None
-last_location_end = None
+# Find ALL location blocks in HTTPS server block and their end positions
+location_blocks = []
+i = https_start
+current_brace_depth = 0
+in_location = False
+location_start = None
+location_indent = None
 
-for i in range(https_end - 1, https_start, -1):
+while i <= https_end:
     line = lines[i]
+    line_stripped = line.lstrip()
+    indent = len(line) - len(line_stripped)
+    
+    # Track brace depth from server block start
+    if i == https_start:
+        current_brace_depth = 0
+    
+    current_brace_depth += line.count('{') - line.count('}')
     
     # Check if this is a location block at server level (4 spaces indent, not 8+)
-    if re.match(r'^[ \t]{4}location\s+', line) and not re.match(r'^[ \t]{8,}', line):
-        # Find where this location block ends
+    if re.match(r'location\s+', line_stripped) and indent == 4:
+        if in_location:
+            # Previous location ended, record it
+            location_blocks.append({
+                'start': location_start,
+                'end': i - 1,
+                'indent': location_indent
+            })
+        location_start = i
+        location_indent = indent
+        in_location = True
         loc_brace_depth = 0
-        for j in range(i, https_end):
-            loc_brace_depth += lines[j].count('{') - lines[j].count('}')
-            if loc_brace_depth == 0 and j > i:
-                last_location_end = j
-                insert_line = j + 1
-                break
-        break
+    
+    if in_location:
+        loc_brace_depth += line.count('{') - line.count('}')
+        if loc_brace_depth == 0 and i > location_start:
+            # Location block ended
+            location_blocks.append({
+                'start': location_start,
+                'end': i,
+                'indent': location_indent
+            })
+            in_location = False
+    
+    i += 1
 
-if insert_line is None:
-    # No location found, insert before closing brace
-    insert_line = https_end
-
-print(f"📍 Will insert at line {insert_line + 1}")
+# Find the last location block
+if location_blocks:
+    last_location = location_blocks[-1]
+    insert_line = last_location['end'] + 1
+    print(f"📍 Found {len(location_blocks)} location block(s), last ends at line {last_location['end'] + 1}")
+    print(f"📍 Will insert at line {insert_line + 1}")
+else:
+    # No location found, find a safe place before closing brace
+    # Look for root directive or other server-level directives
+    insert_line = https_end - 1
+    for i in range(https_end - 1, https_start, -1):
+        line = lines[i]
+        if re.match(r'^[ \t]{4}[^ \t]', line) and not re.match(r'^[ \t]{8,}', line):
+            # Server-level directive found
+            insert_line = i + 1
+            break
+    print(f"📍 No location blocks found, inserting at line {insert_line + 1}")
 
 # Audio location config
 audio_config = '''    # Audio files location
@@ -187,4 +216,3 @@ else
     echo "⚠️  Please fix manually. Check the error above."
     exit 1
 fi
-
