@@ -347,7 +347,7 @@ function WritingContent() {
   const [showNoAnswerModal, setShowNoAnswerModal] = useState(false);
   const [showGeminiModal, setShowGeminiModal] = useState(false);
   const [hasSelectedQuestions, setHasSelectedQuestions] = useState(false);
-  const [quotaExceededInfo, setQuotaExceededInfo] = useState<{
+  const [quotaExceededInfo] = useState<{
     completedCount: number;
     failedCount: number;
   } | null>(null);

@@ -37,6 +37,7 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
   const [selectedQuestionIds, setSelectedQuestionIdsState] = useState<string[]>(
     speakingQuestions.map((q) => q.id)
   );
+  const [selectedParts, setSelectedPartsState] = useState<number[]>([1, 2, 3, 4, 5]);
   
   const [state, setState] = useState<SpeakingExamState>({
     currentQuestionIndex: null, // Start with no question selected
@@ -65,6 +66,10 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
       questions: {},
       images: {},
     }));
+  }, []);
+
+  const setSelectedParts = useCallback((parts: number[]) => {
+    setSelectedPartsState(parts);
   }, []);
 
   // On fresh load we ALWAYS treat it as a new session:
@@ -309,6 +314,8 @@ export function SpeakingProvider({ children }: { children: React.ReactNode }) {
       value={{
         state,
         currentQuestion,
+        selectedParts,
+        setSelectedParts,
         selectedQuestionIds,
         setSelectedQuestionIds,
         filteredQuestions,

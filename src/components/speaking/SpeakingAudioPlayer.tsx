@@ -18,7 +18,6 @@ export function SpeakingAudioPlayer({
   preload = 'auto'
 }: SpeakingAudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
-  // const [isPlaying, setIsPlaying] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
@@ -27,14 +26,16 @@ export function SpeakingAudioPlayer({
 
     audio.volume = volume;
     
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
+    const handlePlay = () => {
+      // Audio started playing
+    };
+    const handlePause = () => {
+      // Audio paused
+    };
     const handleEnded = () => {
-      setIsPlaying(false);
       onEnded?.();
     };
     const handleError = () => {
-      setIsPlaying(false);
       setHasError(true);
       const error = new Error(`Failed to load audio: ${src}`);
       onError?.(error);
