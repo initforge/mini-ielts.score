@@ -160,9 +160,10 @@ export default async function handler(
       }
     };
 
-    // Part 2 – Picture (Q3): mỗi câu có ảnh riêng theo questionId
+    // Part 2 – Picture (Q3-4): mỗi câu có ảnh riêng theo questionId
     pushImage("s3");
-    // Part 4 – Info response (Q7-9) dùng shared image "part4"
+    pushImage("s4");
+    // Part 4 – Info response (Q8-10) dùng shared image "part4"
     pushImage("part4");
 
     // Rubric text for context caching
