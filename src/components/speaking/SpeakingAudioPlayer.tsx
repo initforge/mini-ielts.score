@@ -48,10 +48,21 @@ export function SpeakingAudioPlayer({
     audio.addEventListener('error', handleError);
 
     if (autoPlay) {
-      audio.play().catch(err => {
-        console.error('[SpeakingAudioPlayer] Auto-play failed:', err);
-        handleError();
-      });
+      // Delay một chút để đảm bảo audio element đã sẵn sàng
+      const playTimer = setTimeout(() => {
+        audio.play().catch(err => {
+          console.error('[SpeakingAudioPlayer] Auto-play failed:', err, 'URL:', src);
+          handleError();
+        });
+      }, 50);
+      
+      return () => {
+        clearTimeout(playTimer);
+        audio.removeEventListener('play', handlePlay);
+        audio.removeEventListener('pause', handlePause);
+        audio.removeEventListener('ended', handleEnded);
+        audio.removeEventListener('error', handleError);
+      };
     }
 
     return () => {

@@ -28,9 +28,14 @@ export default function SpeakingInstructionModal({
   // Play direction audio khi modal mở
   useEffect(() => {
     if (isOpen) {
-      setShouldPlayDirection(true);
+      // Reset states
       setDirectionEnded(false);
       setShouldPlayBeep(false);
+      // Delay một chút để đảm bảo modal đã render xong
+      const timer = setTimeout(() => {
+        setShouldPlayDirection(true);
+      }, 100);
+      return () => clearTimeout(timer);
     } else {
       setShouldPlayDirection(false);
       setShouldPlayBeep(false);

@@ -79,59 +79,23 @@ export default function SpeakingTab() {
     }
   }, [currentQuestion]);
 
-  // Reset timer states when question changes and auto-start preparation
+  // Show instruction modal when user selects a question (check part)
   useEffect(() => {
     if (!currentQuestion) return;
-    resetTimerState();
-    const prep = currentQuestion.preparationTime ?? 0;
-    setPreparationTime(prep);
-    // Reset autoStartKey khi chuyển câu để tránh trigger auto-start từ câu trước
-    setAutoStartKey(0);
-    setIsRecordingLocal(false);
-
-    // Nếu câu này đã có câu trả lời thì không chạy lại thời gian chuẩn bị
-    const existingAnswer = state.answers.find(
-      (a) => a.questionId === currentQuestion.id
-    );
-
-    if (prep > 0 && !existingAnswer) {
-      setIsPreparing(true);
-      setPrepDone(false);
-      // Play begin-preparing audio khi bắt đầu preparation
-      setShouldPlayBeginPreparing(true);
-    } else {
-      setIsPreparing(false);
-      setPrepDone(true);
-    }
-  }, [currentQuestion?.id, currentQuestion?.preparationTime, resetTimerState, state.answers]);
-
-  // Play begin-speaking khi bắt đầu recording (sau preparation)
-  useEffect(() => {
-    if (prepDone && !isPreparing && isRecordingLocal) {
-      setShouldPlayBeginSpeaking(true);
-    } else {
-      setShouldPlayBeginSpeaking(false);
-    }
-  }, [prepDone, isPreparing, isRecordingLocal]);
-
-  // Show instruction modal ONLY when user manually selects a question
-  useEffect(() => {
-    if (!currentQuestion) return;
-    if (!hasUserSelectedQuestion) return; // Only show popup after manual selection
+    if (!hasUserSelectedQuestion) return; // Chỉ show khi user chọn câu
     
     const currentPart = currentQuestion.part;
     
-    // Check if we need to show popup for this part
+    // Check if we already showed popup for this part
     if (shownInstructions.has(currentPart)) {
-      // Already shown, skip
-      return;
+      return; // Đã show rồi, skip
     }
     
     // Show popup based on part
     switch (currentPart) {
       case 1:
-      setShowPart1Instruction(true);
-      setShownInstructions(prev => new Set(prev).add(1));
+        setShowPart1Instruction(true);
+        setShownInstructions(prev => new Set(prev).add(1));
         break;
       case 2:
         setShowPart2Instruction(true);
@@ -150,7 +114,48 @@ export default function SpeakingTab() {
         setShownInstructions(prev => new Set(prev).add(5));
         break;
     }
-  }, [currentQuestion, hasUserSelectedQuestion, state.startTime, shownInstructions]);
+  }, [currentQuestion?.id, currentQuestion?.part, hasUserSelectedQuestion, shownInstructions]);
+
+  // Reset timer states when question changes (SAU KHI popup đã được xử lý)
+  // Chỉ reset khi KHÔNG có popup đang mở
+  useEffect(() => {
+    if (!currentQuestion) return;
+    
+    // Nếu đang có popup mở thì chưa reset timer (đợi user click Continue)
+    const hasOpenPopup = showPart1Instruction || showPart2Instruction || 
+                         showPart3Instruction || showPart4Instruction || showPart5Instruction;
+    if (hasOpenPopup) return;
+    
+    resetTimerState();
+    const prep = currentQuestion.preparationTime ?? 0;
+    setPreparationTime(prep);
+    setAutoStartKey(0);
+    setIsRecordingLocal(false);
+
+    // Nếu câu này đã có câu trả lời thì không chạy lại thời gian chuẩn bị
+    const existingAnswer = state.answers.find(
+      (a) => a.questionId === currentQuestion.id
+    );
+
+    if (prep > 0 && !existingAnswer) {
+      setIsPreparing(true);
+      setPrepDone(false);
+      setShouldPlayBeginPreparing(true);
+    } else {
+      setIsPreparing(false);
+      setPrepDone(true);
+    }
+  }, [currentQuestion?.id, currentQuestion?.preparationTime, resetTimerState, state.answers, 
+      showPart1Instruction, showPart2Instruction, showPart3Instruction, showPart4Instruction, showPart5Instruction]);
+
+  // Play begin-speaking khi bắt đầu recording (sau preparation)
+  useEffect(() => {
+    if (prepDone && !isPreparing && isRecordingLocal) {
+      setShouldPlayBeginSpeaking(true);
+    } else {
+      setShouldPlayBeginSpeaking(false);
+    }
+  }, [prepDone, isPreparing, isRecordingLocal]);
 
   // REMOVED: Auto-start preparation timer - Timer only starts when user clicks record
 
@@ -250,7 +255,25 @@ export default function SpeakingTab() {
     if (currentQuestion.part === 1 && currentQuestion.questionNumber === 1 && !state.startTime) {
       setStartTime();
     }
-    // Timer only starts when user clicks record button
+    // Sau khi popup đóng, reset timer states và bắt đầu preparation nếu có
+    resetTimerState();
+    const prep = currentQuestion.preparationTime ?? 0;
+    setPreparationTime(prep);
+    setAutoStartKey(0);
+    setIsRecordingLocal(false);
+
+    const existingAnswer = state.answers.find(
+      (a) => a.questionId === currentQuestion.id
+    );
+
+    if (prep > 0 && !existingAnswer) {
+      setIsPreparing(true);
+      setPrepDone(false);
+      setShouldPlayBeginPreparing(true);
+    } else {
+      setIsPreparing(false);
+      setPrepDone(true);
+    }
   };
 
   const currentAnswer = currentQuestion 
