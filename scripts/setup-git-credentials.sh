@@ -20,15 +20,24 @@ CURRENT_REMOTE=$(git remote get-url origin 2>/dev/null || echo "")
 
 if [ -n "$CURRENT_REMOTE" ]; then
     # Extract repo path (initforge/mini-ielts.score.git)
-    REPO_PATH=$(echo "$CURRENT_REMOTE" | sed -E 's|https?://[^/]+/(.+)|\\1|' | sed -E 's|git@[^:]+:(.+)|\\1|')
+    # Handle both https:// and git@ formats
+    if echo "$CURRENT_REMOTE" | grep -q "^https://"; then
+        REPO_PATH=$(echo "$CURRENT_REMOTE" | sed -E 's|https?://[^/]+/(.+)$|\1|')
+    elif echo "$CURRENT_REMOTE" | grep -q "^git@"; then
+        REPO_PATH=$(echo "$CURRENT_REMOTE" | sed -E 's|git@[^:]+:(.+)$|\1|')
+    else
+        # Fallback: use default
+        REPO_PATH="initforge/mini-ielts.score.git"
+    fi
     
     # Update remote với token
     NEW_URL="https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/${REPO_PATH}"
     git remote set-url origin "$NEW_URL"
     echo "✅ Updated remote URL with credentials"
+    echo "   New URL: https://${GIT_USERNAME}:***@github.com/${REPO_PATH}"
 else
     echo "⚠️  No remote found, adding new remote..."
-    git remote add origin "$REPO_URL" 2>/dev/null || true
+    git remote add origin "https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/initforge/mini-ielts.score.git" 2>/dev/null || \
     git remote set-url origin "https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/initforge/mini-ielts.score.git"
     echo "✅ Added remote with credentials"
 fi
