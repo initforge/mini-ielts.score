@@ -124,8 +124,16 @@ export default function SpeakingTab() {
     // Nếu đang có popup mở thì chưa reset timer (đợi user click Continue)
     const hasOpenPopup = showPart1Instruction || showPart2Instruction || 
                          showPart3Instruction || showPart4Instruction || showPart5Instruction;
-    if (hasOpenPopup) return;
+    if (hasOpenPopup) {
+      // Khi có popup mở → reset các state về trạng thái chờ
+      setIsPreparing(false);
+      setPrepDone(false);
+      setShouldPlayBeginPreparing(false);
+      setShouldPlayBeginSpeaking(false);
+      return;
+    }
     
+    // Chỉ reset timer khi popup đã đóng
     resetTimerState();
     const prep = currentQuestion.preparationTime ?? 0;
     setPreparationTime(prep);
@@ -255,25 +263,29 @@ export default function SpeakingTab() {
     if (currentQuestion.part === 1 && currentQuestion.questionNumber === 1 && !state.startTime) {
       setStartTime();
     }
-    // Sau khi popup đóng, reset timer states và bắt đầu preparation nếu có
-    resetTimerState();
-    const prep = currentQuestion.preparationTime ?? 0;
-    setPreparationTime(prep);
-    setAutoStartKey(0);
-    setIsRecordingLocal(false);
+    // Sau khi popup đóng (user click "Bắt đầu"), reset timer states và bắt đầu preparation
+    // Delay một chút để đảm bảo popup đã đóng hoàn toàn
+    setTimeout(() => {
+      resetTimerState();
+      const prep = currentQuestion.preparationTime ?? 0;
+      setPreparationTime(prep);
+      setAutoStartKey(0);
+      setIsRecordingLocal(false);
 
-    const existingAnswer = state.answers.find(
-      (a) => a.questionId === currentQuestion.id
-    );
+      const existingAnswer = state.answers.find(
+        (a) => a.questionId === currentQuestion.id
+      );
 
-    if (prep > 0 && !existingAnswer) {
-      setIsPreparing(true);
-      setPrepDone(false);
-      setShouldPlayBeginPreparing(true);
-    } else {
-      setIsPreparing(false);
-      setPrepDone(true);
-    }
+      if (prep > 0 && !existingAnswer) {
+        setIsPreparing(true);
+        setPrepDone(false);
+        // Phát begin preparing SAU KHI popup đóng
+        setShouldPlayBeginPreparing(true);
+      } else {
+        setIsPreparing(false);
+        setPrepDone(true);
+      }
+    }, 100);
   };
 
   const currentAnswer = currentQuestion 
