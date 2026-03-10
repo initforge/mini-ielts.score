@@ -6,19 +6,38 @@
 
 An AI-powered IELTS writing assessment tool that grades essays using Google Gemini API. Provides band scores, detailed feedback, and improvement suggestions — like having a personal IELTS examiner.
 
+## Preview
+
+![Mini IELTS Score — AI Writing Grader](docs/screenshot.png)
+
 ## What it does
 
 - **Automated band scoring** — grades IELTS Writing Task 1 & 2
 - **Criterion breakdown** — Task Response, Coherence, Lexical Resource, Grammar
 - **Detailed feedback** — specific suggestions for improvement
 - **Express backend** — API proxy for Gemini, rate limiting, CORS
+- **Speaking test mode** — voice recording with audio playback
 
 ## How it works
 
-1. User pastes their IELTS essay
-2. Frontend sends to Express API → Gemini API
-3. AI analyzes using official IELTS band descriptors
-4. Returns structured scores + actionable feedback
+```mermaid
+sequenceDiagram
+    User->>Frontend: Paste IELTS essay
+    Frontend->>Express API: POST /api/grade
+    Express API->>Gemini API: Analyze with band descriptors
+    Gemini API-->>Express API: Structured scores + feedback
+    Express API-->>Frontend: Display results
+```
+
+## Getting started
+
+```bash
+git clone https://github.com/initforge/mini-ielts.score.git
+cd mini-ielts.score
+cp env.example .env  # Add your Gemini API key
+npm install
+npm run dev
+```
 
 ---
 
