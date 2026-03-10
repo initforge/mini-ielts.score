@@ -6,19 +6,38 @@
 
 Công cụ chấm điểm IELTS Writing bằng Google Gemini API. Cung cấp band score, nhận xét chi tiết và gợi ý cải thiện — như có giám khảo IELTS cá nhân.
 
+## Xem trước
+
+![Mini IELTS Score — Chấm điểm IELTS bằng AI](docs/screenshot.png)
+
 ## Tính năng chính
 
 - **Chấm band score tự động** — IELTS Writing Task 1 & 2
 - **Phân tích theo tiêu chí** — Task Response, Coherence, Lexical Resource, Grammar
 - **Nhận xét chi tiết** — gợi ý cụ thể để cải thiện
 - **Backend Express** — proxy Gemini API, rate limiting, CORS
+- **Chế độ Speaking** — ghi âm giọng nói với phát lại audio
 
 ## Cách hoạt động
 
-1. Người dùng paste bài luận IELTS
-2. Frontend gửi đến Express API → Gemini API
-3. AI phân tích theo band descriptors chính thức
-4. Trả về điểm có cấu trúc + feedback hành động
+```mermaid
+sequenceDiagram
+    User->>Frontend: Paste bài luận IELTS
+    Frontend->>Express API: POST /api/grade
+    Express API->>Gemini API: Phân tích theo band descriptors
+    Gemini API-->>Express API: Điểm + feedback có cấu trúc
+    Express API-->>Frontend: Hiển thị kết quả
+```
+
+## Cài đặt
+
+```bash
+git clone https://github.com/initforge/mini-ielts.score.git
+cd mini-ielts.score
+cp env.example .env  # Thêm Gemini API key
+npm install
+npm run dev
+```
 
 ---
 
