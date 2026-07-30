@@ -1,0 +1,34 @@
+- generic [ref=e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=e9] [box=16,685,52,19]: Công cụ
+  - main [ref=e1220] [box=0,0,1280,720]:
+    - generic [ref=e1222] [box=0,0,1280,505]:
+      - generic [ref=e1223] [box=0,0,1280,47]:
+        - generic [ref=e1224] [box=22,11,223,25]:
+          - link "Danh sách đề" [ref=e1225] [cursor=pointer] [box=22,14,102,18]:
+            - /url: /exams
+          - generic [ref=e1228] [box=138,11,106,25]: XoáMùTOEIC
+        - slider "Âm lượng" [ref=e1234] [cursor=pointer] [box=1147,22,101,4]: "0.7"
+      - generic [ref=e1236] [box=294,83,691,339]:
+        - heading "Start" [level=2] [ref=e1242] [box=370,112,57,29]
+        - generic [ref=e1245] [box=316,166,648,26]:
+          - generic [ref=e1246] [box=316,166,592,18]: Test
+          - generic [ref=e1247] [box=922,166,42,18]: Action
+        - generic [ref=e1248] [box=316,192,648,62]:
+          - generic [ref=e1252] [box=359,213,485,18]: ETS 2026 - TEST 1
+          - button "Start test" [ref=e1253] [cursor=pointer] [box=855,206,109,32]
+        - generic [ref=e1256] [box=316,254,648,66]:
+          - generic [ref=e1260] [box=359,278,496,18]: Kết quả lần Test trước
+          - link "Review" [ref=e1261] [cursor=pointer] [box=866,268,98,36]:
+            - /url: /history
+        - paragraph [ref=e1268] [box=357,346,596,42]:
+          - text: Bạn hãy
+          - link "đăng nhập" [ref=e1269] [cursor=pointer] [box=411,348,69,16]:
+            - /url: /auth
+          - text: để lưu lại kết quả và thống kê. Sau khi làm bài xong, bạn hãy nhấn nút
+          - strong [ref=e1270] [box=357,369,98,16]: Review Results
+          - text: để xem đáp án chi tiết nhé!
+      - button "Full screen" [ref=e1272] [cursor=pointer] [box=576,465,129,40]

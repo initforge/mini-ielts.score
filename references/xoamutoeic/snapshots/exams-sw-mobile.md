@@ -1,0 +1,479 @@
+- generic [ref=f8e2] [box=0,0,390,6001]:
+  - region "Notifications (F8)" [box=0,0,390,0]:
+    - list [box=0,0,390,29]
+  - region "Notifications alt+T" [box=0,0,390,0]
+  - button "Mở thanh công cụ chú thích" [ref=f8e4] [cursor=pointer] [box=16,763,52,65]:
+    - generic [ref=f8e9] [box=16,809,52,19]: Công cụ
+  - main [ref=f8e10] [box=0,0,390,6001]:
+    - navigation [ref=f8e12] [box=0,0,390,50]:
+      - link "XoáMùTOEIC" [ref=f8e13] [cursor=pointer] [box=22,13,109,25]:
+        - /url: /
+      - generic [ref=f8e14] [box=296,9,72,32]:
+        - button "Chuyển sang chế độ Tối" [ref=f8e15] [cursor=pointer] [box=296,9,32,32]
+        - button "Mở menu" [ref=f8e18] [cursor=pointer] [box=336,9,32,32]
+    - generic [ref=f8e20] [box=0,51,390,5949]:
+      - link "Trang chủ" [ref=f8e21] [cursor=pointer] [box=22,80,108,32]:
+        - /url: /
+      - heading "Thư viện đề thi" [level=1] [ref=f8e22] [box=22,123,347,32]
+      - paragraph [ref=f8e23] [box=22,159,347,43]: "Chọn chế độ thi: Listening & Reading hoặc Speaking & Writing."
+      - generic [ref=f8e24] [box=22,224,347,5748]:
+        - tablist [ref=f8e25] [box=22,224,410,36]:
+          - tab "Listening & Reading" [ref=f8e26] [cursor=pointer] [box=25,228,166,29]
+          - tab "Speaking & Writing" [selected] [ref=f8e29] [cursor=pointer] [box=191,228,163,29]
+          - button "Lịch sử & Kết quả" [ref=f8e33] [cursor=pointer] [box=358,201,70,83]
+        - tabpanel "Speaking & Writing" [ref=f8e38] [box=22,282,347,5690]:
+          - generic [ref=f8e39] [box=22,282,347,79]:
+            - button "Tất cả" [ref=f8e40] [cursor=pointer] [box=22,282,65,31]
+            - button "ETS Xanh Dương" [ref=f8e41] [cursor=pointer] [box=92,282,124,31]
+            - button "ETS Xanh Lá" [ref=f8e42] [cursor=pointer] [box=222,282,100,31]
+            - button "ETS Cam Hồng" [ref=f8e43] [cursor=pointer] [box=22,318,115,31]
+            - button "ETS Đỏ Đô" [ref=f8e44] [cursor=pointer] [box=142,318,89,31]
+            - button "ETS Tím Huế" [ref=f8e45] [cursor=pointer] [box=237,318,100,31]
+          - generic [ref=f8e46] [box=22,375,347,36]:
+            - textbox "Tìm đề Speaking & Writing…" [ref=f8e47] [box=22,375,230,36]
+            - button "Tìm kiếm" [ref=f8e48] [cursor=pointer] [box=259,375,110,36]
+          - generic [ref=f8e49] [box=22,433,347,5540]:
+            - generic [ref=f8e51] [box=22,433,347,5198]:
+              - generic [ref=f8e52] [box=22,433,347,159]:
+                - generic [ref=f8e53] [box=37,448,316,18]: TEST 1
+                - generic [ref=f8e58] [box=37,473,316,32]:
+                  - generic [ref=f8e59] [box=37,473,316,14]:
+                    - generic [ref=f8e60] [box=37,473,62,14]: ~80 phút
+                    - generic [ref=f8e64] [box=110,473,30,14]: "85"
+                  - paragraph [ref=f8e70] [box=37,491,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e71] [box=37,513,316,21]:
+                  - generic [ref=f8e72] [box=37,513,60,21]: "#TOEIC"
+                  - generic [ref=f8e73] [box=100,513,90,21]: "#ETS Tím Huế"
+                - generic [ref=f8e74] [box=37,544,316,32]:
+                  - button "Thi thử" [ref=f8e75] [cursor=pointer] [box=37,544,102,32]
+                  - button "Luyện tập" [ref=f8e76] [cursor=pointer] [box=144,544,102,32]
+                  - button "Kết quả" [disabled] [box=251,544,102,32]
+              - generic [ref=f8e77] [box=22,606,347,159]:
+                - generic [ref=f8e78] [box=37,622,316,18]: TEST 1
+                - generic [ref=f8e83] [box=37,647,316,32]:
+                  - generic [ref=f8e84] [box=37,647,316,14]:
+                    - generic [ref=f8e85] [box=37,647,62,14]: ~80 phút
+                    - generic [ref=f8e89] [box=110,647,30,14]: "28"
+                  - paragraph [ref=f8e95] [box=37,665,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e96] [box=37,686,316,21]:
+                  - generic [ref=f8e97] [box=37,686,60,21]: "#TOEIC"
+                  - generic [ref=f8e98] [box=100,686,81,21]: "#ETS Đỏ Đô"
+                - generic [ref=f8e99] [box=37,718,316,32]:
+                  - button "Thi thử" [ref=f8e100] [cursor=pointer] [box=37,718,102,32]
+                  - button "Luyện tập" [ref=f8e101] [cursor=pointer] [box=144,718,102,32]
+                  - button "Kết quả" [disabled] [box=251,718,102,32]
+              - generic [ref=f8e102] [box=22,780,347,159]:
+                - generic [ref=f8e103] [box=37,795,316,18]: TEST 1
+                - generic [ref=f8e108] [box=37,821,316,32]:
+                  - generic [ref=f8e109] [box=37,821,316,14]:
+                    - generic [ref=f8e110] [box=37,821,62,14]: ~80 phút
+                    - generic [ref=f8e114] [box=110,821,30,14]: "38"
+                  - paragraph [ref=f8e120] [box=37,839,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e121] [box=37,860,316,21]:
+                  - generic [ref=f8e122] [box=37,860,60,21]: "#TOEIC"
+                  - generic [ref=f8e123] [box=100,860,110,21]: "#ETS Xanh Dương"
+                - generic [ref=f8e124] [box=37,892,316,32]:
+                  - button "Thi thử" [ref=f8e125] [cursor=pointer] [box=37,892,102,32]
+                  - button "Luyện tập" [ref=f8e126] [cursor=pointer] [box=144,892,102,32]
+                  - button "Kết quả" [disabled] [box=251,892,102,32]
+              - generic [ref=f8e127] [box=22,954,347,159]:
+                - generic [ref=f8e128] [box=37,969,316,18]: TEST 1
+                - generic [ref=f8e133] [box=37,994,316,32]:
+                  - generic [ref=f8e134] [box=37,994,316,14]:
+                    - generic [ref=f8e135] [box=37,994,62,14]: ~80 phút
+                    - generic [ref=f8e139] [box=110,994,23,14]: "5"
+                  - paragraph [ref=f8e145] [box=37,1012,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e146] [box=37,1034,316,21]:
+                  - generic [ref=f8e147] [box=37,1034,60,21]: "#TOEIC"
+                  - generic [ref=f8e148] [box=100,1034,91,21]: "#ETS Xanh Lá"
+                - generic [ref=f8e149] [box=37,1065,316,32]:
+                  - button "Thi thử" [ref=f8e150] [cursor=pointer] [box=37,1065,102,32]
+                  - button "Luyện tập" [ref=f8e151] [cursor=pointer] [box=144,1065,102,32]
+                  - button "Kết quả" [disabled] [box=251,1065,102,32]
+              - generic [ref=f8e152] [box=22,1127,347,159]:
+                - generic [ref=f8e153] [box=37,1143,316,18]: TEST 1
+                - generic [ref=f8e158] [box=37,1168,316,32]:
+                  - generic [ref=f8e159] [box=37,1168,316,14]:
+                    - generic [ref=f8e160] [box=37,1168,62,14]: ~80 phút
+                    - generic [ref=f8e164] [box=110,1168,23,14]: "0"
+                  - paragraph [ref=f8e170] [box=37,1186,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e171] [box=37,1208,316,21]:
+                  - generic [ref=f8e172] [box=37,1208,60,21]: "#TOEIC"
+                  - generic [ref=f8e173] [box=100,1208,102,21]: "#ETS Cam Hồng"
+                - generic [ref=f8e174] [box=37,1239,316,32]:
+                  - button "Thi thử" [ref=f8e175] [cursor=pointer] [box=37,1239,102,32]
+                  - button "Luyện tập" [ref=f8e176] [cursor=pointer] [box=144,1239,102,32]
+                  - button "Kết quả" [disabled] [box=251,1239,102,32]
+              - generic [ref=f8e177] [box=22,1301,347,159]:
+                - generic [ref=f8e178] [box=37,1317,316,18]: TEST 2
+                - generic [ref=f8e183] [box=37,1342,316,32]:
+                  - generic [ref=f8e184] [box=37,1342,316,14]:
+                    - generic [ref=f8e185] [box=37,1342,62,14]: ~80 phút
+                    - generic [ref=f8e189] [box=110,1342,30,14]: "28"
+                  - paragraph [ref=f8e195] [box=37,1360,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e196] [box=37,1381,316,21]:
+                  - generic [ref=f8e197] [box=37,1381,60,21]: "#TOEIC"
+                  - generic [ref=f8e198] [box=100,1381,110,21]: "#ETS Xanh Dương"
+                - generic [ref=f8e199] [box=37,1413,316,32]:
+                  - button "Thi thử" [ref=f8e200] [cursor=pointer] [box=37,1413,102,32]
+                  - button "Luyện tập" [ref=f8e201] [cursor=pointer] [box=144,1413,102,32]
+                  - button "Kết quả" [disabled] [box=251,1413,102,32]
+              - generic [ref=f8e202] [box=22,1475,347,159]:
+                - generic [ref=f8e203] [box=37,1490,316,18]: TEST 2
+                - generic [ref=f8e208] [box=37,1516,316,32]:
+                  - generic [ref=f8e209] [box=37,1516,316,14]:
+                    - generic [ref=f8e210] [box=37,1516,62,14]: ~80 phút
+                    - generic [ref=f8e214] [box=110,1516,24,14]: "4"
+                  - paragraph [ref=f8e220] [box=37,1534,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e221] [box=37,1555,316,21]:
+                  - generic [ref=f8e222] [box=37,1555,60,21]: "#TOEIC"
+                  - generic [ref=f8e223] [box=100,1555,91,21]: "#ETS Xanh Lá"
+                - generic [ref=f8e224] [box=37,1586,316,32]:
+                  - button "Thi thử" [ref=f8e225] [cursor=pointer] [box=37,1586,102,32]
+                  - button "Luyện tập" [ref=f8e226] [cursor=pointer] [box=144,1586,102,32]
+                  - button "Kết quả" [disabled] [box=251,1586,102,32]
+              - generic [ref=f8e227] [box=22,1649,347,159]:
+                - generic [ref=f8e228] [box=37,1664,316,18]: TEST 2
+                - generic [ref=f8e233] [box=37,1689,316,32]:
+                  - generic [ref=f8e234] [box=37,1689,316,14]:
+                    - generic [ref=f8e235] [box=37,1689,62,14]: ~80 phút
+                    - generic [ref=f8e239] [box=110,1689,24,14]: "6"
+                  - paragraph [ref=f8e245] [box=37,1707,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e246] [box=37,1729,316,21]:
+                  - generic [ref=f8e247] [box=37,1729,60,21]: "#TOEIC"
+                  - generic [ref=f8e248] [box=100,1729,90,21]: "#ETS Tím Huế"
+                - generic [ref=f8e249] [box=37,1760,316,32]:
+                  - button "Thi thử" [ref=f8e250] [cursor=pointer] [box=37,1760,102,32]
+                  - button "Luyện tập" [ref=f8e251] [cursor=pointer] [box=144,1760,102,32]
+                  - button "Kết quả" [disabled] [box=251,1760,102,32]
+              - generic [ref=f8e252] [box=22,1822,347,159]:
+                - generic [ref=f8e253] [box=37,1838,316,18]: TEST 2
+                - generic [ref=f8e258] [box=37,1863,316,32]:
+                  - generic [ref=f8e259] [box=37,1863,316,14]:
+                    - generic [ref=f8e260] [box=37,1863,62,14]: ~80 phút
+                    - generic [ref=f8e264] [box=110,1863,23,14]: "2"
+                  - paragraph [ref=f8e270] [box=37,1881,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e271] [box=37,1903,316,21]:
+                  - generic [ref=f8e272] [box=37,1903,60,21]: "#TOEIC"
+                  - generic [ref=f8e273] [box=100,1903,81,21]: "#ETS Đỏ Đô"
+                - generic [ref=f8e274] [box=37,1934,316,32]:
+                  - button "Thi thử" [ref=f8e275] [cursor=pointer] [box=37,1934,102,32]
+                  - button "Luyện tập" [ref=f8e276] [cursor=pointer] [box=144,1934,102,32]
+                  - button "Kết quả" [disabled] [box=251,1934,102,32]
+              - generic [ref=f8e277] [box=22,1996,347,159]:
+                - generic [ref=f8e278] [box=37,2012,316,18]: TEST 2
+                - generic [ref=f8e283] [box=37,2037,316,32]:
+                  - generic [ref=f8e284] [box=37,2037,316,14]:
+                    - generic [ref=f8e285] [box=37,2037,62,14]: ~80 phút
+                    - generic [ref=f8e289] [box=110,2037,23,14]: "0"
+                  - paragraph [ref=f8e295] [box=37,2055,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e296] [box=37,2076,316,21]:
+                  - generic [ref=f8e297] [box=37,2076,60,21]: "#TOEIC"
+                  - generic [ref=f8e298] [box=100,2076,102,21]: "#ETS Cam Hồng"
+                - generic [ref=f8e299] [box=37,2108,316,32]:
+                  - button "Thi thử" [ref=f8e300] [cursor=pointer] [box=37,2108,102,32]
+                  - button "Luyện tập" [ref=f8e301] [cursor=pointer] [box=144,2108,102,32]
+                  - button "Kết quả" [disabled] [box=251,2108,102,32]
+              - generic [ref=f8e302] [box=22,2170,347,159]:
+                - generic [ref=f8e303] [box=37,2185,316,18]: TEST 3
+                - generic [ref=f8e308] [box=37,2210,316,32]:
+                  - generic [ref=f8e309] [box=37,2210,316,14]:
+                    - generic [ref=f8e310] [box=37,2210,62,14]: ~80 phút
+                    - generic [ref=f8e314] [box=110,2210,24,14]: "6"
+                  - paragraph [ref=f8e320] [box=37,2228,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e321] [box=37,2250,316,21]:
+                  - generic [ref=f8e322] [box=37,2250,60,21]: "#TOEIC"
+                  - generic [ref=f8e323] [box=100,2250,110,21]: "#ETS Xanh Dương"
+                - generic [ref=f8e324] [box=37,2281,316,32]:
+                  - button "Thi thử" [ref=f8e325] [cursor=pointer] [box=37,2281,102,32]
+                  - button "Luyện tập" [ref=f8e326] [cursor=pointer] [box=144,2281,102,32]
+                  - button "Kết quả" [disabled] [box=251,2281,102,32]
+              - generic [ref=f8e327] [box=22,2344,347,159]:
+                - generic [ref=f8e328] [box=37,2359,316,18]: TEST 3
+                - generic [ref=f8e333] [box=37,2384,316,32]:
+                  - generic [ref=f8e334] [box=37,2384,316,14]:
+                    - generic [ref=f8e335] [box=37,2384,62,14]: ~80 phút
+                    - generic [ref=f8e339] [box=110,2384,20,14]: "1"
+                  - paragraph [ref=f8e345] [box=37,2402,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e346] [box=37,2424,316,21]:
+                  - generic [ref=f8e347] [box=37,2424,60,21]: "#TOEIC"
+                  - generic [ref=f8e348] [box=100,2424,90,21]: "#ETS Tím Huế"
+                - generic [ref=f8e349] [box=37,2455,316,32]:
+                  - button "Thi thử" [ref=f8e350] [cursor=pointer] [box=37,2455,102,32]
+                  - button "Luyện tập" [ref=f8e351] [cursor=pointer] [box=144,2455,102,32]
+                  - button "Kết quả" [disabled] [box=251,2455,102,32]
+              - generic [ref=f8e352] [box=22,2517,347,159]:
+                - generic [ref=f8e353] [box=37,2533,316,18]: TEST 3
+                - generic [ref=f8e358] [box=37,2558,316,32]:
+                  - generic [ref=f8e359] [box=37,2558,316,14]:
+                    - generic [ref=f8e360] [box=37,2558,62,14]: ~80 phút
+                    - generic [ref=f8e364] [box=110,2558,23,14]: "2"
+                  - paragraph [ref=f8e370] [box=37,2576,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e371] [box=37,2598,316,21]:
+                  - generic [ref=f8e372] [box=37,2598,60,21]: "#TOEIC"
+                  - generic [ref=f8e373] [box=100,2598,81,21]: "#ETS Đỏ Đô"
+                - generic [ref=f8e374] [box=37,2629,316,32]:
+                  - button "Thi thử" [ref=f8e375] [cursor=pointer] [box=37,2629,102,32]
+                  - button "Luyện tập" [ref=f8e376] [cursor=pointer] [box=144,2629,102,32]
+                  - button "Kết quả" [disabled] [box=251,2629,102,32]
+              - generic [ref=f8e377] [box=22,2691,347,159]:
+                - generic [ref=f8e378] [box=37,2706,316,18]: TEST 3
+                - generic [ref=f8e383] [box=37,2732,316,32]:
+                  - generic [ref=f8e384] [box=37,2732,316,14]:
+                    - generic [ref=f8e385] [box=37,2732,62,14]: ~80 phút
+                    - generic [ref=f8e389] [box=110,2732,23,14]: "2"
+                  - paragraph [ref=f8e395] [box=37,2750,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e396] [box=37,2771,316,21]:
+                  - generic [ref=f8e397] [box=37,2771,60,21]: "#TOEIC"
+                  - generic [ref=f8e398] [box=100,2771,91,21]: "#ETS Xanh Lá"
+                - generic [ref=f8e399] [box=37,2803,316,32]:
+                  - button "Thi thử" [ref=f8e400] [cursor=pointer] [box=37,2803,102,32]
+                  - button "Luyện tập" [ref=f8e401] [cursor=pointer] [box=144,2803,102,32]
+                  - button "Kết quả" [disabled] [box=251,2803,102,32]
+              - generic [ref=f8e402] [box=22,2865,347,159]:
+                - generic [ref=f8e403] [box=37,2880,316,18]: TEST 3
+                - generic [ref=f8e408] [box=37,2905,316,32]:
+                  - generic [ref=f8e409] [box=37,2905,316,14]:
+                    - generic [ref=f8e410] [box=37,2905,62,14]: ~80 phút
+                    - generic [ref=f8e414] [box=110,2905,23,14]: "0"
+                  - paragraph [ref=f8e420] [box=37,2923,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e421] [box=37,2945,316,21]:
+                  - generic [ref=f8e422] [box=37,2945,60,21]: "#TOEIC"
+                  - generic [ref=f8e423] [box=100,2945,102,21]: "#ETS Cam Hồng"
+                - generic [ref=f8e424] [box=37,2976,316,32]:
+                  - button "Thi thử" [ref=f8e425] [cursor=pointer] [box=37,2976,102,32]
+                  - button "Luyện tập" [ref=f8e426] [cursor=pointer] [box=144,2976,102,32]
+                  - button "Kết quả" [disabled] [box=251,2976,102,32]
+              - generic [ref=f8e427] [box=22,3039,347,159]:
+                - generic [ref=f8e428] [box=37,3054,316,18]: TEST 4
+                - generic [ref=f8e433] [box=37,3079,316,32]:
+                  - generic [ref=f8e434] [box=37,3079,316,14]:
+                    - generic [ref=f8e435] [box=37,3079,62,14]: ~80 phút
+                    - generic [ref=f8e439] [box=110,3079,23,14]: "3"
+                  - paragraph [ref=f8e445] [box=37,3097,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e446] [box=37,3119,316,21]:
+                  - generic [ref=f8e447] [box=37,3119,60,21]: "#TOEIC"
+                  - generic [ref=f8e448] [box=100,3119,102,21]: "#ETS Cam Hồng"
+                - generic [ref=f8e449] [box=37,3150,316,32]:
+                  - button "Thi thử" [ref=f8e450] [cursor=pointer] [box=37,3150,102,32]
+                  - button "Luyện tập" [ref=f8e451] [cursor=pointer] [box=144,3150,102,32]
+                  - button "Kết quả" [disabled] [box=251,3150,102,32]
+              - generic [ref=f8e452] [box=22,3212,347,159]:
+                - generic [ref=f8e453] [box=37,3228,316,18]: TEST 4
+                - generic [ref=f8e458] [box=37,3253,316,32]:
+                  - generic [ref=f8e459] [box=37,3253,316,14]:
+                    - generic [ref=f8e460] [box=37,3253,62,14]: ~80 phút
+                    - generic [ref=f8e464] [box=110,3253,23,14]: "0"
+                  - paragraph [ref=f8e470] [box=37,3271,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e471] [box=37,3292,316,21]:
+                  - generic [ref=f8e472] [box=37,3292,60,21]: "#TOEIC"
+                  - generic [ref=f8e473] [box=100,3292,91,21]: "#ETS Xanh Lá"
+                - generic [ref=f8e474] [box=37,3324,316,32]:
+                  - button "Thi thử" [ref=f8e475] [cursor=pointer] [box=37,3324,102,32]
+                  - button "Luyện tập" [ref=f8e476] [cursor=pointer] [box=144,3324,102,32]
+                  - button "Kết quả" [disabled] [box=251,3324,102,32]
+              - generic [ref=f8e477] [box=22,3386,347,159]:
+                - generic [ref=f8e478] [box=37,3401,316,18]: TEST 4
+                - generic [ref=f8e483] [box=37,3427,316,32]:
+                  - generic [ref=f8e484] [box=37,3427,316,14]:
+                    - generic [ref=f8e485] [box=37,3427,62,14]: ~80 phút
+                    - generic [ref=f8e489] [box=110,3427,20,14]: "1"
+                  - paragraph [ref=f8e495] [box=37,3445,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e496] [box=37,3466,316,21]:
+                  - generic [ref=f8e497] [box=37,3466,60,21]: "#TOEIC"
+                  - generic [ref=f8e498] [box=100,3466,81,21]: "#ETS Đỏ Đô"
+                - generic [ref=f8e499] [box=37,3498,316,32]:
+                  - button "Thi thử" [ref=f8e500] [cursor=pointer] [box=37,3498,102,32]
+                  - button "Luyện tập" [ref=f8e501] [cursor=pointer] [box=144,3498,102,32]
+                  - button "Kết quả" [disabled] [box=251,3498,102,32]
+              - generic [ref=f8e502] [box=22,3560,347,159]:
+                - generic [ref=f8e503] [box=37,3575,316,18]: TEST 4
+                - generic [ref=f8e508] [box=37,3600,316,32]:
+                  - generic [ref=f8e509] [box=37,3600,316,14]:
+                    - generic [ref=f8e510] [box=37,3600,62,14]: ~80 phút
+                    - generic [ref=f8e514] [box=110,3600,24,14]: "4"
+                  - paragraph [ref=f8e520] [box=37,3618,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e521] [box=37,3640,316,21]:
+                  - generic [ref=f8e522] [box=37,3640,60,21]: "#TOEIC"
+                  - generic [ref=f8e523] [box=100,3640,90,21]: "#ETS Tím Huế"
+                - generic [ref=f8e524] [box=37,3671,316,32]:
+                  - button "Thi thử" [ref=f8e525] [cursor=pointer] [box=37,3671,102,32]
+                  - button "Luyện tập" [ref=f8e526] [cursor=pointer] [box=144,3671,102,32]
+                  - button "Kết quả" [disabled] [box=251,3671,102,32]
+              - generic [ref=f8e527] [box=22,3733,347,159]:
+                - generic [ref=f8e528] [box=37,3749,316,18]: TEST 4
+                - generic [ref=f8e533] [box=37,3774,316,32]:
+                  - generic [ref=f8e534] [box=37,3774,316,14]:
+                    - generic [ref=f8e535] [box=37,3774,62,14]: ~80 phút
+                    - generic [ref=f8e539] [box=110,3774,27,14]: "13"
+                  - paragraph [ref=f8e545] [box=37,3792,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e546] [box=37,3814,316,21]:
+                  - generic [ref=f8e547] [box=37,3814,60,21]: "#TOEIC"
+                  - generic [ref=f8e548] [box=100,3814,110,21]: "#ETS Xanh Dương"
+                - generic [ref=f8e549] [box=37,3845,316,32]:
+                  - button "Thi thử" [ref=f8e550] [cursor=pointer] [box=37,3845,102,32]
+                  - button "Luyện tập" [ref=f8e551] [cursor=pointer] [box=144,3845,102,32]
+                  - button "Kết quả" [disabled] [box=251,3845,102,32]
+              - generic [ref=f8e552] [box=22,3907,347,159]:
+                - generic [ref=f8e553] [box=37,3923,316,18]: TEST 5
+                - generic [ref=f8e558] [box=37,3948,316,32]:
+                  - generic [ref=f8e559] [box=37,3948,316,14]:
+                    - generic [ref=f8e560] [box=37,3948,62,14]: ~80 phút
+                    - generic [ref=f8e564] [box=110,3948,24,14]: "9"
+                  - paragraph [ref=f8e570] [box=37,3966,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e571] [box=37,3987,316,21]:
+                  - generic [ref=f8e572] [box=37,3987,60,21]: "#TOEIC"
+                  - generic [ref=f8e573] [box=100,3987,90,21]: "#ETS Tím Huế"
+                - generic [ref=f8e574] [box=37,4019,316,32]:
+                  - button "Thi thử" [ref=f8e575] [cursor=pointer] [box=37,4019,102,32]
+                  - button "Luyện tập" [ref=f8e576] [cursor=pointer] [box=144,4019,102,32]
+                  - button "Kết quả" [disabled] [box=251,4019,102,32]
+              - generic [ref=f8e577] [box=22,4081,347,159]:
+                - generic [ref=f8e578] [box=37,4096,316,18]: TEST 5
+                - generic [ref=f8e583] [box=37,4122,316,32]:
+                  - generic [ref=f8e584] [box=37,4122,316,14]:
+                    - generic [ref=f8e585] [box=37,4122,62,14]: ~80 phút
+                    - generic [ref=f8e589] [box=110,4122,23,14]: "2"
+                  - paragraph [ref=f8e595] [box=37,4140,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e596] [box=37,4161,316,21]:
+                  - generic [ref=f8e597] [box=37,4161,60,21]: "#TOEIC"
+                  - generic [ref=f8e598] [box=100,4161,102,21]: "#ETS Cam Hồng"
+                - generic [ref=f8e599] [box=37,4193,316,32]:
+                  - button "Thi thử" [ref=f8e600] [cursor=pointer] [box=37,4193,102,32]
+                  - button "Luyện tập" [ref=f8e601] [cursor=pointer] [box=144,4193,102,32]
+                  - button "Kết quả" [disabled] [box=251,4193,102,32]
+              - generic [ref=f8e602] [box=22,4255,347,159]:
+                - generic [ref=f8e603] [box=37,4270,316,18]: TEST 5
+                - generic [ref=f8e608] [box=37,4295,316,32]:
+                  - generic [ref=f8e609] [box=37,4295,316,14]:
+                    - generic [ref=f8e610] [box=37,4295,62,14]: ~80 phút
+                    - generic [ref=f8e614] [box=110,4295,23,14]: "0"
+                  - paragraph [ref=f8e620] [box=37,4313,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e621] [box=37,4335,316,21]:
+                  - generic [ref=f8e622] [box=37,4335,60,21]: "#TOEIC"
+                  - generic [ref=f8e623] [box=100,4335,91,21]: "#ETS Xanh Lá"
+                - generic [ref=f8e624] [box=37,4366,316,32]:
+                  - button "Thi thử" [ref=f8e625] [cursor=pointer] [box=37,4366,102,32]
+                  - button "Luyện tập" [ref=f8e626] [cursor=pointer] [box=144,4366,102,32]
+                  - button "Kết quả" [disabled] [box=251,4366,102,32]
+              - generic [ref=f8e627] [box=22,4428,347,159]:
+                - generic [ref=f8e628] [box=37,4444,316,18]: TEST 5
+                - generic [ref=f8e633] [box=37,4469,316,32]:
+                  - generic [ref=f8e634] [box=37,4469,316,14]:
+                    - generic [ref=f8e635] [box=37,4469,62,14]: ~80 phút
+                    - generic [ref=f8e639] [box=110,4469,23,14]: "5"
+                  - paragraph [ref=f8e645] [box=37,4487,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e646] [box=37,4509,316,21]:
+                  - generic [ref=f8e647] [box=37,4509,60,21]: "#TOEIC"
+                  - generic [ref=f8e648] [box=100,4509,81,21]: "#ETS Đỏ Đô"
+                - generic [ref=f8e649] [box=37,4540,316,32]:
+                  - button "Thi thử" [ref=f8e650] [cursor=pointer] [box=37,4540,102,32]
+                  - button "Luyện tập" [ref=f8e651] [cursor=pointer] [box=144,4540,102,32]
+                  - button "Kết quả" [disabled] [box=251,4540,102,32]
+              - generic [ref=f8e652] [box=22,4602,347,159]:
+                - generic [ref=f8e653] [box=37,4618,316,18]: TEST 5
+                - generic [ref=f8e658] [box=37,4643,316,32]:
+                  - generic [ref=f8e659] [box=37,4643,316,14]:
+                    - generic [ref=f8e660] [box=37,4643,62,14]: ~80 phút
+                    - generic [ref=f8e664] [box=110,4643,24,14]: "6"
+                  - paragraph [ref=f8e670] [box=37,4661,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e671] [box=37,4682,316,21]:
+                  - generic [ref=f8e672] [box=37,4682,60,21]: "#TOEIC"
+                  - generic [ref=f8e673] [box=100,4682,110,21]: "#ETS Xanh Dương"
+                - generic [ref=f8e674] [box=37,4714,316,32]:
+                  - button "Thi thử" [ref=f8e675] [cursor=pointer] [box=37,4714,102,32]
+                  - button "Luyện tập" [ref=f8e676] [cursor=pointer] [box=144,4714,102,32]
+                  - button "Kết quả" [disabled] [box=251,4714,102,32]
+              - generic [ref=f8e677] [box=22,4776,347,159]:
+                - generic [ref=f8e678] [box=37,4791,316,18]: TEST 6
+                - generic [ref=f8e683] [box=37,4816,316,32]:
+                  - generic [ref=f8e684] [box=37,4816,316,14]:
+                    - generic [ref=f8e685] [box=37,4816,62,14]: ~80 phút
+                    - generic [ref=f8e689] [box=110,4816,27,14]: "12"
+                  - paragraph [ref=f8e695] [box=37,4834,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e696] [box=37,4856,316,21]:
+                  - generic [ref=f8e697] [box=37,4856,60,21]: "#TOEIC"
+                  - generic [ref=f8e698] [box=100,4856,90,21]: "#ETS Tím Huế"
+                - generic [ref=f8e699] [box=37,4887,316,32]:
+                  - button "Thi thử" [ref=f8e700] [cursor=pointer] [box=37,4887,102,32]
+                  - button "Luyện tập" [ref=f8e701] [cursor=pointer] [box=144,4887,102,32]
+                  - button "Kết quả" [disabled] [box=251,4887,102,32]
+              - generic [ref=f8e702] [box=22,4950,347,159]:
+                - generic [ref=f8e703] [box=37,4965,316,18]: TEST 6
+                - generic [ref=f8e708] [box=37,4990,316,32]:
+                  - generic [ref=f8e709] [box=37,4990,316,14]:
+                    - generic [ref=f8e710] [box=37,4990,62,14]: ~80 phút
+                    - generic [ref=f8e714] [box=110,4990,23,14]: "0"
+                  - paragraph [ref=f8e720] [box=37,5008,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e721] [box=37,5030,316,21]:
+                  - generic [ref=f8e722] [box=37,5030,60,21]: "#TOEIC"
+                  - generic [ref=f8e723] [box=100,5030,91,21]: "#ETS Xanh Lá"
+                - generic [ref=f8e724] [box=37,5061,316,32]:
+                  - button "Thi thử" [ref=f8e725] [cursor=pointer] [box=37,5061,102,32]
+                  - button "Luyện tập" [ref=f8e726] [cursor=pointer] [box=144,5061,102,32]
+                  - button "Kết quả" [disabled] [box=251,5061,102,32]
+              - generic [ref=f8e727] [box=22,5123,347,159]:
+                - generic [ref=f8e728] [box=37,5139,316,18]: TEST 6
+                - generic [ref=f8e733] [box=37,5164,316,32]:
+                  - generic [ref=f8e734] [box=37,5164,316,14]:
+                    - generic [ref=f8e735] [box=37,5164,62,14]: ~80 phút
+                    - generic [ref=f8e739] [box=110,5164,23,14]: "3"
+                  - paragraph [ref=f8e745] [box=37,5182,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e746] [box=37,5204,316,21]:
+                  - generic [ref=f8e747] [box=37,5204,60,21]: "#TOEIC"
+                  - generic [ref=f8e748] [box=100,5204,110,21]: "#ETS Xanh Dương"
+                - generic [ref=f8e749] [box=37,5235,316,32]:
+                  - button "Thi thử" [ref=f8e750] [cursor=pointer] [box=37,5235,102,32]
+                  - button "Luyện tập" [ref=f8e751] [cursor=pointer] [box=144,5235,102,32]
+                  - button "Kết quả" [disabled] [box=251,5235,102,32]
+              - generic [ref=f8e752] [box=22,5297,347,159]:
+                - generic [ref=f8e753] [box=37,5312,316,18]: TEST 6
+                - generic [ref=f8e758] [box=37,5338,316,32]:
+                  - generic [ref=f8e759] [box=37,5338,316,14]:
+                    - generic [ref=f8e760] [box=37,5338,62,14]: ~80 phút
+                    - generic [ref=f8e764] [box=110,5338,23,14]: "3"
+                  - paragraph [ref=f8e770] [box=37,5356,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e771] [box=37,5377,316,21]:
+                  - generic [ref=f8e772] [box=37,5377,60,21]: "#TOEIC"
+                  - generic [ref=f8e773] [box=100,5377,102,21]: "#ETS Cam Hồng"
+                - generic [ref=f8e774] [box=37,5409,316,32]:
+                  - button "Thi thử" [ref=f8e775] [cursor=pointer] [box=37,5409,102,32]
+                  - button "Luyện tập" [ref=f8e776] [cursor=pointer] [box=144,5409,102,32]
+                  - button "Kết quả" [disabled] [box=251,5409,102,32]
+              - generic [ref=f8e777] [box=22,5471,347,159]:
+                - generic [ref=f8e778] [box=37,5486,316,18]: TEST 6
+                - generic [ref=f8e783] [box=37,5511,316,32]:
+                  - generic [ref=f8e784] [box=37,5511,316,14]:
+                    - generic [ref=f8e785] [box=37,5511,62,14]: ~80 phút
+                    - generic [ref=f8e789] [box=110,5511,23,14]: "5"
+                  - paragraph [ref=f8e795] [box=37,5529,316,14]: 2 phần thi | 19 câu hỏi
+                - generic [ref=f8e796] [box=37,5551,316,21]:
+                  - generic [ref=f8e797] [box=37,5551,60,21]: "#TOEIC"
+                  - generic [ref=f8e798] [box=100,5551,81,21]: "#ETS Đỏ Đô"
+                - generic [ref=f8e799] [box=37,5582,316,32]:
+                  - button "Thi thử" [ref=f8e800] [cursor=pointer] [box=37,5582,102,32]
+                  - button "Luyện tập" [ref=f8e801] [cursor=pointer] [box=144,5582,102,32]
+                  - button "Kết quả" [disabled] [box=251,5582,102,32]
+            - complementary [ref=f8e802] [box=22,5652,347,320]:
+              - generic [ref=f8e803] [box=22,5652,347,320]:
+                - link [ref=f8e804] [cursor=pointer] [box=22,5652,347,72]:
+                  - /url: /vocabulary#community
+                  - generic [ref=f8e813] [box=90,5668,264,39]:
+                    - paragraph [ref=f8e814] [box=90,5668,264,21]: Cộng đồng TOEIC từ mất gốc
+                    - paragraph [ref=f8e815] [box=90,5691,264,17]: Học cùng cộng đồng
+                - link [ref=f8e816] [cursor=pointer] [box=22,5735,347,72]:
+                  - /url: /roadmap
+                  - generic [ref=f8e823] [box=90,5751,264,39]:
+                    - paragraph [ref=f8e824] [box=90,5751,264,21]: Lộ trình TOEIC cá nhân hóa
+                    - paragraph [ref=f8e825] [box=90,5773,264,17]: 1 KÈM 1 / NHÓM NHỎ
+                - link [ref=f8e826] [cursor=pointer] [box=22,5817,347,72]:
+                  - /url: /vocabulary
+                  - generic [ref=f8e832] [box=90,5834,264,39]:
+                    - paragraph [ref=f8e833] [box=90,5834,264,21]: Sổ tay từ vựng TOEIC
+                    - paragraph [ref=f8e834] [box=90,5856,264,17]: Học nhanh – Nhớ lâu
+                - button "990 Dự đoán điểm TOEIC Nhanh chóng – Chính xác" [ref=f8e835] [cursor=pointer] [box=22,5900,347,72]:
+                  - generic [ref=f8e837] [box=36,5914,318,43]:
+                    - generic [ref=f8e838] [box=36,5914,43,43]: "990"
+                    - generic [ref=f8e840] [box=90,5917,264,39]:
+                      - paragraph [ref=f8e841] [box=90,5917,264,21]: Dự đoán điểm TOEIC
+                      - paragraph [ref=f8e842] [box=90,5939,264,17]: Nhanh chóng – Chính xác

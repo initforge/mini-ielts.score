@@ -1,0 +1,73 @@
+Total messages: 6 (Errors: 3, Warnings: 0)
+Returning 47 messages for level "error"
+
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog @ https://www.xoamutoeic.com/assets/index-0d2xYXCM.js:470
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog @ https://www.xoamutoeic.com/assets/index-0d2xYXCM.js:470
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog @ https://www.xoamutoeic.com/assets/index-0d2xYXCM.js:470
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/translate-passage:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/translate-passage:0
+[ERROR] `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog @ https://www.xoamutoeic.com/assets/index-0d2xYXCM.js:470
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog @ https://www.xoamutoeic.com/assets/index-0d2xYXCM.js:470
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 400 () @ https://aglbduxqbcbybaesfhyp.supabase.co/storage/v1/object/sign/speaking-images/respond-info/1783279715391-oz1yto.png:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 400 () @ https://aglbduxqbcbybaesfhyp.supabase.co/storage/v1/object/sign/speaking-images/respond-info/1783279715391-oz1yto.png:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/tts-generate:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/tts-generate:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/tts-generate:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/tts-generate:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/tts-generate:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/tts-generate:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/evaluate-writing-part15:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://service.anishtoeic.vn/api/hashtags/my-exams:0
+[ERROR] Failed to load resource: the server responded with a status of 400 () @ https://service.anishtoeic.vn/api/auth/refresh-token:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://service.anishtoeic.vn/api/hashtags/my-exams:0
+[ERROR] Failed to load resource: the server responded with a status of 400 () @ https://service.anishtoeic.vn/api/auth/refresh-token:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://aglbduxqbcbybaesfhyp.supabase.co/functions/v1/lookup-word:0
+[ERROR] Failed to load resource: the server responded with a status of 401 () @ https://service.anishtoeic.vn/api/hashtags/my-exams:0
+[ERROR] Failed to load resource: the server responded with a status of 400 () @ https://service.anishtoeic.vn/api/auth/refresh-token:0
+[ERROR] [SpeakingAudioPlayer] Error: Failed to load audio: /audio/speaking/directions/part1.mp3
+    at HTMLAudioElement.handleError (http://127.0.0.1:5173/src/components/speaking/SpeakingAudioPlayer.tsx:43:21) @ http://127.0.0.1:5173/src/components/speaking/SpeakingAudioPlayer.tsx:44
+[ERROR] [SpeakingAudioPlayer] Auto-play failed: NotSupportedError: The element has no supported sources. URL: /audio/speaking/directions/part1.mp3 @ http://127.0.0.1:5173/src/components/speaking/SpeakingAudioPlayer.tsx:53
+[ERROR] [SpeakingAudioPlayer] Error: Failed to load audio: /audio/speaking/directions/part1.mp3
+    at handleError (http://127.0.0.1:5173/src/components/speaking/SpeakingAudioPlayer.tsx:43:21)
+    at http://127.0.0.1:5173/src/components/speaking/SpeakingAudioPlayer.tsx:55:11 @ http://127.0.0.1:5173/src/components/speaking/SpeakingAudioPlayer.tsx:44

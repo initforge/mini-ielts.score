@@ -1,0 +1,40 @@
+- generic [ref=f10e2] [box=0,0,390,986]:
+  - region "Notifications (F8)" [box=0,0,390,0]:
+    - list [box=0,0,390,29]
+  - region "Notifications alt+T" [box=0,0,390,0]
+  - button "Mở thanh công cụ chú thích" [ref=f10e4] [cursor=pointer] [box=16,763,52,65]:
+    - generic [ref=f10e9] [box=16,809,52,19]: Công cụ
+  - main [ref=f10e10] [box=0,0,390,986]:
+    - generic [ref=f10e51] [box=0,0,390,50]:
+      - link [ref=f10e53] [cursor=pointer] [box=11,18,14,14]:
+        - /url: /exams
+      - generic [ref=f10e56] [box=65,9,314,32]:
+        - generic [ref=f10e57] [box=65,13,69,25]: 59:55
+        - button "Câu trước" [disabled] [ref=f10e61] [box=141,9,32,32]
+        - button "Câu sau" [ref=f10e64] [cursor=pointer] [box=180,9,32,32]
+        - button "Nộp bài" [ref=f10e72] [cursor=pointer] [box=260,9,91,32]
+        - button "Exit" [ref=f10e76] [cursor=pointer] [box=361,16,18,18]
+    - generic [ref=f10e85] [box=22,76,347,889]:
+      - paragraph [ref=f10e86] [box=22,76,347,29]: Question 1 – Write a sentence based on a picture
+      - generic [ref=f10e87] [box=22,119,347,845]:
+        - generic [ref=f10e88] [box=22,119,439,410]:
+          - img "Question 1 prompt" [ref=f10e90] [box=44,141,394,278]
+          - paragraph [ref=f10e91] [box=176,441,131,18]: "Use these two words:"
+          - generic [ref=f10e92] [box=168,470,146,36]:
+            - generic [ref=f10e93] [box=168,470,65,36]: ride
+            - generic [ref=f10e94] [box=244,470,70,36]: boat
+        - generic [ref=f10e95] [box=22,550,439,414]:
+          - generic [ref=f10e96] [box=44,573,394,24]:
+            - generic [ref=f10e97] [box=44,574,110,22]: Your answer
+            - generic [ref=f10e102] [box=338,573,100,24]:
+              - generic [ref=f10e103] [box=338,577,61,14]: Word count
+              - generic [ref=f10e104] [box=406,573,32,24]: "0"
+          - generic [ref=f10e105] [box=44,611,394,38]:
+            - button "Bold" [ref=f10e142] [cursor=pointer] [box=52,615,29,29]
+            - button "Italic" [ref=f10e145] [cursor=pointer] [box=85,615,29,29]
+            - button "Underline" [ref=f10e148] [cursor=pointer] [box=117,615,29,29]
+            - button "Cut" [ref=f10e151] [cursor=pointer] [box=161,615,56,29]
+            - button "Paste" [ref=f10e159] [cursor=pointer] [box=221,615,69,29]
+            - button "Undo" [disabled] [ref=f10e165] [box=294,615,67,29]
+            - button "Redo" [disabled] [ref=f10e170] [box=364,615,66,29]
+          - generic [ref=f10e140] [box=44,660,394,282]: Write one sentence here...

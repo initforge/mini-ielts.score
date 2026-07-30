@@ -1,0 +1,34 @@
+- generic [ref=f1e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=f1e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=f1e9] [box=16,685,52,19]: Công cụ
+  - main [ref=f1e926] [box=0,0,1280,720]:
+    - generic [ref=f1e927] [box=0,0,1280,505]:
+      - generic [ref=f1e928] [box=0,0,1280,47]:
+        - generic [ref=f1e929] [box=22,11,223,25]:
+          - link "Danh sách đề" [ref=f1e930] [cursor=pointer] [box=22,14,102,18]:
+            - /url: /exams
+          - generic [ref=f1e933] [box=138,11,106,25]: XoáMùTOEIC
+        - slider "Âm lượng" [ref=f1e939] [cursor=pointer] [box=1147,22,101,4]: "0.7"
+      - generic [ref=f1e941] [box=294,83,691,339]:
+        - heading "Start" [level=2] [ref=f1e947] [box=370,112,57,29]
+        - generic [ref=f1e950] [box=316,166,648,26]:
+          - generic [ref=f1e951] [box=316,166,592,18]: Test
+          - generic [ref=f1e952] [box=922,166,42,18]: Action
+        - generic [ref=f1e953] [box=316,192,648,62]:
+          - generic [ref=f1e960] [box=359,213,485,18]: TEST 1
+          - button "Start test" [ref=f1e961] [cursor=pointer] [box=855,206,109,32]
+        - generic [ref=f1e964] [box=316,254,648,66]:
+          - generic [ref=f1e968] [box=359,278,496,18]: Kết quả lần Test trước
+          - link "Review" [ref=f1e969] [cursor=pointer] [box=866,268,98,36]:
+            - /url: /history
+        - paragraph [ref=f1e976] [box=357,346,596,42]:
+          - text: Bạn hãy
+          - link "đăng nhập" [ref=f1e977] [cursor=pointer] [box=411,348,69,16]:
+            - /url: /auth
+          - text: để lưu lại kết quả và thống kê. Sau khi làm bài xong, bạn hãy nhấn nút
+          - strong [ref=f1e978] [box=357,369,98,16]: Review Results
+          - text: để xem đáp án chi tiết nhé!
+      - button "Full screen" [ref=f1e980] [cursor=pointer] [box=576,465,129,40]

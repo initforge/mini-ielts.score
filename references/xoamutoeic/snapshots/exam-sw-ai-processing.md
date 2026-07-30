@@ -1,0 +1,36 @@
+- generic [ref=f2e2] [box=0,0,1280,1034]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=f2e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=f2e9] [box=16,685,52,19]: Công cụ
+  - main [ref=f2e744] [box=0,0,1280,1034]:
+    - generic [ref=f2e745] [box=381,22,518,991]:
+      - generic [ref=f2e746] [box=381,22,518,187]:
+        - heading "AI đang chấm bài của bạn . . ." [level=1] [ref=f2e760] [box=449,126,383,32]:
+          - text: AI đang chấm bài của bạn
+          - generic [ref=f2e761] [box=804,126,27,32]:
+            - generic [ref=f2e762] [box=804,118,9,32]: .
+            - generic [ref=f2e763] [box=813,120,9,32]: .
+            - generic [ref=f2e764] [box=822,123,9,32]: .
+        - paragraph [ref=f2e765] [box=438,166,403,43]: Đang phân tích phát âm, ngữ pháp và nội dung để đưa ra điểm số và nhận xét chi tiết.
+      - generic [ref=f2e774] [box=381,302,518,36]:
+        - generic [ref=f2e775] [box=381,302,518,18]:
+          - generic [ref=f2e776] [box=381,302,102,18]: Overall progress
+          - generic [ref=f2e777] [box=880,302,20,18]: 5%
+        - progressbar [ref=f2e778] [box=381,328,518,11]
+      - paragraph [ref=f2e780] [box=381,353,518,18]: "Chấm Writing câu 1: Sentence"
+      - generic [ref=f2e845] [box=381,392,518,124]:
+        - paragraph [ref=f2e846] [box=396,408,488,22]: Chưa thể hoàn tất chấm bài
+        - paragraph [ref=f2e847] [box=396,433,488,18]: "evaluate-writing-part15: Unauthorized"
+        - button "Thử chấm lại" [ref=f2e848] [cursor=pointer] [box=575,465,129,36]
+      - generic [ref=f2e781] [box=381,538,518,431]:
+        - generic [ref=f2e788] [box=443,550,412,38]:
+          - paragraph [ref=f2e789] [box=443,550,412,22]: Uploading answer
+          - paragraph [ref=f2e790] [box=443,574,412,14]: Đang xử lý...
+        - paragraph [ref=f2e800] [box=443,633,412,22]: Speech-to-text & transcription
+        - paragraph [ref=f2e809] [box=443,707,412,22]: Grammar analysis
+        - paragraph [ref=f2e820] [box=443,781,412,22]: Vocabulary analysis
+        - paragraph [ref=f2e829] [box=443,855,412,22]: TOEIC scoring calculation
+        - paragraph [ref=f2e840] [box=443,929,412,22]: Generating score report
+      - paragraph [ref=f2e844] [box=381,998,518,14]: Quá trình này thường mất vài giây. Vui lòng không đóng trang.

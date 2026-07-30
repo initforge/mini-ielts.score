@@ -1,0 +1,76 @@
+- generic [ref=e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - generic [ref=e1727] [box=16,194,43,510]:
+    - generic [ref=e1728] [box=23,201,29,15]:
+      - generic "Kéo để di chuyển" [ref=e1729] [box=23,201,12,15]
+      - button "Thu gọn" [ref=e1737] [cursor=pointer] [box=38,201,14,15]
+    - button "Browse Mode (D / Esc)" [ref=e1741] [cursor=pointer] [box=24,221,28,28]
+    - button "Draw Mode (D)" [ref=e1744] [cursor=pointer] [box=24,253,28,28]
+    - button "Bút (P)" [ref=e1749] [cursor=pointer] [box=24,296,28,28]
+    - button "Highlight (H)" [ref=e1753] [cursor=pointer] [box=24,329,28,28]
+    - button "Tẩy (E)" [ref=e1757] [cursor=pointer] [box=24,361,28,28]
+    - button "Text Note (T)" [ref=e1761] [cursor=pointer] [box=24,393,28,28]
+    - textbox "Chọn màu" [ref=e1765] [cursor=pointer] [box=25,436,24,24]: "#111827"
+    - button "Độ dày nét" [ref=e1766] [cursor=pointer] [box=24,465,28,28]
+    - button "Undo (Ctrl+Z)" [ref=e1769] [cursor=pointer] [box=24,503,28,28]
+    - button "Redo (Ctrl+Y)" [ref=e1773] [cursor=pointer] [box=24,535,28,28]
+    - button "Xoá hết" [ref=e1777] [cursor=pointer] [box=24,567,28,28]
+    - button "Lưu" [ref=e1782] [cursor=pointer] [box=24,611,28,28]
+    - button "Ẩn chú thích" [ref=e1787] [cursor=pointer] [box=24,643,28,28]
+    - generic [ref=e1791] [box=3,678,69,19]: Browse Mode
+  - main [ref=e1220] [box=0,0,1280,720]:
+    - generic [ref=e1221] [box=0,0,1280,390]:
+      - generic [ref=e1304] [box=0,0,1280,50]:
+        - generic [ref=e1305] [box=22,13,223,25]:
+          - link "Danh sách đề" [ref=e1306] [cursor=pointer] [box=22,16,102,18]:
+            - /url: /exams
+          - generic [ref=e1309] [box=138,13,106,25]: XoáMùTOEIC
+        - generic [ref=e1310] [box=588,7,105,36]:
+          - generic [ref=e1311] [box=592,7,95,22]: READING
+          - generic [ref=e1312] [box=588,32,105,11]: Question 2 of 100
+        - generic [ref=e1313] [box=879,9,379,32]:
+          - button "Công cụ" [active] [ref=e1314] [cursor=pointer] [box=879,13,82,25]
+          - button "Ẩn song ngữ" [ref=e1716] [cursor=pointer] [box=972,13,103,25]
+          - generic [ref=e1323] [box=1086,13,69,25]: 73:33
+          - button "Nộp bài" [ref=e1642] [cursor=pointer] [box=1166,9,93,32]
+      - generic [ref=e1334] [box=0,50,1280,339]:
+        - generic [ref=e1335] [box=0,50,1280,339]:
+          - generic [ref=e1689] [box=0,50,1280,339]:
+            - paragraph [ref=e1691] [box=22,59,1237,21]: Select the best answer to complete the sentence.
+            - generic [ref=e1697] [box=313,106,653,264]:
+              - generic [ref=e1698] [box=313,106,653,22]:
+                - generic [ref=e1699] [box=313,106,31,22]: "102."
+                - paragraph [ref=e1701] [box=351,106,615,21]: The _______ antique shop in Pepper Valley will close down next month.
+              - paragraph [ref=e1717] [box=331,135,635,18]: → Cửa hàng đồ cổ _______ ở Thung lũng Pepper sẽ đóng cửa vào tháng tới.
+              - generic [ref=e1702] [box=317,160,650,210]:
+                - generic [ref=e1703] [cursor=pointer] [box=317,160,650,49]:
+                  - radio "(A) last → cuối cùng" [ref=e1718] [box=324,168,14,14]
+                  - generic [ref=e1705] [box=346,166,614,38]:
+                    - text: (A) last
+                    - generic [ref=e1719] [box=346,186,614,18]: → cuối cùng
+                - generic [ref=e1706] [cursor=pointer] [box=317,214,650,49]:
+                  - radio "(B) lasts → kéo dài" [ref=e1720] [box=324,222,14,14]
+                  - generic [ref=e1708] [box=346,220,614,38]:
+                    - text: (B) lasts
+                    - generic [ref=e1721] [box=346,240,614,18]: → kéo dài
+                - generic [ref=e1709] [cursor=pointer] [box=317,268,650,49]:
+                  - radio "(C) lasted → đã kéo dài" [ref=e1722] [box=324,275,14,14]
+                  - generic [ref=e1711] [box=346,274,614,38]:
+                    - text: (C) lasted
+                    - generic [ref=e1723] [box=346,293,614,18]: → đã kéo dài
+                - generic [ref=e1712] [cursor=pointer] [box=317,322,650,49]:
+                  - radio "(D) lasting → lâu dài" [ref=e1724] [box=324,329,14,14]
+                  - generic [ref=e1714] [box=346,328,614,38]:
+                    - text: (D) lasting
+                    - generic [ref=e1725] [box=346,347,614,18]: → lâu dài
+          - generic [ref=e1669] [box=0,679,1280,41]:
+            - button "Mark items for review" [ref=e1715] [cursor=pointer] [box=14,688,160,25]
+            - generic [ref=e1672] [box=1041,686,224,29]:
+              - button "Review 1" [ref=e1687] [cursor=pointer] [box=1041,686,36,29]:
+                - generic [ref=e1677] [box=1044,702,30,8]: Review
+                - generic [ref=e1688] [box=1067,682,14,14]: "1"
+              - button "Câu trước" [ref=e1678] [cursor=pointer] [box=1083,688,93,25]
+              - button "Câu tiếp" [ref=e1681] [cursor=pointer] [box=1182,688,84,25]
+        - button "Mở bảng câu hỏi" [ref=e1366] [cursor=pointer] [box=1248,335,32,50]

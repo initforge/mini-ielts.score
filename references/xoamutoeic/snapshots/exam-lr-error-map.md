@@ -1,0 +1,214 @@
+- generic [ref=e1] [box=0,0,1280,728]:
+  - generic [ref=e2] [box=0,0,1280,728]:
+    - region "Notifications (F8)" [box=0,0,1280,0]:
+      - list [box=860,691,420,29]
+    - region "Notifications alt+T" [box=0,0,1280,0]
+    - button "Mở thanh công cụ chú thích" [ref=e2450] [cursor=pointer] [box=-79,734,52,65]:
+      - generic [ref=e2455] [box=-79,780,52,19]: Công cụ
+    - main [ref=e1220] [box=0,0,1280,728]:
+      - generic [ref=e1221] [box=0,0,1280,728]:
+        - generic [ref=e2456] [box=122,0,1037,728]:
+          - generic [ref=e2457] [box=136,29,1008,606]:
+            - generic [ref=e2458] [box=150,43,979,86]:
+              - img "Xóa Mù TOEIC" [ref=e2459] [box=435,43,102,86]
+              - generic [ref=e2460] [box=551,57,294,60]:
+                - generic [ref=e2461] [box=578,57,240,36]: XÓA MÙ TOEIC
+                - generic [ref=e2462] [box=551,100,294,17]: GIỎI TOEIC, SÁNG TƯƠNG LAI
+            - generic [ref=e2467] [box=356,144,567,71]:
+              - generic [ref=e2468] [box=414,153,452,15]: LISTENING AND READING
+              - generic [ref=e2469] [box=414,172,452,29]: UNOFFICIAL SCORE CERTIFICATE
+            - generic [ref=e2471] [box=177,230,927,272]:
+              - generic [ref=e2472] [box=177,230,227,251]:
+                - generic [ref=e3931] [box=177,230,129,29]: LISTENING
+                - generic [ref=e2474] [box=177,273,227,208]:
+                  - generic [ref=e3932] [box=177,273,227,41]:
+                    - generic [ref=e3933] [box=177,276,36,36]: "0"
+                    - generic [ref=e3934] [box=223,273,180,41]:
+                      - generic [ref=e3935] [box=223,273,180,20]: Part 1
+                      - generic [ref=e3936] [box=223,296,180,18]: "6"
+                  - generic [ref=e3939] [box=177,329,227,41]:
+                    - generic [ref=e3940] [box=177,331,36,36]: "0"
+                    - generic [ref=e3941] [box=223,329,180,41]:
+                      - generic [ref=e3942] [box=223,329,180,20]: Part 2
+                      - generic [ref=e3943] [box=223,352,180,18]: "25"
+                  - generic [ref=e3946] [box=177,384,227,41]:
+                    - generic [ref=e3947] [box=177,387,36,36]: "0"
+                    - generic [ref=e3948] [box=223,384,180,41]:
+                      - generic [ref=e3949] [box=223,384,180,20]: Part 3
+                      - generic [ref=e3950] [box=223,407,180,18]: "39"
+                  - generic [ref=e3953] [box=177,440,227,41]:
+                    - generic [ref=e3954] [box=177,442,36,36]: "0"
+                    - generic [ref=e3955] [box=223,440,180,41]:
+                      - generic [ref=e3956] [box=223,440,180,20]: Part 4
+                      - generic [ref=e3957] [box=223,463,180,18]: "30"
+              - generic [ref=e2503] [box=429,230,227,272]:
+                - generic [ref=e3960] [box=429,230,115,29]: READING
+                - generic [ref=e2505] [box=429,273,227,152]:
+                  - generic [ref=e3961] [box=429,273,227,41]:
+                    - generic [ref=e3962] [box=429,276,36,36]: "0"
+                    - generic [ref=e3963] [box=476,273,180,41]:
+                      - generic [ref=e3964] [box=476,273,180,20]: Part 5
+                      - generic [ref=e3965] [box=476,296,180,18]: "30"
+                  - generic [ref=e3968] [box=429,329,227,41]:
+                    - generic [ref=e3969] [box=429,331,36,36]: "0"
+                    - generic [ref=e3970] [box=476,329,180,41]:
+                      - generic [ref=e3971] [box=476,329,180,20]: Part 6
+                      - generic [ref=e3972] [box=476,352,180,18]: "16"
+                  - generic [ref=e3975] [box=429,384,227,41]:
+                    - generic [ref=e3976] [box=429,387,36,36]: "0"
+                    - generic [ref=e3977] [box=476,384,180,41]:
+                      - generic [ref=e3978] [box=476,384,180,20]: Part 7
+                      - generic [ref=e3979] [box=476,407,180,18]: "54"
+                - generic [ref=e2527] [box=429,443,227,59]:
+                  - generic [ref=e2528] [box=445,460,25,25]: 📅
+                  - generic [ref=e2529] [box=481,454,159,37]:
+                    - generic [ref=e2530] [box=481,454,159,15]: NGÀY THI
+                    - generic [ref=e2531] [box=481,469,159,22]: 30/07/2026
+              - generic [ref=e2532] [box=681,230,227,220]:
+                - generic [ref=e2533] [box=681,230,227,101]:
+                  - generic [ref=e3982] [box=681,230,129,29]: LISTENING
+                  - generic [ref=e3983] [box=681,273,227,58]:
+                    - generic [ref=e3984] [box=681,273,58,58]: "5"
+                    - generic [ref=e3985] [box=750,278,158,49]:
+                      - generic [ref=e3986] [box=750,278,158,20]: Your score
+                      - generic [ref=e3989] [box=750,310,158,17]:
+                        - generic [ref=e3990] [box=750,310,8,17]: "5"
+                        - generic [ref=e3991] [box=885,310,23,17]: "495"
+                - generic [ref=e2544] [box=681,349,227,101]:
+                  - generic [ref=e3992] [box=681,349,115,29]: READING
+                  - generic [ref=e3993] [box=681,392,227,58]:
+                    - generic [ref=e3994] [box=681,392,58,58]: "5"
+                    - generic [ref=e3995] [box=750,397,158,49]:
+                      - generic [ref=e3996] [box=750,397,158,20]: Your score
+                      - generic [ref=e3999] [box=750,430,158,17]:
+                        - generic [ref=e4000] [box=750,430,8,17]: "5"
+                        - generic [ref=e4001] [box=885,430,23,17]: "495"
+              - generic [ref=e2555] [box=933,230,170,272]:
+                - generic [ref=e2556] [box=971,283,122,20]: TOTAL SCORE
+                - generic [ref=e2557] [box=974,313,115,115]: "10"
+                - generic [ref=e2559] [box=1015,435,34,14]: / 990
+            - generic [ref=e2560] [box=150,546,979,74]:
+              - generic [ref=e2561] [box=173,562,43,43]: 🚀
+              - generic [ref=e2562] [box=231,564,610,38]:
+                - generic [ref=e2563] [box=231,564,610,20]: Bắt đầu hành trình!
+                - generic [ref=e2564] [box=231,584,610,18]: Ai cũng từng bắt đầu từ con số nhỏ. Hãy quay lại làm bài này sau 1 tuần luyện tập — bạn sẽ bất ngờ!
+          - generic [ref=e2565] [box=136,656,1008,43]:
+            - button "📊 Bảng kết quả" [ref=e2566] [cursor=pointer] [box=190,656,162,43]
+            - button "⬇️ Tải bảng điểm" [ref=e2567] [cursor=pointer] [box=363,656,170,43]
+            - button "🧭 Bản đồ lỗi sai" [active] [ref=e2568] [cursor=pointer] [box=543,656,163,43]
+            - button "🔍 Xem lại chi tiết" [ref=e2569] [cursor=pointer] [box=717,656,174,43]
+            - button "📚 Lịch sử luyện tập" [ref=e2570] [cursor=pointer] [box=902,656,188,43]
+        - generic [ref=e4003] [box=64,18,1152,684]:
+          - generic [ref=e4004] [box=64,18,1152,44]:
+            - generic [ref=e4005] [box=82,31,237,18]:
+              - text: Bản đồ lỗi sai
+              - generic [ref=e4008] [box=197,31,122,18]: · ETS 2026 - TEST 1
+            - button "Đóng" [ref=e4009] [cursor=pointer] [box=1185,29,13,22]: ×
+          - generic [ref=e4011] [box=86,80,1109,739]:
+            - generic [ref=e4012] [box=86,80,1109,49]:
+              - generic [ref=e4017] [box=132,80,355,49]:
+                - heading "Bản đồ lỗi sai TOEIC" [level=2] [ref=e4018] [box=132,80,355,29]
+                - paragraph [ref=e4019] [box=132,111,355,18]: Theo dõi lỗi sai, hiểu điểm yếu và cải thiện đúng trọng tâm
+              - generic [ref=e4020] [box=954,80,241,27]:
+                - button "7 ngày qua" [ref=e4022] [cursor=pointer] [box=954,80,119,27]
+                - button "Xuất báo cáo" [ref=e4028] [cursor=pointer] [box=1079,80,115,27]
+            - generic [ref=e4032] [box=86,143,1109,119]:
+              - generic [ref=e4038] [box=151,159,188,61]:
+                - generic [ref=e4039] [box=151,159,188,14]: Tổng câu đã làm
+                - generic [ref=e4040] [box=151,175,188,27]: "200"
+                - generic [ref=e4041] [box=151,204,188,17]: Cập nhật đến hôm nay
+              - generic [ref=e4048] [box=431,159,188,61]:
+                - generic [ref=e4049] [box=431,159,188,14]: Tỷ lệ đúng
+                - generic [ref=e4050] [box=431,175,188,27]: 0%
+                - generic [ref=e4051] [box=431,204,188,17]: ▲ so với tuần trước
+              - generic [ref=e4056] [box=711,159,188,88]:
+                - generic [ref=e4057] [box=711,159,188,14]: Lỗi nhiều nhất
+                - generic [ref=e4058] [box=711,175,188,54]: Paraphrase Error
+                - generic [ref=e4059] [box=711,231,188,17]: 1 lỗi
+              - generic [ref=e4065] [box=991,159,188,61]:
+                - generic [ref=e4066] [box=991,159,188,14]: Part yếu nhất
+                - generic [ref=e4067] [box=991,175,188,27]: Part 5
+                - generic [ref=e4068] [box=991,204,188,17]: 1 lỗi
+            - generic [ref=e4069] [box=86,277,1109,293]:
+              - generic [ref=e4070] [box=86,277,360,293]:
+                - heading "Lỗi sai theo nhóm" [level=3] [ref=e4073] [box=105,296,134,23]
+                - img [ref=e4079] [box=105,329,322,202]:
+                  - generic [ref=e4083] [box=211,506,187,14]:
+                    - generic [ref=e4084] [box=211,506,8,14]: "0"
+                    - generic [ref=e4086] [box=248,506,25,14]: "0.25"
+                    - generic [ref=e4088] [box=297,506,18,14]: "0.5"
+                    - generic [ref=e4090] [box=339,506,24,14]: "0.75"
+                    - generic [ref=e4092] [box=394,506,4,14]: "1"
+                  - generic [ref=e4095] [box=145,331,63,168]:
+                    - generic [ref=e4096] [box=145,331,62,25]: ParaphraseError
+                    - generic [ref=e4098] [box=151,359,56,25]: Trap WordError
+                    - generic [ref=e4100] [box=146,394,61,14]: Detail Error
+                    - generic [ref=e4102] [box=145,417,63,25]: VocabularyError
+                    - generic [ref=e4104] [box=155,445,52,25]: Main IdeaError
+                    - generic [ref=e4106] [box=157,474,50,25]: InferenceError
+                  - generic [ref=e4113] [box=220,336,186,157]:
+                    - generic [ref=e4114] [box=401,336,5,14]: "1"
+                    - generic [ref=e4115] [box=220,364,8,14]: "0"
+                    - generic [ref=e4116] [box=220,393,8,14]: "0"
+                    - generic [ref=e4117] [box=220,422,8,14]: "0"
+                    - generic [ref=e4118] [box=220,450,8,14]: "0"
+                    - generic [ref=e4119] [box=220,479,8,14]: "0"
+                - generic [ref=e4120] [box=105,534,322,17]: Số lần sai
+              - generic [ref=e4121] [box=460,277,360,293]:
+                - generic [ref=e4122] [box=479,296,322,41]:
+                  - heading "Lỗi sai theo Part" [level=3] [ref=e4124] [box=479,296,126,23]
+                  - paragraph [ref=e4127] [box=479,320,322,17]: Số lần sai
+                - img [ref=e4131] [box=479,347,322,202]:
+                  - generic [ref=e4135] [box=543,524,255,14]:
+                    - generic [ref=e4136] [box=543,524,30,14]: Part 1
+                    - generic [ref=e4138] [box=616,524,33,14]: Part 3
+                    - generic [ref=e4140] [box=691,524,33,14]: Part 5
+                    - generic [ref=e4142] [box=766,524,32,14]: Part 7
+                  - generic [ref=e4145] [box=523,350,8,176]:
+                    - generic [ref=e4146] [box=524,512,8,14]: "0"
+                    - generic [ref=e4148] [box=527,472,4,14]: "1"
+                    - generic [ref=e4150] [box=524,431,7,14]: "2"
+                    - generic [ref=e4152] [box=524,391,7,14]: "3"
+                    - generic [ref=e4154] [box=523,350,8,14]: "4"
+                  - generic [ref=e4161] [box=554,463,232,54]:
+                    - generic [ref=e4162] [box=554,503,8,14]: "0"
+                    - generic [ref=e4163] [box=591,503,8,14]: "0"
+                    - generic [ref=e4164] [box=628,503,8,14]: "0"
+                    - generic [ref=e4165] [box=666,503,8,14]: "0"
+                    - generic [ref=e4166] [box=704,463,5,14]: "1"
+                    - generic [ref=e4167] [box=740,503,8,14]: "0"
+                    - generic [ref=e4168] [box=778,503,8,14]: "0"
+              - generic [ref=e4169] [box=834,277,360,293]:
+                - generic [ref=e4170] [box=853,296,322,41]:
+                  - heading "Tiến độ cải thiện" [level=3] [ref=e4172] [box=853,296,127,23]
+                  - paragraph [ref=e4175] [box=853,320,322,17]: Tỷ lệ đúng (%) qua các lần làm bài
+                - generic [ref=e4176] [box=853,347,322,202]: Chưa đủ dữ liệu. Hãy hoàn thành thêm bài thi để xem tiến độ cải thiện.
+            - generic [ref=e4178] [box=86,584,1109,235]:
+              - generic [ref=e4179] [box=86,584,360,235]:
+                - generic [ref=e4180] [box=105,603,322,41]:
+                  - heading "Cụm từ hay sai" [level=3] [ref=e4182] [box=105,603,111,23]
+                  - paragraph [ref=e4185] [box=105,627,322,17]: Trích từ các câu bạn làm sai
+                - generic [ref=e4186] [box=97,655,336,145]: Không phát hiện từ vựng trọng tâm trong các câu sai của bài thi này.
+              - generic [ref=e4188] [box=460,584,360,235]:
+                - heading "Câu sai cần ôn lại" [level=3] [ref=e4191] [box=479,603,134,23]
+                - generic [ref=e4196] [box=479,636,322,57]:
+                  - generic [ref=e4197] [box=479,636,58,35]:
+                    - generic [ref=e4198] [box=479,636,58,18]: Câu 101
+                    - generic [ref=e4199] [box=479,654,58,17]: Part 5
+                  - generic [ref=e4201] [box=547,636,103,40]:
+                    - generic [ref=e4202] [box=547,636,44,14]: Reading
+                    - generic [ref=e4203] [box=547,656,99,21]: Paraphrase Error
+                  - generic [ref=e4204] [box=661,636,140,57]:
+                    - button "Ôn lại câu này" [ref=e4205] [cursor=pointer] [box=661,636,140,26]
+                    - button "Luyện câu tương tự" [ref=e4211] [cursor=pointer] [box=661,668,140,26]
+              - generic [ref=e4216] [box=834,584,360,235]:
+                - heading "Nhận định của Xóa Mù TOEIC" [level=3] [ref=e4220] [box=873,603,221,23]
+                - generic [ref=e4225] [box=907,636,268,113]:
+                  - paragraph [ref=e4226] [box=907,636,268,20]: Lỗi của bạn có khuôn mẫu rõ ràng.
+                  - paragraph [ref=e4227] [box=907,661,268,41]:
+                    - text: Lỗi nhiều nhất rơi vào nhóm diễn đạt lại (paraphrase) (
+                    - generic [ref=e4228] [box=1001,683,34,16]: 100%
+                    - text: số lỗi).
+                  - paragraph [ref=e4229] [box=907,709,268,41]: Part yếu nhất bài này là Part 5 (1 câu sai). Hãy ưu tiên luyện phần này trước.
+                - button "Gợi ý kế hoạch luyện tập" [ref=e4230] [cursor=pointer] [box=853,764,322,36]
+  - generic [ref=e4233] [box=0,-20000,7,17]: "2"

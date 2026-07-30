@@ -1,0 +1,262 @@
+- generic [box=0,0,1280,1088]:
+  - generic [box=0,0,1280,1088]:
+    - list [box=860,691,420,29]
+    - region "Notifications alt+T" [box=0,0,1280,0]
+    - generic [box=16,639,52,65]:
+      - button [box=16,639,52,65]:
+        - generic [box=16,685,52,19]: Công cụ
+    - main [box=0,0,1280,1088]:
+      - generic [box=0,0,1280,51]:
+        - navigation [box=40,0,1200,50]:
+          - link [box=62,13,109,25]:
+            - /url: /
+            - text: XoáMùTOEIC
+          - list [box=185,9,810,32]:
+            - listitem [box=350,9,90,32]:
+              - link [box=350,9,90,32]:
+                - /url: /roadmap
+                - generic [box=380,16,48,18]: Lộ trình
+            - listitem [box=443,9,88,32]:
+              - button [box=443,9,88,32]:
+                - generic [box=454,16,50,18]: Học tập
+            - listitem [box=534,9,100,32]:
+              - button [box=534,9,100,32]:
+                - generic [box=545,16,62,18]: Luyện tập
+            - listitem [box=638,9,84,32]:
+              - link [box=638,9,84,32]:
+                - /url: /exams
+                - generic [box=668,16,43,18]: Thi thử
+            - listitem [box=725,9,104,32]:
+              - button [box=725,9,104,32]:
+                - generic [box=736,16,66,18]: Tài nguyên
+          - generic [box=1002,9,217,32]:
+            - button [box=1002,9,32,32]
+            - generic [box=1041,11,177,29]:
+              - link [box=1041,11,89,29]:
+                - /url: /auth?mode=signin
+                - text: Đăng nhập
+              - link [box=1138,11,80,29]:
+                - /url: /auth?mode=signup
+                - text: Đăng ký
+      - generic [box=40,51,1200,1036]:
+        - link [box=62,80,108,32]:
+          - /url: /
+          - text: Trang chủ
+        - heading [level=1] [box=62,123,1157,36]: Thư viện đề thi
+        - paragraph [box=62,163,1157,22]: "Chọn chế độ thi: Listening & Reading hoặc Speaking & Writing."
+        - generic [box=62,206,1157,853]:
+          - tablist [box=62,206,490,36]:
+            - tab [selected] [box=65,210,166,29]: Listening & Reading
+            - tab [box=231,210,163,29]: Speaking & Writing
+            - button [box=398,210,151,29]: Lịch sử & Kết quả
+          - tabpanel [box=62,264,1157,795]:
+            - generic [box=62,264,1157,43]:
+              - button [box=62,264,58,31]: "2026"
+              - button [box=125,264,57,31]: "2024"
+              - button [box=187,264,57,31]: "2023"
+              - button [box=249,264,57,31]: "2022"
+              - button [box=312,264,53,31]: "2021"
+            - generic [box=62,321,518,36]:
+              - textbox [box=62,321,402,36]:
+                - /placeholder: "2026"
+              - button [box=470,321,110,36]: Tìm kiếm
+            - generic [box=62,378,1157,681]:
+              - generic [box=62,378,835,681]:
+                - generic [box=62,378,835,681]:
+                  - generic [box=62,378,269,159]:
+                    - generic [box=77,394,238,18]: ETS 2026 TEST 1
+                    - generic [box=77,419,238,32]:
+                      - generic [box=77,419,238,14]:
+                        - generic [box=77,419,61,14]: 120 phút
+                        - generic [box=149,419,37,14]: "237"
+                      - paragraph [box=77,437,238,14]: 7 phần thi | 200 câu hỏi
+                    - generic [box=77,459,60,21]: "#TOEIC"
+                    - generic [box=77,490,238,32]:
+                      - button [box=77,490,76,32]: Thi thử
+                      - button [box=158,490,76,32]: Luyện tập
+                      - link [box=239,490,76,32]:
+                        - /url: /exams
+                        - text: Kết quả
+                  - generic [box=345,378,269,159]:
+                    - generic [box=360,394,238,18]: ETS 2026 TEST 2
+                    - generic [box=360,419,238,32]:
+                      - generic [box=360,419,238,14]:
+                        - generic [box=360,419,61,14]: 120 phút
+                        - generic [box=432,419,34,14]: "182"
+                      - paragraph [box=360,437,238,14]: 7 phần thi | 200 câu hỏi
+                    - generic [box=360,459,60,21]: "#TOEIC"
+                    - generic [box=360,490,238,32]:
+                      - button [box=360,490,76,32]: Thi thử
+                      - button [box=441,490,76,32]: Luyện tập
+                      - link [box=522,490,76,32]:
+                        - /url: /exams
+                        - text: Kết quả
+                  - generic [box=628,378,269,159]:
+                    - generic [box=643,394,238,18]: ETS 2026 TEST 3
+                    - generic [box=643,419,238,32]:
+                      - generic [box=643,419,238,14]:
+                        - generic [box=643,419,61,14]: 120 phút
+                        - generic [box=716,419,32,14]: "119"
+                      - paragraph [box=643,437,238,14]: 7 phần thi | 200 câu hỏi
+                    - generic [box=643,459,60,21]: "#TOEIC"
+                    - generic [box=643,490,238,32]:
+                      - button [box=643,490,76,32]: Thi thử
+                      - button [box=725,490,76,32]: Luyện tập
+                      - link [box=806,490,76,32]:
+                        - /url: /exams
+                        - text: Kết quả
+                  - generic [box=62,552,269,159]:
+                    - generic [box=77,567,238,18]: ETS 2026 TEST 4
+                    - generic [box=77,593,238,32]:
+                      - generic [box=77,593,238,14]:
+                        - generic [box=77,593,61,14]: 120 phút
+                        - generic [box=149,593,32,14]: "101"
+                      - paragraph [box=77,611,238,14]: 7 phần thi | 200 câu hỏi
+                    - generic [box=77,632,60,21]: "#TOEIC"
+                    - generic [box=77,664,238,32]:
+                      - button [box=77,664,76,32]: Thi thử
+                      - button [box=158,664,76,32]: Luyện tập
+                      - link [box=239,664,76,32]:
+                        - /url: /exams
+                        - text: Kết quả
+                  - generic [box=345,552,269,159]:
+                    - generic [box=360,567,238,18]: ETS 2026 TEST 5
+                    - generic [box=360,593,238,32]:
+                      - generic [box=360,593,238,14]:
+                        - generic [box=360,593,61,14]: 120 phút
+                        - generic [box=432,593,31,14]: "94"
+                      - paragraph [box=360,611,238,14]: 7 phần thi | 200 câu hỏi
+                    - generic [box=360,632,60,21]: "#TOEIC"
+                    - generic [box=360,664,238,32]:
+                      - button [box=360,664,76,32]: Thi thử
+                      - button [box=441,664,76,32]: Luyện tập
+                      - link [box=522,664,76,32]:
+                        - /url: /exams
+                        - text: Kết quả
+                  - generic [box=628,552,269,159]:
+                    - generic [box=643,567,238,18]: ETS 2026 TEST 6
+                    - generic [box=643,593,238,32]:
+                      - generic [box=643,593,238,14]:
+                        - generic [box=643,593,61,14]: 120 phút
+                        - generic [box=716,593,29,14]: "74"
+                      - paragraph [box=643,611,238,14]: 7 phần thi | 200 câu hỏi
+                    - generic [box=643,632,60,21]: "#TOEIC"
+                    - generic [box=643,664,238,32]:
+                      - button [box=643,664,76,32]: Thi thử
+                      - button [box=725,664,76,32]: Luyện tập
+                      - link [box=806,664,76,32]:
+                        - /url: /exams
+                        - text: Kết quả
+                  - generic [box=62,726,269,159]:
+                    - generic [box=77,741,238,18]: ETS 2026 TEST 7
+                    - generic [box=77,766,238,32]:
+                      - generic [box=77,766,238,14]:
+                        - generic [box=77,766,61,14]: 120 phút
+                        - generic [box=149,766,30,14]: "58"
+                      - paragraph [box=77,784,238,14]: 7 phần thi | 200 câu hỏi
+                    - generic [box=77,806,60,21]: "#TOEIC"
+                    - generic [box=77,837,238,32]:
+                      - button [box=77,837,76,32]: Thi thử
+                      - button [box=158,837,76,32]: Luyện tập
+                      - link [box=239,837,76,32]:
+                        - /url: /exams
+                        - text: Kết quả
+                  - generic [box=345,726,269,159]:
+                    - generic [box=360,741,238,18]: ETS 2026 TEST 8
+                    - generic [box=360,766,238,32]:
+                      - generic [box=360,766,238,14]:
+                        - generic [box=360,766,61,14]: 120 phút
+                        - generic [box=432,766,29,14]: "73"
+                      - paragraph [box=360,784,238,14]: 7 phần thi | 200 câu hỏi
+                    - generic [box=360,806,60,21]: "#TOEIC"
+                    - generic [box=360,837,238,32]:
+                      - button [box=360,837,76,32]: Thi thử
+                      - button [box=441,837,76,32]: Luyện tập
+                      - link [box=522,837,76,32]:
+                        - /url: /exams
+                        - text: Kết quả
+                  - generic [box=628,726,269,159]:
+                    - generic [box=643,741,238,18]: ETS 2026 TEST 9
+                    - generic [box=643,766,238,32]:
+                      - generic [box=643,766,238,14]:
+                        - generic [box=643,766,61,14]: 120 phút
+                        - generic [box=716,766,31,14]: "60"
+                      - paragraph [box=643,784,238,14]: 7 phần thi | 200 câu hỏi
+                    - generic [box=643,806,60,21]: "#TOEIC"
+                    - generic [box=643,837,238,32]:
+                      - button [box=643,837,76,32]: Thi thử
+                      - button [box=725,837,76,32]: Luyện tập
+                      - link [box=806,837,76,32]:
+                        - /url: /exams
+                        - text: Kết quả
+                  - generic [box=62,900,269,159]:
+                    - generic [box=77,915,238,18]: ETS 2026 TEST 10
+                    - generic [box=77,940,238,32]:
+                      - generic [box=77,940,238,14]:
+                        - generic [box=77,940,61,14]: 120 phút
+                        - generic [box=149,940,29,14]: "78"
+                      - paragraph [box=77,958,238,14]: 7 phần thi | 200 câu hỏi
+                    - generic [box=77,980,60,21]: "#TOEIC"
+                    - generic [box=77,1011,238,32]:
+                      - button [box=77,1011,76,32]: Thi thử
+                      - button [box=158,1011,76,32]: Luyện tập
+                      - link [box=239,1011,76,32]:
+                        - /url: /exams
+                        - text: Kết quả
+              - complementary [box=918,378,300,681]:
+                - generic [box=918,378,300,337]:
+                  - link [box=918,378,300,88]:
+                    - /url: /vocabulary#community
+                    - generic [box=918,378,300,88]:
+                      - generic [box=933,393,271,60]:
+                        - generic [box=987,393,217,60]:
+                          - paragraph [box=987,393,217,41]: Cộng đồng TOEIC từ mất gốc
+                          - paragraph [box=987,436,217,17]: Học cùng cộng đồng
+                  - link [box=918,477,300,72]:
+                    - /url: /roadmap
+                    - generic [box=918,477,300,72]:
+                      - generic [box=933,492,271,43]:
+                        - generic [box=987,494,217,39]:
+                          - paragraph [box=987,494,217,21]: Lộ trình TOEIC cá nhân hóa
+                          - paragraph [box=987,516,217,17]: 1 KÈM 1 / NHÓM NHỎ
+                  - link [box=918,560,300,72]:
+                    - /url: /vocabulary
+                    - generic [box=918,560,300,72]:
+                      - generic [box=933,575,271,43]:
+                        - generic [box=987,577,217,39]:
+                          - paragraph [box=987,577,217,21]: Sổ tay từ vựng TOEIC
+                          - paragraph [box=987,599,217,17]: Học nhanh – Nhớ lâu
+                  - button [box=918,643,300,72]:
+                    - generic [box=918,643,300,72]:
+                      - generic [box=933,657,271,43]:
+                        - generic [box=933,657,43,43]: "990"
+                        - generic [box=987,660,217,39]:
+                          - paragraph [box=987,660,217,21]: Dự đoán điểm TOEIC
+                          - paragraph [box=987,682,217,17]: Nhanh chóng – Chính xác
+      - generic [box=1202,252,68,215]:
+        - generic [box=1202,252,68,25]:
+          - paragraph [box=1202,252,68,14]: Tư vấn ngay
+          - generic [box=1202,263,68,11]: ▼
+        - link [box=1216,288,40,40]:
+          - /url: https://www.tiktok.com/@trantqjehaw?_r=1&_t=ZS-96oV2ihe4s0
+        - button [box=1216,334,40,40]
+        - link [box=1216,381,40,40]:
+          - /url: https://www.facebook.com/profile.php?id=61579357975562
+        - link [box=1216,428,40,40]:
+          - /url: tel:0898203053
+  - dialog [ref=e1182] [box=438,239,403,242]:
+    - heading "ETS 2026 TEST 1" [level=2] [ref=e1184] [box=456,253,161,25]
+    - generic [ref=e1186] [box=453,289,374,49]:
+      - button "Thi thử" [active] [ref=e1187] [cursor=pointer] [box=458,295,180,38]
+      - button "Luyện tập" [ref=e1191] [cursor=pointer] [box=642,295,180,38]
+    - generic [ref=e1196] [box=453,353,374,111]:
+      - generic [ref=e1197] [box=467,367,346,49]:
+        - generic [ref=e1202] [box=521,367,177,49]:
+          - paragraph [ref=e1203] [box=521,367,177,19]: Đề thi đầy đủ 200 câu
+          - paragraph [ref=e1204] [box=521,387,177,29]: Mô phỏng bài thi hoàn chỉnh trong 120 phút
+        - link "Bắt đầu" [ref=e1205] [cursor=pointer] [box=709,374,104,36]:
+          - /url: /exams/ets-2026-test-1-mq1tovav
+      - generic [ref=e1206] [box=467,427,346,22]:
+        - generic [ref=e1207] [box=467,427,137,22]: "Thời gian: 120 phút"
+        - generic [ref=e1211] [box=611,427,113,22]: "Tổng: 200 câu"
+    - button "Close" [ref=e1215] [cursor=pointer] [box=813,253,14,14]

@@ -1,0 +1,49 @@
+- generic [ref=f15e2] [box=0,-190,1280,910]:
+  - banner [ref=f15e3] [box=0,0,1280,81]:
+    - generic [ref=f15e5] [box=16,16,1248,48]:
+      - generic [ref=f15e11] [box=80,24,329,32]:
+        - heading "ANISH TOEIC" [level=1] [ref=f15e12] [box=80,24,155,32]
+        - generic [ref=f15e13] [box=243,30,166,20]: Speaking & Writing Lab
+      - generic [ref=f15e14] [box=1064,21,200,38]:
+        - button "Kết nối Gemini" [ref=f15e15] [cursor=pointer] [box=1064,21,152,38]
+        - button "Toggle theme" [ref=f15e21] [cursor=pointer] [box=1228,22,36,36]
+  - generic [ref=f15e27] [box=113,-36,1054,683]:
+    - generic [ref=f15e29] [box=529,-36,222,48]:
+      - tab "Speaking" [selected] [ref=f15e30] [cursor=pointer] [box=534,-31,108,38]
+      - tab "Writing" [ref=f15e31] [cursor=pointer] [box=650,-30,96,36]
+    - generic [ref=f15e215] [box=113,44,1054,603]:
+      - generic [ref=f15e217] [box=113,44,1054,48]:
+        - heading "TOEIC SPEAKING TEST" [level=2] [ref=f15e218] [box=113,50,329,36]
+        - generic [ref=f15e219] [box=1110,44,57,48]:
+          - generic [ref=f15e220] [box=1110,44,57,20]: Question
+          - generic [ref=f15e221] [box=1110,64,57,28]: 0 / 11
+      - generic [ref=f15e224] [box=113,140,1054,507]:
+        - generic [ref=f15e226] [box=113,140,335,507]:
+          - heading "Questions" [level=3] [ref=f15e232] [box=162,165,84,28]
+          - generic [ref=f15e234] [box=138,218,285,404]:
+            - generic [ref=f15e235] [box=138,218,285,68]:
+              - heading "Part 1" [level=4] [ref=f15e236] [box=138,218,285,20]
+              - generic [ref=f15e237] [box=138,246,285,40]:
+                - button "1" [ref=f15e238] [cursor=pointer] [box=138,246,40,40]
+                - button "2" [ref=f15e240] [cursor=pointer] [box=186,246,40,40]
+            - generic [ref=f15e242] [box=138,302,285,68]:
+              - heading "Part 2" [level=4] [ref=f15e243] [box=138,302,285,20]
+              - generic [ref=f15e244] [box=138,330,285,40]:
+                - button "3" [ref=f15e245] [cursor=pointer] [box=138,330,40,40]
+                - button "4" [ref=f15e247] [cursor=pointer] [box=186,330,40,40]
+            - generic [ref=f15e249] [box=138,386,285,68]:
+              - heading "Part 3" [level=4] [ref=f15e250] [box=138,386,285,20]
+              - generic [ref=f15e251] [box=138,414,285,40]:
+                - button "5" [ref=f15e252] [cursor=pointer] [box=138,414,40,40]
+                - button "6" [ref=f15e254] [cursor=pointer] [box=186,414,40,40]
+                - button "7" [ref=f15e256] [cursor=pointer] [box=234,414,40,40]
+            - generic [ref=f15e258] [box=138,470,285,68]:
+              - heading "Part 4" [level=4] [ref=f15e259] [box=138,470,285,20]
+              - generic [ref=f15e260] [box=138,498,285,40]:
+                - button "8" [ref=f15e261] [cursor=pointer] [box=138,498,40,40]
+                - button "9" [ref=f15e263] [cursor=pointer] [box=186,498,40,40]
+                - button "10" [ref=f15e265] [cursor=pointer] [box=234,498,40,40]
+            - generic [ref=f15e267] [box=138,554,285,68]:
+              - heading "Part 5" [level=4] [ref=f15e268] [box=138,554,285,20]
+              - button "11" [ref=f15e270] [cursor=pointer] [box=138,582,40,40]
+        - paragraph [ref=f15e275] [box=521,189,597,28]: Vui lòng chọn câu hỏi từ danh sách để bắt đầu

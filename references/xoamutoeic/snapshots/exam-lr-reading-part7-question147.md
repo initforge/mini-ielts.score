@@ -1,0 +1,70 @@
+- generic [ref=e2] [box=0,0,1280,732]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - main [ref=e1220] [box=0,0,1280,732]:
+    - generic [ref=e1221] [box=0,0,1280,732]:
+      - generic [ref=e1304] [box=0,0,1280,50]:
+        - generic [ref=e1305] [box=22,13,223,25]:
+          - link "Danh sách đề" [ref=e1306] [cursor=pointer] [box=22,16,102,18]:
+            - /url: /exams
+          - generic [ref=e1309] [box=138,13,106,25]: XoáMùTOEIC
+        - generic [ref=e1310] [box=569,7,142,36]:
+          - generic [ref=e1311] [box=592,7,95,22]: READING
+          - generic [ref=e1312] [box=569,32,142,11]: Questions 47-48 of 100
+        - generic [ref=e1313] [box=895,9,364,32]:
+          - button "Công cụ" [ref=e1314] [cursor=pointer] [box=895,13,82,25]
+          - button "Song ngữ" [ref=e2035] [cursor=pointer] [box=988,13,88,25]
+          - generic [ref=e1323] [box=1086,13,69,25]: 72:11
+          - button "Nộp bài" [ref=e1642] [cursor=pointer] [box=1166,9,93,32]
+      - generic [ref=e1334] [box=0,50,1280,682]:
+        - generic [ref=e1335] [box=0,50,1280,682]:
+          - generic [ref=e2386] [box=7,50,1266,682]:
+            - generic [ref=e2391] [box=7,50,681,343]:
+              - generic [ref=e2392] [box=7,50,681,23]: Questions 147-148 refer to the following letter.
+              - paragraph [ref=e2395] [box=20,100,655,273]: Dear High View Apartments Resident, Riverside Paving Company is coming to High View Apartments on May 3 and 4 to resurface the parking area. All vehicles must be removed by 8 A.M. on May 3 for the work to commence. Residents may use the parking area again starting on May 5 at 8 A.M. We realize that trying to find another place to park is inconvenient, but it is necessary for the job to be completed in the two days scheduled. Note that all parking spaces will be widened, and some spaces could be moved during the work. You will receive an e-mail if your parking space is moved more than 20 meters from your previous one. Thank you for your cooperation, Judith Alvarez, Property Manager
+            - separator [ref=e2396] [box=699,50,7,682]
+            - generic [ref=e2410] [box=732,69,532,644]:
+              - generic [ref=e2412] [box=732,69,521,160]:
+                - generic [ref=e2413] [box=732,69,521,22]:
+                  - generic [ref=e2414] [box=732,69,30,22]: "147."
+                  - paragraph [ref=e2416] [box=769,69,485,21]: What is the purpose of the notice?
+                - generic [ref=e2417] [box=736,98,518,131]:
+                  - generic [ref=e2418] [cursor=pointer] [box=736,98,518,29]:
+                    - radio "(A) To invite residents to a meeting on May 3" [ref=e2419] [box=743,105,14,14]
+                    - generic [ref=e2420] [box=765,104,482,18]: (A) To invite residents to a meeting on May 3
+                  - generic [ref=e2421] [cursor=pointer] [box=736,132,518,29]:
+                    - radio "(B) To request feedback about parking facilities" [ref=e2422] [box=743,140,14,14]
+                    - generic [ref=e2423] [box=765,138,482,18]: (B) To request feedback about parking facilities
+                  - generic [ref=e2424] [cursor=pointer] [box=736,167,518,29]:
+                    - radio "(C) To inform residents of an upcoming project" [ref=e2425] [box=743,174,14,14]
+                    - generic [ref=e2426] [box=765,172,482,18]: (C) To inform residents of an upcoming project
+                  - generic [ref=e2427] [cursor=pointer] [box=736,201,518,29]:
+                    - radio "(D) To announce an increase in parking fees" [ref=e2428] [box=743,208,14,14]
+                    - generic [ref=e2429] [box=765,206,482,18]: (D) To announce an increase in parking fees
+              - generic [ref=e2431] [box=732,251,521,160]:
+                - generic [ref=e2432] [box=732,251,521,22]:
+                  - generic [ref=e2433] [box=732,251,31,22]: "148."
+                  - paragraph [ref=e2435] [box=771,251,483,21]: What is suggested about High View Apartments?
+                - generic [ref=e2436] [box=736,280,518,131]:
+                  - generic [ref=e2437] [cursor=pointer] [box=736,280,518,29]:
+                    - radio "(A) It charges residents a monthly maintenance fee." [ref=e2438] [box=743,287,14,14]
+                    - generic [ref=e2439] [box=765,285,482,18]: (A) It charges residents a monthly maintenance fee.
+                  - generic [ref=e2440] [cursor=pointer] [box=736,314,518,29]:
+                    - radio "(B) It recently hired a new property manager." [ref=e2441] [box=743,321,14,14]
+                    - generic [ref=e2442] [box=765,319,482,18]: (B) It recently hired a new property manager.
+                  - generic [ref=e2443] [cursor=pointer] [box=736,348,518,29]:
+                    - radio "(C) It has the parking area repaved every year." [ref=e2444] [box=743,355,14,14]
+                    - generic [ref=e2445] [box=765,354,482,18]: (C) It has the parking area repaved every year.
+                  - generic [ref=e2446] [cursor=pointer] [box=736,382,518,29]:
+                    - radio "(D) It assigns tenants specific parking spots." [ref=e2447] [box=743,390,14,14]
+                    - generic [ref=e2448] [box=765,388,482,18]: (D) It assigns tenants specific parking spots.
+          - generic [ref=e1669] [box=0,679,1280,41]:
+            - button "Mark items for review" [ref=e1715] [cursor=pointer] [box=14,688,160,25]
+            - generic [ref=e1672] [box=1041,686,224,29]:
+              - button "Review 1" [ref=e1687] [cursor=pointer] [box=1041,686,36,29]:
+                - generic [ref=e1677] [box=1044,702,30,8]: Review
+                - generic [ref=e1688] [box=1067,682,14,14]: "1"
+              - button "Câu trước" [ref=e1678] [cursor=pointer] [box=1083,688,93,25]
+              - button "Câu tiếp" [ref=e1681] [cursor=pointer] [box=1182,688,84,25]
+        - button "Mở bảng câu hỏi" [active] [ref=e1366] [cursor=pointer] [box=1248,335,32,50]

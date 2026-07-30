@@ -1,0 +1,90 @@
+- generic [ref=f15e2] [box=0,0,1280,1686]:
+  - banner [ref=f15e3] [box=0,0,1280,81]:
+    - generic [ref=f15e5] [box=16,16,1248,48]:
+      - generic [ref=f15e11] [box=80,24,329,32]:
+        - heading "ANISH TOEIC" [level=1] [ref=f15e12] [box=80,24,155,32]
+        - generic [ref=f15e13] [box=243,30,166,20]: Speaking & Writing Lab
+      - generic [ref=f15e14] [box=1064,21,200,38]:
+        - button "Kết nối Gemini" [ref=f15e15] [cursor=pointer] [box=1064,21,152,38]
+        - button "Toggle theme" [ref=f15e21] [cursor=pointer] [box=1228,22,36,36]
+  - generic [ref=f15e27] [box=113,154,1054,1459]:
+    - generic [ref=f15e29] [box=529,154,222,48]:
+      - tab "Speaking" [active] [selected] [ref=f15e30] [cursor=pointer] [box=534,159,108,38]
+      - tab "Writing" [ref=f15e31] [cursor=pointer] [box=650,160,96,36]
+    - generic [ref=f15e39] [box=113,234,1054,1379]:
+      - generic [ref=f15e40] [box=113,234,1054,68]:
+        - heading "Chọn Câu Hỏi" [level=2] [ref=f15e41] [box=113,234,1054,36]
+        - paragraph [ref=f15e42] [box=113,278,1054,24]: Chọn các câu hỏi bạn muốn làm bài. Bạn có thể tick/bỏ tick từng câu hoặc cả part.
+      - generic [ref=f15e43] [box=113,326,1054,1181]:
+        - generic [ref=f15e44] [box=113,326,1054,217]:
+          - generic [ref=f15e46] [box=139,352,1002,48]:
+            - generic [ref=f15e47] [box=139,352,181,48]:
+              - heading "Part 1" [level=3] [ref=f15e48] [box=139,352,181,28]
+              - paragraph [ref=f15e49] [box=139,380,181,20]: Read aloud / Write sentences
+            - button "Bỏ chọn tất cả" [ref=f15e50] [cursor=pointer] [box=1027,358,114,36]
+          - generic [ref=f15e52] [box=139,441,1002,76]:
+            - generic [ref=f15e57] [cursor=pointer] [box=157,459,290,40]:
+              - generic [ref=f15e58] [box=157,459,290,20]: Question 1
+              - paragraph [ref=f15e63] [box=157,483,290,16]: Read aloud
+            - generic [ref=f15e68] [cursor=pointer] [box=495,459,290,40]:
+              - generic [ref=f15e69] [box=495,459,290,20]: Question 2
+              - paragraph [ref=f15e74] [box=495,483,290,16]: Read aloud
+        - generic [ref=f15e75] [box=113,567,1054,217]:
+          - generic [ref=f15e77] [box=139,593,1002,48]:
+            - generic [ref=f15e78] [box=139,593,148,48]:
+              - heading "Part 2" [level=3] [ref=f15e79] [box=139,593,148,28]
+              - paragraph [ref=f15e80] [box=139,621,148,20]: Picture / Email response
+            - button "Bỏ chọn tất cả" [ref=f15e81] [cursor=pointer] [box=1027,599,114,36]
+          - generic [ref=f15e83] [box=139,682,1002,76]:
+            - generic [ref=f15e88] [cursor=pointer] [box=157,700,290,40]:
+              - generic [ref=f15e89] [box=157,700,290,20]: Question 3
+              - paragraph [ref=f15e94] [box=157,724,290,16]: Describe picture
+            - generic [ref=f15e99] [cursor=pointer] [box=495,700,290,40]:
+              - generic [ref=f15e100] [box=495,700,290,20]: Question 4
+              - paragraph [ref=f15e105] [box=495,724,290,16]: Describe picture
+        - generic [ref=f15e106] [box=113,808,1054,217]:
+          - generic [ref=f15e108] [box=139,834,1002,48]:
+            - generic [ref=f15e109] [box=139,834,130,48]:
+              - heading "Part 3" [level=3] [ref=f15e110] [box=139,834,130,28]
+              - paragraph [ref=f15e111] [box=139,862,130,20]: Q&A / Opinion essay
+            - button "Bỏ chọn tất cả" [ref=f15e112] [cursor=pointer] [box=1027,840,114,36]
+          - generic [ref=f15e114] [box=139,923,1002,76]:
+            - generic [ref=f15e119] [cursor=pointer] [box=157,941,290,40]:
+              - generic [ref=f15e120] [box=157,941,290,20]: Question 5
+              - paragraph [ref=f15e125] [box=157,965,290,16]: Respond to question
+            - generic [ref=f15e130] [cursor=pointer] [box=495,941,290,40]:
+              - generic [ref=f15e131] [box=495,941,290,20]: Question 6
+              - paragraph [ref=f15e136] [box=495,965,290,16]: Respond to question
+            - generic [ref=f15e141] [cursor=pointer] [box=833,941,290,40]:
+              - generic [ref=f15e142] [box=833,941,290,20]: Question 7
+              - paragraph [ref=f15e147] [box=833,965,290,16]: Respond to question
+        - generic [ref=f15e148] [box=113,1049,1054,217]:
+          - generic [ref=f15e150] [box=139,1075,1002,48]:
+            - generic [ref=f15e151] [box=139,1075,84,48]:
+              - heading "Part 4" [level=3] [ref=f15e152] [box=139,1075,84,28]
+              - paragraph [ref=f15e153] [box=139,1103,84,20]: Info response
+            - button "Bỏ chọn tất cả" [ref=f15e154] [cursor=pointer] [box=1027,1081,114,36]
+          - generic [ref=f15e156] [box=139,1164,1002,76]:
+            - generic [ref=f15e161] [cursor=pointer] [box=157,1182,290,40]:
+              - generic [ref=f15e162] [box=157,1182,290,20]: Question 8
+              - paragraph [ref=f15e167] [box=157,1206,290,16]: Respond using information
+            - generic [ref=f15e172] [cursor=pointer] [box=495,1182,290,40]:
+              - generic [ref=f15e173] [box=495,1182,290,20]: Question 9
+              - paragraph [ref=f15e178] [box=495,1206,290,16]: Respond using information
+            - generic [ref=f15e183] [cursor=pointer] [box=833,1182,290,40]:
+              - generic [ref=f15e184] [box=833,1182,290,20]: Question 10
+              - paragraph [ref=f15e189] [box=833,1206,290,16]: Respond using information
+        - generic [ref=f15e190] [box=113,1290,1054,217]:
+          - generic [ref=f15e192] [box=139,1316,1002,48]:
+            - generic [ref=f15e193] [box=139,1316,50,48]:
+              - heading "Part 5" [level=3] [ref=f15e194] [box=139,1316,50,28]
+              - paragraph [ref=f15e195] [box=139,1344,50,20]: Opinion
+            - button "Bỏ chọn tất cả" [ref=f15e196] [cursor=pointer] [box=1027,1322,114,36]
+          - generic [ref=f15e203] [cursor=pointer] [box=157,1423,290,40]:
+            - generic [ref=f15e204] [box=157,1423,290,20]: Question 11
+            - paragraph [ref=f15e209] [box=157,1447,290,16]: Express opinion
+      - generic [ref=f15e210] [box=113,1531,1054,82]:
+        - generic [ref=f15e211] [box=130,1550,166,44]:
+          - paragraph [ref=f15e212] [box=130,1550,166,24]: "Đã chọn: 11 / 11 câu hỏi"
+          - paragraph [ref=f15e213] [box=130,1574,166,20]: 5 phần • 11 câu đã chọn
+        - button "Bắt đầu làm bài" [ref=f15e214] [cursor=pointer] [box=971,1548,179,48]

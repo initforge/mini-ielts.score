@@ -1,0 +1,41 @@
+- generic [ref=e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - main [ref=e1220] [box=0,0,1280,720]:
+    - generic [ref=e1221] [box=0,0,1280,697]:
+      - generic [ref=e1304] [box=0,0,1280,50]:
+        - generic [ref=e1305] [box=22,13,223,25]:
+          - link "Danh sách đề" [ref=e1306] [cursor=pointer] [box=22,16,102,18]:
+            - /url: /exams
+          - generic [ref=e1309] [box=138,13,106,25]: XoáMùTOEIC
+        - generic [ref=e1310] [box=587,7,106,36]:
+          - generic [ref=e1311] [box=587,7,106,22]: LISTENING
+          - generic [ref=e1312] [box=589,32,103,11]: Question 1 of 100
+        - generic [ref=e1313] [box=710,9,549,32]:
+          - button "Công cụ" [ref=e1314] [cursor=pointer] [box=710,13,82,25]
+          - button "Song ngữ" [ref=e1318] [cursor=pointer] [box=803,13,88,25]
+          - generic [ref=e1323] [box=901,13,69,25]: 44:53
+          - button "Sang Reading →" [ref=e1327] [cursor=pointer] [box=981,9,138,32]
+          - slider "Âm lượng" [ref=e1333] [cursor=pointer] [box=1161,23,86,4]: "0.7"
+      - generic [ref=e1334] [box=0,50,1280,647]:
+        - generic [ref=e1336] [box=0,50,1280,647]:
+          - paragraph [ref=e1338] [box=22,59,1237,21]: Select the one statement that best describes what you see in the picture.
+          - generic [ref=e1340] [box=7,87,1266,610]:
+            - img "Câu 1" [ref=e1345] [box=179,102,305,420]
+            - generic [ref=e1350] [box=699,106,554,160]:
+              - generic [ref=e1351] [box=699,106,554,22]: "1."
+              - generic [ref=e1353] [box=703,135,551,131]:
+                - generic [ref=e1354] [cursor=pointer] [box=703,135,551,29]:
+                  - radio "(A)" [ref=e1355] [box=710,142,14,14]
+                  - generic [ref=e1356] [box=732,141,515,18]: (A)
+                - generic [ref=e1357] [cursor=pointer] [box=703,169,551,29]:
+                  - radio "(B)" [ref=e1358] [box=710,177,14,14]
+                  - generic [ref=e1359] [box=732,175,515,18]: (B)
+                - generic [ref=e1360] [cursor=pointer] [box=703,204,551,29]:
+                  - radio "(C)" [ref=e1361] [box=710,211,14,14]
+                  - generic [ref=e1362] [box=732,209,515,18]: (C)
+                - generic [ref=e1363] [cursor=pointer] [box=703,238,551,29]:
+                  - radio "(D)" [ref=e1364] [box=710,245,14,14]
+                  - generic [ref=e1365] [box=732,243,515,18]: (D)
+        - button "Mở bảng câu hỏi" [ref=e1366] [cursor=pointer] [box=1248,335,32,50]

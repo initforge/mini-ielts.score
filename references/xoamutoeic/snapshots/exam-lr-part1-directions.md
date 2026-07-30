@@ -1,0 +1,24 @@
+- generic [ref=e2] [box=0,0,1280,749]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=e9] [box=16,685,52,19]: Công cụ
+  - main [ref=e1220] [box=0,0,1280,749]:
+    - generic [ref=e1222] [box=0,0,1280,720]:
+      - generic [ref=e1223] [box=0,0,1280,43]:
+        - generic [ref=e1224] [box=22,9,223,25]:
+          - link "Danh sách đề" [ref=e1225] [cursor=pointer] [box=22,13,102,18]:
+            - /url: /exams
+          - generic [ref=e1228] [box=138,9,106,25]: XoáMùTOEIC
+        - generic [ref=e1300] [box=587,8,106,27]: LISTENING
+        - slider "Âm lượng" [ref=e1286] [cursor=pointer] [box=1161,20,86,4]: "0.7"
+      - generic [ref=e1236] [box=274,79,731,550]:
+        - generic [ref=e1237] [box=275,80,729,36]: PART 1 — PHOTOGRAPHS
+        - generic [ref=e1245] [box=275,116,729,512]:
+          - paragraph [ref=e1287] [box=301,138,679,91]: "Directions: For each question, you will hear four statements about a picture. When you hear the statements, you must select the one statement that best describes what you see in the picture. Then mark your answer on the answer sheet. The statements will not be printed and will be spoken only one time."
+          - img "PART 1 — PHOTOGRAPHS" [ref=e1301] [box=447,250,387,280]
+          - paragraph [ref=e1302] [box=301,545,679,62]: Statement (C), “They’re sitting at a table,” is the best description of the picture, so you should select answer (C) and mark it on your answer sheet.
+      - generic [ref=e1290] [box=90,677,1100,43]:
+        - button "Full screen" [ref=e1291] [cursor=pointer] [box=112,686,104,25]
+        - button "NEXT" [active] [ref=e1297] [cursor=pointer] [box=1087,684,81,29]

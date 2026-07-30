@@ -1,0 +1,89 @@
+- generic [ref=f15e1] [box=0,-190,1280,1269]:
+  - generic [ref=f15e2] [box=0,-190,1280,1269]:
+    - banner [ref=f15e3] [box=0,0,1280,81]:
+      - generic [ref=f15e5] [box=16,16,1248,48]:
+        - generic [ref=f15e11] [box=80,24,329,32]:
+          - heading "ANISH TOEIC" [level=1] [ref=f15e12] [box=80,24,155,32]
+          - generic [ref=f15e13] [box=243,30,166,20]: Speaking & Writing Lab
+        - generic [ref=f15e14] [box=1064,21,200,38]:
+          - button "Kết nối Gemini" [ref=f15e15] [cursor=pointer] [box=1064,21,152,38]
+          - button "Toggle theme" [ref=f15e21] [cursor=pointer] [box=1228,22,36,36]
+    - generic [ref=f15e27] [box=113,-36,1054,1042]:
+      - generic [ref=f15e29] [box=529,-36,222,48]:
+        - tab "Speaking" [selected] [ref=f15e30] [cursor=pointer] [box=534,-31,108,38]
+        - tab "Writing" [ref=f15e31] [cursor=pointer] [box=650,-30,96,36]
+      - generic [ref=f15e215] [box=113,44,1054,962]:
+        - generic [ref=f15e217] [box=113,44,1054,48]:
+          - heading "TOEIC SPEAKING TEST" [level=2] [ref=f15e218] [box=113,50,329,36]
+          - generic [ref=f15e219] [box=1110,44,57,48]:
+            - generic [ref=f15e220] [box=1110,44,57,20]: Question
+            - generic [ref=f15e221] [box=1110,64,57,28]: 1 / 11
+        - generic [ref=f15e224] [box=113,140,1054,866]:
+          - generic [ref=f15e226] [box=113,140,335,507]:
+            - heading "Questions" [level=3] [ref=f15e232] [box=162,165,84,28]
+            - generic [ref=f15e234] [box=138,218,285,404]:
+              - generic [ref=f15e235] [box=138,218,285,68]:
+                - heading "Part 1" [level=4] [ref=f15e236] [box=138,218,285,20]
+                - generic [ref=f15e237] [box=138,246,285,40]:
+                  - button "1" [active] [ref=f15e238] [cursor=pointer] [box=138,246,40,40]
+                  - button "2" [ref=f15e240] [cursor=pointer] [box=186,246,40,40]
+              - generic [ref=f15e242] [box=138,302,285,68]:
+                - heading "Part 2" [level=4] [ref=f15e243] [box=138,302,285,20]
+                - generic [ref=f15e244] [box=138,330,285,40]:
+                  - button "3" [ref=f15e245] [cursor=pointer] [box=138,330,40,40]
+                  - button "4" [ref=f15e247] [cursor=pointer] [box=186,330,40,40]
+              - generic [ref=f15e249] [box=138,386,285,68]:
+                - heading "Part 3" [level=4] [ref=f15e250] [box=138,386,285,20]
+                - generic [ref=f15e251] [box=138,414,285,40]:
+                  - button "5" [ref=f15e252] [cursor=pointer] [box=138,414,40,40]
+                  - button "6" [ref=f15e254] [cursor=pointer] [box=186,414,40,40]
+                  - button "7" [ref=f15e256] [cursor=pointer] [box=234,414,40,40]
+              - generic [ref=f15e258] [box=138,470,285,68]:
+                - heading "Part 4" [level=4] [ref=f15e259] [box=138,470,285,20]
+                - generic [ref=f15e260] [box=138,498,285,40]:
+                  - button "8" [ref=f15e261] [cursor=pointer] [box=138,498,40,40]
+                  - button "9" [ref=f15e263] [cursor=pointer] [box=186,498,40,40]
+                  - button "10" [ref=f15e265] [cursor=pointer] [box=234,498,40,40]
+              - generic [ref=f15e267] [box=138,554,285,68]:
+                - heading "Part 5" [level=4] [ref=f15e268] [box=138,554,285,20]
+                - button "11" [ref=f15e270] [cursor=pointer] [box=138,582,40,40]
+          - generic [ref=f15e272] [box=472,140,695,866]:
+            - generic [ref=f15e273] [box=472,140,695,497]:
+              - generic [ref=f15e280] [box=497,165,645,52]:
+                - generic [ref=f15e281] [box=497,165,645,16]: Part 1 - Question 1
+                - heading "Read the following text aloud" [level=3] [ref=f15e282] [box=497,189,645,28]
+              - generic [ref=f15e283] [box=473,242,693,394]:
+                - generic [ref=f15e284] [box=497,266,645,74]:
+                  - generic [ref=f15e285] [box=497,266,316,74]:
+                    - generic [ref=f15e286] [box=510,279,290,20]:
+                      - paragraph [ref=f15e287] [box=510,279,74,20]: Preparation
+                      - generic [ref=f15e288] [box=783,281,18,16]: 45s
+                    - generic [ref=f15e289] [box=510,311,290,16]: Preparing...
+                  - generic [ref=f15e291] [box=826,266,316,74]:
+                    - generic [ref=f15e292] [box=839,279,290,20]:
+                      - paragraph [ref=f15e293] [box=839,279,60,20]: Response
+                      - generic [ref=f15e294] [box=1111,281,18,16]: 47s
+                    - paragraph [ref=f15e295] [box=839,307,290,16]: Recording timer will auto-stop after the response time.
+                - generic [ref=f15e297] [box=498,357,643,166]:
+                  - generic [ref=f15e298] [box=514,373,611,20]: Question Text
+                  - textbox "Paste your question here..." [ref=f15e303] [box=514,401,611,100]
+                - generic [ref=f15e313] [cursor=pointer] [box=563,558,156,36]:
+                  - paragraph [ref=f15e314] [box=563,558,156,20]: Click to upload image
+                  - paragraph [ref=f15e315] [box=563,578,156,16]: Drag & drop or click to select
+            - generic [ref=f15e318] [box=472,661,695,277]:
+              - generic [ref=f15e319] [box=473,662,693,103]:
+                - heading "Your Response" [level=3] [ref=f15e320] [box=497,686,645,28]
+                - paragraph [ref=f15e321] [box=497,720,645,20]: You have 47 seconds to respond.
+              - generic [ref=f15e322] [box=473,765,693,172]:
+                - button [disabled] [ref=f15e325] [box=772,789,96,96]
+                - paragraph [ref=f15e329] [box=497,897,645,16]: Bắt đầu phần chuẩn bị trước khi ghi âm.
+            - generic [ref=f15e330] [box=472,962,695,44]:
+              - button "Previous" [disabled] [box=472,962,130,44]
+              - button "Finish Test" [ref=f15e331] [cursor=pointer] [box=774,962,115,44]
+              - button "Next" [ref=f15e332] [cursor=pointer] [box=1061,962,106,44]
+  - generic [ref=f15e338] [box=304,233,672,255]:
+    - 'heading "Questions 1-2: Read a text aloud" [level=3] [ref=f15e340] [box=329,258,622,32]'
+    - generic [ref=f15e341] [box=305,315,670,172]:
+      - paragraph [ref=f15e343] [box=329,339,622,52]: In this part of the test, you will read aloud the text on the screen. You will have 45 seconds to prepare. Then you will have 45 seconds to read the text aloud.
+      - generic [ref=f15e344] [box=329,415,622,48]:
+        - button "Đang phát hướng dẫn..." [disabled] [box=521,415,238,48]

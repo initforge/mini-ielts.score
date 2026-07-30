@@ -1,0 +1,67 @@
+- generic [ref=f16e2] [box=0,0,1280,1292]:
+  - banner [ref=f16e3] [box=0,0,1280,81]:
+    - generic [ref=f16e5] [box=16,16,1248,48]:
+      - generic [ref=f16e11] [box=80,24,329,32]:
+        - heading "ANISH TOEIC" [level=1] [ref=f16e12] [box=80,24,155,32]
+        - generic [ref=f16e13] [box=243,30,166,20]: Speaking & Writing Lab
+      - generic [ref=f16e14] [box=1064,21,200,38]:
+        - button "Kết nối Gemini" [ref=f16e15] [cursor=pointer] [box=1064,21,152,38]
+        - button "Toggle theme" [ref=f16e21] [cursor=pointer] [box=1228,22,36,36]
+  - generic [ref=f16e27] [box=113,154,1054,1065]:
+    - generic [ref=f16e29] [box=529,154,222,48]:
+      - tab "Speaking" [ref=f16e30] [cursor=pointer] [box=534,160,106,36]
+      - tab "Writing" [active] [selected] [ref=f16e31] [cursor=pointer] [box=648,159,98,38]
+    - generic [ref=f16e39] [box=113,234,1054,985]:
+      - generic [ref=f16e40] [box=113,234,1054,68]:
+        - heading "Chọn Câu Hỏi" [level=2] [ref=f16e41] [box=113,234,1054,36]
+        - paragraph [ref=f16e42] [box=113,278,1054,24]: Chọn các câu hỏi bạn muốn làm bài. Bạn có thể tick/bỏ tick từng câu hoặc cả part.
+      - generic [ref=f16e43] [box=113,326,1054,787]:
+        - generic [ref=f16e44] [box=113,326,1054,305]:
+          - generic [ref=f16e46] [box=139,352,1002,48]:
+            - generic [ref=f16e47] [box=139,352,181,48]:
+              - heading "Part 1" [level=3] [ref=f16e48] [box=139,352,181,28]
+              - paragraph [ref=f16e49] [box=139,380,181,20]: Read aloud / Write sentences
+            - button "Bỏ chọn tất cả" [ref=f16e50] [cursor=pointer] [box=1027,358,114,36]
+          - generic [ref=f16e52] [box=139,441,1002,164]:
+            - generic [ref=f16e57] [cursor=pointer] [box=157,459,290,40]:
+              - generic [ref=f16e58] [box=157,459,290,20]: Question 1
+              - paragraph [ref=f16e63] [box=157,483,290,16]: Write sentence
+            - generic [ref=f16e68] [cursor=pointer] [box=495,459,290,40]:
+              - generic [ref=f16e69] [box=495,459,290,20]: Question 2
+              - paragraph [ref=f16e74] [box=495,483,290,16]: Write sentence
+            - generic [ref=f16e79] [cursor=pointer] [box=833,459,290,40]:
+              - generic [ref=f16e80] [box=833,459,290,20]: Question 3
+              - paragraph [ref=f16e85] [box=833,483,290,16]: Write sentence
+            - generic [ref=f16e90] [cursor=pointer] [box=157,547,290,40]:
+              - generic [ref=f16e91] [box=157,547,290,20]: Question 4
+              - paragraph [ref=f16e96] [box=157,571,290,16]: Write sentence
+            - generic [ref=f16e101] [cursor=pointer] [box=495,547,290,40]:
+              - generic [ref=f16e102] [box=495,547,290,20]: Question 5
+              - paragraph [ref=f16e107] [box=495,571,290,16]: Write sentence
+        - generic [ref=f16e108] [box=113,655,1054,217]:
+          - generic [ref=f16e110] [box=139,681,1002,48]:
+            - generic [ref=f16e111] [box=139,681,148,48]:
+              - heading "Part 2" [level=3] [ref=f16e112] [box=139,681,148,28]
+              - paragraph [ref=f16e113] [box=139,709,148,20]: Picture / Email response
+            - button "Bỏ chọn tất cả" [ref=f16e114] [cursor=pointer] [box=1027,687,114,36]
+          - generic [ref=f16e116] [box=139,770,1002,76]:
+            - generic [ref=f16e121] [cursor=pointer] [box=157,788,290,40]:
+              - generic [ref=f16e122] [box=157,788,290,20]: Question 6
+              - paragraph [ref=f16e127] [box=157,812,290,16]: Email response
+            - generic [ref=f16e132] [cursor=pointer] [box=495,788,290,40]:
+              - generic [ref=f16e133] [box=495,788,290,20]: Question 7
+              - paragraph [ref=f16e138] [box=495,812,290,16]: Email response
+        - generic [ref=f16e139] [box=113,896,1054,217]:
+          - generic [ref=f16e141] [box=139,922,1002,48]:
+            - generic [ref=f16e142] [box=139,922,130,48]:
+              - heading "Part 3" [level=3] [ref=f16e143] [box=139,922,130,28]
+              - paragraph [ref=f16e144] [box=139,950,130,20]: Q&A / Opinion essay
+            - button "Bỏ chọn tất cả" [ref=f16e145] [cursor=pointer] [box=1027,928,114,36]
+          - generic [ref=f16e152] [cursor=pointer] [box=157,1029,290,40]:
+            - generic [ref=f16e153] [box=157,1029,290,20]: Question 8
+            - paragraph [ref=f16e158] [box=157,1053,290,16]: Opinion essay
+      - generic [ref=f16e159] [box=113,1137,1054,82]:
+        - generic [ref=f16e160] [box=130,1156,158,44]:
+          - paragraph [ref=f16e161] [box=130,1156,158,24]: "Đã chọn: 8 / 8 câu hỏi"
+          - paragraph [ref=f16e162] [box=130,1180,158,20]: 3 phần • 8 câu đã chọn
+        - button "Bắt đầu làm bài" [ref=f16e163] [cursor=pointer] [box=971,1154,179,48]

@@ -1,0 +1,291 @@
+- generic [box=0,0,1280,720]:
+  - generic [box=0,0,1280,720]:
+    - list [box=860,691,420,29]
+    - region "Notifications alt+T" [box=0,0,1280,0]
+    - main [box=0,0,1280,720]:
+      - generic [box=0,0,1280,697]:
+        - generic [box=0,0,1280,50]:
+          - generic [box=22,13,223,25]:
+            - link [box=22,16,102,18]:
+              - /url: /exams
+              - text: Danh sách đề
+            - generic [box=138,13,106,25]: XoáMùTOEIC
+          - generic [box=587,7,106,36]:
+            - generic [box=587,7,106,22]: LISTENING
+            - generic [box=589,32,103,11]: Question 1 of 100
+          - generic [box=710,9,549,32]:
+            - button [box=710,13,82,25]: Công cụ
+            - button [box=803,13,88,25]: Song ngữ
+            - generic [box=901,13,69,25]: 44:36
+            - button [box=981,9,138,32]: Sang Reading →
+            - generic [box=1129,13,130,25]:
+              - slider [box=1161,23,86,4]: "0.7"
+        - generic [box=0,50,1280,647]:
+          - generic [box=0,50,1280,647]:
+            - generic [box=0,50,1280,647]:
+              - generic [box=0,50,1280,37]:
+                - paragraph [box=22,59,1237,21]: Select the one statement that best describes what you see in the picture.
+              - generic [box=0,87,1280,610]:
+                - generic [box=7,87,1266,610]:
+                  - generic [box=680,87,592,610]:
+                    - generic [box=680,87,592,610]:
+                      - generic [box=699,106,554,160]:
+                        - generic [box=699,106,554,160]:
+                          - generic [box=699,106,554,160]:
+                            - generic [box=699,106,554,22]: "1."
+                            - generic [box=703,135,551,131]:
+                              - generic [box=703,135,551,29]:
+                                - radio [box=710,142,14,14]
+                                - generic [box=732,141,515,18]: (A)
+                              - generic [box=703,169,551,29]:
+                                - radio [box=710,177,14,14]
+                                - generic [box=732,175,515,18]: (B)
+                              - generic [box=703,204,551,29]:
+                                - radio [box=710,211,14,14]
+                                - generic [box=732,209,515,18]: (C)
+                              - generic [box=703,238,551,29]:
+                                - radio [box=710,245,14,14]
+                                - generic [box=732,243,515,18]: (D)
+          - button [expanded] [box=1248,335,32,50]
+  - dialog [ref=e1370] [box=960,0,320,720]:
+    - heading "Bảng câu hỏi" [level=3] [ref=e1371] [box=983,29,276,22]
+    - generic [ref=e1609] [box=983,61,276,43]:
+      - paragraph [ref=e1610] [box=993,68,254,14]: Đã trả lời 0/100
+      - paragraph [ref=e1611] [box=993,83,254,14]: Click ô số để nhảy tới câu
+    - generic [ref=e1375] [box=983,115,276,1327]:
+      - generic [ref=e1376] [box=983,115,276,51]:
+        - paragraph [ref=e1377] [box=983,115,276,17]:
+          - text: Part 1
+          - generic [ref=e1378] [box=1024,116,30,14]: (1–6)
+        - generic [ref=e1379] [box=983,137,276,29]:
+          - button "1" [active] [ref=e1380] [cursor=pointer] [box=983,137,43,29]
+          - button "2" [ref=e1381] [cursor=pointer] [box=1029,137,43,29]
+          - button "3" [ref=e1382] [cursor=pointer] [box=1076,137,43,29]
+          - button "4" [ref=e1383] [cursor=pointer] [box=1122,137,43,29]
+          - button "5" [ref=e1384] [cursor=pointer] [box=1169,137,43,29]
+          - button "6" [ref=e1385] [cursor=pointer] [box=1215,137,43,29]
+      - generic [ref=e1386] [box=983,177,276,180]:
+        - paragraph [ref=e1387] [box=983,177,276,17]:
+          - text: Part 2
+          - generic [ref=e1388] [box=1027,178,37,14]: (7–31)
+        - generic [ref=e1389] [box=983,199,276,158]:
+          - button "7" [ref=e1390] [cursor=pointer] [box=983,199,43,29]
+          - button "8" [ref=e1391] [cursor=pointer] [box=1029,199,43,29]
+          - button "9" [ref=e1392] [cursor=pointer] [box=1076,199,43,29]
+          - button "10" [ref=e1393] [cursor=pointer] [box=1122,199,43,29]
+          - button "11" [ref=e1394] [cursor=pointer] [box=1169,199,43,29]
+          - button "12" [ref=e1395] [cursor=pointer] [box=1215,199,43,29]
+          - button "13" [ref=e1396] [cursor=pointer] [box=983,231,43,29]
+          - button "14" [ref=e1397] [cursor=pointer] [box=1029,231,43,29]
+          - button "15" [ref=e1398] [cursor=pointer] [box=1076,231,43,29]
+          - button "16" [ref=e1399] [cursor=pointer] [box=1122,231,43,29]
+          - button "17" [ref=e1400] [cursor=pointer] [box=1169,231,43,29]
+          - button "18" [ref=e1401] [cursor=pointer] [box=1215,231,43,29]
+          - button "19" [ref=e1402] [cursor=pointer] [box=983,263,43,29]
+          - button "20" [ref=e1403] [cursor=pointer] [box=1029,263,43,29]
+          - button "21" [ref=e1404] [cursor=pointer] [box=1076,263,43,29]
+          - button "22" [ref=e1405] [cursor=pointer] [box=1122,263,43,29]
+          - button "23" [ref=e1406] [cursor=pointer] [box=1169,263,43,29]
+          - button "24" [ref=e1407] [cursor=pointer] [box=1215,263,43,29]
+          - button "25" [ref=e1408] [cursor=pointer] [box=983,296,43,29]
+          - button "26" [ref=e1409] [cursor=pointer] [box=1029,296,43,29]
+          - button "27" [ref=e1410] [cursor=pointer] [box=1076,296,43,29]
+          - button "28" [ref=e1411] [cursor=pointer] [box=1122,296,43,29]
+          - button "29" [ref=e1412] [cursor=pointer] [box=1169,296,43,29]
+          - button "30" [ref=e1413] [cursor=pointer] [box=1215,296,43,29]
+          - button "31" [ref=e1414] [cursor=pointer] [box=983,328,43,29]
+      - generic [ref=e1415] [box=983,368,276,245]:
+        - paragraph [ref=e1416] [box=983,368,276,17]:
+          - text: Part 3
+          - generic [ref=e1417] [box=1027,369,47,14]: (32–70)
+        - generic [ref=e1418] [box=983,390,276,223]:
+          - button "32" [ref=e1419] [cursor=pointer] [box=983,390,43,29]
+          - button "33" [ref=e1420] [cursor=pointer] [box=1029,390,43,29]
+          - button "34" [ref=e1421] [cursor=pointer] [box=1076,390,43,29]
+          - button "35" [ref=e1422] [cursor=pointer] [box=1122,390,43,29]
+          - button "36" [ref=e1423] [cursor=pointer] [box=1169,390,43,29]
+          - button "37" [ref=e1424] [cursor=pointer] [box=1215,390,43,29]
+          - button "38" [ref=e1425] [cursor=pointer] [box=983,422,43,29]
+          - button "39" [ref=e1426] [cursor=pointer] [box=1029,422,43,29]
+          - button "40" [ref=e1427] [cursor=pointer] [box=1076,422,43,29]
+          - button "41" [ref=e1428] [cursor=pointer] [box=1122,422,43,29]
+          - button "42" [ref=e1429] [cursor=pointer] [box=1169,422,43,29]
+          - button "43" [ref=e1430] [cursor=pointer] [box=1215,422,43,29]
+          - button "44" [ref=e1431] [cursor=pointer] [box=983,454,43,29]
+          - button "45" [ref=e1432] [cursor=pointer] [box=1029,454,43,29]
+          - button "46" [ref=e1433] [cursor=pointer] [box=1076,454,43,29]
+          - button "47" [ref=e1434] [cursor=pointer] [box=1122,454,43,29]
+          - button "48" [ref=e1435] [cursor=pointer] [box=1169,454,43,29]
+          - button "49" [ref=e1436] [cursor=pointer] [box=1215,454,43,29]
+          - button "50" [ref=e1437] [cursor=pointer] [box=983,487,43,29]
+          - button "51" [ref=e1438] [cursor=pointer] [box=1029,487,43,29]
+          - button "52" [ref=e1439] [cursor=pointer] [box=1076,487,43,29]
+          - button "53" [ref=e1440] [cursor=pointer] [box=1122,487,43,29]
+          - button "54" [ref=e1441] [cursor=pointer] [box=1169,487,43,29]
+          - button "55" [ref=e1442] [cursor=pointer] [box=1215,487,43,29]
+          - button "56" [ref=e1443] [cursor=pointer] [box=983,519,43,29]
+          - button "57" [ref=e1444] [cursor=pointer] [box=1029,519,43,29]
+          - button "58" [ref=e1445] [cursor=pointer] [box=1076,519,43,29]
+          - button "59" [ref=e1446] [cursor=pointer] [box=1122,519,43,29]
+          - button "60" [ref=e1447] [cursor=pointer] [box=1169,519,43,29]
+          - button "61" [ref=e1448] [cursor=pointer] [box=1215,519,43,29]
+          - button "62" [ref=e1449] [cursor=pointer] [box=983,552,43,29]
+          - button "63" [ref=e1450] [cursor=pointer] [box=1029,552,43,29]
+          - button "64" [ref=e1451] [cursor=pointer] [box=1076,552,43,29]
+          - button "65" [ref=e1452] [cursor=pointer] [box=1122,552,43,29]
+          - button "66" [ref=e1453] [cursor=pointer] [box=1169,552,43,29]
+          - button "67" [ref=e1454] [cursor=pointer] [box=1215,552,43,29]
+          - button "68" [ref=e1455] [cursor=pointer] [box=983,584,43,29]
+          - button "69" [ref=e1456] [cursor=pointer] [box=1029,584,43,29]
+          - button "70" [ref=e1457] [cursor=pointer] [box=1076,584,43,29]
+      - generic [ref=e1458] [box=983,624,276,180]:
+        - paragraph [ref=e1459] [box=983,624,276,17]:
+          - text: Part 4
+          - generic [ref=e1460] [box=1028,625,49,14]: (71–100)
+        - generic [ref=e1461] [box=983,645,276,158]:
+          - button "71" [ref=e1462] [cursor=pointer] [box=983,645,43,29]
+          - button "72" [ref=e1463] [cursor=pointer] [box=1029,645,43,29]
+          - button "73" [ref=e1464] [cursor=pointer] [box=1076,645,43,29]
+          - button "74" [ref=e1465] [cursor=pointer] [box=1122,645,43,29]
+          - button "75" [ref=e1466] [cursor=pointer] [box=1169,645,43,29]
+          - button "76" [ref=e1467] [cursor=pointer] [box=1215,645,43,29]
+          - button "77" [ref=e1468] [cursor=pointer] [box=983,678,43,29]
+          - button "78" [ref=e1469] [cursor=pointer] [box=1029,678,43,29]
+          - button "79" [ref=e1470] [cursor=pointer] [box=1076,678,43,29]
+          - button "80" [ref=e1471] [cursor=pointer] [box=1122,678,43,29]
+          - button "81" [ref=e1472] [cursor=pointer] [box=1169,678,43,29]
+          - button "82" [ref=e1473] [cursor=pointer] [box=1215,678,43,29]
+          - button "83" [ref=e1474] [cursor=pointer] [box=983,710,43,29]
+          - button "84" [ref=e1475] [cursor=pointer] [box=1029,710,43,29]
+          - button "85" [ref=e1476] [cursor=pointer] [box=1076,710,43,29]
+          - button "86" [ref=e1477] [cursor=pointer] [box=1122,710,43,29]
+          - button "87" [ref=e1478] [cursor=pointer] [box=1169,710,43,29]
+          - button "88" [ref=e1479] [cursor=pointer] [box=1215,710,43,29]
+          - button "89" [ref=e1480] [cursor=pointer] [box=983,743,43,29]
+          - button "90" [ref=e1481] [cursor=pointer] [box=1029,743,43,29]
+          - button "91" [ref=e1482] [cursor=pointer] [box=1076,743,43,29]
+          - button "92" [ref=e1483] [cursor=pointer] [box=1122,743,43,29]
+          - button "93" [ref=e1484] [cursor=pointer] [box=1169,743,43,29]
+          - button "94" [ref=e1485] [cursor=pointer] [box=1215,743,43,29]
+          - button "95" [ref=e1486] [cursor=pointer] [box=983,775,43,29]
+          - button "96" [ref=e1487] [cursor=pointer] [box=1029,775,43,29]
+          - button "97" [ref=e1488] [cursor=pointer] [box=1076,775,43,29]
+          - button "98" [ref=e1489] [cursor=pointer] [box=1122,775,43,29]
+          - button "99" [ref=e1490] [cursor=pointer] [box=1169,775,43,29]
+          - button "100" [ref=e1491] [cursor=pointer] [box=1215,775,43,29]
+      - generic [ref=e1492] [box=983,815,276,180]:
+        - paragraph [ref=e1493] [box=983,815,276,17]:
+          - text: Part 5
+          - generic [ref=e1494] [box=1027,816,54,14]: (101–130)
+        - generic [ref=e1495] [box=983,836,276,158]:
+          - button "101" [disabled] [ref=e1496] [box=983,836,43,29]
+          - button "102" [disabled] [ref=e1497] [box=1029,836,43,29]
+          - button "103" [disabled] [ref=e1498] [box=1076,836,43,29]
+          - button "104" [disabled] [ref=e1499] [box=1122,836,43,29]
+          - button "105" [disabled] [ref=e1500] [box=1169,836,43,29]
+          - button "106" [disabled] [ref=e1501] [box=1215,836,43,29]
+          - button "107" [disabled] [ref=e1502] [box=983,869,43,29]
+          - button "108" [disabled] [ref=e1503] [box=1029,869,43,29]
+          - button "109" [disabled] [ref=e1504] [box=1076,869,43,29]
+          - button "110" [disabled] [ref=e1505] [box=1122,869,43,29]
+          - button "111" [disabled] [ref=e1506] [box=1169,869,43,29]
+          - button "112" [disabled] [ref=e1507] [box=1215,869,43,29]
+          - button "113" [disabled] [ref=e1508] [box=983,901,43,29]
+          - button "114" [disabled] [ref=e1509] [box=1029,901,43,29]
+          - button "115" [disabled] [ref=e1510] [box=1076,901,43,29]
+          - button "116" [disabled] [ref=e1511] [box=1122,901,43,29]
+          - button "117" [disabled] [ref=e1512] [box=1169,901,43,29]
+          - button "118" [disabled] [ref=e1513] [box=1215,901,43,29]
+          - button "119" [disabled] [ref=e1514] [box=983,934,43,29]
+          - button "120" [disabled] [ref=e1515] [box=1029,934,43,29]
+          - button "121" [disabled] [ref=e1516] [box=1076,934,43,29]
+          - button "122" [disabled] [ref=e1517] [box=1122,934,43,29]
+          - button "123" [disabled] [ref=e1518] [box=1169,934,43,29]
+          - button "124" [disabled] [ref=e1519] [box=1215,934,43,29]
+          - button "125" [disabled] [ref=e1520] [box=983,966,43,29]
+          - button "126" [disabled] [ref=e1521] [box=1029,966,43,29]
+          - button "127" [disabled] [ref=e1522] [box=1076,966,43,29]
+          - button "128" [disabled] [ref=e1523] [box=1122,966,43,29]
+          - button "129" [disabled] [ref=e1524] [box=1169,966,43,29]
+          - button "130" [disabled] [ref=e1525] [box=1215,966,43,29]
+      - generic [ref=e1526] [box=983,1006,276,115]:
+        - paragraph [ref=e1527] [box=983,1006,276,17]:
+          - text: Part 6
+          - generic [ref=e1528] [box=1027,1007,55,14]: (131–146)
+        - generic [ref=e1529] [box=983,1028,276,94]:
+          - button "131" [disabled] [ref=e1530] [box=983,1028,43,29]
+          - button "132" [disabled] [ref=e1531] [box=1029,1028,43,29]
+          - button "133" [disabled] [ref=e1532] [box=1076,1028,43,29]
+          - button "134" [disabled] [ref=e1533] [box=1122,1028,43,29]
+          - button "135" [disabled] [ref=e1534] [box=1169,1028,43,29]
+          - button "136" [disabled] [ref=e1535] [box=1215,1028,43,29]
+          - button "137" [disabled] [ref=e1536] [box=983,1060,43,29]
+          - button "138" [disabled] [ref=e1537] [box=1029,1060,43,29]
+          - button "139" [disabled] [ref=e1538] [box=1076,1060,43,29]
+          - button "140" [disabled] [ref=e1539] [box=1122,1060,43,29]
+          - button "141" [disabled] [ref=e1540] [box=1169,1060,43,29]
+          - button "142" [disabled] [ref=e1541] [box=1215,1060,43,29]
+          - button "143" [disabled] [ref=e1542] [box=983,1092,43,29]
+          - button "144" [disabled] [ref=e1543] [box=1029,1092,43,29]
+          - button "145" [disabled] [ref=e1544] [box=1076,1092,43,29]
+          - button "146" [disabled] [ref=e1545] [box=1122,1092,43,29]
+      - generic [ref=e1546] [box=983,1132,276,310]:
+        - paragraph [ref=e1547] [box=983,1132,276,17]:
+          - text: Part 7
+          - generic [ref=e1548] [box=1026,1133,60,14]: (147–200)
+        - generic [ref=e1549] [box=983,1154,276,288]:
+          - button "147" [disabled] [ref=e1550] [box=983,1154,43,29]
+          - button "148" [disabled] [ref=e1551] [box=1029,1154,43,29]
+          - button "149" [disabled] [ref=e1552] [box=1076,1154,43,29]
+          - button "150" [disabled] [ref=e1553] [box=1122,1154,43,29]
+          - button "151" [disabled] [ref=e1554] [box=1169,1154,43,29]
+          - button "152" [disabled] [ref=e1555] [box=1215,1154,43,29]
+          - button "153" [disabled] [ref=e1556] [box=983,1186,43,29]
+          - button "154" [disabled] [ref=e1557] [box=1029,1186,43,29]
+          - button "155" [disabled] [ref=e1558] [box=1076,1186,43,29]
+          - button "156" [disabled] [ref=e1559] [box=1122,1186,43,29]
+          - button "157" [disabled] [ref=e1560] [box=1169,1186,43,29]
+          - button "158" [disabled] [ref=e1561] [box=1215,1186,43,29]
+          - button "159" [disabled] [ref=e1562] [box=983,1219,43,29]
+          - button "160" [disabled] [ref=e1563] [box=1029,1219,43,29]
+          - button "161" [disabled] [ref=e1564] [box=1076,1219,43,29]
+          - button "162" [disabled] [ref=e1565] [box=1122,1219,43,29]
+          - button "163" [disabled] [ref=e1566] [box=1169,1219,43,29]
+          - button "164" [disabled] [ref=e1567] [box=1215,1219,43,29]
+          - button "165" [disabled] [ref=e1568] [box=983,1251,43,29]
+          - button "166" [disabled] [ref=e1569] [box=1029,1251,43,29]
+          - button "167" [disabled] [ref=e1570] [box=1076,1251,43,29]
+          - button "168" [disabled] [ref=e1571] [box=1122,1251,43,29]
+          - button "169" [disabled] [ref=e1572] [box=1169,1251,43,29]
+          - button "170" [disabled] [ref=e1573] [box=1215,1251,43,29]
+          - button "171" [disabled] [ref=e1574] [box=983,1283,43,29]
+          - button "172" [disabled] [ref=e1575] [box=1029,1283,43,29]
+          - button "173" [disabled] [ref=e1576] [box=1076,1283,43,29]
+          - button "174" [disabled] [ref=e1577] [box=1122,1283,43,29]
+          - button "175" [disabled] [ref=e1578] [box=1169,1283,43,29]
+          - button "176" [disabled] [ref=e1579] [box=1215,1283,43,29]
+          - button "177" [disabled] [ref=e1580] [box=983,1316,43,29]
+          - button "178" [disabled] [ref=e1581] [box=1029,1316,43,29]
+          - button "179" [disabled] [ref=e1582] [box=1076,1316,43,29]
+          - button "180" [disabled] [ref=e1583] [box=1122,1316,43,29]
+          - button "181" [disabled] [ref=e1584] [box=1169,1316,43,29]
+          - button "182" [disabled] [ref=e1585] [box=1215,1316,43,29]
+          - button "183" [disabled] [ref=e1586] [box=983,1348,43,29]
+          - button "184" [disabled] [ref=e1587] [box=1029,1348,43,29]
+          - button "185" [disabled] [ref=e1588] [box=1076,1348,43,29]
+          - button "186" [disabled] [ref=e1589] [box=1122,1348,43,29]
+          - button "187" [disabled] [ref=e1590] [box=1169,1348,43,29]
+          - button "188" [disabled] [ref=e1591] [box=1215,1348,43,29]
+          - button "189" [disabled] [ref=e1592] [box=983,1381,43,29]
+          - button "190" [disabled] [ref=e1593] [box=1029,1381,43,29]
+          - button "191" [disabled] [ref=e1594] [box=1076,1381,43,29]
+          - button "192" [disabled] [ref=e1595] [box=1122,1381,43,29]
+          - button "193" [disabled] [ref=e1596] [box=1169,1381,43,29]
+          - button "194" [disabled] [ref=e1597] [box=1215,1381,43,29]
+          - button "195" [disabled] [ref=e1598] [box=983,1413,43,29]
+          - button "196" [disabled] [ref=e1599] [box=1029,1413,43,29]
+          - button "197" [disabled] [ref=e1600] [box=1076,1413,43,29]
+          - button "198" [disabled] [ref=e1601] [box=1122,1413,43,29]
+          - button "199" [disabled] [ref=e1602] [box=1169,1413,43,29]
+          - button "200" [disabled] [ref=e1603] [box=1215,1413,43,29]
+    - button "Close" [ref=e1604] [cursor=pointer] [box=1251,14,14,14]

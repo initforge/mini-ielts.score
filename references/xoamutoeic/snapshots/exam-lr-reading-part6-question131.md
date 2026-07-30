@@ -1,0 +1,104 @@
+- generic [ref=e2] [box=0,0,1280,732]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - main [ref=e1220] [box=0,0,1280,732]:
+    - generic [ref=e1221] [box=0,0,1280,732]:
+      - generic [ref=e1304] [box=0,0,1280,50]:
+        - generic [ref=e1305] [box=22,13,223,25]:
+          - link "Danh sách đề" [ref=e1306] [cursor=pointer] [box=22,16,102,18]:
+            - /url: /exams
+          - generic [ref=e1309] [box=138,13,106,25]: XoáMùTOEIC
+        - generic [ref=e1310] [box=570,7,140,36]:
+          - generic [ref=e1311] [box=592,7,95,22]: READING
+          - generic [ref=e1312] [box=570,32,140,11]: Questions 31-34 of 100
+        - generic [ref=e1313] [box=895,9,364,32]:
+          - button "Công cụ" [ref=e1314] [cursor=pointer] [box=895,13,82,25]
+          - button "Song ngữ" [ref=e2035] [cursor=pointer] [box=988,13,88,25]
+          - generic [ref=e1323] [box=1086,13,69,25]: 72:43
+          - button "Nộp bài" [ref=e1642] [cursor=pointer] [box=1166,9,93,32]
+      - generic [ref=e1334] [box=0,50,1280,682]:
+        - generic [ref=e1335] [box=0,50,1280,682]:
+          - generic [ref=e2039] [box=7,50,1266,682]:
+            - generic [ref=e2044] [box=7,50,681,297]:
+              - generic [ref=e2045] [box=7,50,681,23]: Questions 131-134 refer to the following text.
+              - paragraph [ref=e2048] [box=20,100,655,228]: Look to Riessler Landscaping for your Garden Needs Riessler Landscaping has everything you need to create your dream garden. We will listen to your ideas and offer suggestions that match your gardening desires. ______ (131). The nursery here at Riessler Landscaping includes plants of many varieties and sizes that burst with eye-catching colors year-round. You are guaranteed to find something that will add ______ (132) to your garden. We are ______ (133) equipped to construct small ponds or other water features. And as our name suggests, we can take on more ambitious landscaping projects—whatever you need! With more than 40 years in the landscape-design business, ______ (134) expertise is unmatched.
+            - separator [ref=e2049] [box=699,50,7,682]
+            - generic [ref=e2063] [box=732,69,532,644]:
+              - generic [ref=e2065] [box=732,69,521,160]:
+                - generic [ref=e2066] [box=732,69,521,22]:
+                  - generic [ref=e2067] [box=732,69,27,22]: "131."
+                  - paragraph [ref=e2069] [box=767,69,487,21]: Câu 131
+                - generic [ref=e2070] [box=736,98,518,131]:
+                  - generic [ref=e2071] [cursor=pointer] [box=736,98,518,29]:
+                    - radio "(A) Staff members have written articles for the local newspaper." [ref=e2072] [box=743,105,14,14]
+                    - generic [ref=e2073] [box=765,104,482,18]: (A) Staff members have written articles for the local newspaper.
+                  - generic [ref=e2074] [cursor=pointer] [box=736,132,518,29]:
+                    - radio "(B) Installing lights can enhance the effect of a well-designed garden." [ref=e2075] [box=743,140,14,14]
+                    - generic [ref=e2076] [box=765,138,482,18]: (B) Installing lights can enhance the effect of a well-designed garden.
+                  - generic [ref=e2077] [cursor=pointer] [box=736,167,518,29]:
+                    - radio "(C) Local competitors cannot beat the prices we charge." [ref=e2078] [box=743,174,14,14]
+                    - generic [ref=e2079] [box=765,172,482,18]: (C) Local competitors cannot beat the prices we charge.
+                  - generic [ref=e2080] [cursor=pointer] [box=736,201,518,29]:
+                    - radio "(D) Riessler Landscaping’s goal is to make your vision a reality." [ref=e2081] [box=743,208,14,14]
+                    - generic [ref=e2082] [box=765,206,482,18]: (D) Riessler Landscaping’s goal is to make your vision a reality.
+              - generic [ref=e2084] [box=732,251,521,160]:
+                - generic [ref=e2085] [box=732,251,521,22]:
+                  - generic [ref=e2086] [box=732,251,30,22]: "132."
+                  - paragraph [ref=e2088] [box=770,251,484,21]: Câu 132
+                - generic [ref=e2089] [box=736,280,518,131]:
+                  - generic [ref=e2090] [cursor=pointer] [box=736,280,518,29]:
+                    - radio "(A) years" [ref=e2091] [box=743,287,14,14]
+                    - generic [ref=e2092] [box=765,285,482,18]: (A) years
+                  - generic [ref=e2093] [cursor=pointer] [box=736,314,518,29]:
+                    - radio "(B) space" [ref=e2094] [box=743,321,14,14]
+                    - generic [ref=e2095] [box=765,319,482,18]: (B) space
+                  - generic [ref=e2096] [cursor=pointer] [box=736,348,518,29]:
+                    - radio "(C) beauty" [ref=e2097] [box=743,355,14,14]
+                    - generic [ref=e2098] [box=765,354,482,18]: (C) beauty
+                  - generic [ref=e2099] [cursor=pointer] [box=736,382,518,29]:
+                    - radio "(D) moisture" [ref=e2100] [box=743,390,14,14]
+                    - generic [ref=e2101] [box=765,388,482,18]: (D) moisture
+              - generic [ref=e2103] [box=732,433,521,160]:
+                - generic [ref=e2104] [box=732,433,521,22]:
+                  - generic [ref=e2105] [box=732,433,31,22]: "133."
+                  - paragraph [ref=e2107] [box=770,433,484,21]: Câu 133
+                - generic [ref=e2108] [box=736,462,518,131]:
+                  - generic [ref=e2109] [cursor=pointer] [box=736,462,518,29]:
+                    - radio "(A) also" [ref=e2110] [box=743,469,14,14]
+                    - generic [ref=e2111] [box=765,467,482,18]: (A) also
+                  - generic [ref=e2112] [cursor=pointer] [box=736,496,518,29]:
+                    - radio "(B) rarely" [ref=e2113] [box=743,503,14,14]
+                    - generic [ref=e2114] [box=765,501,482,18]: (B) rarely
+                  - generic [ref=e2115] [cursor=pointer] [box=736,530,518,29]:
+                    - radio "(C) somehow" [ref=e2116] [box=743,537,14,14]
+                    - generic [ref=e2117] [box=765,535,482,18]: (C) somehow
+                  - generic [ref=e2118] [cursor=pointer] [box=736,564,518,29]:
+                    - radio "(D) nevertheless" [ref=e2119] [box=743,571,14,14]
+                    - generic [ref=e2120] [box=765,569,482,18]: (D) nevertheless
+              - generic [ref=e2122] [box=732,614,521,160]:
+                - generic [ref=e2123] [box=732,614,521,22]:
+                  - generic [ref=e2124] [box=732,614,31,22]: "134."
+                  - paragraph [ref=e2126] [box=771,614,483,21]: Câu 134
+                - generic [ref=e2127] [box=736,643,518,131]:
+                  - generic [ref=e2128] [cursor=pointer] [box=736,643,518,29]:
+                    - radio "(A) its" [ref=e2129] [box=743,650,14,14]
+                    - generic [ref=e2130] [box=765,649,482,18]: (A) its
+                  - generic [ref=e2131] [cursor=pointer] [box=736,677,518,29]:
+                    - radio "(B) our" [ref=e2132] [box=743,685,14,14]
+                    - generic [ref=e2133] [box=765,683,482,18]: (B) our
+                  - generic [ref=e2134] [cursor=pointer] [box=736,712,518,29]:
+                    - radio "(C) others" [ref=e2135] [box=743,719,14,14]
+                    - generic [ref=e2136] [box=765,717,482,18]: (C) others
+                  - generic [ref=e2137] [cursor=pointer] [box=736,746,518,29]:
+                    - radio "(D) their" [ref=e2138] [box=743,753,14,14]
+                    - generic [ref=e2139] [box=765,751,482,18]: (D) their
+          - generic [ref=e1669] [box=0,679,1280,41]:
+            - button "Mark items for review" [ref=e1715] [cursor=pointer] [box=14,688,160,25]
+            - generic [ref=e1672] [box=1041,686,224,29]:
+              - button "Review 1" [ref=e1687] [cursor=pointer] [box=1041,686,36,29]:
+                - generic [ref=e1677] [box=1044,702,30,8]: Review
+                - generic [ref=e1688] [box=1067,682,14,14]: "1"
+              - button "Câu trước" [ref=e1678] [cursor=pointer] [box=1083,688,93,25]
+              - button "Câu tiếp" [ref=e1681] [cursor=pointer] [box=1182,688,84,25]
+        - button "Mở bảng câu hỏi" [active] [ref=e1366] [cursor=pointer] [box=1248,335,32,50]

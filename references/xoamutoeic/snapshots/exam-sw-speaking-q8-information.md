@@ -1,0 +1,24 @@
+- generic [ref=f2e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=f2e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=f2e9] [box=16,685,52,19]: Công cụ
+  - main [ref=f2e157] [box=0,0,1280,720]:
+    - generic [ref=f2e159] [box=0,0,1280,50]:
+      - generic [ref=f2e160] [box=22,13,223,25]:
+        - link "Danh sách đề" [ref=f2e161] [cursor=pointer] [box=22,16,102,18]:
+          - /url: /exams
+        - generic [ref=f2e164] [box=138,13,106,25]: XoáMùTOEIC
+      - generic [ref=f2e165] [box=588,7,104,36]:
+        - generic [ref=f2e166] [box=588,7,104,22]: SPEAKING
+        - generic [ref=f2e167] [box=593,32,94,11]: Question 8 of 11
+      - generic [ref=f2e168] [box=977,9,281,32]:
+        - generic [ref=f2e169] [box=977,13,69,25]: 19:48
+        - button "Câu trước" [ref=f2e173] [cursor=pointer] [box=1053,9,32,32]
+        - button "Câu sau" [active] [ref=f2e176] [cursor=pointer] [box=1093,9,32,32]
+        - slider "Âm lượng" [ref=f2e184] [cursor=pointer] [box=1163,23,58,4]: "0.7"
+        - button "Exit" [ref=f2e185] [cursor=pointer] [box=1240,16,18,18]
+    - generic [ref=f2e227] [box=496,486,288,84]:
+      - heading "PREPARATION TIME" [level=3] [ref=f2e229] [box=568,497,143,13]
+      - generic [ref=f2e230] [box=498,520,284,48]: 00:00:01

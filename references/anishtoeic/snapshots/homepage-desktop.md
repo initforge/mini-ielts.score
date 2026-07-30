@@ -1,0 +1,449 @@
+- generic [ref=f5e4] [box=0,0,1280,3668]:
+  - navigation [ref=f5e5] [box=0,0,1280,44]:
+    - generic [ref=f5e7] [box=16,0,1248,44]:
+      - button "Trang chủ - menu site" [ref=f5e10] [cursor=pointer] [box=16,8,28,28]
+      - generic [ref=f5e14] [box=65,6,992,32]:
+        - link "PRACTICE HUB" [ref=f5e15] [cursor=pointer] [box=65,8,28,28]:
+          - /url: /
+        - button "Khóa học" [ref=f5e22] [cursor=pointer] [box=97,6,138,32]
+        - button "Từ vựng" [ref=f5e30] [cursor=pointer] [box=239,6,127,32]
+        - button "Ngữ pháp" [ref=f5e37] [cursor=pointer] [box=370,6,136,32]
+        - button "Nghe" [ref=f5e46] [cursor=pointer] [box=510,6,101,32]
+        - button "Đọc" [ref=f5e53] [cursor=pointer] [box=616,6,92,32]
+        - button "Viết" [ref=f5e60] [cursor=pointer] [box=712,6,93,32]
+        - button "Nói" [ref=f5e70] [cursor=pointer] [box=809,6,86,32]
+        - button "More" [ref=f5e78] [cursor=pointer] [box=899,6,102,32]
+      - generic [ref=f5e85] [box=1065,7,199,30]:
+        - button "Chuyển sang chế độ sáng" [ref=f5e86] [cursor=pointer] [box=1065,7,30,30]
+        - generic [ref=f5e93] [box=1103,7,161,30]:
+          - link "Đăng nhập" [ref=f5e94] [cursor=pointer] [box=1103,7,85,30]:
+            - /url: /dang-nhap?from=%2F
+          - link "Đăng ký" [ref=f5e95] [cursor=pointer] [box=1194,7,70,30]:
+            - /url: /dang-ky?from=%2F
+  - main [ref=f5e96] [box=0,0,1280,3116]:
+    - 'link "Hướng dẫn: Practice Hub" [ref=f5e97] [cursor=pointer] [box=1232,52,36,36]':
+      - /url: /huong-dan/practice-hub
+    - generic [ref=f5e206] [box=0,44,1280,2992]:
+      - generic [ref=f5e207] [box=32,68,1216,612]:
+        - generic [ref=f5e209] [box=32,68,1216,420]:
+          - generic [ref=f5e210] [box=56,100,796,262]:
+            - generic [ref=f5e211] [box=56,100,285,26]: Đồng hành cùng bạn chinh phục điểm cao
+            - generic [ref=f5e212] [box=56,126,796,236]:
+              - heading "Hệ sinh thái luyện thi" [level=1] [ref=f5e213] [box=56,176,796,45]
+              - paragraph [ref=f5e214] [box=56,229,796,32]: Toàn diện tại Anish TOEIC
+              - paragraph [ref=f5e215] [box=56,272,576,40]: "Nâng tầm kỹ năng tiếng Anh với các công cụ tiên tiến: luyện nghe chép chính tả, từ vựng, ngữ pháp, luyện đề thực chiến và chấm chữa AI Speaking & Writing."
+          - generic [ref=f5e216] [box=56,362,796,82]:
+            - generic [ref=f5e217] [box=56,362,500,48]:
+              - button "Bắt đầu luyện tập" [ref=f5e218] [cursor=pointer] [box=56,364,181,44]
+              - link "Thi thử Online" [ref=f5e221] [cursor=pointer] [box=247,363,137,46]:
+                - /url: /thi-thu
+              - button "Kiểm tra năng lực" [ref=f5e222] [cursor=pointer] [box=394,362,162,48]
+            - list [ref=f5e223] [box=56,424,796,20]:
+              - listitem [ref=f5e224] [box=56,424,184,20]:
+                - generic [ref=f5e228] [box=78,424,162,20]: Cá nhân hóa lộ trình học
+              - listitem [ref=f5e229] [box=260,424,178,20]:
+                - generic [ref=f5e233] [box=282,424,156,20]: Theo dõi tiến độ chi tiết
+              - listitem [ref=f5e234] [box=457,424,164,20]:
+                - generic [ref=f5e238] [box=479,424,142,20]: Giải thích chuyên sâu
+        - generic [ref=f5e241] [box=80,464,1120,216]:
+          - article [ref=f5e242] [box=80,464,268,100]:
+            - generic [ref=f5e249] [box=153,484,178,60]:
+              - paragraph [ref=f5e250] [box=192,484,101,36]: 1.361+
+              - paragraph [ref=f5e251] [box=179,524,125,20]: Học viên đang học
+          - article [ref=f5e252] [box=364,464,268,100]:
+            - generic [ref=f5e256] [box=437,484,178,60]:
+              - paragraph [ref=f5e257] [box=476,484,101,36]: 2.902+
+              - paragraph [ref=f5e258] [box=498,524,56,20]: Từ vựng
+          - article [ref=f5e259] [box=648,464,268,100]:
+            - generic [ref=f5e263] [box=721,484,178,60]:
+              - paragraph [ref=f5e264] [box=750,484,119,36]: 19.707+
+              - paragraph [ref=f5e265] [box=758,524,105,20]: Câu luyện nghe
+          - article [ref=f5e266] [box=932,464,268,100]:
+            - generic [ref=f5e272] [box=1005,484,178,60]:
+              - paragraph [ref=f5e273] [box=1034,484,119,36]: 14.508+
+              - paragraph [ref=f5e274] [box=1035,524,118,20]: Câu hỏi ngữ pháp
+          - article [ref=f5e275] [box=80,580,268,100]:
+            - generic [ref=f5e279] [box=153,600,178,60]:
+              - paragraph [ref=f5e280] [box=192,600,101,36]: 6.366+
+              - paragraph [ref=f5e281] [box=198,640,88,20]: Câu đọc hiểu
+          - article [ref=f5e282] [box=364,580,268,100]:
+            - generic [ref=f5e287] [box=437,600,178,60]:
+              - paragraph [ref=f5e288] [box=498,600,56,36]: 10+
+              - paragraph [ref=f5e289] [box=468,640,117,20]: Câu hỏi Speaking
+          - article [ref=f5e290] [box=648,580,268,100]:
+            - generic [ref=f5e297] [box=721,600,178,60]:
+              - paragraph [ref=f5e298] [box=782,600,56,36]: 75+
+              - paragraph [ref=f5e299] [box=759,640,103,20]: Câu hỏi Writing
+          - article [ref=f5e300] [box=932,580,268,100]:
+            - generic [ref=f5e305] [box=1005,600,178,60]:
+              - paragraph [ref=f5e306] [box=1057,600,75,36]: 120+
+              - paragraph [ref=f5e307] [box=1074,640,39,20]: Đề thi
+      - generic [ref=f5e308] [box=32,680,1216,2356]:
+        - generic [ref=f5e309] [box=32,720,1216,983]:
+          - generic [ref=f5e310] [box=32,720,1216,100]:
+            - heading "Bảng xếp hạng" [level=2] [ref=f5e314] [box=48,722,192,32]
+            - paragraph [ref=f5e315] [box=32,768,672,52]: XP, Gem, streak và thời gian học - cùng leo top và bứt phá mỗi ngày với cộng đồng Anish TOEIC
+          - generic [ref=f5e316] [box=32,844,1216,859]:
+            - tablist "Loại chỉ số bảng xếp hạng" [ref=f5e317] [box=33,845,1214,57]:
+              - tab "TOP XP" [selected] [ref=f5e318] [cursor=pointer] [box=33,845,304,56]:
+                - generic [ref=f5e326] [box=192,857,21,30]:
+                  - generic [ref=f5e327] [box=192,857,21,14]: TOP
+                  - generic [ref=f5e328] [box=192,871,21,16]: XP
+              - tab "TOP Gem" [ref=f5e329] [cursor=pointer] [box=337,845,304,56]:
+                - generic [ref=f5e334] [box=493,857,27,30]:
+                  - generic [ref=f5e335] [box=493,857,27,14]: TOP
+                  - generic [ref=f5e336] [box=493,871,27,16]: Gem
+              - tab "TOP Streak" [ref=f5e337] [cursor=pointer] [box=640,845,304,56]:
+                - generic [ref=f5e341] [box=791,857,37,30]:
+                  - generic [ref=f5e342] [box=791,857,37,14]: TOP
+                  - generic [ref=f5e343] [box=791,871,37,16]: Streak
+              - tab "TOP Thời gian" [ref=f5e344] [cursor=pointer] [box=944,845,304,56]:
+                - generic [ref=f5e349] [box=1086,857,54,30]:
+                  - generic [ref=f5e350] [box=1086,857,54,14]: TOP
+                  - generic [ref=f5e351] [box=1086,871,54,16]: Thời gian
+            - tablist "Kỳ bảng xếp hạng" [ref=f5e352] [box=33,902,1214,45]:
+              - tab "Hôm nay" [ref=f5e353] [cursor=pointer] [box=45,910,295,28]
+              - tab "Tuần" [selected] [ref=f5e354] [cursor=pointer] [box=344,910,295,28]
+              - tab "Tháng" [ref=f5e355] [cursor=pointer] [box=642,910,295,28]
+              - tab "Tất cả" [ref=f5e356] [cursor=pointer] [box=941,910,295,28]
+            - generic [ref=f5e357] [box=33,947,1214,756]:
+              - paragraph [ref=f5e358] [box=57,971,1166,20]: Top học viên XP tuần này (Chủ nhật → hôm nay, giờ VN)
+              - generic [ref=f5e360] [box=57,1007,1166,255]:
+                - generic [ref=f5e361] [box=57,1027,378,235]:
+                  - paragraph [ref=f5e363] [box=57,1109,378,20]: Trần Thị Bích Ngân
+                  - generic "Huy hiệu Bạc" [ref=f5e365] [box=217,1138,58,20]:
+                    - generic [ref=f5e366] [box=225,1140,16,16]: 🥈
+                    - generic [ref=f5e367] [box=245,1140,22,16]: Bạc
+                  - paragraph [ref=f5e368] [box=229,1163,34,16]: "9.273"
+                  - paragraph [ref=f5e369] [box=228,1179,37,17]: XP tuần
+                  - generic [ref=f5e370] [box=57,1206,378,56]: "2"
+                - generic [ref=f5e372] [box=451,1007,378,255]:
+                  - paragraph [ref=f5e377] [box=451,1081,378,20]: ...
+                  - generic "Huy hiệu Tinh anh" [ref=f5e379] [box=596,1110,87,20]:
+                    - generic [ref=f5e380] [box=604,1112,16,16]: ⚡
+                    - generic [ref=f5e381] [box=625,1112,51,16]: Tinh anh
+                  - paragraph [ref=f5e382] [box=623,1135,35,16]: "15.127"
+                  - paragraph [ref=f5e383] [box=622,1151,37,17]: XP tuần
+                  - generic [ref=f5e384] [box=451,1178,378,84]: "1"
+                - generic [ref=f5e386] [box=845,1031,378,231]:
+                  - paragraph [ref=f5e388] [box=845,1117,378,20]: Khánh Uyên
+                  - generic "Huy hiệu Vàng" [ref=f5e390] [box=1001,1146,67,20]:
+                    - generic [ref=f5e391] [box=1009,1148,16,16]: 🥇
+                    - generic [ref=f5e392] [box=1029,1148,30,16]: Vàng
+                  - paragraph [ref=f5e393] [box=1017,1171,35,16]: "8.455"
+                  - paragraph [ref=f5e394] [box=1016,1187,37,17]: XP tuần
+                  - generic [ref=f5e395] [box=845,1214,378,48]: "3"
+              - list [ref=f5e397] [box=57,1282,1166,279]:
+                - listitem [ref=f5e398] [box=57,1282,1166,53]:
+                  - generic [ref=f5e399] [box=69,1298,24,20]: "4"
+                  - generic [ref=f5e400] [box=153,1295,1009,26]:
+                    - paragraph [ref=f5e401] [box=153,1298,190,20]: Phạm Nguyễn Thị Ngọc Hân
+                    - generic "Huy hiệu Bạch kim" [ref=f5e403] [box=351,1300,90,20]:
+                      - generic [ref=f5e404] [box=359,1302,16,16]: 💠
+                      - generic [ref=f5e405] [box=379,1302,53,16]: Bạch kim
+                  - generic [ref=f5e406] [box=1174,1290,37,37]:
+                    - paragraph [ref=f5e407] [box=1174,1290,37,20]: "7.712"
+                    - paragraph [ref=f5e408] [box=1174,1310,37,17]: XP tuần
+                - listitem [ref=f5e409] [box=57,1338,1166,53]:
+                  - generic [ref=f5e410] [box=69,1354,24,20]: "5"
+                  - generic [ref=f5e411] [box=153,1351,1009,26]:
+                    - paragraph [ref=f5e412] [box=153,1354,123,20]: Đào Nguyên Ngân
+                    - generic "Huy hiệu Vàng" [ref=f5e414] [box=284,1356,67,20]:
+                      - generic [ref=f5e415] [box=292,1358,16,16]: 🥇
+                      - generic [ref=f5e416] [box=312,1358,30,16]: Vàng
+                  - generic [ref=f5e417] [box=1174,1346,37,37]:
+                    - paragraph [ref=f5e418] [box=1174,1346,37,20]: "7.071"
+                    - paragraph [ref=f5e419] [box=1174,1366,37,17]: XP tuần
+                - listitem [ref=f5e420] [box=57,1395,1166,53]:
+                  - generic [ref=f5e421] [box=69,1411,24,20]: "6"
+                  - generic [ref=f5e422] [box=153,1408,1005,26]:
+                    - paragraph [ref=f5e423] [box=153,1411,85,20]: Nhung Hồng
+                    - generic "Huy hiệu Bạch kim" [ref=f5e425] [box=246,1413,90,20]:
+                      - generic [ref=f5e426] [box=254,1415,16,16]: 💠
+                      - generic [ref=f5e427] [box=274,1415,53,16]: Bạch kim
+                  - generic [ref=f5e428] [box=1170,1403,41,37]:
+                    - paragraph [ref=f5e429] [box=1170,1403,41,20]: "6.908"
+                    - paragraph [ref=f5e430] [box=1170,1423,41,17]: XP tuần
+                - listitem [ref=f5e431] [box=57,1451,1166,53]:
+                  - generic [ref=f5e432] [box=69,1467,24,20]: "7"
+                  - generic [ref=f5e433] [box=153,1464,1007,26]:
+                    - paragraph [ref=f5e434] [box=153,1467,103,20]: Hồ Thành Long
+                    - generic "Huy hiệu Kim cương" [ref=f5e436] [box=264,1469,99,20]:
+                      - generic [ref=f5e437] [box=272,1471,16,16]: 💎
+                      - generic [ref=f5e438] [box=292,1471,62,16]: Kim cương
+                  - generic [ref=f5e439] [box=1172,1459,39,37]:
+                    - paragraph [ref=f5e440] [box=1172,1459,39,20]: "6.327"
+                    - paragraph [ref=f5e441] [box=1172,1479,39,17]: XP tuần
+                - listitem [ref=f5e442] [box=57,1508,1166,53]:
+                  - generic [ref=f5e443] [box=69,1524,24,20]: "8"
+                  - generic [ref=f5e444] [box=153,1521,1005,26]:
+                    - paragraph [ref=f5e445] [box=153,1524,83,20]: Lý Cẩm Tiên
+                    - generic "Huy hiệu Bạc" [ref=f5e447] [box=244,1526,58,20]:
+                      - generic [ref=f5e448] [box=252,1528,16,16]: 🥈
+                      - generic [ref=f5e449] [box=272,1528,22,16]: Bạc
+                  - generic [ref=f5e450] [box=1170,1516,41,37]:
+                    - paragraph [ref=f5e451] [box=1170,1516,41,20]: "6.040"
+                    - paragraph [ref=f5e452] [box=1170,1536,41,17]: XP tuần
+              - paragraph [ref=f5e453] [box=57,1580,1166,20]:
+                - link "Đăng nhập" [ref=f5e454] [cursor=pointer] [box=518,1581,73,17]:
+                  - /url: /dang-nhap
+                - text: để xem thứ hạng của bạn
+              - generic [ref=f5e455] [box=57,1616,1166,62]:
+                - paragraph [ref=f5e456] [box=70,1627,1140,18]: Thưởng cuối tuần (BXH XP tuần)
+                - list [ref=f5e457] [box=70,1651,1140,16]:
+                  - listitem [ref=f5e458] [box=70,1651,128,16]:
+                    - generic [ref=f5e459] [box=70,1651,62,15]: "Top 1 tuần:"
+                    - text: 2.000 Gem
+                  - listitem [ref=f5e460] [box=214,1651,128,16]:
+                    - generic [ref=f5e461] [box=214,1651,64,15]: "Top 2 tuần:"
+                    - text: 1.500 Gem
+                  - listitem [ref=f5e462] [box=358,1651,128,16]:
+                    - generic [ref=f5e463] [box=358,1651,64,15]: "Top 3 tuần:"
+                    - text: 1.000 Gem
+                  - listitem [ref=f5e464] [box=503,1651,139,16]:
+                    - generic [ref=f5e465] [box=503,1651,84,15]: "Top 4–10 tuần:"
+                    - text: 500 Gem
+                  - listitem [ref=f5e466] [box=658,1651,144,16]:
+                    - generic [ref=f5e467] [box=658,1651,88,15]: "Top 11–30 tuần:"
+                    - text: 200 Gem
+        - generic [ref=f5e468] [box=32,1743,1216,1253]:
+          - generic [ref=f5e469] [box=32,1743,1216,74]:
+            - heading "Khám phá hệ sinh thái học tập" [level=2] [ref=f5e473] [box=48,1745,386,32]
+            - paragraph [ref=f5e474] [box=32,1791,672,26]: Phát triển toàn diện 4 kỹ năng Nghe - Nói - Đọc - Viết cùng Anish TOEIC
+          - generic [ref=f5e475] [box=32,1841,1216,1155]:
+            - article [ref=f5e476] [box=32,1857,289,524]:
+              - generic [ref=f5e478] [box=33,2038,287,342]:
+                - heading "Từ Vựng" [level=3] [ref=f5e479] [box=53,2054,247,28]
+                - paragraph [ref=f5e480] [box=53,2090,247,46]: Nắm trọn bộ từ vựng TOEIC thông dụng với phương pháp ghi nhớ tối ưu
+                - generic [ref=f5e481] [box=53,2152,247,168]:
+                  - link "Học Từ Vựng Nắm vững các chủ đề từ vựng cốt lõi" [ref=f5e482] [cursor=pointer] [box=53,2152,247,80]:
+                    - /url: /luyen-tap/vocabulary/hoc
+                    - generic [ref=f5e483] [box=66,2165,205,54]:
+                      - generic [ref=f5e484] [box=66,2165,197,20]: Học Từ Vựng
+                      - generic [ref=f5e485] [box=66,2187,197,32]: Nắm vững các chủ đề từ vựng cốt lõi
+                  - link "Luyện Từ Vựng Thực hành đầy đủ để nhớ sâu, hiểu kỹ" [ref=f5e488] [cursor=pointer] [box=53,2240,247,80]:
+                    - /url: /luyen-tap/vocabulary/thuc-hanh
+                    - generic [ref=f5e489] [box=66,2253,205,54]:
+                      - generic [ref=f5e490] [box=66,2253,197,20]: Luyện Từ Vựng
+                      - generic [ref=f5e491] [box=66,2275,197,32]: Thực hành đầy đủ để nhớ sâu, hiểu kỹ
+            - article [ref=f5e494] [box=341,1857,289,524]:
+              - generic [ref=f5e496] [box=342,2038,287,342]:
+                - heading "Ngữ Pháp" [level=3] [ref=f5e497] [box=362,2054,247,28]
+                - paragraph [ref=f5e498] [box=362,2090,247,68]: Chinh phục trọn vẹn các chủ điểm ngữ pháp thường xuất hiện trong bài thi
+                - generic [ref=f5e499] [box=362,2175,247,168]:
+                  - link "Học Ngữ Pháp Lý thuyết ngữ pháp tiếng Anh cơ bản và nâng cao" [ref=f5e500] [cursor=pointer] [box=362,2175,247,80]:
+                    - /url: /luyen-tap/grammar/hoc
+                    - generic [ref=f5e501] [box=375,2188,205,54]:
+                      - generic [ref=f5e502] [box=375,2188,197,20]: Học Ngữ Pháp
+                      - generic [ref=f5e503] [box=375,2210,197,32]: Lý thuyết ngữ pháp tiếng Anh cơ bản và nâng cao
+                  - link "Luyện Ngữ Pháp Danh sách nhóm và bài tập ngữ pháp" [ref=f5e506] [cursor=pointer] [box=362,2263,247,80]:
+                    - /url: /luyen-tap/grammar/thuc-hanh
+                    - generic [ref=f5e507] [box=375,2276,205,54]:
+                      - generic [ref=f5e508] [box=375,2276,197,20]: Luyện Ngữ Pháp
+                      - generic [ref=f5e509] [box=375,2298,197,32]: Danh sách nhóm và bài tập ngữ pháp
+            - article [ref=f5e512] [box=650,1857,289,524]:
+              - generic [ref=f5e514] [box=651,2038,287,342]:
+                - heading "Nghe" [level=3] [ref=f5e515] [box=671,2054,247,28]
+                - paragraph [ref=f5e516] [box=671,2090,247,46]: Luyện Nghe Hiểu toàn diện với chép chính tả và bộ bài theo Part
+                - generic [ref=f5e517] [box=671,2152,247,208]:
+                  - link "Học Nghe Hiểu Chiến lược và mẹo Part 1–4" [ref=f5e518] [cursor=pointer] [box=671,2152,247,64]:
+                    - /url: /luyen-tap/listening/hoc
+                    - generic [ref=f5e519] [box=684,2165,162,38]:
+                      - generic [ref=f5e520] [box=684,2165,154,20]: Học Nghe Hiểu
+                      - generic [ref=f5e521] [box=684,2187,154,16]: Chiến lược và mẹo Part 1–4
+                  - link "Chép Chính Tả Nghe và viết lại câu / đoạn" [ref=f5e524] [cursor=pointer] [box=671,2224,247,64]:
+                    - /url: /luyen-tap/listening/dictation
+                    - generic [ref=f5e525] [box=684,2237,159,38]:
+                      - generic [ref=f5e526] [box=684,2237,151,20]: Chép Chính Tả
+                      - generic [ref=f5e527] [box=684,2259,151,16]: Nghe và viết lại câu / đoạn
+                  - link "Luyện Nghe Hiểu Bài trắc nghiệm theo Part 1–4" [ref=f5e530] [cursor=pointer] [box=671,2296,247,64]:
+                    - /url: /luyen-tap/listening/thuc-hanh
+                    - generic [ref=f5e531] [box=684,2309,173,38]:
+                      - generic [ref=f5e532] [box=684,2309,165,20]: Luyện Nghe Hiểu
+                      - generic [ref=f5e533] [box=684,2331,165,16]: Bài trắc nghiệm theo Part 1–4
+            - article [ref=f5e536] [box=959,1857,289,524]:
+              - generic [ref=f5e538] [box=960,2038,287,342]:
+                - heading "Đọc" [level=3] [ref=f5e539] [box=980,2054,247,28]
+                - paragraph [ref=f5e540] [box=980,2090,247,46]: Nắm bắt chiến thuật làm bài, tối ưu tốc độ và độ chính xác
+                - generic [ref=f5e541] [box=980,2152,247,136]:
+                  - link "Học Đọc Hiểu Chiến lược đọc hiểu TOEIC" [ref=f5e542] [cursor=pointer] [box=980,2152,247,64]:
+                    - /url: /luyen-tap/reading/hoc
+                    - generic [ref=f5e543] [box=993,2165,160,38]:
+                      - generic [ref=f5e544] [box=993,2165,152,20]: Học Đọc Hiểu
+                      - generic [ref=f5e545] [box=993,2187,152,16]: Chiến lược đọc hiểu TOEIC
+                  - link "Luyện Đọc Hiểu Bài đọc theo định dạng TOEIC" [ref=f5e548] [cursor=pointer] [box=980,2224,247,64]:
+                    - /url: /luyen-tap/reading/thuc-hanh
+                    - generic [ref=f5e549] [box=993,2237,178,38]:
+                      - generic [ref=f5e550] [box=993,2237,170,20]: Luyện Đọc Hiểu
+                      - generic [ref=f5e551] [box=993,2259,170,16]: Bài đọc theo định dạng TOEIC
+            - article [ref=f5e554] [box=32,2401,289,612]:
+              - generic [ref=f5e556] [box=33,2582,287,430]:
+                - heading "Viết" [level=3] [ref=f5e557] [box=53,2598,247,28]
+                - paragraph [ref=f5e558] [box=53,2634,247,46]: Luyện bài tập viết, gợi ý dàn ý và chấm điểm - nhận xét chi tiết từ AI
+                - generic [ref=f5e559] [box=53,2695,247,296]:
+                  - link "Học Viết Nội dung học viết sẽ được xây dựng trong giai đoạn tiếp theo" [ref=f5e560] [cursor=pointer] [box=53,2695,247,80]:
+                    - /url: /luyen-tap/writing/hoc
+                    - generic [ref=f5e561] [box=66,2708,205,54]:
+                      - generic [ref=f5e562] [box=66,2708,197,20]: Học Viết
+                      - generic [ref=f5e563] [box=66,2730,197,32]: Nội dung học viết sẽ được xây dựng trong giai đoạn tiếp theo
+                  - link "Luyện Viết Bài viết theo Part và mức độ" [ref=f5e566] [cursor=pointer] [box=53,2783,247,64]:
+                    - /url: /luyen-tap/writing/thuc-hanh
+                    - generic [ref=f5e567] [box=66,2796,167,38]:
+                      - generic [ref=f5e568] [box=66,2796,159,20]: Luyện Viết
+                      - generic [ref=f5e569] [box=66,2818,159,16]: Bài viết theo Part và mức độ
+                  - link "Chấm Điểm AI chấm bài, nhận xét và gợi ý sửa" [ref=f5e572] [cursor=pointer] [box=53,2855,247,64]:
+                    - /url: /luyen-tap/writing/cham-diem
+                    - generic [ref=f5e573] [box=66,2868,202,38]:
+                      - generic [ref=f5e574] [box=66,2868,194,20]: Chấm Điểm
+                      - generic [ref=f5e575] [box=66,2890,194,16]: AI chấm bài, nhận xét và gợi ý sửa
+                  - link "Lên Ý Tưởng Gợi ý dàn ý theo dạng câu" [ref=f5e578] [cursor=pointer] [box=53,2927,247,64]:
+                    - /url: /luyen-tap/writing/goi-y-y-tuong
+                    - generic [ref=f5e579] [box=66,2940,157,38]:
+                      - generic [ref=f5e580] [box=66,2940,149,20]: Lên Ý Tưởng
+                      - generic [ref=f5e581] [box=66,2962,149,16]: Gợi ý dàn ý theo dạng câu
+            - article [ref=f5e584] [box=341,2401,289,612]:
+              - generic [ref=f5e586] [box=342,2582,287,430]:
+                - heading "Nói" [level=3] [ref=f5e587] [box=362,2598,247,28]
+                - paragraph [ref=f5e588] [box=362,2634,247,46]: Rèn luyện phản xạ giao tiếp và chuẩn hóa phát âm cùng trợ lý AI
+                - generic [ref=f5e589] [box=362,2695,247,240]:
+                  - link "Học Nói Nội dung học nói sẽ được xây dựng trong giai đoạn tiếp theo" [ref=f5e590] [cursor=pointer] [box=362,2695,247,80]:
+                    - /url: /luyen-tap/speaking/hoc
+                    - generic [ref=f5e591] [box=375,2708,205,54]:
+                      - generic [ref=f5e592] [box=375,2708,197,20]: Học Nói
+                      - generic [ref=f5e593] [box=375,2730,197,32]: Nội dung học nói sẽ được xây dựng trong giai đoạn tiếp theo
+                  - link "Luyện Nói Ghi âm và nhận phản hồi" [ref=f5e596] [cursor=pointer] [box=362,2783,247,64]:
+                    - /url: /luyen-tap/speaking/thuc-hanh
+                    - generic [ref=f5e597] [box=375,2796,148,38]:
+                      - generic [ref=f5e598] [box=375,2796,140,20]: Luyện Nói
+                      - generic [ref=f5e599] [box=375,2818,140,16]: Ghi âm và nhận phản hồi
+                  - link "Luyện Shadowing Luyện nói theo video YouTube từng câu" [ref=f5e602] [cursor=pointer] [box=362,2855,247,80]:
+                    - /url: /luyen-tap/speaking/shadowing
+                    - generic [ref=f5e603] [box=375,2868,205,54]:
+                      - generic [ref=f5e604] [box=375,2868,197,20]: Luyện Shadowing
+                      - generic [ref=f5e605] [box=375,2890,197,32]: Luyện nói theo video YouTube từng câu
+            - article [ref=f5e608] [box=650,2401,289,612]:
+              - generic [ref=f5e610] [box=651,2582,287,430]:
+                - heading "Thi Thử" [level=3] [ref=f5e611] [box=671,2598,247,28]
+                - paragraph [ref=f5e612] [box=671,2634,247,46]: Cọ xát thực tế với kho đề thi bám sát định dạng cấu trúc mới nhất
+                - link "Làm bài thi thử" [ref=f5e613] [cursor=pointer] [box=671,2699,247,44]:
+                  - /url: /thi-thu
+            - article [ref=f5e616] [box=959,2401,289,612]:
+              - generic [ref=f5e618] [box=960,2582,287,430]:
+                - heading "Đánh Giá Năng Lực" [level=3] [ref=f5e619] [box=980,2598,247,28]
+                - paragraph [ref=f5e620] [box=980,2634,247,46]: Bài kiểm tra đầu vào toàn diện giúp thiết kế lộ trình học cá nhân hóa
+                - link "EF SET / Đánh giá Nhập điểm EF SET và xem báo cáo tham chiếu" [ref=f5e622] [cursor=pointer] [box=980,2695,247,80]:
+                  - /url: /luyen-tap/assessment
+                  - generic [ref=f5e623] [box=993,2708,205,54]:
+                    - generic [ref=f5e624] [box=993,2708,197,20]: EF SET / Đánh giá
+                    - generic [ref=f5e625] [box=993,2730,197,32]: Nhập điểm EF SET và xem báo cáo tham chiếu
+  - contentinfo [ref=f5e106] [box=0,3116,1280,551]:
+    - generic [ref=f5e107] [box=64,3117,1152,550]:
+      - generic [ref=f5e108] [box=80,3157,1120,193]:
+        - generic [ref=f5e109] [box=80,3157,256,193]:
+          - link [ref=f5e628] [cursor=pointer] [box=80,3157,70,48]:
+            - /url: /
+            - img "Anish TOEIC" [ref=f5e629] [box=80,3157,70,48]
+          - paragraph [ref=f5e110] [box=80,3223,256,16]: Luyện thi TOEIC toàn diện
+          - generic [ref=f5e111] [box=80,3251,256,32]:
+            - link "Facebook" [ref=f5e630] [cursor=pointer] [box=80,3251,32,32]:
+              - /url: https://www.facebook.com/Anish.English.Official
+            - link "Instagram" [ref=f5e631] [cursor=pointer] [box=118,3251,32,32]:
+              - /url: https://www.instagram.com/ho_anish/
+            - link "TikTok" [ref=f5e632] [cursor=pointer] [box=156,3251,32,32]:
+              - /url: https://www.tiktok.com/@AnishToeic
+            - link "YouTube" [ref=f5e633] [cursor=pointer] [box=194,3251,32,32]:
+              - /url: https://www.youtube.com/@anish.english.official
+        - generic [ref=f5e128] [box=368,3157,256,193]:
+          - heading "Về Anish" [level=2] [ref=f5e129] [box=368,3157,256,20]
+          - list [ref=f5e130] [box=368,3184,256,110]:
+            - listitem [ref=f5e131] [box=368,3184,256,26]:
+              - link "Về chúng tôi" [ref=f5e132] [cursor=pointer] [box=368,3190,77,16]:
+                - /url: /gioi-thieu
+            - listitem [ref=f5e133] [box=368,3212,256,26]:
+              - link "Liên hệ" [ref=f5e134] [cursor=pointer] [box=368,3218,45,16]:
+                - /url: /lien-he
+            - listitem [ref=f5e135] [box=368,3240,256,26]:
+              - link "Tin tức" [ref=f5e136] [cursor=pointer] [box=368,3246,43,16]:
+                - /url: /tin-tuc
+            - listitem [ref=f5e137] [box=368,3268,256,26]:
+              - link "Lịch khai giảng" [ref=f5e138] [cursor=pointer] [box=368,3274,92,16]:
+                - /url: /lich-khai-giang
+        - generic [ref=f5e139] [box=656,3157,256,193]:
+          - heading "Tài nguyên" [level=2] [ref=f5e140] [box=656,3157,256,20]
+          - list [ref=f5e141] [box=656,3184,256,138]:
+            - listitem [ref=f5e142] [box=656,3184,256,26]:
+              - link "Thư viện" [ref=f5e143] [cursor=pointer] [box=656,3190,54,16]:
+                - /url: /thu-vien
+            - listitem [ref=f5e144] [box=656,3212,256,26]:
+              - link "Hướng dẫn sử dụng" [ref=f5e145] [cursor=pointer] [box=656,3218,121,16]:
+                - /url: /huong-dan
+            - listitem [ref=f5e146] [box=656,3240,256,26]:
+              - link "Practice Hub" [ref=f5e147] [cursor=pointer] [box=656,3246,79,16]:
+                - /url: /
+            - listitem [ref=f5e148] [box=656,3268,256,26]:
+              - link "Thi Thử" [ref=f5e149] [cursor=pointer] [box=656,3274,47,16]:
+                - /url: /thi-thu
+            - listitem [ref=f5e150] [box=656,3296,256,26]:
+              - link "Đánh Giá Năng Lực" [ref=f5e151] [cursor=pointer] [box=656,3302,119,16]:
+                - /url: /luyen-tap/assessment
+        - generic [ref=f5e152] [box=944,3157,256,193]:
+          - heading "Chính sách chung" [level=2] [ref=f5e153] [box=944,3157,256,20]
+          - list [ref=f5e154] [box=944,3184,256,166]:
+            - listitem [ref=f5e155] [box=944,3184,256,26]:
+              - link "Điều khoản bảo mật" [ref=f5e156] [cursor=pointer] [box=944,3190,123,16]:
+                - /url: /chinh-sach/dieu-khoan-bao-mat
+            - listitem [ref=f5e157] [box=944,3212,256,26]:
+              - link "Điều khoản sử dụng" [ref=f5e158] [cursor=pointer] [box=944,3218,123,16]:
+                - /url: /chinh-sach/dieu-khoan-su-dung
+            - listitem [ref=f5e159] [box=944,3240,256,26]:
+              - link "Gói Free / Premium / Premium+" [ref=f5e160] [cursor=pointer] [box=944,3246,192,16]:
+                - /url: /chinh-sach/goi-free-premium-premium-plus
+            - listitem [ref=f5e161] [box=944,3268,256,26]:
+              - link "Hướng dẫn thanh toán" [ref=f5e162] [cursor=pointer] [box=944,3274,137,16]:
+                - /url: /chinh-sach/huong-dan-thanh-toan
+            - listitem [ref=f5e163] [box=944,3296,256,26]:
+              - link "Chính sách hoàn hủy" [ref=f5e164] [cursor=pointer] [box=944,3302,129,16]:
+                - /url: /chinh-sach/chinh-sach-hoan-huy
+            - listitem [ref=f5e165] [box=944,3324,256,26]:
+              - link "Phản hồi, khiếu nại" [ref=f5e166] [cursor=pointer] [box=944,3330,116,16]:
+                - /url: /chinh-sach/phan-hoi-khieu-nai
+      - generic [ref=f5e167] [box=80,3378,1120,165]:
+        - heading "Thông tin doanh nghiệp" [level=2] [ref=f5e168] [box=80,3399,1120,20]
+        - generic [ref=f5e169] [box=80,3426,1120,117]:
+          - generic [ref=f5e170] [box=80,3426,544,18]:
+            - term [ref=f5e171] [box=80,3427,152,16]: "Tên pháp nhân:"
+            - definition [ref=f5e172] [box=236,3426,253,18]: Công ty TNHH Giải pháp Giáo dục ANISH
+          - generic [ref=f5e173] [box=656,3426,544,18]:
+            - term [ref=f5e174] [box=656,3427,152,16]: "Điện thoại / Hotline:"
+            - definition [ref=f5e175] [box=812,3426,83,18]:
+              - link "0978 996 178" [ref=f5e634] [cursor=pointer] [box=812,3427,83,16]:
+                - /url: https://zalo.me/0978996178
+          - generic [ref=f5e177] [box=80,3446,544,36]:
+            - term [ref=f5e178] [box=80,3447,152,16]: "Email:"
+            - definition [ref=f5e179] [box=236,3446,133,18]:
+              - link "anholong@gmail.com" [ref=f5e635] [cursor=pointer] [box=236,3447,133,16]:
+                - /url: mailto:anholong@gmail.com
+          - generic [ref=f5e181] [box=656,3446,544,36]:
+            - term [ref=f5e182] [box=656,3447,152,16]: "Địa chỉ:"
+            - definition [ref=f5e183] [box=812,3446,388,36]: 288/86/17 HUỲNH VĂN LŨY, TỔ 61, KHU PHỐ 7, PHƯỜNG PHÚ LỢI, TP. HỒ CHÍ MINH
+          - generic [ref=f5e184] [box=80,3484,544,18]:
+            - term [ref=f5e185] [box=80,3485,152,16]: "Mã số thuế / ĐKKD:"
+            - definition [ref=f5e186] [box=236,3484,80,18]: "3703383425"
+          - generic [ref=f5e187] [box=656,3484,544,18]:
+            - term [ref=f5e188] [box=656,3485,152,16]: "Nơi cấp:"
+            - definition [ref=f5e189] [box=812,3484,209,18]: Sở KH&ĐT thành phố Hồ Chí Minh
+          - generic [ref=f5e190] [box=80,3505,544,18]:
+            - term [ref=f5e191] [box=80,3506,152,16]: "Ngày cấp:"
+            - definition [ref=f5e192] [box=236,3505,73,18]: 26/09/2025
+          - generic [ref=f5e193] [box=656,3505,544,18]:
+            - term [ref=f5e194] [box=656,3506,152,16]: "Tên trung tâm:"
+            - definition [ref=f5e195] [box=812,3505,77,18]: Anish TOEIC
+          - generic [ref=f5e196] [box=80,3525,544,18]:
+            - term [ref=f5e197] [box=80,3526,152,16]: "Giấy phép hoạt động:"
+            - definition [ref=f5e198] [box=236,3525,6,18]: "-"
+          - generic [ref=f5e199] [box=656,3525,544,18]:
+            - term [ref=f5e200] [box=656,3526,152,16]: "Giờ làm việc:"
+            - definition [ref=f5e201] [box=812,3525,68,18]: 7h - 23h30
+      - generic [ref=f5e202] [box=80,3567,1120,77]:
+        - paragraph [ref=f5e203] [box=80,3584,1120,20]: ANISH TOEIC © 2026. Bản quyền thuộc về Anish TOEIC.
+        - paragraph [ref=f5e204] [box=192,3611,896,33]: TOEIC® is a registered trademark of Educational Testing Service (ETS). Anish TOEIC is not affiliated with, endorsed by, or sponsored by ETS. Practice materials on this website are for educational and reference purposes only.

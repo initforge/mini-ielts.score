@@ -1,0 +1,45 @@
+- generic [ref=f2e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=f2e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=f2e9] [box=16,685,52,19]: Công cụ
+  - main [ref=f2e237] [box=0,0,1280,720]:
+    - generic [ref=f2e278] [box=0,0,1280,50]:
+      - generic [ref=f2e279] [box=22,13,226,25]:
+        - link "Danh sách đề" [ref=f2e280] [cursor=pointer] [box=22,16,102,18]:
+          - /url: /exams
+        - generic [ref=f2e284] [box=142,13,106,25]: XoáMùTOEIC
+      - generic [box=593,7,94,36]:
+        - generic [box=593,7,94,22]: WRITING
+        - generic [box=596,32,89,11]: Question 1 of 8
+      - generic [ref=f2e285] [box=944,9,314,32]:
+        - generic [ref=f2e286] [box=944,13,69,25]: 59:54
+        - button "Câu trước" [disabled] [ref=f2e290] [box=1020,9,32,32]
+        - button "Câu sau" [ref=f2e293] [cursor=pointer] [box=1060,9,32,32]
+        - button "Nộp bài" [ref=f2e301] [cursor=pointer] [box=1139,9,91,32]
+        - button "Exit" [ref=f2e305] [cursor=pointer] [box=1240,16,18,18]
+    - generic [ref=f2e314] [box=122,76,1037,487]:
+      - paragraph [ref=f2e315] [box=122,76,1037,14]: Question 1 – Write a sentence based on a picture
+      - generic [ref=f2e316] [box=122,104,1037,458]:
+        - generic [ref=f2e317] [box=122,104,508,458]:
+          - img "Question 1 prompt" [ref=f2e319] [box=144,127,462,326]
+          - paragraph [ref=f2e320] [box=310,475,131,18]: "Use these two words:"
+          - generic [ref=f2e321] [box=303,504,146,36]:
+            - generic [ref=f2e322] [box=303,504,65,36]: ride
+            - generic [ref=f2e323] [box=378,504,70,36]: boat
+        - generic [ref=f2e324] [box=651,104,508,458]:
+          - generic [ref=f2e325] [box=673,127,462,24]:
+            - generic [ref=f2e326] [box=673,128,110,22]: Your answer
+            - generic [ref=f2e331] [box=1036,127,100,24]:
+              - generic [ref=f2e332] [box=1036,132,61,14]: Word count
+              - generic [ref=f2e333] [box=1104,127,32,24]: "0"
+          - generic [ref=f2e334] [box=673,165,462,38]:
+            - button "Bold" [ref=f2e371] [cursor=pointer] [box=682,170,29,29]
+            - button "Italic" [ref=f2e374] [cursor=pointer] [box=714,170,29,29]
+            - button "Underline" [ref=f2e377] [cursor=pointer] [box=746,170,29,29]
+            - button "Cut" [ref=f2e380] [cursor=pointer] [box=790,170,56,29]
+            - button "Paste" [ref=f2e388] [cursor=pointer] [box=850,170,69,29]
+            - button "Undo" [disabled] [ref=f2e394] [box=923,170,67,29]
+            - button "Redo" [disabled] [ref=f2e399] [box=994,170,66,29]
+          - generic [ref=f2e369] [box=673,214,462,326]: Write one sentence here...

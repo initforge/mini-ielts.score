@@ -1,0 +1,36 @@
+- generic [ref=f1e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=f1e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=f1e9] [box=16,685,52,19]: Công cụ
+  - main [ref=f1e926] [box=0,0,1280,720]:
+    - generic [ref=f1e987] [box=237,193,806,277]:
+      - generic [ref=f1e988] [box=238,194,804,51]:
+        - heading "RECORD TEST" [level=1] [ref=f1e992] [box=295,207,124,25]
+        - button "Continue" [disabled] [ref=f1e993] [box=907,205,113,29]
+      - generic [ref=f1e996] [box=238,246,804,224]:
+        - generic [ref=f1e997] [box=252,260,381,195]:
+          - generic [ref=f1e998] [box=252,260,381,85]:
+            - heading "How it works" [level=2] [ref=f1e1003] [box=274,260,82,18]
+            - list [ref=f1e1004] [box=252,284,381,61]:
+              - listitem [ref=f1e1005] [box=256,284,377,18]:
+                - generic [ref=f1e1006] [box=256,284,18,18]: "1"
+                - generic [ref=f1e1007] [box=281,284,210,17]: Click the microphone to start recording.
+              - listitem [ref=f1e1008] [box=256,305,377,18]:
+                - generic [ref=f1e1009] [box=256,305,18,18]: "2"
+                - generic [ref=f1e1010] [box=281,305,160,17]: Click Play to check your voice.
+              - listitem [ref=f1e1011] [box=256,327,377,18]:
+                - generic [ref=f1e1012] [box=256,327,18,18]: "3"
+                - generic [ref=f1e1013] [box=281,327,186,17]: Click Delete to re-record if needed.
+          - generic [ref=f1e1014] [box=252,356,381,100]:
+            - heading "Sample script" [level=2] [ref=f1e1018] [box=274,356,88,18]
+            - paragraph [ref=f1e1020] [box=264,391,357,53]: “Please make sure your microphone is properly positioned and adjusted to allow for the best possible recording. Speak directly into the microphone and in your normal speaking voice.”
+        - generic [ref=f1e1021] [box=647,260,381,195]:
+          - heading "Ready to record?" [level=3] [ref=f1e1022] [box=782,265,126,22]
+          - paragraph [ref=f1e1023] [box=765,294,160,14]: Click the microphone to begin.
+          - button "Record" [ref=f1e1024] [cursor=pointer] [box=809,319,72,72]
+          - generic [ref=f1e1028] [box=794,402,103,22]:
+            - text: 00:00
+            - generic [ref=f1e1029] [box=841,404,55,17]: / 00:30
+          - paragraph [ref=f1e1030] [box=752,434,186,17]: Hoàn thành thu âm thử để tiếp tục.

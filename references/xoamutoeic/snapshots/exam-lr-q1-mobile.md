@@ -1,0 +1,33 @@
+- generic [ref=f9e2] [box=0,0,390,848]:
+  - region "Notifications (F8)" [box=0,0,390,0]:
+    - list [box=0,0,390,29]
+  - region "Notifications alt+T" [box=0,0,390,0]
+  - main [ref=f9e10] [box=0,0,390,848]:
+    - generic [ref=f9e11] [box=0,0,390,848]:
+      - generic [ref=f9e109] [box=0,0,390,50]:
+        - generic [ref=f9e110] [box=22,13,195,25]:
+          - link "Danh sách đề" [ref=f9e111] [cursor=pointer] [box=22,16,102,18]:
+            - /url: /exams
+          - generic [ref=f9e114] [box=138,13,78,25]: XoáMùTOEIC
+        - button "Sang Reading →" [ref=f9e116] [cursor=pointer] [box=231,9,138,32]
+      - generic [ref=f9e117] [box=0,50,390,798]:
+        - generic [ref=f9e119] [box=0,50,390,798]:
+          - paragraph [ref=f9e121] [box=22,59,347,41]: Select the one statement that best describes what you see in the picture.
+          - generic [ref=f9e123] [box=7,108,376,740]:
+            - img "Câu 1" [ref=f9e128] [box=41,122,305,420]
+            - generic [ref=f9e133] [box=26,669,338,160]:
+              - generic [ref=f9e134] [box=26,669,338,22]: "1."
+              - generic [ref=f9e136] [box=30,698,334,131]:
+                - generic [ref=f9e137] [cursor=pointer] [box=30,698,334,29]:
+                  - radio "(A)" [ref=f9e138] [box=37,705,14,14]
+                  - generic [ref=f9e139] [box=59,704,298,18]: (A)
+                - generic [ref=f9e140] [cursor=pointer] [box=30,732,334,29]:
+                  - radio "(B)" [ref=f9e141] [box=37,740,14,14]
+                  - generic [ref=f9e142] [box=59,738,298,18]: (B)
+                - generic [ref=f9e143] [cursor=pointer] [box=30,767,334,29]:
+                  - radio "(C)" [ref=f9e144] [box=37,774,14,14]
+                  - generic [ref=f9e145] [box=59,772,298,18]: (C)
+                - generic [ref=f9e146] [cursor=pointer] [box=30,801,334,29]:
+                  - radio "(D)" [ref=f9e147] [box=37,808,14,14]
+                  - generic [ref=f9e148] [box=59,806,298,18]: (D)
+        - button "Mở bảng câu hỏi" [ref=f9e149] [cursor=pointer] [box=358,397,32,50]

@@ -1,0 +1,98 @@
+- generic [ref=e2] [box=0,0,1280,728]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=e2450] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=e2455] [box=16,685,52,19]: Công cụ
+  - main [ref=e1220] [box=0,0,1280,728]:
+    - generic [ref=e2456] [box=122,0,1037,728]:
+      - generic [ref=e2457] [box=136,29,1008,606]:
+        - generic [ref=e2458] [box=150,43,979,86]:
+          - img "Xóa Mù TOEIC" [ref=e2459] [box=435,43,102,86]
+          - generic [ref=e2460] [box=551,57,294,60]:
+            - generic [ref=e2461] [box=578,57,240,36]: XÓA MÙ TOEIC
+            - generic [ref=e2462] [box=551,100,294,17]: GIỎI TOEIC, SÁNG TƯƠNG LAI
+        - generic [ref=e2467] [box=356,144,567,71]:
+          - generic [ref=e2468] [box=414,153,452,15]: LISTENING AND READING
+          - generic [ref=e2469] [box=414,172,452,29]: UNOFFICIAL SCORE CERTIFICATE
+        - generic [ref=e2471] [box=177,230,927,272]:
+          - generic [ref=e2472] [box=177,230,227,251]:
+            - generic [ref=e2473] [box=177,230,129,29]: LISTENING
+            - generic [ref=e2474] [box=177,273,227,208]:
+              - generic [ref=e2475] [box=177,273,227,41]:
+                - generic [ref=e2476] [box=177,276,36,36]: "0"
+                - generic [ref=e2477] [box=223,273,180,41]:
+                  - generic [ref=e2478] [box=223,273,180,20]: Part 1
+                  - generic [ref=e2479] [box=223,296,180,18]: "6"
+              - generic [ref=e2482] [box=177,329,227,41]:
+                - generic [ref=e2483] [box=177,331,36,36]: "0"
+                - generic [ref=e2484] [box=223,329,180,41]:
+                  - generic [ref=e2485] [box=223,329,180,20]: Part 2
+                  - generic [ref=e2486] [box=223,352,180,18]: "25"
+              - generic [ref=e2489] [box=177,384,227,41]:
+                - generic [ref=e2490] [box=177,387,36,36]: "0"
+                - generic [ref=e2491] [box=223,384,180,41]:
+                  - generic [ref=e2492] [box=223,384,180,20]: Part 3
+                  - generic [ref=e2493] [box=223,407,180,18]: "39"
+              - generic [ref=e2496] [box=177,440,227,41]:
+                - generic [ref=e2497] [box=177,442,36,36]: "0"
+                - generic [ref=e2498] [box=223,440,180,41]:
+                  - generic [ref=e2499] [box=223,440,180,20]: Part 4
+                  - generic [ref=e2500] [box=223,463,180,18]: "30"
+          - generic [ref=e2503] [box=429,230,227,272]:
+            - generic [ref=e2504] [box=429,230,115,29]: READING
+            - generic [ref=e2505] [box=429,273,227,152]:
+              - generic [ref=e2506] [box=429,273,227,41]:
+                - generic [ref=e2507] [box=429,276,36,36]: "0"
+                - generic [ref=e2508] [box=476,273,180,41]:
+                  - generic [ref=e2509] [box=476,273,180,20]: Part 5
+                  - generic [ref=e2510] [box=476,296,180,18]: "30"
+              - generic [ref=e2513] [box=429,329,227,41]:
+                - generic [ref=e2514] [box=429,331,36,36]: "0"
+                - generic [ref=e2515] [box=476,329,180,41]:
+                  - generic [ref=e2516] [box=476,329,180,20]: Part 6
+                  - generic [ref=e2517] [box=476,352,180,18]: "16"
+              - generic [ref=e2520] [box=429,384,227,41]:
+                - generic [ref=e2521] [box=429,387,36,36]: "0"
+                - generic [ref=e2522] [box=476,384,180,41]:
+                  - generic [ref=e2523] [box=476,384,180,20]: Part 7
+                  - generic [ref=e2524] [box=476,407,180,18]: "54"
+            - generic [ref=e2527] [box=429,443,227,59]:
+              - generic [ref=e2528] [box=445,460,25,25]: 📅
+              - generic [ref=e2529] [box=481,454,159,37]:
+                - generic [ref=e2530] [box=481,454,159,15]: NGÀY THI
+                - generic [ref=e2531] [box=481,469,159,22]: 30/07/2026
+          - generic [ref=e2532] [box=681,230,227,220]:
+            - generic [ref=e2533] [box=681,230,227,101]:
+              - generic [ref=e2534] [box=681,230,129,29]: LISTENING
+              - generic [ref=e2535] [box=681,273,227,58]:
+                - generic [ref=e2536] [box=681,273,58,58]: "5"
+                - generic [ref=e2537] [box=750,278,158,49]:
+                  - generic [ref=e2538] [box=750,278,158,20]: Your score
+                  - generic [ref=e2541] [box=750,310,158,17]:
+                    - generic [ref=e2542] [box=750,310,8,17]: "5"
+                    - generic [ref=e2543] [box=885,310,23,17]: "495"
+            - generic [ref=e2544] [box=681,349,227,101]:
+              - generic [ref=e2545] [box=681,349,115,29]: READING
+              - generic [ref=e2546] [box=681,392,227,58]:
+                - generic [ref=e2547] [box=681,392,58,58]: "5"
+                - generic [ref=e2548] [box=750,397,158,49]:
+                  - generic [ref=e2549] [box=750,397,158,20]: Your score
+                  - generic [ref=e2552] [box=750,430,158,17]:
+                    - generic [ref=e2553] [box=750,430,8,17]: "5"
+                    - generic [ref=e2554] [box=885,430,23,17]: "495"
+          - generic [ref=e2555] [box=933,230,170,272]:
+            - generic [ref=e2556] [box=971,283,122,20]: TOTAL SCORE
+            - generic [ref=e2557] [box=974,313,115,115]: "10"
+            - generic [ref=e2559] [box=1015,435,34,14]: / 990
+        - generic [ref=e2560] [box=150,546,979,74]:
+          - generic [ref=e2561] [box=173,562,43,43]: 🚀
+          - generic [ref=e2562] [box=231,564,610,38]:
+            - generic [ref=e2563] [box=231,564,610,20]: Bắt đầu hành trình!
+            - generic [ref=e2564] [box=231,584,610,18]: Ai cũng từng bắt đầu từ con số nhỏ. Hãy quay lại làm bài này sau 1 tuần luyện tập — bạn sẽ bất ngờ!
+      - generic [ref=e2565] [box=136,656,1008,43]:
+        - button "📊 Bảng kết quả" [ref=e2566] [cursor=pointer] [box=190,656,162,43]
+        - button "⬇️ Tải bảng điểm" [ref=e2567] [cursor=pointer] [box=363,656,170,43]
+        - button "🧭 Bản đồ lỗi sai" [ref=e2568] [cursor=pointer] [box=543,656,163,43]
+        - button "🔍 Xem lại chi tiết" [ref=e2569] [cursor=pointer] [box=717,656,174,43]
+        - button "📚 Lịch sử luyện tập" [ref=e2570] [cursor=pointer] [box=902,656,188,43]

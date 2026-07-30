@@ -1,0 +1,62 @@
+- generic [ref=f2e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=f2e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=f2e9] [box=16,685,52,19]: Công cụ
+  - main [ref=f2e237] [box=0,0,1280,720]:
+    - generic [ref=f2e278] [box=0,0,1280,50]:
+      - generic [ref=f2e279] [box=22,13,226,25]:
+        - link "Danh sách đề" [ref=f2e280] [cursor=pointer] [box=22,16,102,18]:
+          - /url: /exams
+        - generic [ref=f2e284] [box=142,13,106,25]: XoáMùTOEIC
+      - generic [box=593,7,94,36]:
+        - generic [box=593,7,94,22]: WRITING
+        - generic [box=594,32,92,11]: Question 6 of 8
+      - generic [ref=f2e285] [box=944,9,314,32]:
+        - generic [ref=f2e286] [box=944,13,69,25]: 59:21
+        - button "Câu trước" [ref=f2e290] [cursor=pointer] [box=1020,9,32,32]
+        - button "Câu sau" [active] [ref=f2e293] [cursor=pointer] [box=1060,9,32,32]
+        - button "Nộp bài" [ref=f2e301] [cursor=pointer] [box=1139,9,91,32]
+        - button "Exit" [ref=f2e305] [cursor=pointer] [box=1240,16,18,18]
+    - generic [ref=f2e470] [box=122,76,1037,597]:
+      - paragraph [ref=f2e471] [box=122,76,1037,18]: Question 6 – Respond to a Written Request
+      - generic [ref=f2e472] [box=122,108,1037,565]:
+        - generic [ref=f2e473] [box=122,108,509,565]:
+          - generic [ref=f2e474] [box=144,131,464,87]:
+            - generic [ref=f2e533] [box=144,131,464,22]:
+              - generic [ref=f2e534] [box=144,132,51,19]: "From:"
+              - generic [ref=f2e535] [box=198,132,384,19]:
+                - text: Healthy Life Magazine
+                - link "contact@healthylifemag.com" [ref=f2e536] [cursor=pointer] [box=363,132,219,19]:
+                  - /url: mailto:contact@healthylifemag.com
+            - generic [ref=f2e537] [box=144,152,464,22]:
+              - generic [ref=f2e538] [box=144,153,27,19]: "To:"
+              - text: CEO, Iron Fitness Center ceo@ironfitness.com
+            - generic [ref=f2e539] [box=144,174,464,22]:
+              - generic [ref=f2e540] [box=144,175,75,19]: "Subject:"
+              - text: Partnership Opportunity
+            - generic [ref=f2e541] [box=144,196,464,22]:
+              - generic [ref=f2e542] [box=144,197,46,19]: "Sent:"
+              - text: June 28, 9:15 A.M.
+          - generic [ref=f2e486] [box=144,232,464,419]:
+            - text: Dear Sir or Madam, Our magazine is currently planning a special feature on local fitness centers for our next issue, and we are highly interested in partnering with Iron Fitness Center. We would love to introduce your facility to our readers. Could you please provide us with some details regarding your membership plans and available classes? We look forward to collaborating with you. Sincerely, Megan Plume, Senior Editor
+            - strong [ref=f2e487] [box=144,583,83,19]: "Directions:"
+            - text: Respond to the e-mail as if you are the CEO of Iron Fitness Center. In your e-mail, give
+            - strong [ref=f2e489] [box=401,606,51,19]: THREE
+            - text: pieces of information.
+        - generic [ref=f2e490] [box=649,108,509,565]:
+          - generic [ref=f2e491] [box=672,131,464,24]:
+            - generic [ref=f2e492] [box=672,132,88,22]: Your answer
+            - generic [ref=f2e493] [box=1036,131,100,24]:
+              - generic [ref=f2e494] [box=1036,135,61,14]: Word count
+              - generic [ref=f2e495] [box=1104,131,32,24]: "0"
+          - generic [ref=f2e496] [box=672,165,464,38]:
+            - button "Bold" [ref=f2e543] [cursor=pointer] [box=680,170,29,29]
+            - button "Italic" [ref=f2e546] [cursor=pointer] [box=712,170,29,29]
+            - button "Underline" [ref=f2e549] [cursor=pointer] [box=744,170,29,29]
+            - button "Cut" [ref=f2e552] [cursor=pointer] [box=789,170,56,29]
+            - button "Paste" [ref=f2e560] [cursor=pointer] [box=849,170,69,29]
+            - button "Undo" [disabled] [ref=f2e566] [box=921,170,67,29]
+            - button "Redo" [disabled] [ref=f2e571] [box=992,170,66,29]
+          - generic [ref=f2e531] [box=672,214,464,437]: Write your email here...

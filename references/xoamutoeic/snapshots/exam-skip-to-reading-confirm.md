@@ -1,0 +1,47 @@
+- generic [ref=e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - main [ref=e1220] [box=0,0,1280,720]:
+    - generic [ref=e1221] [box=0,0,1280,305]:
+      - generic [ref=e1304] [box=0,0,1280,50]:
+        - generic [ref=e1305] [box=22,13,223,25]:
+          - link "Danh sách đề" [ref=e1306] [cursor=pointer] [box=22,16,102,18]:
+            - /url: /exams
+          - generic [ref=e1309] [box=138,13,106,25]: XoáMùTOEIC
+        - generic [ref=e1310] [box=589,7,103,36]:
+          - generic [ref=e1311] [box=592,7,95,22]: READING
+          - generic [ref=e1312] [box=589,32,103,11]: Question 1 of 100
+        - generic [ref=e1313] [box=895,9,364,32]:
+          - button "Công cụ" [ref=e1314] [cursor=pointer] [box=895,13,82,25]
+          - button "Song ngữ" [ref=e1318] [cursor=pointer] [box=988,13,88,25]
+          - generic [ref=e1323] [box=1086,13,69,25]: 74:54
+          - button "Nộp bài" [active] [ref=e1642] [cursor=pointer] [box=1166,9,93,32]
+      - generic [ref=e1334] [box=0,50,1280,255]:
+        - generic [ref=e1335] [box=0,50,1280,255]:
+          - generic [ref=e1643] [box=0,50,1280,255]:
+            - paragraph [ref=e1645] [box=22,59,1237,21]: Select the best answer to complete the sentence.
+            - generic [ref=e1651] [box=313,106,653,180]:
+              - generic [ref=e1652] [box=313,106,653,41]:
+                - generic [ref=e1653] [box=313,106,27,22]: "101."
+                - paragraph [ref=e1655] [box=348,106,619,41]: The lecture will take place at 6:00 P.M., _______ which attendees may ask questions.
+              - generic [ref=e1656] [box=317,155,650,131]:
+                - generic [ref=e1657] [cursor=pointer] [box=317,155,650,29]:
+                  - radio "(A) across" [ref=e1658] [box=324,162,14,14]
+                  - generic [ref=e1659] [box=346,160,614,18]: (A) across
+                - generic [ref=e1660] [cursor=pointer] [box=317,189,650,29]:
+                  - radio "(B) after" [ref=e1661] [box=324,196,14,14]
+                  - generic [ref=e1662] [box=346,194,614,18]: (B) after
+                - generic [ref=e1663] [cursor=pointer] [box=317,223,650,29]:
+                  - radio "(C) inside" [ref=e1664] [box=324,230,14,14]
+                  - generic [ref=e1665] [box=346,229,614,18]: (C) inside
+                - generic [ref=e1666] [cursor=pointer] [box=317,257,650,29]:
+                  - radio "(D) among" [ref=e1667] [box=324,265,14,14]
+                  - generic [ref=e1668] [box=346,263,614,18]: (D) among
+          - generic [ref=e1669] [box=0,679,1280,41]:
+            - button "Mark items for review" [ref=e1670] [cursor=pointer] [box=14,688,160,25]
+            - generic [ref=e1672] [box=1041,686,224,29]:
+              - button "Review" [ref=e1673] [cursor=pointer] [box=1041,686,36,29]
+              - button "Câu trước" [disabled] [ref=e1678] [box=1083,688,93,25]
+              - button "Câu tiếp" [ref=e1681] [cursor=pointer] [box=1182,688,84,25]
+        - button "Mở bảng câu hỏi" [ref=e1366] [cursor=pointer] [box=1248,335,32,50]

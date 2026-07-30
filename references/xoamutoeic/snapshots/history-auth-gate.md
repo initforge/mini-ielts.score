@@ -1,0 +1,56 @@
+- generic [active] [ref=e1] [box=0,0,1280,720]:
+  - generic [ref=e2] [box=0,0,1280,720]:
+    - region "Notifications (F8)" [box=0,0,1280,0]:
+      - list [box=860,691,420,29]
+    - region "Notifications alt+T" [box=0,0,1280,0]
+    - button "Mở thanh công cụ chú thích" [ref=e4526] [cursor=pointer] [box=-79,734,52,65]:
+      - generic [ref=e4531] [box=-79,780,52,19]: Công cụ
+    - main [ref=e4647] [box=0,0,1280,720]:
+      - generic [ref=e4648] [box=0,0,1280,720]:
+        - generic [ref=e4649] [box=0,0,640,720]:
+          - generic [ref=e4652] [box=43,43,554,257]:
+            - generic [ref=e4653] [box=43,43,554,43]:
+              - generic [ref=e4654] [box=43,43,43,43]: X
+              - generic [ref=e4655] [box=97,50,150,29]: XOÁMÙTOEIC
+            - heading "Luyện TOEIC thông minh cùng AI" [level=2] [ref=e4656] [box=43,130,554,81]: Luyện TOEIC thông minhcùng AI
+            - paragraph [ref=e4657] [box=43,225,403,76]: Học từ vựng theo ngắt quãng, luyện nghe ETS chuẩn, phân tích lỗi sai — tất cả trong một nền tảng.
+          - generic [ref=e4658] [box=43,395,554,282]:
+            - generic [ref=e4663] [box=105,409,124,32]:
+              - generic [ref=e4664] [box=105,409,124,18]: 5000+ từ vựng
+              - generic [ref=e4665] [box=105,427,124,14]: Ngắt quãng + flashcard
+            - generic [ref=e4670] [box=105,483,103,32]:
+              - generic [ref=e4671] [box=105,483,103,18]: Đề ETS chuẩn
+              - generic [ref=e4672] [box=105,501,103,14]: Part 1-7 + giải thích
+            - generic [ref=e4677] [box=105,557,93,32]:
+              - generic [ref=e4678] [box=105,557,93,18]: AI giải đề
+              - generic [ref=e4679] [box=105,575,93,14]: Hiểu sâu từng câu
+            - generic [ref=e4688] [box=105,631,102,32]:
+              - generic [ref=e4689] [box=105,631,102,18]: Theo dõi tiến độ
+              - generic [ref=e4690] [box=105,649,102,14]: Lên trình mỗi ngày
+        - generic [ref=e4692] [box=758,98,403,524]:
+          - generic [ref=e4693] [box=788,128,344,428]:
+            - tablist [ref=e4694] [box=788,128,344,40]:
+              - tab "Đăng nhập" [selected] [ref=e4695] [cursor=pointer] [box=792,133,168,29]
+              - tab "Đăng ký" [ref=e4696] [cursor=pointer] [box=960,133,168,29]
+            - heading "Chào mừng quay lại!" [level=1] [ref=e4697] [box=788,189,344,29]
+            - paragraph [ref=e4698] [box=788,221,344,18]: Đăng nhập để tiếp tục hành trình TOEIC
+            - button "Tiếp tục với Google" [ref=e4699] [cursor=pointer] [box=788,257,344,43]
+            - generic [ref=e4700] [box=788,319,344,14]: Hoặc dùng email
+            - tabpanel "Đăng nhập" [ref=e4704] [box=788,351,344,205]:
+              - generic [ref=e4705] [box=788,351,344,205]:
+                - generic [ref=e4706] [box=788,351,344,67]:
+                  - generic [ref=e4707] [box=788,351,344,18]: Email
+                  - textbox "Email" [ref=e4712] [box=788,374,344,43]:
+                    - /placeholder: email@example.com
+                - generic [ref=e4713] [box=788,432,344,67]:
+                  - generic [ref=e4714] [box=788,432,344,18]:
+                    - generic [ref=e4715] [box=788,432,58,18]: Mật khẩu
+                    - button "Quên mật khẩu?" [ref=e4716] [cursor=pointer] [box=1031,432,101,18]
+                  - generic [ref=e4717] [box=788,455,344,43]:
+                    - textbox "Mật khẩu" [ref=e4721] [box=788,455,344,43]:
+                      - /placeholder: ••••••••
+                    - button "Hiện mật khẩu" [ref=e4722] [cursor=pointer] [box=1089,459,36,36]
+                - button "Đăng nhập" [ref=e4726] [cursor=pointer] [box=788,513,344,43]
+          - link "← Về trang chủ" [ref=e4727] [cursor=pointer] [box=788,578,344,14]:
+            - /url: /
+  - generic [ref=e4233] [box=0,-20000,7,17]: "2"

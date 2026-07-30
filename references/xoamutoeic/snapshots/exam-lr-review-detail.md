@@ -1,0 +1,135 @@
+- generic [active] [ref=e1] [box=0,0,1280,700]:
+  - generic [ref=e2] [box=0,0,1280,700]:
+    - region "Notifications (F8)" [box=0,0,1280,0]:
+      - list [box=860,691,420,29]
+    - region "Notifications alt+T" [box=0,0,1280,0]
+    - main [ref=e1220] [box=0,0,1280,700]:
+      - generic [ref=e4371] [box=0,0,1280,700]:
+        - generic [ref=e4372] [box=0,0,1280,700]:
+          - generic [ref=e4375] [box=7,0,1266,700]:
+            - generic [ref=e4378] [box=7,0,655,700]:
+              - img "Câu 1" [ref=e4380] [box=179,14,305,420]
+              - generic [ref=e4381] [box=7,460,648,123]:
+                - generic [ref=e4382] [box=19,471,624,36]:
+                  - button "Phát" [ref=e4383] [cursor=pointer] [box=19,471,36,36]
+                  - slider "Tua audio" [ref=e4384] [cursor=pointer] [box=66,475,490,29]
+                  - generic [ref=e4385] [box=566,482,77,14]: 00:00 / 00:24
+                - generic [ref=e4386] [box=19,518,624,25]:
+                  - generic [ref=e4387] [box=19,518,116,25]:
+                    - button "3s" [ref=e4388] [cursor=pointer] [box=19,518,54,25]
+                    - button "5s" [ref=e4389] [cursor=pointer] [box=81,518,54,25]
+                  - generic [ref=e4390] [box=501,518,143,25]:
+                    - combobox "Tốc độ phát" [ref=e4391] [cursor=pointer] [box=501,518,78,25]:
+                      - generic [box=533,524,10,14]: 1x
+                    - button "Âm lượng" [ref=e4397] [cursor=pointer] [box=582,518,61,25]:
+                      - generic [ref=e4398] [box=607,522,29,18]: 100%
+                - generic [ref=e4399] [box=19,551,624,21]:
+                  - generic [ref=e4400] [box=19,551,40,21]: Space
+                  - generic [ref=e4401] [box=66,553,59,17]: Phát/Dừng
+              - generic [ref=e4402] [box=7,594,648,352]:
+                - button [ref=e4403] [cursor=pointer] [box=9,596,644,36]
+                - tabpanel [ref=e4412] [box=20,653,619,280]:
+                  - list [ref=e4414] [box=32,665,595,256]:
+                    - listitem [ref=e4415] [box=32,665,595,125]:
+                      - generic [ref=e4416] [box=42,675,575,22]:
+                        - generic [ref=e4417] [box=42,675,36,21]: wear
+                        - generic [ref=e4418] [box=85,678,16,17]: (v)
+                        - generic [ref=e4419] [box=108,676,74,20]: — mặc, đeo
+                        - button "Phát âm" [ref=e4420] [cursor=pointer] [box=189,675,22,22]
+                      - generic [ref=e4421] [box=42,699,575,18]:
+                        - text: UK
+                        - generic [ref=e4422] [box=61,701,51,14]: /weə(r)/
+                        - text: · US
+                        - generic [ref=e4423] [box=138,701,32,14]: /wer/
+                      - generic [ref=e4424] [box=42,720,575,19]:
+                        - text: The staff must
+                        - mark [ref=e4425] [box=132,721,35,16]: wear
+                        - text: their uniforms during work hours.
+                      - generic [ref=e4426] [box=42,741,575,18]: → Nhân viên phải mặc đồng phục trong giờ làm việc.
+                      - generic [ref=e4427] [box=42,763,575,17]: "syn: put on, dress in"
+                    - listitem [ref=e4428] [box=32,797,595,125]:
+                      - generic [ref=e4429] [box=42,807,575,22]:
+                        - generic [ref=e4430] [box=42,807,45,21]: jacket
+                        - generic [ref=e4431] [box=94,809,16,17]: (n)
+                        - generic [ref=e4432] [box=117,808,74,20]: — áo khoác
+                        - button "Phát âm" [ref=e4433] [cursor=pointer] [box=198,807,22,22]
+                      - generic [ref=e4434] [box=42,830,575,18]:
+                        - text: UK
+                        - generic [ref=e4435] [box=61,832,57,14]: /ˈdʒækɪt/
+                        - text: · US
+                        - generic [ref=e4436] [box=144,832,57,14]: /ˈdʒækɪt/
+                      - generic [ref=e4437] [box=42,852,575,19]:
+                        - text: He put on his
+                        - mark [ref=e4438] [box=122,853,42,16]: jacket
+                        - text: before leaving the office.
+                      - generic [ref=e4439] [box=42,873,575,18]: → Anh ấy đã mặc áo khoác trước khi rời văn phòng.
+                      - generic [ref=e4440] [box=42,894,575,17]: "syn: coat, blazer"
+            - generic [ref=e4445] [box=699,19,554,711]:
+              - generic [ref=e4446] [box=699,19,554,22]: "1."
+              - generic [ref=e4448] [box=703,48,551,167]:
+                - generic [ref=e4449] [box=703,48,551,38]:
+                  - generic [ref=e4450] [box=714,57,22,22]: A
+                  - generic [ref=e4451] [box=743,55,500,18]: The woman is carrying a tray of food.
+                - generic [ref=e4452] [box=703,91,551,38]:
+                  - generic [ref=e4453] [box=714,100,22,22]: B
+                  - generic [ref=e4454] [box=743,98,482,18]: The woman is wearing a jacket.
+                  - generic [ref=e4455] [box=1232,98,11,22]: ✓
+                - generic [ref=e4456] [box=703,134,551,38]:
+                  - generic [ref=e4457] [box=714,143,22,22]: C
+                  - generic [ref=e4458] [box=743,141,500,18]: The woman is tying up her hair.
+                - generic [ref=e4459] [box=703,177,551,38]:
+                  - generic [ref=e4460] [box=714,186,22,22]: D
+                  - generic [ref=e4461] [box=743,184,500,18]: The woman is removing her hat.
+              - generic [ref=e4462] [box=699,222,554,132]:
+                - generic [ref=e4463] [box=715,234,524,18]: 📖 Dịch câu hỏi
+                - generic [ref=e4464] [box=715,259,524,83]:
+                  - generic [ref=e4465] [box=715,259,524,18]:
+                    - generic [ref=e4466] [box=715,260,14,16]: A.
+                    - text: Người phụ nữ đang bê một khay thức ăn.
+                  - generic [ref=e4467] [box=715,281,524,18]:
+                    - generic [ref=e4468] [box=715,282,13,16]: B.
+                    - text: Người phụ nữ đang mặc một chiếc áo khoác.
+                  - generic [ref=e4469] [box=715,302,524,18]:
+                    - generic [ref=e4470] [box=715,303,14,16]: C.
+                    - text: Người phụ nữ đang buộc tóc.
+                  - generic [ref=e4471] [box=715,324,524,18]:
+                    - generic [ref=e4472] [box=715,325,14,16]: D.
+                    - text: Người phụ nữ đang bỏ mũ ra.
+              - generic [ref=e4473] [box=699,354,554,376]:
+                - generic [ref=e4474] [box=715,369,524,29]:
+                  - paragraph [ref=e4479] [box=751,373,70,22]: Giải thích
+                  - button "Hỏi AI thêm PRO" [disabled] [box=1087,371,151,25]:
+                    - text: Hỏi AI thêm
+                    - generic "Cần tài khoản Pro" [box=1181,375,51,18]: PRO
+                - generic [ref=e4480] [box=715,405,524,302]:
+                  - paragraph [ref=e4481] [box=715,405,524,23]:
+                    - strong [ref=e4482] [box=715,407,80,18]: 📚 Từ vựng
+                  - paragraph [ref=e4483] [box=715,436,524,94]:
+                    - strong [ref=e4484] [box=715,438,40,18]: carry
+                    - text: (v) — mang, bê, vác
+                    - strong [ref=e4485] [box=715,461,30,18]: tray
+                    - text: (n) — cái khay
+                    - strong [ref=e4486] [box=715,485,41,18]: tie up
+                    - text: (v.phr) — cột, buộc (tóc)
+                    - strong [ref=e4487] [box=715,508,54,18]: remove
+                    - text: (v) — cởi ra, tháo ra (trang phục)
+                  - paragraph [ref=e4488] [box=715,537,524,23]:
+                    - strong [ref=e4489] [box=715,539,147,18]: 💡 Giải thích đáp án
+                  - paragraph [ref=e4490] [box=715,567,524,140]:
+                    - text: "Loại câu hỏi: Mô tả hành động/trạng thái của người trong tranh. (A) Sai vì không có hình ảnh người phụ nữ đang bê khay thức ăn. (B)"
+                    - strong [ref=e4492] [box=740,616,38,18]: Đúng
+                    - text: vì mô tả chính xác trạng thái mặc áo khoác của nhân vật trong tranh. (C) Sai vì hành động buộc tóc không diễn ra trong bối cảnh. (D) Sai vì người phụ nữ không thực hiện hành động cởi mũ.
+          - generic [ref=e4493] [box=0,683,1280,37]:
+            - generic [ref=e4494] [box=14,694,63,17]:
+              - text: Câu 1
+              - generic [ref=e4495] [box=44,695,33,14]: / 200
+            - generic [ref=e4496] [box=601,689,664,25]:
+              - button "Công cụ" [ref=e4497] [cursor=pointer] [box=601,689,84,25]
+              - button "Hỏi gia sư" [ref=e4501] [cursor=pointer] [box=691,689,109,25]
+              - button "Ghi chú" [ref=e4506] [cursor=pointer] [box=805,689,80,25]
+              - button "Song ngữ" [ref=e4510] [cursor=pointer] [box=891,689,90,25]
+              - button "← Bảng điểm" [ref=e4515] [cursor=pointer] [box=986,689,91,25]
+              - button "Câu trước" [disabled] [ref=e4516] [box=1083,689,93,25]
+              - button "Câu tiếp" [ref=e4519] [cursor=pointer] [box=1182,689,84,25]
+        - button "Mở bảng câu hỏi" [ref=e4522] [cursor=pointer] [box=1248,335,32,50]
+  - generic [ref=e4233] [box=0,-20000,7,17]: "2"

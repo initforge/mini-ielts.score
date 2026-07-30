@@ -1,0 +1,25 @@
+- generic [ref=f2e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=f2e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=f2e9] [box=16,685,52,19]: Công cụ
+  - main [ref=f2e237] [box=0,0,1280,720]:
+    - generic [ref=f2e240] [box=251,36,778,530]:
+      - heading "WRITING TEST DIRECTIONS" [level=1] [ref=f2e246] [box=335,59,400,32]
+      - generic [ref=f2e247] [box=252,113,776,452]:
+        - paragraph [ref=f2e248] [box=288,141,704,49]: This is the TOEIC Writing Test. This test includes eight questions that measure different aspects of your writing ability. The test lasts approximately one hour.
+        - generic [ref=f2e249] [box=288,212,704,242]:
+          - generic [ref=f2e250] [box=289,213,702,43]:
+            - generic [ref=f2e251] [box=289,224,351,22]: Question
+            - generic [ref=f2e252] [box=640,224,351,22]: Task
+          - generic [ref=f2e253] [box=289,256,702,65]:
+            - generic [ref=f2e254] [box=311,274,329,29]: Questions 1–5
+            - generic [ref=f2e260] [box=640,278,329,22]: Write a sentence based on a picture
+          - generic [ref=f2e261] [box=289,321,702,66]:
+            - generic [ref=f2e262] [box=311,340,329,29]: Questions 6–7
+            - generic [ref=f2e267] [box=640,343,329,22]: Respond to a written request
+          - generic [ref=f2e268] [box=289,387,702,66]:
+            - generic [ref=f2e269] [box=311,406,329,29]: Question 8
+            - generic [ref=f2e274] [box=640,409,329,22]: Write an opinion essay
+        - button "BẮT ĐẦU" [ref=f2e276] [cursor=pointer] [box=548,482,183,54]

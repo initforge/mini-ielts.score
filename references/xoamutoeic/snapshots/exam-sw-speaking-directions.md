@@ -1,0 +1,21 @@
+- generic [ref=f2e2] [box=0,0,1280,720]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=f2e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=f2e9] [box=16,685,52,19]: Công cụ
+  - main [ref=f2e128] [box=0,0,1280,720]:
+    - generic [ref=f2e129] [box=0,0,1280,54]:
+      - generic [ref=f2e130] [box=22,14,223,25]:
+        - link "Danh sách đề" [ref=f2e131] [cursor=pointer] [box=22,18,102,18]:
+          - /url: /exams
+        - generic [ref=f2e134] [box=138,14,106,25]: XoáMùTOEIC
+      - generic [ref=f2e135] [box=1025,11,233,32]:
+        - slider "Âm lượng" [ref=f2e141] [cursor=pointer] [box=1058,25,101,4]: "0.7"
+        - button "Next" [ref=f2e142] [cursor=pointer] [box=1180,11,79,32]
+    - generic [ref=f2e146] [box=251,104,778,344]:
+      - heading "DIRECTIONS" [level=1] [ref=f2e148] [box=281,120,718,18]
+      - generic [ref=f2e149] [box=252,152,776,295]:
+        - 'heading "Questions 1 - 2: Read a text aloud" [level=2] [ref=f2e150] [box=295,210,689,36]'
+        - paragraph [ref=f2e151] [box=295,275,689,50]: In this part of the test, you will read aloud the text on the screen. You will have 45 seconds to prepare. Then you will have 45 seconds to read the text aloud.
+        - button "Đang phát hướng dẫn…" [ref=f2e153] [cursor=pointer] [box=539,354,203,36]

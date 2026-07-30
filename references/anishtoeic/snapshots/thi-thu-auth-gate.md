@@ -1,0 +1,164 @@
+- main [ref=f4e5] [box=0,0,1280,1025]:
+  - generic [ref=f4e7] [box=64,16,1152,993]:
+    - generic [ref=f4e9] [box=214,16,400,993]:
+      - generic [ref=f4e19] [box=275,33,159,44]:
+        - heading "Bảng xếp hạng XP" [level=2] [ref=f4e20] [box=275,33,159,28]
+        - paragraph [ref=f4e21] [box=275,61,159,16]: Top 10 học viên XP
+      - generic [ref=f4e22] [box=215,94,398,914]:
+        - list [ref=f4e69] [box=227,106,374,716]:
+          - listitem [ref=f4e70] [box=227,106,374,64]:
+            - generic [ref=f4e71] [box=235,128,28,20]: 🥇
+            - generic [ref=f4e74] [box=327,114,201,48]:
+              - generic [ref=f4e75] [box=327,114,201,20]: ...
+              - generic "Huy hiệu Tinh anh" [ref=f4e78] [box=327,141,87,20]:
+                - generic [ref=f4e79] [box=335,143,16,16]: ⚡
+                - generic [ref=f4e80] [box=355,143,51,16]: Tinh anh
+            - generic [ref=f4e81] [box=540,120,53,37]:
+              - generic [ref=f4e82] [box=540,120,53,20]: "104.841"
+              - generic [ref=f4e83] [box=540,140,53,17]: XP
+          - listitem [ref=f4e84] [box=227,178,374,64]:
+            - generic [ref=f4e85] [box=235,201,28,20]: 🥈
+            - generic [ref=f4e88] [box=327,186,206,48]:
+              - generic [ref=f4e89] [box=327,186,206,20]: Thảo Trần Thị Thanh
+              - generic "Huy hiệu Kim cương" [ref=f4e92] [box=327,213,99,20]:
+                - generic [ref=f4e93] [box=335,215,16,16]: 💎
+                - generic [ref=f4e94] [box=355,215,62,16]: Kim cương
+            - generic [ref=f4e95] [box=545,192,48,37]:
+              - generic [ref=f4e96] [box=545,192,48,20]: "76.025"
+              - generic [ref=f4e97] [box=545,212,48,17]: XP
+          - listitem [ref=f4e98] [box=227,251,374,64]:
+            - generic [ref=f4e99] [box=235,273,28,20]: 🥉
+            - generic [ref=f4e102] [box=327,259,207,48]:
+              - generic [ref=f4e103] [box=327,259,207,20]: Trương Nguyễn Thiên Kim
+              - generic "Huy hiệu Kim cương" [ref=f4e106] [box=327,286,99,20]:
+                - generic [ref=f4e107] [box=335,288,16,16]: 💎
+                - generic [ref=f4e108] [box=355,288,62,16]: Kim cương
+            - generic [ref=f4e109] [box=546,265,47,37]:
+              - generic [ref=f4e110] [box=546,265,47,20]: "73.768"
+              - generic [ref=f4e111] [box=546,285,47,17]: XP
+          - listitem [ref=f4e112] [box=227,323,374,64]:
+            - generic [ref=f4e113] [box=235,345,28,20]: "4"
+            - generic [ref=f4e116] [box=327,331,209,48]:
+              - generic [ref=f4e117] [box=327,331,209,20]: Võ Như Quỳnh
+              - generic "Huy hiệu Kim cương" [ref=f4e120] [box=327,358,99,20]:
+                - generic [ref=f4e121] [box=335,360,16,16]: 💎
+                - generic [ref=f4e122] [box=355,360,62,16]: Kim cương
+            - generic [ref=f4e123] [box=548,337,45,37]:
+              - generic [ref=f4e124] [box=548,337,45,20]: "69.126"
+              - generic [ref=f4e125] [box=548,357,45,17]: XP
+          - listitem [ref=f4e126] [box=227,396,374,64]:
+            - generic [ref=f4e127] [box=235,418,28,20]: "5"
+            - generic [ref=f4e130] [box=327,404,208,48]:
+              - generic [ref=f4e131] [box=327,404,208,20]: Hồ Thành Long
+              - generic "Huy hiệu Kim cương" [ref=f4e134] [box=327,431,99,20]:
+                - generic [ref=f4e135] [box=335,433,16,16]: 💎
+                - generic [ref=f4e136] [box=355,433,62,16]: Kim cương
+            - generic [ref=f4e137] [box=547,410,46,37]:
+              - generic [ref=f4e138] [box=547,410,46,20]: "61.623"
+              - generic [ref=f4e139] [box=547,430,46,17]: XP
+          - listitem [ref=f4e140] [box=227,468,374,64]:
+            - generic [ref=f4e141] [box=235,490,28,20]: "6"
+            - generic [ref=f4e144] [box=327,476,204,48]:
+              - generic [ref=f4e145] [box=327,476,204,20]: Trần Thị Gia Linh
+              - generic "Huy hiệu Kim cương" [ref=f4e148] [box=327,503,99,20]:
+                - generic [ref=f4e149] [box=335,505,16,16]: 💎
+                - generic [ref=f4e150] [box=355,505,62,16]: Kim cương
+            - generic [ref=f4e151] [box=543,482,50,37]:
+              - generic [ref=f4e152] [box=543,482,50,20]: "60.483"
+              - generic [ref=f4e153] [box=543,502,50,17]: XP
+          - listitem [ref=f4e154] [box=227,540,374,64]:
+            - generic [ref=f4e155] [box=235,563,28,20]: "7"
+            - generic [ref=f4e158] [box=327,548,204,48]:
+              - generic [ref=f4e159] [box=327,548,204,20]: Huy Nguyên
+              - generic "Huy hiệu Kim cương" [ref=f4e162] [box=327,575,99,20]:
+                - generic [ref=f4e163] [box=335,577,16,16]: 💎
+                - generic [ref=f4e164] [box=355,577,62,16]: Kim cương
+            - generic [ref=f4e165] [box=543,554,50,37]:
+              - generic [ref=f4e166] [box=543,554,50,20]: "60.467"
+              - generic [ref=f4e167] [box=543,574,50,17]: XP
+          - listitem [ref=f4e168] [box=227,613,374,64]:
+            - generic [ref=f4e169] [box=235,635,28,20]: "8"
+            - generic [ref=f4e172] [box=327,621,206,48]:
+              - generic [ref=f4e173] [box=327,621,206,20]: Mỹ Trâm
+              - generic "Huy hiệu Vàng" [ref=f4e176] [box=327,648,67,20]:
+                - generic [ref=f4e177] [box=335,650,16,16]: 🥇
+                - generic [ref=f4e178] [box=355,650,30,16]: Vàng
+            - generic [ref=f4e179] [box=545,627,48,37]:
+              - generic [ref=f4e180] [box=545,627,48,20]: "59.370"
+              - generic [ref=f4e181] [box=545,647,48,17]: XP
+          - listitem [ref=f4e182] [box=227,685,374,64]:
+            - generic [ref=f4e183] [box=235,707,28,20]: "9"
+            - generic [ref=f4e186] [box=327,693,205,48]:
+              - generic [ref=f4e187] [box=327,693,205,20]: Cẩm Tú Lưu Thị
+              - generic "Huy hiệu Vàng" [ref=f4e190] [box=327,720,67,20]:
+                - generic [ref=f4e191] [box=335,722,16,16]: 🥇
+                - generic [ref=f4e192] [box=355,722,30,16]: Vàng
+            - generic [ref=f4e193] [box=544,699,49,37]:
+              - generic [ref=f4e194] [box=544,699,49,20]: "53.589"
+              - generic [ref=f4e195] [box=544,719,49,17]: XP
+          - listitem [ref=f4e196] [box=227,758,374,64]:
+            - generic [ref=f4e197] [box=235,780,28,20]: "10"
+            - generic [ref=f4e200] [box=327,766,204,48]:
+              - generic [ref=f4e201] [box=327,766,204,20]: Nguyễn Hoàng Dương
+              - generic "Huy hiệu Vàng" [ref=f4e204] [box=327,793,67,20]:
+                - generic [ref=f4e205] [box=335,795,16,16]: 🥇
+                - generic [ref=f4e206] [box=355,795,30,16]: Vàng
+            - generic [ref=f4e207] [box=543,771,50,37]:
+              - generic [ref=f4e208] [box=543,771,50,20]: "52.480"
+              - generic [ref=f4e209] [box=543,791,50,17]: XP
+        - generic [ref=f4e210] [box=227,838,374,158]:
+          - paragraph [ref=f4e211] [box=227,855,374,18]: Huy hiệu prestige
+          - generic [ref=f4e212] [box=227,881,374,115]:
+            - generic [ref=f4e213] [box=227,881,184,18]:
+              - generic [ref=f4e214] [box=227,881,45,18]: Tân binh
+              - generic [ref=f4e215] [box=386,881,25,18]: 0 XP
+            - generic [ref=f4e216] [box=417,881,184,18]:
+              - generic [ref=f4e217] [box=417,881,20,18]: Bạc
+              - generic [ref=f4e218] [box=548,881,53,18]: 12.000 XP
+            - generic [ref=f4e219] [box=227,905,184,18]:
+              - generic [ref=f4e220] [box=227,905,48,18]: Bạch kim
+              - generic [ref=f4e221] [box=356,905,55,18]: 20.000 XP
+            - generic [ref=f4e222] [box=417,905,184,18]:
+              - generic [ref=f4e223] [box=417,905,27,18]: Vàng
+              - generic [ref=f4e224] [box=547,905,54,18]: 35.000 XP
+            - generic [ref=f4e225] [box=227,929,184,18]:
+              - generic [ref=f4e226] [box=227,929,56,18]: Kim cương
+              - generic [ref=f4e227] [box=356,929,55,18]: 60.000 XP
+            - generic [ref=f4e228] [box=417,929,184,18]:
+              - generic [ref=f4e229] [box=417,929,46,18]: Tinh anh
+              - generic [ref=f4e230] [box=542,929,59,18]: 100.000 XP
+            - generic [ref=f4e231] [box=227,953,184,18]:
+              - generic [ref=f4e232] [box=227,953,41,18]: Cao thủ
+              - generic [ref=f4e233] [box=352,953,59,18]: 150.000 XP
+            - generic [ref=f4e234] [box=417,953,184,18]:
+              - generic [ref=f4e235] [box=417,953,63,18]: Huyền thoại
+              - generic [ref=f4e236] [box=540,953,61,18]: 250.000 XP
+            - generic [ref=f4e237] [box=227,978,184,18]:
+              - generic [ref=f4e238] [box=227,978,33,18]: Đại sư
+              - generic [ref=f4e239] [box=350,978,61,18]: 500.000 XP
+    - generic [ref=f4e25] [box=646,16,420,605]:
+      - link [ref=f4e27] [cursor=pointer] [box=824,41,64,64]:
+        - /url: /
+        - img "Anish TOEIC Logo" [ref=f4e28] [box=824,41,64,64]
+      - heading "Anish TOEIC" [level=1] [ref=f4e29] [box=671,121,370,45]
+      - paragraph [ref=f4e30] [box=671,172,370,26]: Nâng cao kỹ năng TOEIC của bạn với chúng tôi
+      - generic [ref=f4e31] [box=671,218,370,246]:
+        - textbox "Email or Username" [ref=f4e38] [box=671,218,370,54]:
+          - /placeholder: Email hoặc Username
+        - generic [ref=f4e40] [box=671,304,370,104]:
+          - generic [ref=f4e41] [box=671,304,370,54]:
+            - textbox "Password" [ref=f4e46] [box=671,304,370,54]:
+              - /placeholder: Mật khẩu
+            - button "Show password" [ref=f4e47] [cursor=pointer] [box=1009,304,32,54]
+          - link "Quên mật khẩu?" [ref=f4e53] [cursor=pointer] [box=931,387,110,17]:
+            - /url: /quen-mat-khau
+        - button "Đăng nhập" [ref=f4e54] [cursor=pointer] [box=671,421,370,44]
+      - generic [ref=f4e55] [box=671,481,370,20]:
+        - separator [ref=f4e56] [box=671,490,153,1]
+        - generic [ref=f4e57] [box=840,481,32,20]: Hoặc
+        - separator [ref=f4e58] [box=888,490,153,1]
+      - button "Continue with Google" [ref=f4e59] [cursor=pointer] [box=671,516,370,44]
+      - paragraph [ref=f4e67] [box=671,576,370,20]:
+        - text: Chưa có tài khoản?
+        - link "Đăng ký ngay" [ref=f4e68] [cursor=pointer] [box=874,577,86,16]:
+          - /url: /dang-ky

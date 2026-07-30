@@ -1,0 +1,112 @@
+- generic [ref=f2e2] [box=0,0,1280,835]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=f2e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=f2e9] [box=16,685,52,19]: Công cụ
+  - main [ref=f2e237] [box=0,0,1280,835]:
+    - generic [ref=f2e278] [box=0,0,1280,50]:
+      - generic [ref=f2e279] [box=22,13,226,25]:
+        - link "Danh sách đề" [ref=f2e280] [cursor=pointer] [box=22,16,102,18]:
+          - /url: /exams
+        - generic [ref=f2e284] [box=142,13,106,25]: XoáMùTOEIC
+      - generic [box=593,7,94,36]:
+        - generic [box=593,7,94,22]: WRITING
+        - generic [box=594,32,91,11]: Question 8 of 8
+      - generic [ref=f2e285] [box=944,9,314,32]:
+        - generic [ref=f2e286] [box=944,13,69,25]: 58:57
+        - button "Câu trước" [ref=f2e290] [cursor=pointer] [box=1020,9,32,32]
+        - button "Câu sau" [disabled] [ref=f2e293] [box=1060,9,32,32]
+        - button "Nộp bài" [ref=f2e301] [cursor=pointer] [box=1139,9,91,32]
+        - button "Exit" [ref=f2e305] [cursor=pointer] [box=1240,16,18,18]
+    - generic [ref=f2e313] [box=122,76,1037,737]:
+      - generic [ref=f2e576] [box=122,76,1037,43]:
+        - generic [ref=f2e577] [box=122,76,426,43]:
+          - paragraph [ref=f2e578] [box=122,76,426,18]: Question 8 — Write an Opinion Essay
+          - paragraph [ref=f2e579] [box=122,101,426,18]: Viết bài luận trình bày ý kiến với lý do và ví dụ cụ thể. Tối thiểu 300 từ.
+        - button "Xem hướng dẫn" [ref=f2e580] [cursor=pointer] [box=1036,76,122,25]
+      - generic [ref=f2e583] [box=122,137,1037,676]:
+        - paragraph [ref=f2e587] [box=180,163,952,51]: "Which do you think contributes more to a team’s success: having an experienced leader or having good relationships among team members?"
+        - generic [ref=f2e588] [box=122,251,1037,562]:
+          - generic [ref=f2e589] [box=123,252,1035,50]:
+            - heading "Your answer" [level=3] [ref=f2e590] [box=141,266,89,22]
+            - generic [ref=f2e591] [box=822,263,317,27]:
+              - generic [ref=f2e592] [box=822,263,192,27]:
+                - button "Câu/Đoạn" [pressed] [ref=f2e593] [cursor=pointer] [box=822,263,101,27]
+                - button "Cuối bài" [ref=f2e597] [cursor=pointer] [box=926,263,88,27]
+              - generic [ref=f2e601] [box=1025,270,115,14]:
+                - generic [ref=f2e602] [box=1025,270,37,14]: 0 đoạn
+                - generic [ref=f2e603] [box=1069,270,3,14]: ·
+                - generic [ref=f2e604] [box=1079,270,60,14]:
+                  - text: "0"
+                  - generic [ref=f2e605] [box=1087,270,39,14]: / ≥300
+                  - text: từ
+          - generic [ref=f2e606] [box=123,302,1035,478]:
+            - generic [ref=f2e607] [box=137,317,1006,222]:
+              - generic [ref=f2e608] [box=138,318,1004,48]:
+                - generic "Kéo để đổi vị trí" [ref=f2e609] [box=145,335,13,13]
+                - generic [ref=f2e617] [box=163,323,751,36]:
+                  - generic [ref=f2e618] [box=163,323,751,20]:
+                    - text: Mở bài
+                    - generic [ref=f2e619] [box=211,327,12,13]: "#1"
+                  - generic [ref=f2e620] [box=163,342,751,17]: Giới thiệu chủ đề, paraphrase đề và nêu thesis.
+                - generic [ref=f2e621] [box=920,331,42,21]: Trống
+                - generic [ref=f2e622] [box=967,333,33,17]: 0 / 24
+                - button "Xem hướng dẫn" [ref=f2e623] [cursor=pointer] [box=1005,330,22,22]
+                - button "Chuyển lên" [disabled] [ref=f2e626] [box=1032,330,22,22]
+                - button "Chuyển xuống" [ref=f2e629] [cursor=pointer] [box=1059,330,22,22]
+                - button "Thu gọn" [ref=f2e632] [cursor=pointer] [box=1086,330,22,22]
+                - button "Xóa đoạn" [ref=f2e635] [cursor=pointer] [box=1113,330,22,22]
+              - textbox "Viết mở bài... (Enter 2 lần để tách đoạn ở chế độ Cuối bài)" [ref=f2e639] [box=138,365,1004,165]
+            - generic [ref=f2e640] [box=137,549,1006,222]:
+              - generic [ref=f2e641] [box=138,550,1004,48]:
+                - generic "Kéo để đổi vị trí" [ref=f2e642] [box=145,567,13,13]
+                - generic [ref=f2e650] [box=163,555,751,36]:
+                  - generic [ref=f2e651] [box=163,555,751,20]:
+                    - text: Thân bài 1
+                    - generic [ref=f2e652] [box=232,559,15,13]: "#2"
+                  - generic [ref=f2e653] [box=163,575,751,17]: Trình bày luận điểm chính thứ nhất và triển khai.
+                - generic [ref=f2e654] [box=919,563,42,21]: Trống
+                - generic [ref=f2e655] [box=967,565,33,17]: 0 / 48
+                - button "Xem hướng dẫn" [ref=f2e656] [cursor=pointer] [box=1005,562,22,22]
+                - button "Chuyển lên" [ref=f2e659] [cursor=pointer] [box=1032,562,22,22]
+                - button "Chuyển xuống" [ref=f2e662] [cursor=pointer] [box=1059,562,22,22]
+                - button "Thu gọn" [ref=f2e665] [cursor=pointer] [box=1086,562,22,22]
+                - button "Xóa đoạn" [ref=f2e668] [cursor=pointer] [box=1113,562,22,22]
+              - textbox "Viết thân bài 1... (Enter 2 lần để tách đoạn ở chế độ Cuối bài)" [ref=f2e672] [box=138,598,1004,165]
+            - generic [ref=f2e673] [box=137,781,1006,222]:
+              - generic [ref=f2e674] [box=138,782,1004,48]:
+                - generic "Kéo để đổi vị trí" [ref=f2e675] [box=145,799,13,13]
+                - generic [ref=f2e683] [box=163,788,751,36]:
+                  - generic [ref=f2e684] [box=163,788,751,20]:
+                    - text: Thân bài 2
+                    - generic [ref=f2e685] [box=235,792,15,13]: "#3"
+                  - generic [ref=f2e686] [box=163,807,751,17]: Trình bày luận điểm chính thứ hai và triển khai.
+                - generic [ref=f2e687] [box=919,795,42,21]: Trống
+                - generic [ref=f2e688] [box=967,797,33,17]: 0 / 48
+                - button "Xem hướng dẫn" [ref=f2e689] [cursor=pointer] [box=1005,795,22,22]
+                - button "Chuyển lên" [ref=f2e692] [cursor=pointer] [box=1032,795,22,22]
+                - button "Chuyển xuống" [ref=f2e695] [cursor=pointer] [box=1059,795,22,22]
+                - button "Thu gọn" [ref=f2e698] [cursor=pointer] [box=1086,795,22,22]
+                - button "Xóa đoạn" [ref=f2e701] [cursor=pointer] [box=1113,795,22,22]
+              - textbox "Viết thân bài 2... (Enter 2 lần để tách đoạn ở chế độ Cuối bài)" [ref=f2e705] [box=138,830,1004,165]
+            - generic [ref=f2e706] [box=137,1014,1006,222]:
+              - generic [ref=f2e707] [box=138,1015,1004,48]:
+                - generic "Kéo để đổi vị trí" [ref=f2e708] [box=145,1032,13,13]
+                - generic [ref=f2e716] [box=163,1020,751,36]:
+                  - generic [ref=f2e717] [box=163,1020,751,20]:
+                    - text: Kết bài
+                    - generic [ref=f2e718] [box=213,1024,15,13]: "#4"
+                  - generic [ref=f2e719] [box=163,1039,751,17]: Tóm tắt luận điểm và khẳng định lại quan điểm.
+                - generic [ref=f2e720] [box=920,1028,42,21]: Trống
+                - generic [ref=f2e721] [box=967,1030,33,17]: 0 / 24
+                - button "Xem hướng dẫn" [ref=f2e722] [cursor=pointer] [box=1005,1027,22,22]
+                - button "Chuyển lên" [ref=f2e725] [cursor=pointer] [box=1032,1027,22,22]
+                - button "Chuyển xuống" [disabled] [ref=f2e728] [box=1059,1027,22,22]
+                - button "Thu gọn" [ref=f2e731] [cursor=pointer] [box=1086,1027,22,22]
+                - button "Xóa đoạn" [ref=f2e734] [cursor=pointer] [box=1113,1027,22,22]
+              - textbox "Viết kết bài... (Enter 2 lần để tách đoạn ở chế độ Cuối bài)" [ref=f2e738] [box=138,1062,1004,165]
+            - button "Thêm đoạn mới" [ref=f2e739] [cursor=pointer] [box=137,1246,1006,31]
+          - generic [ref=f2e741] [box=123,780,1035,32]:
+            - generic [ref=f2e742] [box=137,788,177,17]: "Chế độ: Câu/Đoạn·Tự động lưu"
+            - generic [ref=f2e743] [box=1076,788,67,17]: 0 từ · 0 đoạn

@@ -1,0 +1,14 @@
+- generic [ref=f15e2] [box=0,0,1280,801]:
+  - banner [ref=f15e3] [box=0,0,1280,81]:
+    - generic [ref=f15e5] [box=16,16,1248,48]:
+      - generic [ref=f15e11] [box=80,24,329,32]:
+        - heading "ANISH TOEIC" [level=1] [ref=f15e12] [box=80,24,155,32]
+        - generic [ref=f15e13] [box=243,30,166,20]: Speaking & Writing Lab
+      - generic [ref=f15e14] [box=1064,21,200,38]:
+        - button "Kết nối Gemini" [ref=f15e15] [cursor=pointer] [box=1064,21,152,38]
+        - button "Toggle theme" [ref=f15e21] [cursor=pointer] [box=1228,22,36,36]
+  - generic [ref=f15e27] [box=113,154,1054,480]:
+    - generic [ref=f15e29] [box=530,154,220,48]:
+      - tab "Speaking" [ref=f15e30] [cursor=pointer] [box=535,160,106,36]
+      - tab "Writing" [ref=f15e31] [cursor=pointer] [box=649,160,96,36]
+    - paragraph [ref=f15e35] [box=401,420,479,28]: Vui lòng chọn tab Speaking hoặc Writing để bắt đầu làm bài

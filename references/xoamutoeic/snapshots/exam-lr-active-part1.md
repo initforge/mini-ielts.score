@@ -1,0 +1,22 @@
+- generic [ref=e2] [box=0,0,1280,749]:
+  - region "Notifications (F8)" [box=0,0,1280,0]:
+    - list [box=860,691,420,29]
+  - region "Notifications alt+T" [box=0,0,1280,0]
+  - button "Mở thanh công cụ chú thích" [ref=e4] [cursor=pointer] [box=16,639,52,65]:
+    - generic [ref=e9] [box=16,685,52,19]: Công cụ
+  - main [ref=e1220] [box=0,0,1280,749]:
+    - generic [ref=e1222] [box=0,0,1280,720]:
+      - generic [ref=e1223] [box=0,0,1280,43]:
+        - generic [ref=e1224] [box=22,9,223,25]:
+          - link "Danh sách đề" [ref=e1225] [cursor=pointer] [box=22,13,102,18]:
+            - /url: /exams
+          - generic [ref=e1228] [box=138,9,106,25]: XoáMùTOEIC
+        - slider "Âm lượng" [ref=e1286] [cursor=pointer] [box=1161,20,86,4]: "0.7"
+      - generic [ref=e1236] [box=274,79,731,267]:
+        - generic [ref=e1237] [box=275,80,729,43]: DIRECTIONS
+        - generic [ref=e1245] [box=275,123,729,222]:
+          - paragraph [ref=e1287] [box=301,149,679,98]: In the Listening test, you will be asked to demonstrate how well you understand spoken English. The entire Listening test will last approximately 45 minutes. There are four parts, and directions are given for each part. You must mark your answers on the separate answer sheet. Do not write your answers in your test book.
+          - paragraph [ref=e1288] [box=301,257,679,63]: Trong bài thi Nghe, bạn sẽ thể hiện khả năng hiểu tiếng Anh nói. Toàn bộ bài thi Nghe kéo dài khoảng 45 phút, gồm 4 phần và mỗi phần có hướng dẫn riêng. Hãy đánh dấu đáp án vào phiếu trả lời, không ghi vào đề.
+      - generic [ref=e1290] [box=90,677,1100,43]:
+        - button "Full screen" [ref=e1291] [cursor=pointer] [box=112,686,104,25]
+        - button "NEXT" [ref=e1297] [cursor=pointer] [box=1087,684,81,29]

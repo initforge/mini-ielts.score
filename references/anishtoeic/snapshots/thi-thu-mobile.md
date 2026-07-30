@@ -1,0 +1,29 @@
+- main [ref=f7e5] [box=0,0,390,844]:
+  - generic [ref=f7e8] [box=14,173,362,499]:
+    - generic [ref=f7e9] [box=33,191,325,49]:
+      - button "Quay lại" [ref=f7e11] [cursor=pointer] [box=33,194,71,44]
+      - link [ref=f7e14] [cursor=pointer] [box=171,191,49,49]:
+        - /url: /
+        - img "Anish TOEIC Logo" [ref=f7e15] [box=171,191,49,49]
+    - heading "Anish TOEIC" [level=1] [ref=f7e16] [box=33,251,325,28]
+    - paragraph [ref=f7e17] [box=33,284,325,23]: Nâng cao kỹ năng TOEIC của bạn với chúng tôi
+    - generic [ref=f7e18] [box=33,325,325,216]:
+      - textbox "Email or Username" [ref=f7e25] [box=33,325,325,48]:
+        - /placeholder: Email hoặc Username
+      - generic [ref=f7e27] [box=33,400,325,92]:
+        - generic [ref=f7e28] [box=33,400,325,48]:
+          - textbox "Password" [ref=f7e33] [box=33,400,325,48]:
+            - /placeholder: Mật khẩu
+          - button "Show password" [ref=f7e34] [cursor=pointer] [box=327,400,31,48]
+        - link "Quên mật khẩu?" [ref=f7e40] [cursor=pointer] [box=262,474,96,15]:
+          - /url: /quen-mat-khau
+      - button "Đăng nhập" [ref=f7e41] [cursor=pointer] [box=33,502,325,39]
+    - generic [ref=f7e42] [box=33,555,325,16]:
+      - separator [ref=f7e43] [box=33,562,135,1]
+      - generic [ref=f7e44] [box=182,555,26,16]: Hoặc
+      - separator [ref=f7e45] [box=222,562,135,1]
+    - button "Continue with Google" [ref=f7e46] [cursor=pointer] [box=33,585,325,39]
+    - paragraph [ref=f7e54] [box=33,637,325,16]:
+      - text: Chưa có tài khoản?
+      - link "Đăng ký ngay" [ref=f7e55] [cursor=pointer] [box=210,638,70,13]:
+        - /url: /dang-ky
