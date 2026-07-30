@@ -1,0 +1,25 @@
+> anish-toeic-monorepo@1.0.0 build
+> npm run build --workspaces
+
+
+> anish-toeic-web-app@0.1.0 build
+> tsc && vite build
+
+vite v5.4.21 building for production...
+transforming...
+✓ 34 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.41 kB │ gzip:  0.29 kB
+dist/assets/index-oQbyHPBx.css   21.49 kB │ gzip:  5.94 kB
+dist/assets/index-DAOlRI6x.js   158.60 kB │ gzip: 51.65 kB
+✓ built in 498ms
+
+> anish-toeic-web-services@0.1.0 build
+> tsc
+
+> anish-toeic-monorepo@1.0.0 typecheck
+> npm run typecheck --workspaces
+
+> anish-toeic-monorepo@1.0.0 lint
+> npm run lint --workspaces

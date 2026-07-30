@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  title: Anish TOEIC Web Services
+  version: 1.0.0
+  description: Core API contract for the /thi-thu feature.
+paths:
+  /api/health:
+    get:
+      summary: Health check endpoint
+      responses:
+        '200':
+          description: OK
+  /api/toeic-exams:
+    get:
+      summary: Search/filter/paginate catalog
+      responses:
+        '200':
+          description: Successful catalog response
+  /api/toeic-exams/{slug}:
+    get:
+      summary: Exam metadata and instructions
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /api/toeic-exams/{id}/attempts:
+    post:
+      summary: Create exam/practice attempt
+      responses:
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
