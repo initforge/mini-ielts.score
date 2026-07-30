@@ -319,7 +319,7 @@
       "name": "Monorepo foundation and contracts",
       "required": true,
       "review_required": true,
-      "status": "blocked"
+      "status": "ready"
     },
     {
       "acceptance": [
@@ -389,7 +389,7 @@
       "name": "Schema, auth and core exam API",
       "required": true,
       "review_required": true,
-      "status": "blocked"
+      "status": "ready"
     },
     {
       "acceptance": [
