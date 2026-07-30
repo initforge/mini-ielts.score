@@ -36,6 +36,9 @@ app.get('/api/health', (_req, res) => {
 // Mount TOEIC router under /api
 app.use('/api', toeicRoutes);
 
+import authRoutes from './routes/auth.routes';
+app.use('/api/auth', authRoutes);
+
 if (require.main === module) {
   app.listen(port, () => {
     console.log(`Server running on port ${port}`);

@@ -1,5 +1,6 @@
 import { pool } from './db.service';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
+import { ScorerService } from './scorer.service';
 
 export class ToeicService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -147,10 +148,12 @@ export class ToeicService {
     try {
       await connection.beginTransaction();
 
-      const [rows] = await connection.query<RowDataPacket[]>('SELECT id, status FROM toeic_attempts WHERE id = ? AND user_id = ? FOR UPDATE', [attemptId, userId]);
+      const [rows] = await connection.query<RowDataPacket[]>('SELECT a.id, a.status, e.skill_type FROM toeic_attempts a JOIN toeic_exams e ON a.exam_id = e.id WHERE a.id = ? AND a.user_id = ? FOR UPDATE', [attemptId, userId]);
       if (!rows.length) throw new Error('Unauthorized or attempt not found');
       
       const status = rows[0].status;
+      const skillType = rows[0].skill_type;
+      
       if (status === 'SUBMITTED' || status === 'COMPLETED' || status === 'GRADING') {
         // Idempotency: already submitted
         await connection.rollback();
@@ -166,11 +169,16 @@ export class ToeicService {
         ['SUBMITTED', attemptId]
       );
       
-      // Use INSERT IGNORE to prevent duplicate jobs if a concurrent submit happens
-      await connection.query(
-        'INSERT IGNORE INTO toeic_grading_jobs (attempt_id, status) VALUES (?, ?)',
-        [attemptId, 'QUEUED']
-      );
+      if (skillType === 'LR') {
+        await ScorerService.scoreLR(attemptId, userId, connection);
+        await connection.query('UPDATE toeic_attempts SET status = ? WHERE id = ?', ['COMPLETED', attemptId]);
+      } else {
+        // Use INSERT IGNORE to prevent duplicate jobs if a concurrent submit happens
+        await connection.query(
+          'INSERT IGNORE INTO toeic_grading_jobs (attempt_id, status) VALUES (?, ?)',
+          [attemptId, 'QUEUED']
+        );
+      }
 
       await connection.commit();
       return { success: true };
