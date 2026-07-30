@@ -286,3 +286,22 @@ passed. S4 and S5 may run in parallel after S0/S2.
   - `PARTIAL` when useful verified work remains but an external prerequisite
     prevents full completion.
   - `BLOCKED` only for a decisive owner/credential/permission dependency.
+
+## 11. Audited Backlog Findings
+
+During the audit, the following findings were mapped to their respective slices and must be addressed before the slice can be verified:
+
+### Slice S1 (Monorepo Foundation)
+- **F-07 — `npm test` đang xanh giả**: The test scripts in package.json files are mocks that exit 0 without running Jest. They must be configured to run actual test suites.
+- **F-08 — Backend lint lỗi**: Lint configuration is missing or broken. A proper ESLint configuration must be set up and passing.
+- **F-10 — Env validation và CORS allowlist chưa đầy đủ**: Backend environment variables are not validated on startup, and CORS configuration is not fully configured.
+
+### Slice S2 (Schema, Auth and Core Exam API)
+- **F-01 — Auth đang tin `x-user-id` và fallback mock user**: The current implementation trusts the `x-user-id` request header directly and falls back to a mock user ID, which is insecure. Secure session validation must be implemented.
+- **F-02 — Router TOEIC chưa mount vào Express**: The Express application in `server.ts` does not mount the TOEIC routes. They must be imported and mounted.
+- **F-03 — Stale revision vẫn trả success**: When `client_revision` sent by client is stale (lower than database), the update query executes conditionally but returns success without notifying the client. The API must handle state synchronization correctly.
+- **F-04 — Submit và grading job không có transaction/recovery**: The `submitAttempt` service performs database updates and grading job enqueuing across separate queries without a database transaction, exposing the system to partial failure states.
+- **F-05 — Thiếu kiểm tra question/option thuộc exam của attempt**: The updateResponse API does not verify that the questionId and selectedOptionId actually belong to the specific exam of the attempt.
+- **F-06 — Catalog chưa search/filter/paginate**: The exam catalog API (`/api/toeic-exams`) returns all exams without supporting search terms, category filters, or pagination.
+- **F-09 — Migration test chưa dùng MySQL thật**: The migration integration tests are currently mocked. They must be validated against a test MySQL database.
+

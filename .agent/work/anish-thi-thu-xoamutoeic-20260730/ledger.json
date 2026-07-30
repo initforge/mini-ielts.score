@@ -13,7 +13,7 @@
     "sha256": "ccd8c26699627d50a8b9c123e55e83cbc2a2473db1b107215d318fbbc47c7022"
   },
   "active_slices": [
-    "S1"
+    "S2"
   ],
   "classification": {
     "shape": "resumable",
@@ -395,7 +395,7 @@
       "name": "Schema, auth and core exam API",
       "required": true,
       "review_required": true,
-      "status": "passed"
+      "status": "ready"
     },
     {
       "acceptance": [
@@ -467,7 +467,7 @@
       "name": "Catalog and login return flow",
       "required": true,
       "review_required": true,
-      "status": "ready"
+      "status": "blocked"
     },
     {
       "acceptance": [
@@ -540,7 +540,7 @@
       "name": "Attempt lifecycle and L&R",
       "required": true,
       "review_required": true,
-      "status": "ready"
+      "status": "blocked"
     },
     {
       "acceptance": [
@@ -613,7 +613,7 @@
       "name": "S&W runner and media",
       "required": true,
       "review_required": true,
-      "status": "ready"
+      "status": "blocked"
     },
     {
       "acceptance": [
@@ -687,7 +687,7 @@
       "name": "Grading, result, review and history",
       "required": true,
       "review_required": true,
-      "status": "ready"
+      "status": "blocked"
     },
     {
       "acceptance": [
@@ -761,7 +761,7 @@
       "name": "Integration, VPS readiness and merge handoff",
       "required": true,
       "review_required": true,
-      "status": "ready"
+      "status": "blocked"
     }
   ],
   "assignments": [
@@ -1022,7 +1022,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "running",
+      "status": "done",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "a930c70400d53cc9137d3ea15e0b7b5e3b27b44d22487cf765b2bbf6e7c62ded",
       "receipt_budget": 2,
@@ -1225,7 +1225,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "ready",
+      "status": "blocked",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "174f29fcc37266c594629f92bf6cf99965645b52d887e1b105379a560e5368e6",
       "receipt_budget": 3,
@@ -1285,7 +1285,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "ready",
+      "status": "blocked",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "68a04d3977d6392c649c9cee6221f6ddb159767d649bec2a4dd74f80a8b6e73d",
       "receipt_budget": 3,
@@ -1355,7 +1355,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "ready",
+      "status": "blocked",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "246aa7a824ae1d1c93b9dc61cc9d8dad5d116675d9b357bb1a0b5fad3920a9e6",
       "receipt_budget": 3,
@@ -1415,7 +1415,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "ready",
+      "status": "blocked",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "b85f952abba265c09bc9f2faa6871f786aaeaa7b431c1fbab747302d02642ec8",
       "receipt_budget": 3,
@@ -1485,7 +1485,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "ready",
+      "status": "blocked",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "36dbaa2d44c80cd455046854175dd6315b89efc3689a77a2c37dbafa59958087",
       "receipt_budget": 3,
@@ -1546,7 +1546,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "ready",
+      "status": "blocked",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "f27999d93b617edb296b89329c65e9a5f02b89190f880affe36010448f8a0531",
       "receipt_budget": 3,
@@ -1623,7 +1623,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "ready",
+      "status": "blocked",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "14d543c7922f7c009e0ed712c5b1db77d9a9591e76a722ac7da914db721864c6",
       "receipt_budget": 3,
@@ -1684,7 +1684,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "ready",
+      "status": "blocked",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "238dbf4ac34e26f6492fe6f6a5de5bcd6ca89628fbbea12825cb596b61c96e4b",
       "receipt_budget": 3,
@@ -1764,7 +1764,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "ready",
+      "status": "blocked",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "8e26596116be96a7a82fc4f611c5259f9ed7a139ff9ee6426f93546776fd285b",
       "receipt_budget": 3,
@@ -1831,7 +1831,7 @@
         "fallback_reason": "",
         "main_direct_exception_reason": ""
       },
-      "status": "ready",
+      "status": "blocked",
       "actor_session": "legacy-unobserved",
       "capsule_hash": "ba896ca4ba7cf4eab950f95117e7cf41b1e80aa8d8d1f1eeac272f15015a90d4",
       "receipt_budget": 3,
@@ -1976,7 +1976,78 @@
       "created_at": "2026-07-30T07:55:29.725620+00:00"
     }
   ],
-  "findings": [],
+  "findings": [
+    {
+      "id": "F-01",
+      "title": "Auth relies on x-user-id header and falls back to mock user",
+      "severity": "medium",
+      "slice_id": "S2",
+      "description": "Auth currently trusts 'x-user-id' from headers without verification, and falls back to a hardcoded mock user id."
+    },
+    {
+      "id": "F-02",
+      "title": "TOEIC Router not mounted in Express app",
+      "severity": "high",
+      "slice_id": "S2",
+      "description": "The Express server.ts only defines /api/health and does not import or mount the toeicRouter from routes/toeic.routes.ts."
+    },
+    {
+      "id": "F-03",
+      "title": "Stale revision updates return success",
+      "severity": "medium",
+      "slice_id": "S2",
+      "description": "When a client sends a stale revision to updateResponse, the server query skips the update but still returns success without warning the client."
+    },
+    {
+      "id": "F-04",
+      "title": "Submit and grading jobs lack database transactions",
+      "severity": "high",
+      "slice_id": "S2",
+      "description": "The submitAttempt method performs updates and enqueues grading jobs using independent queries without a database transaction, exposing the system to partial success failures."
+    },
+    {
+      "id": "F-05",
+      "title": "Missing validation for question/option belonging to the exam of the attempt",
+      "severity": "high",
+      "slice_id": "S2",
+      "description": "The updateResponse service does not verify that the questionId and selectedOptionId actually belong to the exam of the attempt."
+    },
+    {
+      "id": "F-06",
+      "title": "Catalog API does not support search, filter, or pagination",
+      "severity": "medium",
+      "slice_id": "S2",
+      "description": "The getExams backend service queries the entire database table without applying filters, search queries, or pagination limit/offset."
+    },
+    {
+      "id": "F-07",
+      "title": "Npm test reports fake green status",
+      "severity": "medium",
+      "slice_id": "S1",
+      "description": "The test scripts in the root and workspace package.json files are configured to echo 'No tests configured yet' and exit 0, ignoring the actual Jest test files in src/tests."
+    },
+    {
+      "id": "F-08",
+      "title": "Backend lint errors",
+      "severity": "medium",
+      "slice_id": "S1",
+      "description": "The backend project has lint errors or is missing structured lint configurations in place."
+    },
+    {
+      "id": "F-09",
+      "title": "Migration test does not run against a real MySQL database",
+      "severity": "medium",
+      "slice_id": "S2",
+      "description": "The migrations.test.ts file mocks the db.service pool, so migrations are never tested against a real MySQL instance."
+    },
+    {
+      "id": "F-10",
+      "title": "Incomplete environment validation and CORS allowlist configuration",
+      "severity": "medium",
+      "slice_id": "S1",
+      "description": "Environment variables are not fully validated at startup, and CORS allowlist rules are not fully populated or enforced in Express."
+    }
+  ],
   "checkpoints": [],
   "usage": {
     "input_tokens": 0,
@@ -1987,5 +2058,5 @@
     "tool_calls": 0,
     "records": []
   },
-  "next_action": "Continue independent slices: S1."
+  "next_action": "Continue independent slices: S2."
 }
