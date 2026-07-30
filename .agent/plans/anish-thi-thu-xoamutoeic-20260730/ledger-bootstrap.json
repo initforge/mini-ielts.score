@@ -46,248 +46,434 @@
   "next_action": "Invoke S0 and S1 implementers, wait for explicit acknowledgments, then start both slices.",
   "source_history": [
     {
+      "captured_at": "2026-07-30T00:00:00+00:00",
       "id": "REQ-001",
       "kind": "original",
-      "summary": "XoaMu is the full layout and behavior blueprint for Anish /thi-thu; only Anish color/branding and shared shell differ.",
-      "captured_at": "2026-07-30T00:00:00+00:00",
       "redacted": false,
-      "slice_ids": ["S0", "S3", "S4", "S5", "S6", "S7"]
+      "slice_ids": [
+        "S0",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "summary": "XoaMu is the full layout and behavior blueprint for Anish /thi-thu; only Anish color/branding and shared shell differ."
     },
     {
+      "captured_at": "2026-07-30T00:01:00+00:00",
       "id": "REQ-002",
       "kind": "original",
-      "summary": "Literal Chrome Ctrl+S Webpage Complete production-source references are required; screenshots alone are insufficient.",
-      "captured_at": "2026-07-30T00:01:00+00:00",
       "redacted": false,
-      "slice_ids": ["S0"]
+      "slice_ids": [
+        "S0"
+      ],
+      "summary": "Literal Chrome Ctrl+S Webpage Complete production-source references are required; screenshots alone are insufficient."
     },
     {
+      "captured_at": "2026-07-30T00:02:00+00:00",
       "id": "REQ-003",
       "kind": "original",
-      "summary": "Build the supplied Vite 5173 and Express 7000 monorepo with /api proxy, MySQL, Redis, S3/Cloudinary and Gemini.",
-      "captured_at": "2026-07-30T00:02:00+00:00",
       "redacted": false,
-      "slice_ids": ["S1", "S2", "S3", "S4", "S5", "S6", "S7"]
+      "slice_ids": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "summary": "Build the supplied Vite 5173 and Express 7000 monorepo with /api proxy, MySQL, Redis, S3/Cloudinary and Gemini."
     },
     {
+      "captured_at": "2026-07-30T00:03:00+00:00",
       "id": "REQ-004",
       "kind": "original",
-      "summary": "Implement the complete L&R and S&W surface without production exam data.",
-      "captured_at": "2026-07-30T00:03:00+00:00",
       "redacted": false,
-      "slice_ids": ["S2", "S3", "S4", "S5", "S6", "S7"]
+      "slice_ids": [
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "summary": "Implement the complete L&R and S&W surface without production exam data."
     },
     {
+      "captured_at": "2026-07-30T00:04:00+00:00",
       "id": "DEC-001",
       "kind": "decision",
-      "summary": "The catalog is public and authentication is required before attempt creation.",
-      "captured_at": "2026-07-30T00:04:00+00:00",
       "redacted": false,
-      "slice_ids": ["S2", "S3", "S7"]
+      "slice_ids": [
+        "S2",
+        "S3",
+        "S7"
+      ],
+      "summary": "The catalog is public and authentication is required before attempt creation."
     },
     {
+      "captured_at": "2026-07-30T00:05:00+00:00",
       "id": "DEC-002",
       "kind": "decision",
-      "summary": "Deployment target is the existing VPS; Cloudflare is DNS/CDN/TLS rather than a Workers backend.",
-      "captured_at": "2026-07-30T00:05:00+00:00",
       "redacted": false,
-      "slice_ids": ["S1", "S7"]
+      "slice_ids": [
+        "S1",
+        "S7"
+      ],
+      "summary": "Deployment target is the existing VPS; Cloudflare is DNS/CDN/TLS rather than a Workers backend."
     },
     {
+      "captured_at": "2026-07-30T00:06:00+00:00",
       "id": "DEC-003",
       "kind": "decision",
-      "summary": "The old root prototype and its backup do not define the target architecture.",
-      "captured_at": "2026-07-30T00:06:00+00:00",
       "redacted": false,
-      "slice_ids": ["S1", "S7"]
+      "slice_ids": [
+        "S1",
+        "S7"
+      ],
+      "summary": "The old root prototype and its backup do not define the target architecture."
     },
     {
+      "captured_at": "2026-07-30T00:07:00+00:00",
       "id": "DEC-004",
       "kind": "decision",
-      "summary": "Production starts with an empty database; only synthetic development and test fixtures are allowed.",
-      "captured_at": "2026-07-30T00:07:00+00:00",
       "redacted": false,
-      "slice_ids": ["S2", "S4", "S5", "S6", "S7"]
+      "slice_ids": [
+        "S2",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "summary": "Production starts with an empty database; only synthetic development and test fixtures are allowed."
     },
     {
+      "captured_at": "2026-07-30T00:08:00+00:00",
       "id": "DEC-005",
       "kind": "decision",
-      "summary": "Antigravity starts after the harness commit exists on origin/master and implements on a feature branch.",
-      "captured_at": "2026-07-30T00:08:00+00:00",
       "redacted": false,
-      "slice_ids": ["S1", "S7"]
+      "slice_ids": [
+        "S1",
+        "S7"
+      ],
+      "summary": "Antigravity starts after the harness commit exists on origin/master and implements on a feature branch."
     },
     {
+      "captured_at": "2026-07-30T00:09:00+00:00",
       "id": "DISC-001",
       "kind": "discovery",
-      "summary": "Existing references contain screenshots and DOM/a11y captures but not a complete Webpage Complete corpus.",
-      "captured_at": "2026-07-30T00:09:00+00:00",
       "redacted": false,
-      "slice_ids": ["S0"]
+      "slice_ids": [
+        "S0"
+      ],
+      "summary": "Existing references contain screenshots and DOM/a11y captures but not a complete Webpage Complete corpus."
     },
     {
+      "captured_at": "2026-07-30T00:10:00+00:00",
       "id": "DISC-002",
       "kind": "discovery",
-      "summary": "The reference has late anonymous grading 401s, missing media and public review-content exposure that must not be reproduced.",
-      "captured_at": "2026-07-30T00:10:00+00:00",
       "redacted": false,
-      "slice_ids": ["S2", "S5", "S6", "S7"]
+      "slice_ids": [
+        "S2",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "summary": "The reference has late anonymous grading 401s, missing media and public review-content exposure that must not be reproduced."
     },
     {
+      "captured_at": "2026-07-30T00:11:00+00:00",
       "id": "DISC-003",
       "kind": "discovery",
-      "summary": "The old prototype install, lint and media baseline is not clean and cannot be the merge contract.",
-      "captured_at": "2026-07-30T00:11:00+00:00",
       "redacted": false,
-      "slice_ids": ["S1", "S7"]
+      "slice_ids": [
+        "S1",
+        "S7"
+      ],
+      "summary": "The old prototype install, lint and media baseline is not clean and cannot be the merge contract."
     }
   ],
   "slices": [
     {
+      "acceptance": [
+        {
+          "claim": "Literal Chrome Webpage Complete references cover the required route and state matrix and reopen offline.",
+          "id": "AC1",
+          "proof_profile": "ui-source-parity",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "source-complete",
+            "route-state",
+            "offline-reopen"
+          ],
+          "required_proof_kinds": [
+            "artifact",
+            "browser"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "049da15a446b146078dcbc3ec3861afe6de27450032a682edb86572554b5b4ad"
+        },
+        {
+          "claim": "The reference-to-component parity map covers desktop, mobile and all observed branches.",
+          "id": "AC2",
+          "proof_profile": "ui-parity-map",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "desktop",
+            "mobile",
+            "branch-coverage"
+          ],
+          "required_proof_kinds": [
+            "static",
+            "manual"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "c48878392901c3ef33e1fc637e6a2c7caa227056bcc0a032713b4484b84d31d0"
+        }
+      ],
+      "depends_on": [],
       "id": "S0",
       "name": "Production reference and parity map",
-      "status": "ready",
-      "depends_on": [],
       "required": true,
       "review_required": true,
-      "acceptance": [
-        {
-          "id": "AC1",
-          "claim": "Literal Chrome Webpage Complete references cover the required route and state matrix and reopen offline.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "ui-source-parity",
-          "required_proof_kinds": ["artifact", "browser"],
-          "required_dimensions": ["source-complete", "route-state", "offline-reopen"],
-          "receipt_ids": []
-        },
-        {
-          "id": "AC2",
-          "claim": "The reference-to-component parity map covers desktop, mobile and all observed branches.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "ui-parity-map",
-          "required_proof_kinds": ["static", "manual"],
-          "required_dimensions": ["desktop", "mobile", "branch-coverage"],
-          "receipt_ids": []
-        }
-      ]
+      "status": "blocked"
     },
     {
+      "acceptance": [
+        {
+          "claim": "A clean checkout installs, builds, typechecks and lints both target applications.",
+          "id": "AC3",
+          "proof_profile": "clean-build",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "fresh-install",
+            "frontend",
+            "backend"
+          ],
+          "required_proof_kinds": [
+            "build",
+            "static"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "fd10076e105354941e8d4acdba9fc1e885600304818104e6cf61c1a15cc1a0c2"
+        },
+        {
+          "claim": "Development topology is Vite 5173 through /api to Express 7000 with validated environment contracts.",
+          "id": "AC4",
+          "proof_profile": "runtime-topology",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "proxy",
+            "ports",
+            "env-validation"
+          ],
+          "required_proof_kinds": [
+            "integration",
+            "api"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "8e0d98c7a254f8591e87525003344fb9771f624050d3e1fded514e27a75fb2a7"
+        }
+      ],
+      "depends_on": [],
       "id": "S1",
       "name": "Monorepo foundation and contracts",
-      "status": "ready",
-      "depends_on": [],
       "required": true,
       "review_required": true,
-      "acceptance": [
-        {
-          "id": "AC3",
-          "claim": "A clean checkout installs, builds, typechecks and lints both target applications.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "clean-build",
-          "required_proof_kinds": ["build", "static"],
-          "required_dimensions": ["fresh-install", "frontend", "backend"],
-          "receipt_ids": []
-        },
-        {
-          "id": "AC4",
-          "claim": "Development topology is Vite 5173 through /api to Express 7000 with validated environment contracts.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "runtime-topology",
-          "required_proof_kinds": ["integration", "api"],
-          "required_dimensions": ["proxy", "ports", "env-validation"],
-          "receipt_ids": []
-        }
-      ]
+      "status": "ready"
     },
     {
+      "acceptance": [
+        {
+          "claim": "MySQL migrations create the complete empty production schema safely.",
+          "id": "AC5",
+          "proof_profile": "migration",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "forward-migration",
+            "constraints",
+            "empty-seed"
+          ],
+          "required_proof_kinds": [
+            "integration",
+            "static"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "a985e1ef9c4c96d68275bae626e0e63e8938989ebdfe9bc5d8c0b4fb94e79302"
+        },
+        {
+          "claim": "Catalog, session and review API projections keep protected content separated.",
+          "id": "AC6",
+          "proof_profile": "public-api-security",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "public-contract",
+            "answer-isolation",
+            "review-authorization"
+          ],
+          "required_proof_kinds": [
+            "api",
+            "security"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "a17ee662d1f8ef01d68cc80436e019e643fd5dfdc475e4df0da849ba6587b9e6"
+        },
+        {
+          "claim": "Auth, ownership, revision and idempotency rules reject invalid and cross-user actions.",
+          "id": "AC7",
+          "proof_profile": "auth-integration",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "401",
+            "403",
+            "409",
+            "idempotency"
+          ],
+          "required_proof_kinds": [
+            "integration",
+            "security"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "5aeb1c064195171cd03764c3295cf9776c6e89cbd543b29d229bec537f834edb"
+        }
+      ],
+      "depends_on": [
+        "S1"
+      ],
       "id": "S2",
       "name": "Schema, auth and core exam API",
-      "status": "ready",
-      "depends_on": ["S1"],
       "required": true,
       "review_required": true,
-      "acceptance": [
-        {
-          "id": "AC5",
-          "claim": "MySQL migrations create the complete empty production schema safely.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "migration",
-          "required_proof_kinds": ["integration", "static"],
-          "required_dimensions": ["forward-migration", "constraints", "empty-seed"],
-          "receipt_ids": []
-        },
-        {
-          "id": "AC6",
-          "claim": "Catalog, session and review API projections keep protected content separated.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "public-api-security",
-          "required_proof_kinds": ["api", "security"],
-          "required_dimensions": ["public-contract", "answer-isolation", "review-authorization"],
-          "receipt_ids": []
-        },
-        {
-          "id": "AC7",
-          "claim": "Auth, ownership, revision and idempotency rules reject invalid and cross-user actions.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "auth-integration",
-          "required_proof_kinds": ["integration", "security"],
-          "required_dimensions": ["401", "403", "409", "idempotency"],
-          "receipt_ids": []
-        }
-      ]
+      "status": "blocked"
     },
     {
+      "acceptance": [
+        {
+          "claim": "Catalog and mode dialog match XoaMu geometry and behavior with Anish tokens.",
+          "id": "AC8",
+          "proof_profile": "responsive-ui-parity",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "desktop",
+            "mobile",
+            "visual-parity"
+          ],
+          "required_proof_kinds": [
+            "browser",
+            "diff"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "92cc02355b6bf6e3be80078ee53e2c3cc4f3490dacc49ec535f3d7766e427534"
+        },
+        {
+          "claim": "Public browsing and login return preserve the selected exam and mode.",
+          "id": "AC9",
+          "proof_profile": "auth-browser-flow",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "anonymous",
+            "return-url",
+            "intent-preservation"
+          ],
+          "required_proof_kinds": [
+            "e2e",
+            "browser"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "0242d30b4742424e02c5bc81804acea9d1999589bdd3e0a8fd676016e2ea94dd"
+        },
+        {
+          "claim": "Catalog loading, empty, error, search, filter and no-result states are complete.",
+          "id": "AC10",
+          "proof_profile": "catalog-states",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "loading",
+            "empty",
+            "error",
+            "filter"
+          ],
+          "required_proof_kinds": [
+            "browser",
+            "integration"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "c2eb6d5de87a73d0bdcc954a6d7dcf591444cbf79e4b8a25aa037687a2b2057d"
+        }
+      ],
+      "depends_on": [
+        "S0",
+        "S1",
+        "S2"
+      ],
       "id": "S3",
       "name": "Catalog and login return flow",
-      "status": "ready",
-      "depends_on": ["S0", "S1", "S2"],
+      "required": true,
+      "review_required": true,
+      "status": "blocked"
+    },
+    {
+      "id": "S4-BE",
+      "name": "L&R scoring backend",
+      "status": "blocked",
+      "depends_on": [
+        "S2"
+      ],
       "required": true,
       "review_required": true,
       "acceptance": [
         {
-          "id": "AC8",
-          "claim": "Catalog and mode dialog match XoaMu geometry and behavior with Anish tokens.",
+          "id": "AC13-BE",
+          "claim": "L&R scoring service and API projection compute scores deterministically.",
           "status": "open",
           "proof_required": true,
-          "proof_profile": "responsive-ui-parity",
-          "required_proof_kinds": ["browser", "diff"],
-          "required_dimensions": ["desktop", "mobile", "visual-parity"],
-          "receipt_ids": []
-        },
-        {
-          "id": "AC9",
-          "claim": "Public browsing and login return preserve the selected exam and mode.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "auth-browser-flow",
-          "required_proof_kinds": ["e2e", "browser"],
-          "required_dimensions": ["anonymous", "return-url", "intent-preservation"],
-          "receipt_ids": []
-        },
-        {
-          "id": "AC10",
-          "claim": "Catalog loading, empty, error, search, filter and no-result states are complete.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "catalog-states",
-          "required_proof_kinds": ["browser", "integration"],
-          "required_dimensions": ["loading", "empty", "error", "filter"],
-          "receipt_ids": []
+          "proof_profile": "lr-scoring-be",
+          "required_proof_kinds": [
+            "api",
+            "integration"
+          ],
+          "required_dimensions": [
+            "score",
+            "result",
+            "ownership"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "73f70be71d4eb3fe342e1d40525f23b9e7fe1a20651a79d6e1de5435f0e94224"
         }
       ]
     },
     {
-      "id": "S4",
-      "name": "Attempt lifecycle and L&R",
-      "status": "ready",
-      "depends_on": ["S0", "S2"],
+      "id": "S4-FE",
+      "name": "L&R runner frontend",
+      "status": "blocked",
+      "depends_on": [
+        "S0",
+        "S2",
+        "S4-BE"
+      ],
       "required": true,
       "review_required": true,
       "acceptance": [
@@ -297,9 +483,19 @@
           "status": "open",
           "proof_required": true,
           "proof_profile": "attempt-lifecycle",
-          "required_proof_kinds": ["integration", "browser"],
-          "required_dimensions": ["autosave", "reload", "offline", "expiry"],
-          "receipt_ids": []
+          "required_proof_kinds": [
+            "integration",
+            "browser"
+          ],
+          "required_dimensions": [
+            "autosave",
+            "reload",
+            "offline",
+            "expiry"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "d654995ae5c95d1d83fab8724a61abfe39c4f2807301da671f82d8506b4c9b0e"
         },
         {
           "id": "AC12",
@@ -307,27 +503,82 @@
           "status": "open",
           "proof_required": true,
           "proof_profile": "lr-e2e",
-          "required_proof_kinds": ["e2e", "browser"],
-          "required_dimensions": ["part-1-7", "audio", "palette", "practice"],
-          "receipt_ids": []
+          "required_proof_kinds": [
+            "e2e",
+            "browser"
+          ],
+          "required_dimensions": [
+            "part-1-7",
+            "audio",
+            "palette",
+            "practice"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "7a62eb0e981e9c22ab7e5bad150aa8ec0584f47e60a8dcfff827003a0f7ed65b"
         },
         {
-          "id": "AC13",
-          "claim": "L&R scoring, result, error map and authorized review are correct.",
+          "id": "AC13-FE",
+          "claim": "L&R results page, error map UI, and authorized review view are correct.",
           "status": "open",
           "proof_required": true,
-          "proof_profile": "lr-result",
-          "required_proof_kinds": ["api", "browser"],
-          "required_dimensions": ["score", "result", "error-map", "ownership"],
-          "receipt_ids": []
+          "proof_profile": "lr-result-fe",
+          "required_proof_kinds": [
+            "browser",
+            "diff"
+          ],
+          "required_dimensions": [
+            "score",
+            "result",
+            "error-map",
+            "ownership"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "73f70be71d4eb3fe342e1d40525f23b9e7fe1a20651a79d6e1de5435f0e94224"
         }
       ]
     },
     {
-      "id": "S5",
-      "name": "S&W runner and media",
-      "status": "ready",
-      "depends_on": ["S0", "S2"],
+      "id": "S5-BE",
+      "name": "Media upload backend",
+      "status": "blocked",
+      "depends_on": [
+        "S2"
+      ],
+      "required": true,
+      "review_required": true,
+      "acceptance": [
+        {
+          "id": "AC15-BE",
+          "claim": "Audio upload presigned URL generation is secure, bounded, and validated.",
+          "status": "open",
+          "proof_required": true,
+          "proof_profile": "media-security-be",
+          "required_proof_kinds": [
+            "integration",
+            "security"
+          ],
+          "required_dimensions": [
+            "presign",
+            "mime-size",
+            "redaction"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "6059cf43cf2b037cd70333295f83b69d5dbee98b25f982befd143041bd0d5fa8"
+        }
+      ]
+    },
+    {
+      "id": "S5-FE",
+      "name": "S&W runner frontend",
+      "status": "blocked",
+      "depends_on": [
+        "S0",
+        "S2",
+        "S5-BE"
+      ],
       "required": true,
       "review_required": true,
       "acceptance": [
@@ -337,19 +588,37 @@
           "status": "open",
           "proof_required": true,
           "proof_profile": "speaking-browser",
-          "required_proof_kinds": ["browser", "e2e"],
-          "required_dimensions": ["permission", "device", "timer", "recording"],
-          "receipt_ids": []
+          "required_proof_kinds": [
+            "browser",
+            "e2e"
+          ],
+          "required_dimensions": [
+            "permission",
+            "device",
+            "timer",
+            "recording"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "affd13c6940bf5ffd3493e09f059e6ca14a7f8433b08bca8f876544cc4aa2a1b"
         },
         {
-          "id": "AC15",
-          "claim": "Audio upload is bounded, retryable and never sends base64 or secrets through grading JSON or logs.",
+          "id": "AC15-FE",
+          "claim": "Audio upload integration retry and failure states serve users safely without data loss.",
           "status": "open",
           "proof_required": true,
-          "proof_profile": "media-security",
-          "required_proof_kinds": ["integration", "security"],
-          "required_dimensions": ["presign", "retry", "mime-size", "redaction"],
-          "receipt_ids": []
+          "proof_profile": "media-upload-fe",
+          "required_proof_kinds": [
+            "browser",
+            "integration"
+          ],
+          "required_dimensions": [
+            "retry",
+            "redaction"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "6059cf43cf2b037cd70333295f83b69d5dbee98b25f982befd143041bd0d5fa8"
         },
         {
           "id": "AC16",
@@ -357,17 +626,31 @@
           "status": "open",
           "proof_required": true,
           "proof_profile": "writing-browser",
-          "required_proof_kinds": ["unit", "browser"],
-          "required_dimensions": ["sanitize", "word-count", "reload", "xss"],
-          "receipt_ids": []
+          "required_proof_kinds": [
+            "unit",
+            "browser"
+          ],
+          "required_dimensions": [
+            "sanitize",
+            "word-count",
+            "reload",
+            "xss"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "f0da37c97f57b97f8667e10398e859a36bd689bd011d317a5bf7a7fd03514ff5"
         }
       ]
     },
     {
-      "id": "S6",
-      "name": "Grading, result, review and history",
-      "status": "ready",
-      "depends_on": ["S2", "S4", "S5"],
+      "id": "S6-BE",
+      "name": "Grading worker & result backend",
+      "status": "blocked",
+      "depends_on": [
+        "S2",
+        "S4-BE",
+        "S5-BE"
+      ],
       "required": true,
       "review_required": true,
       "acceptance": [
@@ -377,71 +660,171 @@
           "status": "open",
           "proof_required": true,
           "proof_profile": "distributed-grading",
-          "required_proof_kinds": ["integration", "security"],
-          "required_dimensions": ["redis", "mysql", "idempotency", "retry"],
-          "receipt_ids": []
+          "required_proof_kinds": [
+            "integration",
+            "security"
+          ],
+          "required_dimensions": [
+            "redis",
+            "mysql",
+            "idempotency",
+            "retry"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "5bc514a2ab65a582072f42d6e90c6ebe8824dafc24f651cca86df1e91652089e"
         },
         {
-          "id": "AC18",
-          "claim": "Processing, result, error map, review and history match the reference flow.",
+          "id": "AC19-BE",
+          "claim": "Secrets, logs, rate limits, and ownership check pass backend security review.",
           "status": "open",
           "proof_required": true,
-          "proof_profile": "result-ui-parity",
-          "required_proof_kinds": ["browser", "e2e"],
-          "required_dimensions": ["desktop", "mobile", "success", "failure"],
-          "receipt_ids": []
-        },
-        {
-          "id": "AC19",
-          "claim": "Secrets, logs, rate limits and ownership satisfy independent security review.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "security-review",
-          "required_proof_kinds": ["security", "manual"],
-          "required_dimensions": ["secret-redaction", "pii", "rate-limit", "ownership"],
-          "receipt_ids": []
+          "proof_profile": "security-be",
+          "required_proof_kinds": [
+            "security",
+            "manual"
+          ],
+          "required_dimensions": [
+            "secret-redaction",
+            "pii",
+            "rate-limit",
+            "ownership"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "9a1da8a058e70d83352694122daf0009e057cd9e58e089d04a2b2c108dfdbaca"
         }
       ]
     },
     {
-      "id": "S7",
-      "name": "Integration, VPS readiness and merge handoff",
-      "status": "ready",
-      "depends_on": ["S3", "S4", "S5", "S6"],
+      "id": "S6-FE",
+      "name": "Processing and results frontend",
+      "status": "blocked",
+      "depends_on": [
+        "S0",
+        "S2",
+        "S4-FE",
+        "S5-FE",
+        "S6-BE"
+      ],
       "required": true,
       "review_required": true,
       "acceptance": [
         {
-          "id": "AC20",
-          "claim": "Production build, Nginx and PM2 configuration match the VPS and Cloudflare edge topology.",
+          "id": "AC18",
+          "claim": "Processing progress, score sheet, review detail and exam history match reference flow.",
           "status": "open",
           "proof_required": true,
-          "proof_profile": "vps-config",
-          "required_proof_kinds": ["build", "static"],
-          "required_dimensions": ["nginx", "pm2", "cloudflare-edge", "env"],
-          "receipt_ids": []
+          "proof_profile": "result-ui-parity",
+          "required_proof_kinds": [
+            "browser",
+            "e2e"
+          ],
+          "required_dimensions": [
+            "desktop",
+            "mobile",
+            "success",
+            "failure"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "e57a7d3e23a4cd4a932b0c6747e3ecd1e3a88ebaac58562fb57d869a55ae1f93"
         },
         {
-          "id": "AC21",
-          "claim": "Synthetic fixtures pass complete L&R and S&W journeys from catalog through history.",
+          "id": "AC19-FE",
+          "claim": "Frontend rate limiting, cookie/token safety, and XSS sanitization pass visual security review.",
           "status": "open",
           "proof_required": true,
-          "proof_profile": "full-e2e",
-          "required_proof_kinds": ["e2e", "browser"],
-          "required_dimensions": ["lr", "sw", "result", "history"],
-          "receipt_ids": []
-        },
-        {
-          "id": "AC22",
-          "claim": "Merge and operations documents allow a clean-checkout verifier to reproduce the setup and proof.",
-          "status": "open",
-          "proof_required": true,
-          "proof_profile": "handoff-verification",
-          "required_proof_kinds": ["artifact", "manual"],
-          "required_dimensions": ["clean-checkout", "merge-contract", "runbook"],
-          "receipt_ids": []
+          "proof_profile": "security-fe",
+          "required_proof_kinds": [
+            "security",
+            "manual"
+          ],
+          "required_dimensions": [
+            "secret-redaction",
+            "pii",
+            "rate-limit",
+            "ownership"
+          ],
+          "receipt_ids": [],
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "9a1da8a058e70d83352694122daf0009e057cd9e58e089d04a2b2c108dfdbaca"
         }
       ]
+    },
+    {
+      "acceptance": [
+        {
+          "claim": "Production build, Nginx and PM2 configuration match the VPS and Cloudflare edge topology.",
+          "id": "AC20",
+          "proof_profile": "vps-config",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "nginx",
+            "pm2",
+            "cloudflare-edge",
+            "env"
+          ],
+          "required_proof_kinds": [
+            "build",
+            "static"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "438e73c66aae0c6e2f4cbfc98d801dac9efc794974e023f87d852fbfcdc790cb"
+        },
+        {
+          "claim": "Synthetic fixtures pass complete L&R and S&W journeys from catalog through history.",
+          "id": "AC21",
+          "proof_profile": "full-e2e",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "lr",
+            "sw",
+            "result",
+            "history"
+          ],
+          "required_proof_kinds": [
+            "e2e",
+            "browser"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "df2c4d24e077748cb5c54b0f09011266f83a313f6ab8c53249f51270f11f2443"
+        },
+        {
+          "claim": "Merge and operations documents allow a clean-checkout verifier to reproduce the setup and proof.",
+          "id": "AC22",
+          "proof_profile": "handoff-verification",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "clean-checkout",
+            "merge-contract",
+            "runbook"
+          ],
+          "required_proof_kinds": [
+            "artifact",
+            "manual"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "c40fb223b40ec1db1bbac1955d8ccc9a1a80de2d1a53a991ce2d26fac94f7275"
+        }
+      ],
+      "depends_on": [
+        "S3",
+        "S4-FE",
+        "S5-FE",
+        "S6-FE"
+      ],
+      "id": "S7",
+      "name": "Integration, VPS readiness and merge handoff",
+      "required": true,
+      "review_required": true,
+      "status": "blocked"
     }
   ]
 }

@@ -34,8 +34,7 @@ history or files outside their exclusive write paths.
 - Sources: REQ-003, REQ-004, DEC-001, DEC-004, DISC-002.
 - Goal: secure catalog/attempt persistence and API projection.
 - Read: plan sections 4–6; S1 OpenAPI contract.
-- Write: MySQL migrations and prefixed backend routes/controllers/services/
-  validations for exam and attempt core.
+- Write: MySQL migrations (src/migrations) and routes/controllers/services/validations (prefixed `toeic`).
 - Forbidden: frontend UI, real exam data, provider secrets.
 - Proof: AC5–AC7 and independent security/API review.
 
@@ -49,34 +48,59 @@ history or files outside their exclusive write paths.
 - Forbidden: runner/result areas, global shell duplication, Xoa branding.
 - Proof: AC8–AC10 with desktop/mobile browser evidence.
 
-## S4 — attempt core and L&R
+## S4-BE — L&R scoring backend
+
+- Sources: REQ-003, REQ-004, DEC-004.
+- Goal: implement L&R scorer service logic and backend unit tests.
+- Read: S2 core schemas.
+- Write: backend L&R scoring services (`toeicLRScoring.service.ts` or similar) and tests.
+- Forbidden: frontend UI, media upload.
+- Proof: AC13-BE with score assertions and integration tests.
+
+## S4-FE — L&R runner frontend
 
 - Sources: REQ-001, REQ-003, REQ-004, DEC-004.
-- Goal: resilient attempt lifecycle and complete L&R journey.
-- Read: S0 parity map/source; S2 attempt API.
-- Write: frontend runner core/L&R areas and backend L&R scoring service.
+- Goal: resilient attempt lifecycle and complete L&R runner UI.
+- Read: S0 parity map/source; S2 attempt API; S4-BE scoring contract.
+- Write: frontend runner core/L&R areas and state stores.
 - Forbidden: S&W/grading worker/history areas.
-- Proof: AC11–AC13 with full browser/API journey.
+- Proof: AC11, AC12, AC13-FE with browser/API journey.
 
-## S5 — S&W and media
+## S5-BE — Media upload backend
+
+- Sources: REQ-003, REQ-004, DISC-002.
+- Goal: implement audio upload presigned URLs and validations.
+- Read: S2 schema and API contract.
+- Write: backend media routes/controllers/services.
+- Forbidden: frontend UI, recording features.
+- Proof: AC15-BE presigned integration test.
+
+## S5-FE — S&W runner frontend
 
 - Sources: REQ-001, REQ-003, REQ-004, DEC-004, DISC-002.
-- Goal: complete microphone, Speaking, Writing and media upload behavior.
-- Read: S0 parity source; S2 API and media contract.
-- Write: frontend S&W runner plus backend media controller/service/validation.
-- Forbidden: result worker/history, raw key/base64/transcript logging.
-- Proof: AC14–AC16 and independent UI/security review.
+- Goal: complete microphone test, Speaking, Writing and audio upload UI.
+- Read: S0 parity source; S5-BE media API.
+- Write: frontend S&W runner, microphone test, timers, audio recorder, and Writing editor.
+- Forbidden: grading backend worker.
+- Proof: AC14, AC15-FE, AC16 and independent UI/UX review.
 
-## S6 — grading, result and history
+## S6-BE — Grading worker & result backend
 
-- Sources: REQ-001, REQ-003, REQ-004, DEC-004, DISC-002.
-- Goal: durable grading plus complete processing/result/review/history flow.
-- Read: S2 schema/API, S4/S5 outputs and S0 result references.
-- Write: backend grading/result worker/services and frontend
-  processing/result/history areas.
-- Forbidden: changing core attempt semantics without re-plan, real Gemini calls
-  in CI.
-- Proof: AC17–AC19 and independent distributed/security review.
+- Sources: REQ-003, REQ-004, DEC-004, DISC-002.
+- Goal: implement idempotent Redis-backed grading worker and Gemini integration.
+- Read: S2 schema, S4-BE, S5-BE output structures.
+- Write: backend grading worker, Gemini caller, results services.
+- Forbidden: frontend UI pages, mock Gemini in final verification.
+- Proof: AC17, AC19-BE security/Distributed review.
+
+## S6-FE — Processing and results frontend
+
+- Sources: REQ-001, REQ-003, REQ-004, DEC-004.
+- Goal: implement processing poll state UI, results review sheet, history list.
+- Read: S0 visual references, S6-BE results contract.
+- Write: frontend processing page, results/review page, history page.
+- Forbidden: changing backend database model without re-plan.
+- Proof: AC18, AC19-FE visual/UX parity reviews.
 
 ## S7 — integration and VPS readiness
 

@@ -220,17 +220,19 @@ viewports.
 
 | Slice | Work | Depends on | Exclusive writer area | Review |
 |---|---|---|---|---|
-| S0 | Ctrl+S source capture, manifests and parity map | none | `references/xoamutoeic/production-source`, manifests and S0 evidence | UI parity reviewer |
-| S1 | Monorepo shells, toolchain, env validation and contracts | none | root/app/service config files | architecture reviewer |
+| S0 | Ctrl+S source capture, manifests and parity map | none | references/xoamutoeic/production-source, manifests and S0 evidence | UI parity reviewer |
+| S1 | Monorepo foundation, toolchain, env validation and contracts | none | root/app/service config files | architecture reviewer |
 | S2 | MySQL schema, catalog/attempt API, auth and data isolation | S1 | backend core exam/attempt files and migrations | security/API reviewer |
 | S3 | Catalog, search/filter, mode dialog and login return flow | S0,S1,S2 | frontend catalog/auth/query areas | UI reviewer |
-| S4 | Attempt core and complete L&R runner/scoring/review | S0,S2 | frontend core/L&R and backend L&R scorer | UI/business reviewer |
-| S5 | Complete S&W runner, editor, recorder and media upload | S0,S2 | frontend S&W and backend media adapter | UI/security reviewer |
-| S6 | Grading worker, processing, result, error map and history | S2,S4,S5 | grading/result/history files | distributed/security reviewer |
-| S7 | Route integration, E2E, VPS configuration and merge docs | S3,S4,S5,S6 | app mounts, deploy, integrated tests and runbooks | independent verifier |
+| S4-BE | L&R scoring backend services and unit tests | S2 | backend L&R scorer | business logic reviewer |
+| S4-FE | L&R runner UI, autosave, resume, and review UI | S0,S2,S4-BE | frontend core/L&R areas | UI reviewer |
+| S5-BE | Media upload pre-signing backend APIs | S2 | backend media adapter | security reviewer |
+| S5-FE | S&W runner UI, microphone test, Quill editor, and audio capture | S0,S2,S5-BE | frontend S&W areas | UI/UX reviewer |
+| S6-BE | Grading worker, results DB services, and grading logic | S2,S4-BE,S5-BE | grading/result backend files | distributed/security reviewer |
+| S6-FE | Processing UI, result page, and history UI | S0,S2,S4-FE,S5-FE,S6-BE | frontend result/history areas | UI reviewer |
+| S7 | Route integration, E2E, VPS configuration and merge docs | S3,S4-FE,S5-FE,S6-FE | app mounts, deploy, integrated tests and runbooks | independent verifier |
 
-S0 and S1 may run in parallel. No frontend parity slice may start until S0 has
-passed. S4 and S5 may run in parallel after S0/S2.
+S0 and S1 may run in parallel. S4-BE and S5-BE may run in parallel after S2. S6-BE may run in parallel after S4-BE/S5-BE. No frontend parity slice may start until S0 has passed.
 
 ## 8. Automatic execution contract
 
