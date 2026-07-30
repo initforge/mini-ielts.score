@@ -1,0 +1,1850 @@
+{
+  "schema_version": 4,
+  "work_id": "anish-thi-thu-xoamutoeic-20260730",
+  "status": "planned",
+  "lifecycle_status": "planned",
+  "task_status": "open",
+  "orchestration_status": "healthy",
+  "created_at": "2026-07-30T07:21:58.582715+00:00",
+  "updated_at": "2026-07-30T07:27:03.017290+00:00",
+  "plan": {
+    "identity": "sha256-file",
+    "ref": "P:\\mini-toeic.score\\.agent\\plans\\anish-thi-thu-xoamutoeic-20260730\\plan.md",
+    "sha256": "ccd8c26699627d50a8b9c123e55e83cbc2a2473db1b107215d318fbbc47c7022"
+  },
+  "active_slices": [],
+  "classification": {
+    "shape": "resumable",
+    "ledger": "required",
+    "strategy": "parallel",
+    "review_required": true,
+    "reasons": [
+      "risk/resume/external wait/long runtime",
+      "file count is an advisory signal, not a risk classifier",
+      "risk-triggered independent review"
+    ]
+  },
+  "execution_contract": {
+    "mode": "automatic",
+    "max_active_agents_including_main": 4,
+    "max_delegation_depth": 1,
+    "effort_cap": "high",
+    "authorized_final_actions": [
+      "edit",
+      "commit",
+      "push"
+    ],
+    "execute_authorization": {
+      "authorized": true,
+      "recorded_at": "2026-07-30T07:21:58.582715+00:00",
+      "source": "Owner requested Antigravity implementation after the harness commit is pushed to remote primary.",
+      "actions": [
+        "edit",
+        "commit",
+        "push"
+      ]
+    },
+    "run_id": "38c3a050962a452a9eecdde08dfca7ba",
+    "main_direct_policy": {
+      "allowed": false,
+      "allowed_tool_classes": [
+        "browser",
+        "edit",
+        "external-write",
+        "git",
+        "network",
+        "read",
+        "shell",
+        "test"
+      ]
+    }
+  },
+  "repository": {
+    "baseline_commit": "a7c9868515a7d8a2d799838efc9c3e210d41e390",
+    "branch": "master",
+    "path": "P:\\mini-toeic.score"
+  },
+  "host_refs": {
+    "host": "antigravity",
+    "session_ref": "",
+    "task_ref": "anish-thi-thu-full-xoamutoeic"
+  },
+  "model_policy_reasons": [],
+  "control_plane_exceptions": [],
+  "proof_cache": [],
+  "telemetry_events": [],
+  "source_history": [
+    {
+      "captured_at": "2026-07-30T00:00:00+00:00",
+      "id": "REQ-001",
+      "kind": "original",
+      "redacted": false,
+      "slice_ids": [
+        "S0",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "summary": "XoaMu is the full layout and behavior blueprint for Anish /thi-thu; only Anish color/branding and shared shell differ."
+    },
+    {
+      "captured_at": "2026-07-30T00:01:00+00:00",
+      "id": "REQ-002",
+      "kind": "original",
+      "redacted": false,
+      "slice_ids": [
+        "S0"
+      ],
+      "summary": "Literal Chrome Ctrl+S Webpage Complete production-source references are required; screenshots alone are insufficient."
+    },
+    {
+      "captured_at": "2026-07-30T00:02:00+00:00",
+      "id": "REQ-003",
+      "kind": "original",
+      "redacted": false,
+      "slice_ids": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "summary": "Build the supplied Vite 5173 and Express 7000 monorepo with /api proxy, MySQL, Redis, S3/Cloudinary and Gemini."
+    },
+    {
+      "captured_at": "2026-07-30T00:03:00+00:00",
+      "id": "REQ-004",
+      "kind": "original",
+      "redacted": false,
+      "slice_ids": [
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "summary": "Implement the complete L&R and S&W surface without production exam data."
+    },
+    {
+      "captured_at": "2026-07-30T00:04:00+00:00",
+      "id": "DEC-001",
+      "kind": "decision",
+      "redacted": false,
+      "slice_ids": [
+        "S2",
+        "S3",
+        "S7"
+      ],
+      "summary": "The catalog is public and authentication is required before attempt creation."
+    },
+    {
+      "captured_at": "2026-07-30T00:05:00+00:00",
+      "id": "DEC-002",
+      "kind": "decision",
+      "redacted": false,
+      "slice_ids": [
+        "S1",
+        "S7"
+      ],
+      "summary": "Deployment target is the existing VPS; Cloudflare is DNS/CDN/TLS rather than a Workers backend."
+    },
+    {
+      "captured_at": "2026-07-30T00:06:00+00:00",
+      "id": "DEC-003",
+      "kind": "decision",
+      "redacted": false,
+      "slice_ids": [
+        "S1",
+        "S7"
+      ],
+      "summary": "The old root prototype and its backup do not define the target architecture."
+    },
+    {
+      "captured_at": "2026-07-30T00:07:00+00:00",
+      "id": "DEC-004",
+      "kind": "decision",
+      "redacted": false,
+      "slice_ids": [
+        "S2",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "summary": "Production starts with an empty database; only synthetic development and test fixtures are allowed."
+    },
+    {
+      "captured_at": "2026-07-30T00:08:00+00:00",
+      "id": "DEC-005",
+      "kind": "decision",
+      "redacted": false,
+      "slice_ids": [
+        "S1",
+        "S7"
+      ],
+      "summary": "Antigravity starts after the harness commit exists on origin/master and implements on a feature branch."
+    },
+    {
+      "captured_at": "2026-07-30T00:09:00+00:00",
+      "id": "DISC-001",
+      "kind": "discovery",
+      "redacted": false,
+      "slice_ids": [
+        "S0"
+      ],
+      "summary": "Existing references contain screenshots and DOM/a11y captures but not a complete Webpage Complete corpus."
+    },
+    {
+      "captured_at": "2026-07-30T00:10:00+00:00",
+      "id": "DISC-002",
+      "kind": "discovery",
+      "redacted": false,
+      "slice_ids": [
+        "S2",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "summary": "The reference has late anonymous grading 401s, missing media and public review-content exposure that must not be reproduced."
+    },
+    {
+      "captured_at": "2026-07-30T00:11:00+00:00",
+      "id": "DISC-003",
+      "kind": "discovery",
+      "redacted": false,
+      "slice_ids": [
+        "S1",
+        "S7"
+      ],
+      "summary": "The old prototype install, lint and media baseline is not clean and cannot be the merge contract."
+    }
+  ],
+  "slices": [
+    {
+      "acceptance": [
+        {
+          "claim": "Literal Chrome Webpage Complete references cover the required route and state matrix and reopen offline.",
+          "id": "AC1",
+          "proof_profile": "ui-source-parity",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "source-complete",
+            "route-state",
+            "offline-reopen"
+          ],
+          "required_proof_kinds": [
+            "artifact",
+            "browser"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "049da15a446b146078dcbc3ec3861afe6de27450032a682edb86572554b5b4ad"
+        },
+        {
+          "claim": "The reference-to-component parity map covers desktop, mobile and all observed branches.",
+          "id": "AC2",
+          "proof_profile": "ui-parity-map",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "desktop",
+            "mobile",
+            "branch-coverage"
+          ],
+          "required_proof_kinds": [
+            "static",
+            "manual"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "c48878392901c3ef33e1fc637e6a2c7caa227056bcc0a032713b4484b84d31d0"
+        }
+      ],
+      "depends_on": [],
+      "id": "S0",
+      "name": "Production reference and parity map",
+      "required": true,
+      "review_required": true,
+      "status": "ready"
+    },
+    {
+      "acceptance": [
+        {
+          "claim": "A clean checkout installs, builds, typechecks and lints both target applications.",
+          "id": "AC3",
+          "proof_profile": "clean-build",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "fresh-install",
+            "frontend",
+            "backend"
+          ],
+          "required_proof_kinds": [
+            "build",
+            "static"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "fd10076e105354941e8d4acdba9fc1e885600304818104e6cf61c1a15cc1a0c2"
+        },
+        {
+          "claim": "Development topology is Vite 5173 through /api to Express 7000 with validated environment contracts.",
+          "id": "AC4",
+          "proof_profile": "runtime-topology",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "proxy",
+            "ports",
+            "env-validation"
+          ],
+          "required_proof_kinds": [
+            "integration",
+            "api"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "8e0d98c7a254f8591e87525003344fb9771f624050d3e1fded514e27a75fb2a7"
+        }
+      ],
+      "depends_on": [],
+      "id": "S1",
+      "name": "Monorepo foundation and contracts",
+      "required": true,
+      "review_required": true,
+      "status": "ready"
+    },
+    {
+      "acceptance": [
+        {
+          "claim": "MySQL migrations create the complete empty production schema safely.",
+          "id": "AC5",
+          "proof_profile": "migration",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "forward-migration",
+            "constraints",
+            "empty-seed"
+          ],
+          "required_proof_kinds": [
+            "integration",
+            "static"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "a985e1ef9c4c96d68275bae626e0e63e8938989ebdfe9bc5d8c0b4fb94e79302"
+        },
+        {
+          "claim": "Catalog, session and review API projections keep protected content separated.",
+          "id": "AC6",
+          "proof_profile": "public-api-security",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "public-contract",
+            "answer-isolation",
+            "review-authorization"
+          ],
+          "required_proof_kinds": [
+            "api",
+            "security"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "a17ee662d1f8ef01d68cc80436e019e643fd5dfdc475e4df0da849ba6587b9e6"
+        },
+        {
+          "claim": "Auth, ownership, revision and idempotency rules reject invalid and cross-user actions.",
+          "id": "AC7",
+          "proof_profile": "auth-integration",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "401",
+            "403",
+            "409",
+            "idempotency"
+          ],
+          "required_proof_kinds": [
+            "integration",
+            "security"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "5aeb1c064195171cd03764c3295cf9776c6e89cbd543b29d229bec537f834edb"
+        }
+      ],
+      "depends_on": [
+        "S1"
+      ],
+      "id": "S2",
+      "name": "Schema, auth and core exam API",
+      "required": true,
+      "review_required": true,
+      "status": "ready"
+    },
+    {
+      "acceptance": [
+        {
+          "claim": "Catalog and mode dialog match XoaMu geometry and behavior with Anish tokens.",
+          "id": "AC8",
+          "proof_profile": "responsive-ui-parity",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "desktop",
+            "mobile",
+            "visual-parity"
+          ],
+          "required_proof_kinds": [
+            "browser",
+            "diff"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "92cc02355b6bf6e3be80078ee53e2c3cc4f3490dacc49ec535f3d7766e427534"
+        },
+        {
+          "claim": "Public browsing and login return preserve the selected exam and mode.",
+          "id": "AC9",
+          "proof_profile": "auth-browser-flow",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "anonymous",
+            "return-url",
+            "intent-preservation"
+          ],
+          "required_proof_kinds": [
+            "e2e",
+            "browser"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "0242d30b4742424e02c5bc81804acea9d1999589bdd3e0a8fd676016e2ea94dd"
+        },
+        {
+          "claim": "Catalog loading, empty, error, search, filter and no-result states are complete.",
+          "id": "AC10",
+          "proof_profile": "catalog-states",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "loading",
+            "empty",
+            "error",
+            "filter"
+          ],
+          "required_proof_kinds": [
+            "browser",
+            "integration"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "c2eb6d5de87a73d0bdcc954a6d7dcf591444cbf79e4b8a25aa037687a2b2057d"
+        }
+      ],
+      "depends_on": [
+        "S0",
+        "S1",
+        "S2"
+      ],
+      "id": "S3",
+      "name": "Catalog and login return flow",
+      "required": true,
+      "review_required": true,
+      "status": "ready"
+    },
+    {
+      "acceptance": [
+        {
+          "claim": "Attempt answers and media state autosave, resume, reconcile revisions and expire safely.",
+          "id": "AC11",
+          "proof_profile": "attempt-lifecycle",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "autosave",
+            "reload",
+            "offline",
+            "expiry"
+          ],
+          "required_proof_kinds": [
+            "integration",
+            "browser"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "d654995ae5c95d1d83fab8724a61abfe39c4f2807301da671f82d8506b4c9b0e"
+        },
+        {
+          "claim": "L&R Parts 1 through 7 support the complete exam and practice interactions.",
+          "id": "AC12",
+          "proof_profile": "lr-e2e",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "part-1-7",
+            "audio",
+            "palette",
+            "practice"
+          ],
+          "required_proof_kinds": [
+            "e2e",
+            "browser"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "7a62eb0e981e9c22ab7e5bad150aa8ec0584f47e60a8dcfff827003a0f7ed65b"
+        },
+        {
+          "claim": "L&R scoring, result, error map and authorized review are correct.",
+          "id": "AC13",
+          "proof_profile": "lr-result",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "score",
+            "result",
+            "error-map",
+            "ownership"
+          ],
+          "required_proof_kinds": [
+            "api",
+            "browser"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "73f70be71d4eb3fe342e1d40525f23b9e7fe1a20651a79d6e1de5435f0e94224"
+        }
+      ],
+      "depends_on": [
+        "S0",
+        "S2"
+      ],
+      "id": "S4",
+      "name": "Attempt lifecycle and L&R",
+      "required": true,
+      "review_required": true,
+      "status": "ready"
+    },
+    {
+      "acceptance": [
+        {
+          "claim": "Microphone test, Speaking phases, timers and recording cover success and device failures.",
+          "id": "AC14",
+          "proof_profile": "speaking-browser",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "permission",
+            "device",
+            "timer",
+            "recording"
+          ],
+          "required_proof_kinds": [
+            "browser",
+            "e2e"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "affd13c6940bf5ffd3493e09f059e6ca14a7f8433b08bca8f876544cc4aa2a1b"
+        },
+        {
+          "claim": "Audio upload is bounded, retryable and never sends base64 or secrets through grading JSON or logs.",
+          "id": "AC15",
+          "proof_profile": "media-security",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "presign",
+            "retry",
+            "mime-size",
+            "redaction"
+          ],
+          "required_proof_kinds": [
+            "integration",
+            "security"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "6059cf43cf2b037cd70333295f83b69d5dbee98b25f982befd143041bd0d5fa8"
+        },
+        {
+          "claim": "Writing editor sanitizes, counts, autosaves and restores content.",
+          "id": "AC16",
+          "proof_profile": "writing-browser",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "sanitize",
+            "word-count",
+            "reload",
+            "xss"
+          ],
+          "required_proof_kinds": [
+            "unit",
+            "browser"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "f0da37c97f57b97f8667e10398e859a36bd689bd011d317a5bf7a7fd03514ff5"
+        }
+      ],
+      "depends_on": [
+        "S0",
+        "S2"
+      ],
+      "id": "S5",
+      "name": "S&W runner and media",
+      "required": true,
+      "review_required": true,
+      "status": "ready"
+    },
+    {
+      "acceptance": [
+        {
+          "claim": "S&W grading jobs are durable, idempotent, schema-validated and retryable.",
+          "id": "AC17",
+          "proof_profile": "distributed-grading",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "redis",
+            "mysql",
+            "idempotency",
+            "retry"
+          ],
+          "required_proof_kinds": [
+            "integration",
+            "security"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "5bc514a2ab65a582072f42d6e90c6ebe8824dafc24f651cca86df1e91652089e"
+        },
+        {
+          "claim": "Processing, result, error map, review and history match the reference flow.",
+          "id": "AC18",
+          "proof_profile": "result-ui-parity",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "desktop",
+            "mobile",
+            "success",
+            "failure"
+          ],
+          "required_proof_kinds": [
+            "browser",
+            "e2e"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "e57a7d3e23a4cd4a932b0c6747e3ecd1e3a88ebaac58562fb57d869a55ae1f93"
+        },
+        {
+          "claim": "Secrets, logs, rate limits and ownership satisfy independent security review.",
+          "id": "AC19",
+          "proof_profile": "security-review",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "secret-redaction",
+            "pii",
+            "rate-limit",
+            "ownership"
+          ],
+          "required_proof_kinds": [
+            "security",
+            "manual"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "9a1da8a058e70d83352694122daf0009e057cd9e58e089d04a2b2c108dfdbaca"
+        }
+      ],
+      "depends_on": [
+        "S2",
+        "S4",
+        "S5"
+      ],
+      "id": "S6",
+      "name": "Grading, result, review and history",
+      "required": true,
+      "review_required": true,
+      "status": "ready"
+    },
+    {
+      "acceptance": [
+        {
+          "claim": "Production build, Nginx and PM2 configuration match the VPS and Cloudflare edge topology.",
+          "id": "AC20",
+          "proof_profile": "vps-config",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "nginx",
+            "pm2",
+            "cloudflare-edge",
+            "env"
+          ],
+          "required_proof_kinds": [
+            "build",
+            "static"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "438e73c66aae0c6e2f4cbfc98d801dac9efc794974e023f87d852fbfcdc790cb"
+        },
+        {
+          "claim": "Synthetic fixtures pass complete L&R and S&W journeys from catalog through history.",
+          "id": "AC21",
+          "proof_profile": "full-e2e",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "lr",
+            "sw",
+            "result",
+            "history"
+          ],
+          "required_proof_kinds": [
+            "e2e",
+            "browser"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "df2c4d24e077748cb5c54b0f09011266f83a313f6ab8c53249f51270f11f2443"
+        },
+        {
+          "claim": "Merge and operations documents allow a clean-checkout verifier to reproduce the setup and proof.",
+          "id": "AC22",
+          "proof_profile": "handoff-verification",
+          "proof_required": true,
+          "receipt_ids": [],
+          "required_dimensions": [
+            "clean-checkout",
+            "merge-contract",
+            "runbook"
+          ],
+          "required_proof_kinds": [
+            "artifact",
+            "manual"
+          ],
+          "status": "open",
+          "proof_epoch": 0,
+          "full_gate_fingerprint": "c40fb223b40ec1db1bbac1955d8ccc9a1a80de2d1a53a991ce2d26fac94f7275"
+        }
+      ],
+      "depends_on": [
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "id": "S7",
+      "name": "Integration, VPS readiness and merge handoff",
+      "required": true,
+      "review_required": true,
+      "status": "ready"
+    }
+  ],
+  "assignments": [
+    {
+      "id": "I-S0",
+      "model": "inherit",
+      "effort": "medium",
+      "agent": "agent-rules-implementer:S0",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-002",
+        "DISC-001"
+      ],
+      "write_paths": [
+        "references/xoamutoeic/production-source",
+        "references/xoamutoeic/manifests",
+        "references/audit/parity-matrix.md",
+        ".agent/evidence/S0"
+      ],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/context-capsules.md",
+        "references/README.md",
+        "references/audit/route-flow-matrix.md"
+      ],
+      "slice_id": "S0",
+      "role": "executor",
+      "allowed_tool_classes": [
+        "read",
+        "edit",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Capture literal Chrome Webpage Complete sources, validate offline, and build the parity matrix.",
+      "acceptance_ids": [
+        "AC1",
+        "AC2"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "medium",
+        "resolved_model": "inherit",
+        "resolved_effort": "medium",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "7cb9ddb26e05db433eefa4c8228845766c35f83539fc66503fd64fe0c3d59522",
+      "receipt_budget": 2,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "R-S0",
+      "model": "inherit",
+      "effort": "medium",
+      "agent": "agent-rules-reviewer:S0",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-002",
+        "DISC-001"
+      ],
+      "write_paths": [],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        "references/xoamutoeic/production-source",
+        "references/audit/parity-matrix.md"
+      ],
+      "slice_id": "S0",
+      "role": "reviewer",
+      "allowed_tool_classes": [
+        "read",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Verify source completeness, offline reopen, and route/state coverage.",
+      "acceptance_ids": [
+        "AC1",
+        "AC2"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "medium",
+        "resolved_model": "inherit",
+        "resolved_effort": "medium",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "3a924ec01bc62986d91d323a829a5c77c24adb7ca153c858f152f863706248b4",
+      "receipt_budget": 2,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "I-S1",
+      "model": "inherit",
+      "effort": "medium",
+      "agent": "agent-rules-implementer:S1",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-003",
+        "DEC-002",
+        "DEC-003",
+        "DEC-005",
+        "DISC-003"
+      ],
+      "write_paths": [
+        "package.json",
+        "package-lock.json",
+        ".nvmrc",
+        ".editorconfig",
+        "anish-toeic-web-app/package.json",
+        "anish-toeic-web-app/package-lock.json",
+        "anish-toeic-web-app/vite.config.ts",
+        "anish-toeic-web-app/tsconfig.json",
+        "anish-toeic-web-app/tsconfig.node.json",
+        "anish-toeic-web-app/tailwind.config.ts",
+        "anish-toeic-web-app/postcss.config.js",
+        "anish-toeic-web-app/.env.example",
+        "anish-toeic-web-app/src/main.tsx",
+        "anish-toeic-web-app/src/index.css",
+        "anish-toeic-web-services/package.json",
+        "anish-toeic-web-services/package-lock.json",
+        "anish-toeic-web-services/tsconfig.json",
+        "anish-toeic-web-services/jest.config.ts",
+        "anish-toeic-web-services/.env.example",
+        "anish-toeic-web-services/src/config/env.ts",
+        "docs/thi-thu-integration-contract.md",
+        "docs/toeic-exams.openapi.yaml"
+      ],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/context-capsules.md",
+        "references/audit/findings.md"
+      ],
+      "slice_id": "S1",
+      "role": "executor",
+      "allowed_tool_classes": [
+        "read",
+        "edit",
+        "test",
+        "shell",
+        "network"
+      ],
+      "mission": "Create clean two-app monorepo shells and contracts without importing the old prototype.",
+      "acceptance_ids": [
+        "AC3",
+        "AC4"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "medium",
+        "resolved_model": "inherit",
+        "resolved_effort": "medium",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "4c3a14dbe9cb40e5a68465c6e3408acae39c7a022b7795527b4f6991f08a54b4",
+      "receipt_budget": 2,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "R-S1",
+      "model": "inherit",
+      "effort": "medium",
+      "agent": "agent-rules-reviewer:S1",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-003",
+        "DEC-002",
+        "DEC-003",
+        "DEC-005",
+        "DISC-003"
+      ],
+      "write_paths": [],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        "package.json",
+        "anish-toeic-web-app",
+        "anish-toeic-web-services",
+        "docs/thi-thu-integration-contract.md",
+        "docs/toeic-exams.openapi.yaml"
+      ],
+      "slice_id": "S1",
+      "role": "reviewer",
+      "allowed_tool_classes": [
+        "read",
+        "test",
+        "shell",
+        "network"
+      ],
+      "mission": "Review architecture, toolchain, ports, proxy, contracts, and clean-install evidence.",
+      "acceptance_ids": [
+        "AC3",
+        "AC4"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "medium",
+        "resolved_model": "inherit",
+        "resolved_effort": "medium",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "a930c70400d53cc9137d3ea15e0b7b5e3b27b44d22487cf765b2bbf6e7c62ded",
+      "receipt_budget": 2,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "I-S2",
+      "model": "inherit",
+      "effort": "high",
+      "agent": "agent-rules-implementer:S2",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-003",
+        "REQ-004",
+        "DEC-001",
+        "DEC-004",
+        "DISC-002"
+      ],
+      "write_paths": [
+        "anish-toeic-web-services/database/migrations",
+        "anish-toeic-web-services/src/routes/toeicExam.routes.ts",
+        "anish-toeic-web-services/src/controllers/toeicExam.controller.ts",
+        "anish-toeic-web-services/src/services/toeicExam.service.ts",
+        "anish-toeic-web-services/src/services/toeicAttempt.service.ts",
+        "anish-toeic-web-services/src/validations/toeicExam.validation.ts",
+        "anish-toeic-web-services/src/middlewares/toeicExamAuth.middleware.ts",
+        "anish-toeic-web-services/src/types/toeicExam.types.ts",
+        "anish-toeic-web-services/src/data/toeicExamFixtures.ts",
+        "anish-toeic-web-services/src/__tests__/toeicExam"
+      ],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/context-capsules.md",
+        "docs/toeic-exams.openapi.yaml"
+      ],
+      "slice_id": "S2",
+      "role": "executor",
+      "allowed_tool_classes": [
+        "read",
+        "edit",
+        "test",
+        "shell"
+      ],
+      "mission": "Implement secure schema, catalog and attempt APIs, auth ownership, revisions, and idempotency.",
+      "acceptance_ids": [
+        "AC5",
+        "AC6",
+        "AC7"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "high",
+        "resolved_model": "inherit",
+        "resolved_effort": "high",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "3c8d9b57449583d71cf676277972d2430d45decbed12868d51f8b148effd9259",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "R-S2",
+      "model": "inherit",
+      "effort": "high",
+      "agent": "agent-rules-reviewer:S2",
+      "model_class": "expert",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-003",
+        "REQ-004",
+        "DEC-001",
+        "DEC-004",
+        "DISC-002"
+      ],
+      "write_paths": [],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        "docs/toeic-exams.openapi.yaml",
+        "anish-toeic-web-services/database/migrations",
+        "anish-toeic-web-services/src"
+      ],
+      "slice_id": "S2",
+      "role": "reviewer",
+      "allowed_tool_classes": [
+        "read",
+        "test",
+        "shell",
+        "network"
+      ],
+      "mission": "Review migration, public API, auth, ownership, answer isolation, and idempotency.",
+      "acceptance_ids": [
+        "AC5",
+        "AC6",
+        "AC7"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "high",
+        "resolved_model": "inherit",
+        "resolved_effort": "high",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "4ff970ca052ac7444df8e702662feb8f1278e2d689b555f59aedfb0f8148857c",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "I-S3",
+      "model": "inherit",
+      "effort": "medium",
+      "agent": "agent-rules-implementer:S3",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-004",
+        "DEC-001"
+      ],
+      "write_paths": [
+        "anish-toeic-web-app/src/modules/mock-exam/catalog",
+        "anish-toeic-web-app/src/modules/mock-exam/auth",
+        "anish-toeic-web-app/src/modules/mock-exam/api",
+        "anish-toeic-web-app/src/modules/mock-exam/query",
+        "anish-toeic-web-app/src/modules/mock-exam/types",
+        "anish-toeic-web-app/src/modules/mock-exam/pages/MockExamCatalogPage.tsx",
+        "anish-toeic-web-app/src/modules/mock-exam/pages/MockExamDetailPage.tsx",
+        "anish-toeic-web-app/src/modules/mock-exam/styles/catalog.css",
+        "anish-toeic-web-app/src/pages/user/MockExamCatalogPage.tsx",
+        "anish-toeic-web-app/src/pages/user/MockExamDetailPage.tsx"
+      ],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/context-capsules.md",
+        "references/audit/parity-matrix.md",
+        "references/xoamutoeic/production-source",
+        "docs/toeic-exams.openapi.yaml"
+      ],
+      "slice_id": "S3",
+      "role": "executor",
+      "allowed_tool_classes": [
+        "read",
+        "edit",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Implement the Xoa-parity catalog, mode dialog, states, and login-return behavior with Anish tokens.",
+      "acceptance_ids": [
+        "AC8",
+        "AC9",
+        "AC10"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "medium",
+        "resolved_model": "inherit",
+        "resolved_effort": "medium",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "174f29fcc37266c594629f92bf6cf99965645b52d887e1b105379a560e5368e6",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "R-S3",
+      "model": "inherit",
+      "effort": "medium",
+      "agent": "agent-rules-reviewer:S3",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-004",
+        "DEC-001"
+      ],
+      "write_paths": [],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        "references/audit/parity-matrix.md",
+        "references/xoamutoeic/production-source",
+        "anish-toeic-web-app/src/modules/mock-exam/catalog"
+      ],
+      "slice_id": "S3",
+      "role": "reviewer",
+      "allowed_tool_classes": [
+        "read",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Review desktop/mobile catalog parity and anonymous login-return behavior.",
+      "acceptance_ids": [
+        "AC8",
+        "AC9",
+        "AC10"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "medium",
+        "resolved_model": "inherit",
+        "resolved_effort": "medium",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "68a04d3977d6392c649c9cee6221f6ddb159767d649bec2a4dd74f80a8b6e73d",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "I-S4",
+      "model": "inherit",
+      "effort": "high",
+      "agent": "agent-rules-implementer:S4",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-004",
+        "DEC-004"
+      ],
+      "write_paths": [
+        "anish-toeic-web-app/src/modules/mock-exam/runner/core",
+        "anish-toeic-web-app/src/modules/mock-exam/runner/lr",
+        "anish-toeic-web-app/src/modules/mock-exam/pages/MockExamRunnerPage.tsx",
+        "anish-toeic-web-app/src/modules/mock-exam/lib/attemptStorage.ts",
+        "anish-toeic-web-app/src/modules/mock-exam/store/attemptStore.ts",
+        "anish-toeic-web-services/src/services/toeicLRScoring.service.ts",
+        "anish-toeic-web-services/src/__tests__/toeicLR"
+      ],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/context-capsules.md",
+        "references/audit/parity-matrix.md",
+        "references/xoamutoeic/production-source",
+        "docs/toeic-exams.openapi.yaml"
+      ],
+      "slice_id": "S4",
+      "role": "executor",
+      "allowed_tool_classes": [
+        "read",
+        "edit",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Implement resilient attempt lifecycle and full L&R runner, scoring, result, and review.",
+      "acceptance_ids": [
+        "AC11",
+        "AC12",
+        "AC13"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "high",
+        "resolved_model": "inherit",
+        "resolved_effort": "high",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "246aa7a824ae1d1c93b9dc61cc9d8dad5d116675d9b357bb1a0b5fad3920a9e6",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "R-S4",
+      "model": "inherit",
+      "effort": "high",
+      "agent": "agent-rules-reviewer:S4",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-004",
+        "DEC-004"
+      ],
+      "write_paths": [],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        "references/audit/parity-matrix.md",
+        "anish-toeic-web-app/src/modules/mock-exam/runner",
+        "anish-toeic-web-services/src/services/toeicLRScoring.service.ts"
+      ],
+      "slice_id": "S4",
+      "role": "reviewer",
+      "allowed_tool_classes": [
+        "read",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Review attempt persistence, L&R parity, scoring, result, and ownership.",
+      "acceptance_ids": [
+        "AC11",
+        "AC12",
+        "AC13"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "high",
+        "resolved_model": "inherit",
+        "resolved_effort": "high",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "b85f952abba265c09bc9f2faa6871f786aaeaa7b431c1fbab747302d02642ec8",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "I-S5",
+      "model": "inherit",
+      "effort": "high",
+      "agent": "agent-rules-implementer:S5",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-004",
+        "DEC-004",
+        "DISC-002"
+      ],
+      "write_paths": [
+        "anish-toeic-web-app/src/modules/mock-exam/runner/sw",
+        "anish-toeic-web-services/src/routes/toeicMedia.routes.ts",
+        "anish-toeic-web-services/src/controllers/toeicMedia.controller.ts",
+        "anish-toeic-web-services/src/services/toeicMedia.service.ts",
+        "anish-toeic-web-services/src/validations/toeicMedia.validation.ts",
+        "anish-toeic-web-services/src/__tests__/toeicMedia"
+      ],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/context-capsules.md",
+        "references/audit/parity-matrix.md",
+        "references/xoamutoeic/production-source",
+        "docs/toeic-exams.openapi.yaml"
+      ],
+      "slice_id": "S5",
+      "role": "executor",
+      "allowed_tool_classes": [
+        "read",
+        "edit",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Implement microphone, Speaking, Writing, sanitization, autosave, and secure media upload.",
+      "acceptance_ids": [
+        "AC14",
+        "AC15",
+        "AC16"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "high",
+        "resolved_model": "inherit",
+        "resolved_effort": "high",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "36dbaa2d44c80cd455046854175dd6315b89efc3689a77a2c37dbafa59958087",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "R-S5",
+      "model": "inherit",
+      "effort": "high",
+      "agent": "agent-rules-reviewer:S5",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-004",
+        "DEC-004",
+        "DISC-002"
+      ],
+      "write_paths": [],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        "references/audit/parity-matrix.md",
+        "anish-toeic-web-app/src/modules/mock-exam/runner/sw",
+        "anish-toeic-web-services/src/services/toeicMedia.service.ts"
+      ],
+      "slice_id": "S5",
+      "role": "reviewer",
+      "allowed_tool_classes": [
+        "read",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Review S&W parity, device failures, media lifecycle, sanitization, and redaction.",
+      "acceptance_ids": [
+        "AC14",
+        "AC15",
+        "AC16"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "high",
+        "resolved_model": "inherit",
+        "resolved_effort": "high",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "f27999d93b617edb296b89329c65e9a5f02b89190f880affe36010448f8a0531",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "I-S6",
+      "model": "inherit",
+      "effort": "high",
+      "agent": "agent-rules-implementer:S6",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-004",
+        "DEC-004",
+        "DISC-002"
+      ],
+      "write_paths": [
+        "anish-toeic-web-app/src/modules/mock-exam/processing",
+        "anish-toeic-web-app/src/modules/mock-exam/results",
+        "anish-toeic-web-app/src/modules/mock-exam/history",
+        "anish-toeic-web-app/src/modules/mock-exam/pages/MockExamProcessingPage.tsx",
+        "anish-toeic-web-app/src/modules/mock-exam/pages/MockExamResultPage.tsx",
+        "anish-toeic-web-app/src/modules/mock-exam/pages/MockExamReviewPage.tsx",
+        "anish-toeic-web-app/src/modules/mock-exam/pages/MockExamHistoryPage.tsx",
+        "anish-toeic-web-services/src/routes/toeicResult.routes.ts",
+        "anish-toeic-web-services/src/controllers/toeicResult.controller.ts",
+        "anish-toeic-web-services/src/services/toeicGrading.service.ts",
+        "anish-toeic-web-services/src/services/toeicResult.service.ts",
+        "anish-toeic-web-services/src/workers/toeicGrading.worker.ts",
+        "anish-toeic-web-services/src/__tests__/toeicGrading"
+      ],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/context-capsules.md",
+        "references/audit/parity-matrix.md",
+        "references/xoamutoeic/production-source",
+        "docs/toeic-exams.openapi.yaml"
+      ],
+      "slice_id": "S6",
+      "role": "executor",
+      "allowed_tool_classes": [
+        "read",
+        "edit",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Implement durable grading, processing, result, error map, protected review, history, and security controls.",
+      "acceptance_ids": [
+        "AC17",
+        "AC18",
+        "AC19"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "high",
+        "resolved_model": "inherit",
+        "resolved_effort": "high",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "14d543c7922f7c009e0ed712c5b1db77d9a9591e76a722ac7da914db721864c6",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "R-S6",
+      "model": "inherit",
+      "effort": "high",
+      "agent": "agent-rules-reviewer:S6",
+      "model_class": "expert",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-004",
+        "DEC-004",
+        "DISC-002"
+      ],
+      "write_paths": [],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        "anish-toeic-web-services/src/services/toeicGrading.service.ts",
+        "anish-toeic-web-services/src/workers/toeicGrading.worker.ts",
+        "anish-toeic-web-app/src/modules/mock-exam/results"
+      ],
+      "slice_id": "S6",
+      "role": "reviewer",
+      "allowed_tool_classes": [
+        "read",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Review distributed grading, idempotency, security, result states, review, and history.",
+      "acceptance_ids": [
+        "AC17",
+        "AC18",
+        "AC19"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "high",
+        "resolved_model": "inherit",
+        "resolved_effort": "high",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "238dbf4ac34e26f6492fe6f6a5de5bcd6ca89628fbbea12825cb596b61c96e4b",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "I-S7",
+      "model": "inherit",
+      "effort": "high",
+      "agent": "agent-rules-implementer:S7",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-004",
+        "DEC-001",
+        "DEC-002",
+        "DEC-003",
+        "DEC-004",
+        "DEC-005",
+        "DISC-002",
+        "DISC-003"
+      ],
+      "write_paths": [
+        "anish-toeic-web-app/src/routes/toeicExam.routes.tsx",
+        "anish-toeic-web-app/src/routes/index.tsx",
+        "anish-toeic-web-services/src/index.ts",
+        "anish-toeic-web-services/src/routes/index.ts",
+        "tests/e2e",
+        "deploy",
+        "nginx",
+        "ecosystem.config.cjs",
+        "docs/thi-thu-runbook.md",
+        "docs/thi-thu-merge-checklist.md",
+        ".agent/evidence/S7"
+      ],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/source-coverage.md",
+        "docs/thi-thu-integration-contract.md",
+        "docs/toeic-exams.openapi.yaml",
+        ".agent/work/anish-thi-thu-xoamutoeic-20260730/ledger.json"
+      ],
+      "slice_id": "S7",
+      "role": "executor",
+      "allowed_tool_classes": [
+        "read",
+        "edit",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Integrate routes, run E2E, prepare VPS configuration, and produce merge/runbook handoff.",
+      "acceptance_ids": [
+        "AC20",
+        "AC21",
+        "AC22"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "high",
+        "resolved_model": "inherit",
+        "resolved_effort": "high",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "8e26596116be96a7a82fc4f611c5259f9ed7a139ff9ee6426f93546776fd285b",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    },
+    {
+      "id": "R-S7",
+      "model": "inherit",
+      "effort": "high",
+      "agent": "agent-rules-verifier:S7",
+      "model_class": "standard",
+      "forbidden_paths": [
+        ".git/**",
+        ".agent/plans/**",
+        ".agent/work/**",
+        ".env*",
+        "**/node_modules/**"
+      ],
+      "source_ids": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-004",
+        "DEC-001",
+        "DEC-002",
+        "DEC-003",
+        "DEC-004",
+        "DEC-005",
+        "DISC-002",
+        "DISC-003"
+      ],
+      "write_paths": [],
+      "context_paths": [
+        ".agent/plans/anish-thi-thu-xoamutoeic-20260730/plan.md",
+        ".agent/work/anish-thi-thu-xoamutoeic-20260730/ledger.json",
+        "docs/thi-thu-runbook.md",
+        "docs/thi-thu-merge-checklist.md",
+        "tests/e2e"
+      ],
+      "slice_id": "S7",
+      "role": "reviewer",
+      "allowed_tool_classes": [
+        "read",
+        "test",
+        "shell",
+        "browser",
+        "network"
+      ],
+      "mission": "Verify clean checkout, synthetic journeys, VPS config, and merge documentation.",
+      "acceptance_ids": [
+        "AC20",
+        "AC21",
+        "AC22"
+      ],
+      "model_evidence": {
+        "requested_model": "inherit",
+        "requested_effort": "high",
+        "resolved_model": "inherit",
+        "resolved_effort": "high",
+        "observed_model": null,
+        "observed_effort": null,
+        "status": "unobserved",
+        "fallback_reason": "",
+        "main_direct_exception_reason": ""
+      },
+      "status": "ready",
+      "actor_session": "legacy-unobserved",
+      "capsule_hash": "ba896ca4ba7cf4eab950f95117e7cf41b1e80aa8d8d1f1eeac272f15015a90d4",
+      "receipt_budget": 3,
+      "recovery_attempts": [],
+      "actor_telemetry_refs": [],
+      "ack_status": "pending"
+    }
+  ],
+  "receipts": [],
+  "reviews": [],
+  "findings": [],
+  "checkpoints": [],
+  "usage": {
+    "input_tokens": 0,
+    "cached_input_tokens": 0,
+    "output_tokens": 0,
+    "reasoning_tokens": 0,
+    "agent_runs": 16,
+    "tool_calls": 0,
+    "records": []
+  },
+  "next_action": "Invoke S0 and S1 implementers, wait for explicit acknowledgments, then start both slices."
+}
