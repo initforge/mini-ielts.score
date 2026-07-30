@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ToeicController } from '../controllers/toeic.controller';
+import { requireAuth } from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -8,7 +9,7 @@ router.get('/toeic-exams', ToeicController.getExams);
 router.get('/toeic-exams/:slug', ToeicController.getExamBySlug);
 
 // Authenticated / Owner routes
-// (In a real application, an authentication middleware would be added before these routes)
+router.use(requireAuth);
 router.post('/toeic-exams/:id/attempts', ToeicController.createAttempt);
 router.get('/toeic-attempts', ToeicController.getAttemptHistory);
 router.get('/toeic-attempts/:id', ToeicController.getAttempt);

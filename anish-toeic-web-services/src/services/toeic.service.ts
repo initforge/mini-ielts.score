@@ -2,8 +2,30 @@ import { pool } from './db.service';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
 export class ToeicService {
-  static async getExams(filters: any = {}) {
-    const [rows] = await pool.query('SELECT * FROM toeic_exams');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static async getExams(filters: Record<string, any> = {}) {
+    let query = 'SELECT * FROM toeic_exams';
+    const params: unknown[] = [];
+    const conditions: string[] = [];
+
+    if (filters.search) {
+      conditions.push('(title LIKE ? OR slug LIKE ?)');
+      params.push(`%${filters.search}%`, `%${filters.search}%`);
+    }
+    if (filters.skillType) {
+      conditions.push('skill_type = ?');
+      params.push(filters.skillType);
+    }
+    if (filters.collectionId) {
+      conditions.push('collection_id = ?');
+      params.push(filters.collectionId);
+    }
+
+    if (conditions.length > 0) {
+      query += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    const [rows] = await pool.query(query, params);
     return rows;
   }
 
@@ -64,30 +86,51 @@ export class ToeicService {
     return { ...attempt, responses, session: { sections, questions, options } };
   }
 
-  static async updateResponse(attemptId: number, userId: string, questionId: number, data: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static async updateResponse(attemptId: number, userId: string, questionId: number, data: Record<string, any>) {
     // Verify ownership and status
-    const [rows] = await pool.query<RowDataPacket[]>('SELECT id, status FROM toeic_attempts WHERE id = ? AND user_id = ? LIMIT 1', [attemptId, userId]);
+    const [rows] = await pool.query<RowDataPacket[]>('SELECT id, status, exam_id FROM toeic_attempts WHERE id = ? AND user_id = ? LIMIT 1', [attemptId, userId]);
     if (!rows.length) throw new Error('Unauthorized or attempt not found');
     if (rows[0].status !== 'IN_PROGRESS') throw new Error('Conflict: Attempt is not IN_PROGRESS');
 
+    const attempt = rows[0];
+
+    // Verify question ownership
+    const [qRows] = await pool.query<RowDataPacket[]>(
+      `SELECT q.id FROM toeic_questions q 
+       JOIN toeic_exam_sections s ON q.section_id = s.id 
+       WHERE q.id = ? AND s.exam_id = ? LIMIT 1`,
+      [questionId, attempt.exam_id]
+    );
+    if (!qRows.length) throw new Error('Conflict: Question does not belong to this exam');
+
     const { selectedOptionId = null, textResponse = null, markedForReview = false, note = null, clientRevision = 0 } = data;
     
+    // Check stale revision
+    const [existing] = await pool.query<RowDataPacket[]>(
+      'SELECT client_revision FROM toeic_attempt_responses WHERE attempt_id = ? AND question_id = ? LIMIT 1',
+      [attemptId, questionId]
+    );
+    if (existing.length > 0 && clientRevision <= existing[0].client_revision) {
+      throw new Error('Conflict: Stale client_revision');
+    }
+
     await pool.query(
       `INSERT INTO toeic_attempt_responses (attempt_id, question_id, selected_option_id, text_response, marked_for_review, note, client_revision) 
        VALUES (?, ?, ?, ?, ?, ?, ?) 
        ON DUPLICATE KEY UPDATE 
-       selected_option_id = IF(VALUES(client_revision) >= client_revision, VALUES(selected_option_id), selected_option_id),
-       text_response = IF(VALUES(client_revision) >= client_revision, VALUES(text_response), text_response),
-       marked_for_review = IF(VALUES(client_revision) >= client_revision, VALUES(marked_for_review), marked_for_review),
-       note = IF(VALUES(client_revision) >= client_revision, VALUES(note), note),
-       client_revision = IF(VALUES(client_revision) >= client_revision, VALUES(client_revision), client_revision)`,
+       selected_option_id = VALUES(selected_option_id),
+       text_response = VALUES(text_response),
+       marked_for_review = VALUES(marked_for_review),
+       note = VALUES(note),
+       client_revision = VALUES(client_revision)`,
       [attemptId, questionId, selectedOptionId, textResponse, markedForReview, note, clientRevision]
     );
     
     return { success: true };
   }
 
-  static async presignMedia(attemptId: number, userId: string, questionId: number, fileName: string, fileType: string) {
+  static async presignMedia(attemptId: number, userId: string, questionId: number, fileName: string) {
     // Verify ownership
     const [rows] = await pool.query<RowDataPacket[]>('SELECT id FROM toeic_attempts WHERE id = ? AND user_id = ? LIMIT 1', [attemptId, userId]);
     if (!rows.length) throw new Error('Unauthorized or attempt not found');
@@ -100,31 +143,43 @@ export class ToeicService {
   }
 
   static async submitAttempt(attemptId: number, userId: string) {
-    const [rows] = await pool.query<RowDataPacket[]>('SELECT id, status FROM toeic_attempts WHERE id = ? AND user_id = ? LIMIT 1', [attemptId, userId]);
-    if (!rows.length) throw new Error('Unauthorized or attempt not found');
-    
-    const status = rows[0].status;
-    if (status === 'SUBMITTED' || status === 'COMPLETED' || status === 'GRADING') {
-      // Idempotency: already submitted
-      return { success: true, alreadySubmitted: true };
-    }
-    
-    if (status !== 'IN_PROGRESS') {
-      throw new Error('Conflict: Attempt cannot be submitted');
-    }
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
 
-    await pool.query(
-      'UPDATE toeic_attempts SET status = ?, completed_at = CURRENT_TIMESTAMP WHERE id = ?',
-      ['SUBMITTED', attemptId]
-    );
-    
-    // Use INSERT IGNORE to prevent duplicate jobs if a concurrent submit happens
-    await pool.query(
-      'INSERT IGNORE INTO toeic_grading_jobs (attempt_id, status) VALUES (?, ?)',
-      [attemptId, 'QUEUED']
-    );
+      const [rows] = await connection.query<RowDataPacket[]>('SELECT id, status FROM toeic_attempts WHERE id = ? AND user_id = ? FOR UPDATE', [attemptId, userId]);
+      if (!rows.length) throw new Error('Unauthorized or attempt not found');
+      
+      const status = rows[0].status;
+      if (status === 'SUBMITTED' || status === 'COMPLETED' || status === 'GRADING') {
+        // Idempotency: already submitted
+        await connection.rollback();
+        return { success: true, alreadySubmitted: true };
+      }
+      
+      if (status !== 'IN_PROGRESS') {
+        throw new Error('Conflict: Attempt cannot be submitted');
+      }
 
-    return { success: true };
+      await connection.query(
+        'UPDATE toeic_attempts SET status = ?, completed_at = CURRENT_TIMESTAMP WHERE id = ?',
+        ['SUBMITTED', attemptId]
+      );
+      
+      // Use INSERT IGNORE to prevent duplicate jobs if a concurrent submit happens
+      await connection.query(
+        'INSERT IGNORE INTO toeic_grading_jobs (attempt_id, status) VALUES (?, ?)',
+        [attemptId, 'QUEUED']
+      );
+
+      await connection.commit();
+      return { success: true };
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
   }
 
   static async getGradingStatus(attemptId: number, userId: string) {

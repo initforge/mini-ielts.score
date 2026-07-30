@@ -31,8 +31,19 @@ paths:
   /api/toeic-exams/{id}/attempts:
     post:
       summary: Create exam/practice attempt
+      security:
+        - bearerAuth: []
       responses:
         '201':
           description: Created
         '401':
           description: Unauthorized
+        '403':
+          description: Forbidden
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

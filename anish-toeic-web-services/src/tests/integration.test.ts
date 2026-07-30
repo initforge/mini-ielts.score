@@ -1,17 +1,21 @@
 import request from 'supertest';
 import express from 'express';
+import jwt from 'jsonwebtoken';
 import toeicRoutes from '../routes/toeic.routes';
 import { pool } from '../services/db.service';
 
 jest.mock('../services/db.service', () => ({
   pool: {
-    query: jest.fn()
-  }
+    query: jest.fn(),
+  },
 }));
 
 const app = express();
 app.use(express.json());
 app.use('/api', toeicRoutes);
+
+const mockUserToken = jwt.sign({ userId: 'mock-user-id' }, process.env.JWT_SECRET || 'fallback_secret');
+const wrongUserToken = jwt.sign({ userId: 'wrong-user-id' }, process.env.JWT_SECRET || 'fallback_secret');
 
 describe('Integration AC7: Auth, ownership, revision, idempotency', () => {
   beforeEach(() => {
@@ -26,7 +30,7 @@ describe('Integration AC7: Auth, ownership, revision, idempotency', () => {
 
       const res = await request(app)
         .patch('/api/toeic-attempts/1/responses/101')
-        .set('x-user-id', 'wrong-user-id')
+        .set('Authorization', `Bearer ${wrongUserToken}`)
         .send({ clientRevision: 1 });
 
       expect(res.status).toBe(403);
@@ -37,43 +41,53 @@ describe('Integration AC7: Auth, ownership, revision, idempotency', () => {
   describe('State Enforcement and Idempotency', () => {
     it('should deny updateResponse if attempt is SUBMITTED', async () => {
       const mockQuery = pool.query as jest.Mock;
-      mockQuery.mockResolvedValueOnce([[{ id: 1, status: 'SUBMITTED' }]]);
+      mockQuery.mockResolvedValueOnce([[{ id: 1, status: 'SUBMITTED', exam_id: 10 }]]);
 
       const res = await request(app)
         .patch('/api/toeic-attempts/1/responses/101')
-        .set('x-user-id', 'mock-user-id')
+        .set('Authorization', `Bearer ${mockUserToken}`)
         .send({ clientRevision: 1 });
 
-      expect(res.status).toBe(409); // From our custom error "Conflict: Attempt is not IN_PROGRESS" mapped to 500 currently in controller?
-      // Wait, let's check controller. If error includes "Conflict", it should return 409. I need to make sure controller handles 409!
+      expect(res.status).toBe(409);
+      expect(res.body.error).toContain('Conflict');
     });
 
     it('should return idempotency success if submitAttempt called on SUBMITTED attempt', async () => {
-      const mockQuery = pool.query as jest.Mock;
-      mockQuery.mockResolvedValueOnce([[{ id: 1, status: 'SUBMITTED' }]]);
+      const mockConn = {
+        beginTransaction: jest.fn().mockResolvedValue(undefined),
+        query: jest.fn().mockResolvedValueOnce([[{ id: 1, status: 'SUBMITTED' }]]),
+        commit: jest.fn().mockResolvedValue(undefined),
+        rollback: jest.fn().mockResolvedValue(undefined),
+        release: jest.fn(),
+      };
+      (pool as unknown as { getConnection: jest.Mock }).getConnection = jest.fn().mockResolvedValue(mockConn);
 
       const res = await request(app)
         .post('/api/toeic-attempts/1/submit')
-        .set('x-user-id', 'mock-user-id');
+        .set('Authorization', `Bearer ${mockUserToken}`);
 
       expect(res.status).toBe(200);
       expect(res.body.alreadySubmitted).toBe(true);
     });
   });
-  
+
   describe('Revision Safety', () => {
-    it('should include IF(VALUES(client_revision) >= client_revision in sql', async () => {
+    it('should handle stale client_revision with conflict', async () => {
       const mockQuery = pool.query as jest.Mock;
-      mockQuery.mockResolvedValueOnce([[{ id: 1, status: 'IN_PROGRESS' }]]);
-      mockQuery.mockResolvedValueOnce([{}]);
+      // Query 1: attempt check
+      mockQuery.mockResolvedValueOnce([[{ id: 1, status: 'IN_PROGRESS', exam_id: 10 }]]);
+      // Query 2: question check
+      mockQuery.mockResolvedValueOnce([[{ id: 101 }]]);
+      // Query 3: existing response with client_revision = 5
+      mockQuery.mockResolvedValueOnce([[{ client_revision: 5 }]]);
 
-      await request(app)
+      const res = await request(app)
         .patch('/api/toeic-attempts/1/responses/101')
-        .set('x-user-id', 'mock-user-id')
-        .send({ clientRevision: 5, selectedOptionId: 1001 });
+        .set('Authorization', `Bearer ${mockUserToken}`)
+        .send({ clientRevision: 3, selectedOptionId: 1001 });
 
-      const queryArg = mockQuery.mock.calls[1][0];
-      expect(queryArg).toContain('IF(VALUES(client_revision) >= client_revision');
+      expect(res.status).toBe(409);
+      expect(res.body.error).toContain('Stale client_revision');
     });
   });
 });

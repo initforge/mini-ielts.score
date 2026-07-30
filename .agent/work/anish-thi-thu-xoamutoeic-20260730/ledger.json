@@ -12,9 +12,7 @@
     "ref": "P:\\mini-toeic.score\\.agent\\plans\\anish-thi-thu-xoamutoeic-20260730\\plan.md",
     "sha256": "f4a2e7be17596fddb41ee19455fec86a770d37c2290baee20f136a89620e18c6"
   },
-  "active_slices": [
-    "S1"
-  ],
+  "active_slices": [],
   "classification": {
     "shape": "resumable",
     "ledger": "required",
@@ -321,7 +319,7 @@
       "name": "Monorepo foundation and contracts",
       "required": true,
       "review_required": true,
-      "status": "ready"
+      "status": "blocked"
     },
     {
       "acceptance": [
