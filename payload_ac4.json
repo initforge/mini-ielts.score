@@ -1,0 +1,16 @@
+{
+  "acceptance_id": "AC4",
+  "claim": "Development topology is Vite 5173 through /api to Express 7000 with validated environment contracts.",
+  "proof_kind": "integration",
+  "dimensions": ["proxy", "ports", "env-validation"],
+  "agent": "agent-rules-implementer:S1",
+  "id": "AC4-proof",
+  "status": "PASS",
+  "model": "unobserved",
+  "effort": "medium",
+  "verifier": "api-runner",
+  "environment": "local",
+  "expected": "smoke test pass",
+  "observed": "proxy returns health endpoint",
+  "artifact_paths": [".agent/evidence/S1/ac4-smoke-test.txt"]
+}

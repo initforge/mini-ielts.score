@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS toeic_question_scores;
+DROP TABLE IF EXISTS toeic_attempt_results;
+DROP TABLE IF EXISTS toeic_grading_jobs;
+DROP TABLE IF EXISTS toeic_attempt_media;
+DROP TABLE IF EXISTS toeic_attempt_responses;
+DROP TABLE IF EXISTS toeic_attempts;
+DROP TABLE IF EXISTS toeic_question_review_content;
+DROP TABLE IF EXISTS toeic_question_options;
+DROP TABLE IF EXISTS toeic_questions;
+DROP TABLE IF EXISTS toeic_exam_sections;
+DROP TABLE IF EXISTS toeic_exams;
+DROP TABLE IF EXISTS toeic_exam_collections;

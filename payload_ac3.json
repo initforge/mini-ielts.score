@@ -1,0 +1,16 @@
+{
+  "acceptance_id": "AC3",
+  "claim": "A clean checkout installs, builds, typechecks and lints both target applications.",
+  "proof_kind": "build",
+  "dimensions": ["fresh-install", "frontend", "backend"],
+  "agent": "agent-rules-implementer:S1",
+  "id": "AC3-proof",
+  "status": "PASS",
+  "model": "unobserved",
+  "effort": "medium",
+  "verifier": "test-runner",
+  "environment": "local",
+  "expected": "clean build",
+  "observed": "completed without errors",
+  "artifact_paths": [".agent/evidence/S1/ac3-clean-build.txt"]
+}
