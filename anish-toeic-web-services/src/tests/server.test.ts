@@ -15,6 +15,16 @@ describe('Server & Env Validation (AC4 & AC10)', () => {
     expect(res.status).not.toBe(404);
   });
 
+  it('must NOT let the protected TOEIC router swallow /api/auth routes', async () => {
+    // Regression: auth router must be mounted before the toeic router's
+    // requireAuth guard, otherwise login/register respond 401 "Missing token".
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'a@b.com', password: 'password123' });
+    expect(res.status).not.toBe(401);
+    expect(res.body.error).not.toContain('Missing token');
+  });
+
   it('should enforce CORS origin allowlist', async () => {
     const res = await request(app)
       .get('/api/health')

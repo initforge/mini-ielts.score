@@ -6,7 +6,7 @@ interface QuestionPaletteDrawerProps {
   onClose: () => void;
   questions: Question[];
   sections: Section[];
-  responses: Record<string, any>;
+  responses: Record<number, { selected_option_id: number | null; marked_for_review: boolean }>;
   currentQuestionIndex: number;
   onSelectQuestion: (index: number) => void;
 }
@@ -26,7 +26,7 @@ export const QuestionPaletteDrawer = ({
   const answeredCount = Object.keys(responses).length;
 
   // Group questions by section
-  const sectionMap = new Map<string, Question[]>();
+  const sectionMap = new Map<number, Question[]>();
   questions.forEach(q => {
     if (!sectionMap.has(q.section_id)) {
       sectionMap.set(q.section_id, []);

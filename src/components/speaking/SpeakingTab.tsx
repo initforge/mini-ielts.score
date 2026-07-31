@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle2, FileText } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle2, FileText, Settings2 } from "lucide-react";
 import { useSpeaking } from "@/contexts/SpeakingContext";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,8 @@ import SpeakingInstructionModal from "./SpeakingInstructionModal";
 import QuestionInput from "@/components/writing/QuestionInput";
 import CollapsibleImageUpload from "./CollapsibleImageUpload";
 import QuestionStepper from "./QuestionStepper";
-import AudioRecorder from "./AudioRecorder";
+import AudioRecorder, { MicStatus } from "./AudioRecorder";
+import MicrophoneTest from "./MicrophoneTest";
 import Timer from "@/components/shared/Timer";
 import ProgressBar from "@/components/shared/ProgressBar";
 // Removed import - using filteredQuestions from context instead
@@ -45,6 +46,10 @@ export default function SpeakingTab() {
   const [showPart4Instruction, setShowPart4Instruction] = useState(false);
   const [showPart5Instruction, setShowPart5Instruction] = useState(false);
   const [hasUserSelectedQuestion, setHasUserSelectedQuestion] = useState(false);
+
+  // Microphone test state
+  const [showMicTest, setShowMicTest] = useState(false);
+  const [micStatus, setMicStatus] = useState<MicStatus>({ state: "idle", codec: null, error: null });
   
   // Audio states
   const [shouldPlayBeginPreparing, setShouldPlayBeginPreparing] = useState(false);
@@ -640,6 +645,83 @@ export default function SpeakingTab() {
               )}
             </CardHeader>
             <CardContent className="pt-6">
+              {/* Microphone Status Indicator */}
+              {micStatus.state !== "idle" && micStatus.state !== "granted" && (
+                <div className={cn(
+                  "mb-4 rounded-lg border p-3",
+                  micStatus.state === "denied" || micStatus.state === "unsupported"
+                    ? "border-red-300 bg-red-50"
+                    : micStatus.state === "disconnected"
+                    ? "border-yellow-300 bg-yellow-50"
+                    : micStatus.state === "empty"
+                    ? "border-orange-300 bg-orange-50"
+                    : "border-slate-200 bg-slate-50"
+                )}>
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 text-sm">
+                      {micStatus.state === "denied" ? " " : micStatus.state === "disconnected" ? " " : micStatus.state === "empty" ? " " : " "}
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium text-slate-700">
+                        {micStatus.state === "denied" && "Microphone permission denied"}
+                        {micStatus.state === "unsupported" && "Microphone not supported"}
+                        {micStatus.state === "disconnected" && "Microphone disconnected"}
+                        {micStatus.state === "empty" && "No audio detected"}
+                      </p>
+                      {micStatus.error && (
+                        <p className="text-xs text-slate-600 mt-1">{micStatus.error}</p>
+                      )}
+                      <button
+                        onClick={() => setShowMicTest(true)}
+                        className="mt-2 text-xs font-medium text-indigo-600 hover:text-indigo-800 underline"
+                      >
+                        Test microphone settings
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Codec Info (subtle) */}
+              {micStatus.codec && micStatus.state === "granted" && (
+                <div className="mb-3 text-xs text-slate-500 text-right">
+                  Codec: {micStatus.codec.replace("audio/", "")}
+                </div>
+              )}
+
+              {/* Microphone Test Panel (collapsible) */}
+              {showMicTest && (
+                <div className="mb-6 rounded-xl border border-indigo-200 bg-indigo-50 p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-sm font-semibold text-indigo-900">Microphone Test</h4>
+                    <button
+                      onClick={() => setShowMicTest(false)}
+                      className="text-xs text-indigo-600 hover:text-indigo-800"
+                    >
+                      Hide
+                    </button>
+                  </div>
+                  <MicrophoneTest
+                    onTestComplete={(result) => {
+                      console.log("[SpeakingTab] Mic test result:", result);
+                    }}
+                  />
+                </div>
+              )}
+
+              {/* Toggle mic test button */}
+              {!showMicTest && (
+                <div className="mb-3 text-right">
+                  <button
+                    onClick={() => setShowMicTest(true)}
+                    className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-indigo-600 transition-colors"
+                  >
+                    <Settings2 className="h-3 w-3" />
+                    Test microphone
+                  </button>
+                </div>
+              )}
+
               <AudioRecorder
                 key={currentQuestion.id}
                 maxDuration={currentQuestion.responseTime}
@@ -650,6 +732,7 @@ export default function SpeakingTab() {
                 savedAudioUrl={state.audioUrls?.[currentQuestion.id]}
                 autoStartKey={prepDone ? autoStartKey : undefined}
                 onRecordingChange={setIsRecordingLocal}
+                onMicStatusChange={setMicStatus}
               />
               {!prepDone && (currentQuestion.preparationTime ?? 0) > 0 && (
                 <p className="mt-3 text-xs text-orange-600">

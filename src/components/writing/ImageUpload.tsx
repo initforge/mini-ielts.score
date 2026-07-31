@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, X, Image as ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { sanitizeImageData } from "@/lib/sanitize";
 
 interface ImageUploadProps {
   part: number;
@@ -30,11 +31,19 @@ export default function ImageUpload({
       return;
     }
 
+    // Max 10MB
+    if (file.size > 10 * 1024 * 1024) {
+      alert("Image must be less than 10MB");
+      return;
+    }
+
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
-      setPreview(base64String);
-      onChange(base64String);
+      // Sanitize the image data
+      const clean = sanitizeImageData(base64String);
+      setPreview(clean);
+      onChange(clean);
     };
     reader.readAsDataURL(file);
   }, [onChange]);

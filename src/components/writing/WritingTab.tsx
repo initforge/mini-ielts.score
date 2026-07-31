@@ -13,6 +13,7 @@ import ProgressBar from "@/components/shared/ProgressBar";
 // Removed import - using filteredQuestions from context instead
 import { countWords, cn, formatTime } from "@/lib/utils";
 import { QuestionStatus } from "@/lib/types";
+import { sanitizeText } from "@/lib/sanitize";
 
 const PART2_QUESTION_TIME = 10 * 60; // 10 minutes per question for Part 2 (Q6, Q7)
 
@@ -138,8 +139,10 @@ export default function WritingTab() {
 
   const handleTextChange = (text: string) => {
     if (state.isLocked || !currentQuestion) return; // Don't allow changes when locked or no question
-    setCurrentText(text);
-    const wordCount = countWords(text);
+    // Sanitize text through DOMPurify
+    const safeText = sanitizeText(text);
+    setCurrentText(safeText);
+    const wordCount = countWords(safeText);
     // Use user input question text if available, otherwise use default
     const questionText = state.questions?.[currentQuestion.id] || (() => {
       // Tất cả các part: hiển thị mô tả tính chất thay vì questionText mock
@@ -152,7 +155,7 @@ export default function WritingTab() {
       questionId: currentQuestion.id,
       questionType: currentQuestion.part,
       questionText,
-      text,
+      text: safeText,
       wordCount,
     };
     saveAnswer(answer);

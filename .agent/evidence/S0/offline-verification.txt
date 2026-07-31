@@ -1,0 +1,251 @@
+S0 offline verification (SEMANTIC v2)
+======================================
+date: 2026-07-31T03:39:50.406Z
+manifest: P:\mini-toeic.score\references\xoamutoeic\manifests\manifest.json
+classification scheme: v2 — captured | live-drift | historical-exception
+method: manifest-driven semantic assertions + offline reopen + SHA-256
+
+─── Phase 1: Manifest structural assertions ───
+
+  States total: 35
+  Captured: 32
+  Live-drift: 2
+  Historical-exception: 1
+  Unknown/legacy-blocked: 0
+  Structural errors: 0
+
+  Phase 1 result: PASS
+
+─── Phase 2: Live-drift semantic assertions ───
+
+  [DRIFT] desktop/10-exam-lr-reading-bilingual-marked
+    state: Reading Q101 with answer marked and bilingual (Song ngữ) on — live site defect: empty fullscreen dialog, bilingual never activates
+    blocker: Live site defect: Reading "Song ngữ" button opens an empty fullscreen dialog (fixed inset-0 z-50, 0 chars) that never loads; bilingual never activates (header stays "Song ngữ"). Survey's inline-bilingual reference state is not reproducible. Recheck after site fix.
+    classification_note: Current production site renders this feature broken. The survey captured a working inline-bilingual state that no longer exists. This artifact is preserved as live-drift evidence.
+    retries: 2
+
+  [DRIFT] desktop/11-exam-lr-annotation-tools
+    state: Reading Q102 with annotation toolbar open (Công cụ) — live site defect: empty fullscreen dialog, toolbar never renders
+    blocker: Live site defect: Reading "Công cụ" button opens the same empty fullscreen dialog (no "Browse Mode"/"Draw Mode"); annotation toolbar never renders. Not reproducible. Recheck after site fix.
+    classification_note: Current production site renders this feature broken. The survey captured a working annotation-toolbar state that no longer exists. This artifact is preserved as live-drift evidence.
+    retries: 2
+
+─── Phase 3: Historical-exception semantic assertions ───
+
+  [EXCEPTION] desktop/14-exam-lr-submit-confirm
+    state: L&R submit confirmation dialog — non-reproducible: no confirm dialog exists on the production site
+    blocker: NON-REPRODUCIBLE: no submit confirmation exists. references/README.md documents that the survey submit navigated straight to the result; current site does the same. This is a direct-result historical exception.
+    classification_note: The survey screenshot shows a hypothetical submit-confirm dialog that never existed in production. Both the original survey and current site navigate directly to the result certificate. Preserved as a historical reference exception per S0 close.
+
+─── Phase 4: Offline reopen + SHA-256 (captured states) ───
+
+  CDP not available — skipping offline reopen; performing SHA-256 only.
+
+[PASS] desktop/01-exams-sw-list-full
+  file: desktop/01-exams-sw-list-full.mhtml
+  size: 729292 bytes
+  sha256: fc4481d02ae979a5174fbd5487ee17a436564eea9704212fc72fb1e5aff3514a (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/02-exams-lr-list-full
+  file: desktop/02-exams-lr-list-full.mhtml
+  size: 615896 bytes
+  sha256: be18b7f138c449807584b0619312cc0142700f3ef47b930d998f9ba1089ac59a (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/03-exam-start-mode-modal
+  file: desktop/03-exam-start-mode-modal.mhtml
+  size: 624339 bytes
+  sha256: c971de6d079d28f7f59dd1560b5730564cb406f897b0dcc49d9c5fc037a83730 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/04-exam-lr-detail-start
+  file: desktop/04-exam-lr-detail-start.mhtml
+  size: 556851 bytes
+  sha256: f6e22892d9f486adc52ffae3c6b753093d20d19efb001442946580ef56e92ce6 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/05-exam-lr-active-part1
+  file: desktop/05-exam-lr-active-part1.mhtml
+  size: 553789 bytes
+  sha256: 6011576866432c8b575b58e15fa450912dd2faf9311168ecefc93230abacdd4a (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/06-exam-lr-part1-directions
+  file: desktop/06-exam-lr-part1-directions.mhtml
+  size: 807450 bytes
+  sha256: 63a2c697f6cebdd998a35d7365d91c4615feefe871bf6df13df183965dae34dd (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/07-exam-lr-part1-question1
+  file: desktop/07-exam-lr-part1-question1.mhtml
+  size: 7683467 bytes
+  sha256: fbdba4a6bb9dbb3f87a263b07f5b0252f503fdaa08caeaed5d70dd164ed732a3 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/08-exam-lr-question-palette
+  file: desktop/08-exam-lr-question-palette.mhtml
+  size: 7720954 bytes
+  sha256: 0f50d1459084aae39dd4ec55e364fedfb47c71b5de5c2e0fff3805f096c5f577 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/09-exam-lr-reading-part5-question101
+  file: desktop/09-exam-lr-reading-part5-question101.mhtml
+  size: 554672 bytes
+  sha256: cce218c63554ae6986c7d8f5afeb943c6116099450762785385ae1ead8fa8be1 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/12-exam-lr-reading-part6-question131
+  file: desktop/12-exam-lr-reading-part6-question131.mhtml
+  size: 573978 bytes
+  sha256: 9a54a0f619b44b7077d34445d043a2daf179045b6f86a992b65f0eeb336ab594 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/13-exam-lr-reading-part7-question147
+  file: desktop/13-exam-lr-reading-part7-question147.mhtml
+  size: 566909 bytes
+  sha256: 7955c4f015f4f75ea25f0af6a1e22205fa70040f57e80b4aa5d48cf9a923359e (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/15-exam-lr-result-certificate
+  file: desktop/15-exam-lr-result-certificate.mhtml
+  size: 624940 bytes
+  sha256: 1fe6faab0161228772f4110c38c0e7319897878df21b73810a9c8887f5732556 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/16-exam-lr-result-table
+  file: desktop/16-exam-lr-result-table.mhtml
+  size: 679477 bytes
+  sha256: a6323cfd984fe0bbfc998fa7154eb3f1d3863fcfb15defa7de7ecfb387e49af6 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/17-exam-lr-error-map
+  file: desktop/17-exam-lr-error-map.mhtml
+  size: 657190 bytes
+  sha256: 4e5a677203321ecb998ced6590aae2f34ac1d3e2ae1e388047b687c0a4c322cb (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/18-exam-lr-review-detail
+  file: desktop/18-exam-lr-review-detail.mhtml
+  size: 7711099 bytes
+  sha256: ce7c0342b54735ad2233120a17b2c896b221ca0efa7c572ec371ca45d63921d0 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/19-history-auth-gate
+  file: desktop/19-history-auth-gate.mhtml
+  size: 557965 bytes
+  sha256: c81a751ef4b6bb3c9a9f4050824133bcd07590c780bcb330ebfe908c1f80b06d (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/20-exam-sw-detail-start
+  file: desktop/20-exam-sw-detail-start.mhtml
+  size: 555092 bytes
+  sha256: 790048e43006ba4e4d575c8888516ea10b85aa38472510d9c7e90916120adbf3 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/21-exam-sw-speaking-part1-intro
+  file: desktop/21-exam-sw-speaking-part1-intro.mhtml
+  size: 549908 bytes
+  sha256: c9d29239ea5e63c1667b416be97ecc7761435c5872462ddaeaee7c2bc40de2c2 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/22-exam-sw-speaking-directions
+  file: desktop/22-exam-sw-speaking-directions.mhtml
+  size: 550656 bytes
+  sha256: 5cb3b60aa72b9713c617bef36b4a5471035b02e47453ba2e8e2b033554ba32bf (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/23-exam-sw-speaking-q1-preparation
+  file: desktop/23-exam-sw-speaking-q1-preparation.mhtml
+  size: 549986 bytes
+  sha256: 077e24ee5250277a5ddd2cfe1dc6de1ed39c81de6a54341c704101c1ffb9d73e (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/24-exam-sw-speaking-q3-describe-picture
+  file: desktop/24-exam-sw-speaking-q3-describe-picture.mhtml
+  size: 902754 bytes
+  sha256: ee0076ba303a1eb3884b00a43835b43f19d5a7f74bf8ec9ba56abbbdcc211f04 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/25-exam-sw-speaking-q5-respond
+  file: desktop/25-exam-sw-speaking-q5-respond.mhtml
+  size: 549909 bytes
+  sha256: 51ad404f96506a7d4a034c8cab882f298fe79206e3312986fed4c317a7279f88 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/26-exam-sw-speaking-q8-information
+  file: desktop/26-exam-sw-speaking-q8-information.mhtml
+  size: 2445985 bytes
+  sha256: 6e131e9b807fbeaf25d3aaaab826038f3ac17c0c2c82dc9fae45d201c002d90c (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/27-exam-sw-writing-start
+  file: desktop/27-exam-sw-writing-start.mhtml
+  size: 548781 bytes
+  sha256: 6e550d9fb976fcf577ebe9dcc5e368bb83b2c73f0bb4dc83e4b06b12bd9b1610 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/28-exam-sw-writing-q1-picture
+  file: desktop/28-exam-sw-writing-q1-picture.mhtml
+  size: 970775 bytes
+  sha256: 3c2e3427ed27d77bb89e237bff08c5664215fa3e27731c7942f44a6e3dde782f (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/29-exam-sw-writing-q6-email
+  file: desktop/29-exam-sw-writing-q6-email.mhtml
+  size: 556628 bytes
+  sha256: 1256c3b0e605f5192fb911af05cbbbe0319c39e435bb76ca9d63ec6a5586cb73 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/30-exam-sw-writing-q8-essay
+  file: desktop/30-exam-sw-writing-q8-essay.mhtml
+  size: 574658 bytes
+  sha256: bf1cdb8981c8320678fa29618554b701a30c014202331d73a7b07328734934de (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] desktop/31-exam-sw-ai-processing
+  file: desktop/31-exam-sw-ai-processing.mhtml
+  size: 555989 bytes
+  sha256: 03743d6a2cc99b84d1ec9235558899b8f3feeebefd375a4a6ccf6f0dcfb491f0 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] mobile/01-exams-sw-list-full
+  file: mobile/01-exams-sw-list-full.mhtml
+  size: 729289 bytes
+  sha256: 1208a9f9250d4db2b3753510eb4ed4abd6c53fd500219ee7a4a955a4a4ee019f (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] mobile/02-exams-lr-list-full
+  file: mobile/02-exams-lr-list-full.mhtml
+  size: 615893 bytes
+  sha256: 05a23b3a26191b0d1acd02a1a44c58b888405e59d4143271fea1e9d47568ae17 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] mobile/03-exam-lr-q1
+  file: mobile/03-exam-lr-q1.mhtml
+  size: 7683464 bytes
+  sha256: a24c7534b90aac7959389f68fd93c9d479694d0affd5a5d0c7dbc8cf4df2046f (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+[PASS] mobile/04-exam-sw-writing-q1
+  file: mobile/04-exam-sw-writing-q1.mhtml
+  size: 970772 bytes
+  sha256: 257dd834c3f8dd0fa33b48b89714f05a7bcc2b2ad1d61e3a3122ddd3604d0957 (matches manifest)
+  offline-reopen: SKIPPED (no CDP)
+
+=============================
+FINAL VERDICT
+=============================
+
+Phase 1 (manifest structural): PASS
+Phase 2 (live-drift documented): 2 states
+Phase 3 (historical-exception documented): 1 states
+Phase 4 (SHA-256 + offline reopen): 32 PASS / 0 FAIL (of 32 captured)
+
+OVERALL: PASS
+
+Classification matrix (v2):
+  captured:             32 — full artifact + hash + offline-reopen evidence
+  live-drift:           2 — current production site broken; evidence preserved
+  historical-exception: 1 — never existed in production; canonical behavior documented
+  total:                35

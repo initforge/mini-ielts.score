@@ -4,9 +4,17 @@ export const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.string().default('7000'),
   DB_HOST: z.string().min(1, 'DB_HOST is required'),
+  DB_PORT: z.string().regex(/^\d+$/, 'DB_PORT must be numeric').default('3306'),
   DB_USER: z.string().min(1, 'DB_USER is required'),
   DB_PASSWORD: z.string().optional().default(''),
   DB_NAME: z.string().min(1, 'DB_NAME is required'),
+  JWT_SECRET: z
+    .string()
+    .min(32, 'JWT_SECRET is required and must be at least 32 characters')
+    .refine((s) => s !== 'change-me-please-change-me-please-1234', {
+      message: 'JWT_SECRET must not be the documented placeholder',
+    }),
+  JWT_EXPIRES_IN: z.string().default('7d'),
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
 });
 
@@ -20,9 +28,12 @@ export function validateEnv(customEnv?: Record<string, string | undefined>): Env
     NODE_ENV: source.NODE_ENV || 'development',
     PORT: source.PORT || '7000',
     DB_HOST: source.DB_HOST ?? (isProd ? '' : 'localhost'),
+    DB_PORT: source.DB_PORT ?? '3306',
     DB_USER: source.DB_USER ?? (isProd ? '' : 'root'),
     DB_PASSWORD: source.DB_PASSWORD ?? '',
     DB_NAME: source.DB_NAME ?? (isProd ? '' : 'anish_toeic'),
+    JWT_SECRET: source.JWT_SECRET ?? '',
+    JWT_EXPIRES_IN: source.JWT_EXPIRES_IN ?? '7d',
     CORS_ORIGIN: source.CORS_ORIGIN ?? 'http://localhost:5173',
   };
 

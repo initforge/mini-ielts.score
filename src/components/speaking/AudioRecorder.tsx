@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Mic, Square, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,14 @@ import { getAudio } from "@/lib/audioStorage";
 import { SpeakingAudioPlayer } from "./SpeakingAudioPlayer";
 import { speakingAudio } from "@/lib/speakingAudio";
 
+export type MicState = "idle" | "granted" | "denied" | "unsupported" | "disconnected" | "empty";
+
+export interface MicStatus {
+  state: MicState;
+  codec: string | null;
+  error: string | null;
+}
+
 interface AudioRecorderProps {
   maxDuration: number; // in seconds
   onRecordingComplete: (audioBlob: Blob, audioBase64: string) => void;
@@ -18,6 +26,7 @@ interface AudioRecorderProps {
   savedAudioUrl?: string; // Pre-loaded audio URL from sessionStorage
   autoStartKey?: number; // change to trigger auto start (e.g., after prep)
   onRecordingChange?: (isRecording: boolean) => void;
+  onMicStatusChange?: (status: MicStatus) => void;
 }
 
 export default function AudioRecorder({
@@ -29,6 +38,7 @@ export default function AudioRecorder({
   savedAudioUrl,
   autoStartKey,
   onRecordingChange,
+  onMicStatusChange,
 }: AudioRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -39,6 +49,9 @@ export default function AudioRecorder({
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [shouldPlayBeepOnTimeout, setShouldPlayBeepOnTimeout] = useState(false);
 
+  // Microphone status tracking (via callback, no local state needed)
+  const micStateRef = useRef<MicStatus>({ state: "idle", codec: null, error: null });
+
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
@@ -46,6 +59,51 @@ export default function AudioRecorder({
   const recordingStartTimeRef = useRef<number | null>(null); // Track actual recording start time
   const stopTimeoutRef = useRef<number | null>(null); // Hard cap recording duration
   const mimeTypeRef = useRef<string>("audio/webm"); // Store mimeType for blob creation
+  const disconnectHandlerRef = useRef<(() => void) | null>(null);
+
+  // Notify parent of mic status changes
+  const updateMicStatus = useCallback(
+    (state: MicState, codec: string | null, error: string | null = null) => {
+      micStateRef.current = { state, codec, error };
+      onMicStatusChange?.({ state, codec, error });
+    },
+    [onMicStatusChange]
+  );
+
+  // Detect audio silence (empty microphone)
+  const detectEmptyMic = useCallback(
+    (stream: MediaStream): Promise<boolean> => {
+      return new Promise((resolve) => {
+        try {
+          const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+          const analyser = audioContext.createAnalyser();
+          analyser.fftSize = 256;
+          const source = audioContext.createMediaStreamSource(stream);
+          source.connect(analyser);
+          const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+          let maxVolume = 0;
+          const checks = 5;
+          let count = 0;
+          const interval = setInterval(() => {
+            analyser.getByteFrequencyData(dataArray);
+            const volume = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+            maxVolume = Math.max(maxVolume, volume);
+            count++;
+            if (count >= checks) {
+              clearInterval(interval);
+              source.disconnect();
+              audioContext.close();
+              resolve(maxVolume < 2);
+            }
+          }, 200);
+        } catch {
+          resolve(false); // Can't check, assume OK
+        }
+      });
+    },
+    []
+  );
 
   // Load saved audio from IndexedDB when switching questions so playback is per-question
   useEffect(() => {
@@ -89,7 +147,10 @@ export default function AudioRecorder({
     return () => {
       // Cleanup
       if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
+        streamRef.current.getTracks().forEach((track) => {
+          track.removeEventListener("ended", disconnectHandlerRef.current || (() => {}));
+          track.stop();
+        });
       }
       if (stopTimeoutRef.current !== null) {
         window.clearTimeout(stopTimeoutRef.current);
@@ -103,6 +164,13 @@ export default function AudioRecorder({
   }, [audioUrl, savedAudioUrl]);
 
   const startRecording = async () => {
+    // Check browser support first
+    if (!navigator.mediaDevices?.getUserMedia) {
+      updateMicStatus("unsupported", null, "Browser does not support microphone access");
+      setShowErrorModal(true);
+      return;
+    }
+
     try {
       // Request high-quality audio
       const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -114,6 +182,28 @@ export default function AudioRecorder({
         }
       });
       streamRef.current = stream;
+
+      // Monitor device disconnect
+      if (disconnectHandlerRef.current) {
+        disconnectHandlerRef.current();
+      }
+      const disconnectHandler = () => {
+        console.warn("[AudioRecorder] Microphone disconnected during recording");
+        updateMicStatus("disconnected", mimeTypeRef.current, "Microphone disconnected");
+        if (mediaRecorderRef.current?.state === "recording") {
+          stopRecording();
+        }
+      };
+      disconnectHandlerRef.current = disconnectHandler;
+      stream.getAudioTracks().forEach((track) => {
+        track.addEventListener("ended", disconnectHandler);
+      });
+
+      // Check for empty microphone
+      const isEmpty = await detectEmptyMic(stream);
+      if (isEmpty) {
+        updateMicStatus("empty", null, "No audio signal detected - microphone may be muted");
+      }
 
       // Try to use better codec if available
       let mimeType = "audio/webm";
@@ -133,6 +223,7 @@ export default function AudioRecorder({
       }
       
       mimeTypeRef.current = mimeType;
+      updateMicStatus("granted", mimeType, null);
 
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: mimeType,
@@ -166,6 +257,16 @@ export default function AudioRecorder({
 
         const base64 = await blobToBase64(blob);
         onRecordingComplete(blob, base64);
+
+        // Check if the recorded blob is essentially empty
+        if (blob.size < 100) {
+          updateMicStatus("empty", mimeTypeRef.current, "Recording appears empty (very small file)");
+        }
+      };
+
+      // Track codec errors
+      mediaRecorder.onerror = () => {
+        updateMicStatus("granted", mimeTypeRef.current, "MediaRecorder error - codec issue");
       };
 
       // Store actual recording start time BEFORE starting recorder
@@ -188,15 +289,25 @@ export default function AudioRecorder({
       }, maxDuration * 1000); // Exact duration, no buffer
     } catch (error: any) {
       console.error("Error starting recording:", error);
+      const errorName = error?.name || "";
+
       // Check if it's a permission/HTTPS issue
-      const isPermissionError = error?.name === 'NotAllowedError' || 
-                                error?.name === 'NotReadableError' ||
+      if (errorName === "NotAllowedError" || errorName === "PermissionDeniedError") {
+        updateMicStatus("denied", null, "Microphone permission denied");
+      } else if (errorName === "NotFoundError" || errorName === "DevicesNotFoundError") {
+        updateMicStatus("denied", null, "No microphone found");
+      } else if (errorName === "NotReadableError") {
+        updateMicStatus("denied", null, "Microphone in use by another application");
+      }
+
+      const isPermissionError = errorName === 'NotAllowedError' ||
+                                errorName === 'NotReadableError' ||
                                 error?.message?.includes('getUserMedia') ||
                                 !navigator.mediaDevices?.getUserMedia;
       
       if (isPermissionError && window.location.protocol === 'http:') {
+        updateMicStatus("unsupported", null, "HTTPS required for microphone access");
         setShowErrorModal(true);
-        // Update error message to mention HTTPS requirement
         console.warn('Microphone access requires HTTPS. Please use HTTPS or localhost.');
       } else {
         setShowErrorModal(true);
@@ -211,10 +322,15 @@ export default function AudioRecorder({
 
       mediaRecorderRef.current.stop();
       if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
+        streamRef.current.getTracks().forEach((track) => {
+          track.removeEventListener("ended", disconnectHandlerRef.current || (() => {}));
+          track.stop();
+        });
       }
       setIsRecording(false);
     onRecordingChange?.(false);
+    // Reset mic state after stopping
+    updateMicStatus("idle", null, null);
     if (stopTimeoutRef.current !== null) {
       window.clearTimeout(stopTimeoutRef.current);
       stopTimeoutRef.current = null;

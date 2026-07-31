@@ -94,7 +94,7 @@ const RunnerPage = () => {
   const currentSection = sections.find((s: Section) => s.id === currentQuestion?.section_id);
   const currentResponse = responses[currentQuestion?.id];
 
-  const handleOptionChange = (optionId: string) => {
+  const handleOptionChange = (optionId: number) => {
     if (attemptId && currentQuestion) {
       updateResponse(attemptId, currentQuestion.id, optionId);
       // Auto move to next question if it's not the last one, after a short delay

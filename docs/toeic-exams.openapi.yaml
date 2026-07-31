@@ -2,20 +2,167 @@ openapi: 3.0.0
 info:
   title: Anish TOEIC Web Services
   version: 1.0.0
-  description: Core API contract for the /thi-thu feature.
+  description: Core API contract for the /thi-thu feature covering catalog, auth, attempts, grading, results and review.
 paths:
+  # ── Health ──
   /api/health:
     get:
       summary: Health check endpoint
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, service]
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  service:
+                    type: string
+                    example: anish-toeic-web-services
+  # ── Auth ──
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  minLength: 8
+                  maxLength: 128
+                  example: supersecret1
+                displayName:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                  example: New User
+      responses:
+        '201':
+          description: Created — returns token and user object
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                description: httpOnly token cookie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      email:
+                        type: string
+                      displayName:
+                        type: string
+        '400':
+          description: Validation error
+        '409':
+          description: Email already registered
+  /api/auth/login:
+    post:
+      summary: Login with email/password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 1
+                  maxLength: 128
+      responses:
+        '200':
+          description: OK — returns token and user object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Validation error
+        '401':
+          description: Invalid email or password
+  /api/auth/logout:
+    post:
+      summary: Logout — clears the httpOnly token cookie
+      responses:
+        '200':
+          description: Cookie cleared
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+  # ── Catalog ──
   /api/toeic-exams:
     get:
       summary: Search/filter/paginate catalog
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: skillType
+          in: query
+          schema:
+            type: string
+            enum: [LR, SW]
+        - name: collectionId
+          in: query
+          schema:
+            type: string
+            pattern: '^\d+$'
+        - name: page
+          in: query
+          schema:
+            type: string
+            pattern: '^\d+$'
+        - name: pageSize
+          in: query
+          schema:
+            type: string
+            pattern: '^\d+$'
       responses:
         '200':
           description: Successful catalog response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogResponse'
+        '400':
+          description: Non-numeric pagination parameters
   /api/toeic-exams/{slug}:
     get:
       summary: Exam metadata and instructions
@@ -27,19 +174,286 @@ paths:
             type: string
       responses:
         '200':
-          description: OK
+          description: Exam detail including sections
+        '404':
+          description: Exam not found
   /api/toeic-exams/{id}/attempts:
     post:
       summary: Create exam/practice attempt
       security:
         - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mode]
+              properties:
+                mode:
+                  type: string
+                  enum: [EXAM, PRACTICE]
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttemptCreated'
+        '400':
+          description: Invalid exam id or mode
+        '401':
+          description: Unauthorized — missing token
+        '403':
+          description: Forbidden — account no longer exists
+        '404':
+          description: Exam not found
+  # ── Attempts ──
+  /api/toeic-attempts:
+    get:
+      summary: List attempt history for the authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Array of attempts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attempt'
+        '401':
+          description: Unauthorized
+  /api/toeic-attempts/{id}:
+    get:
+      summary: Get attempt session (questions, options — no answers/review)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Attempt with session payload
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found or not owned
+  /api/toeic-attempts/{id}/responses/{questionId}:
+    patch:
+      summary: Update a question response with optimistic concurrency
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: questionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                selectedOptionId:
+                  type: integer
+                  nullable: true
+                textResponse:
+                  type: string
+                  nullable: true
+                  maxLength: 10000
+                markedForReview:
+                  type: boolean
+                note:
+                  type: string
+                  nullable: true
+                  maxLength: 5000
+                clientRevision:
+                  type: integer
+                  minimum: 0
+      responses:
+        '200':
+          description: Updated or idempotent replay
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  replayed:
+                    type: boolean
         '401':
           description: Unauthorized
         '403':
-          description: Forbidden
+          description: Attempt not found or access denied
+        '409':
+          description: Attempt not IN_PROGRESS, stale revision, or membership violation
+  # ── Media ──
+  /api/toeic-attempts/{id}/media/presign:
+    post:
+      summary: Generate presigned upload URL for audio/media (no base64 in body)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [questionId, fileName, fileType, fileSize]
+              properties:
+                questionId:
+                  type: integer
+                fileName:
+                  type: string
+                  maxLength: 255
+                  pattern: '^[a-zA-Z0-9][\w.-]*\.(webm|mp4|mp3|wav|ogg|m4a|3gp|opus)$'
+                fileType:
+                  type: string
+                  maxLength: 100
+                fileSize:
+                  type: integer
+                  minimum: 1
+                  maximum: 26214400
+      responses:
+        '200':
+          description: Presigned upload URL and S3 key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uploadUrl:
+                    type: string
+                    format: uri
+                  s3Key:
+                    type: string
+                  expiresAt:
+                    type: string
+                    format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access denied
+        '409':
+          description: Attempt not IN_PROGRESS or question membership violation
+  # ── Submission ──
+  /api/toeic-attempts/{id}/submit:
+    post:
+      summary: Submit attempt for grading (idempotent)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Submitted or already submitted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  alreadySubmitted:
+                    type: boolean
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access denied
+        '409':
+          description: Attempt cannot be submitted
+  # ── Grading ──
+  /api/toeic-attempts/{id}/grading-status:
+    get:
+      summary: Poll grading job status
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Grading job status
+        '401':
+          description: Unauthorized
+        '404':
+          description: Status not found
+  # ── Results ──
+  /api/toeic-attempts/{id}/result:
+    get:
+      summary: Get projected (safe) score result
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Score result with no internal columns exposed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectedResult'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Result not found
+  # ── Review ──
+  /api/toeic-attempts/{id}/review:
+    get:
+      summary: Get review content (authenticated; only for COMPLETED attempts)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Review content with explanations and correct answers
+        '401':
+          description: Unauthorized
+        '403':
+          description: Review not available until attempt is COMPLETED
+        '404':
+          description: Attempt not found or not owned
 
 components:
   securitySchemes:
@@ -47,3 +461,75 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        displayName:
+          type: string
+    CatalogResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+    AttemptCreated:
+      type: object
+      properties:
+        attemptId:
+          type: integer
+        status:
+          type: string
+          example: IN_PROGRESS
+        mode:
+          type: string
+          enum: [EXAM, PRACTICE]
+    Attempt:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: string
+        exam_id:
+          type: integer
+        status:
+          type: string
+          enum: [IN_PROGRESS, SUBMITTED, GRADING, COMPLETED, FAILED]
+        mode:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+    ProjectedResult:
+      type: object
+      description: Safe projection — no internal columns (id, attempt_id, metrics, *created_at*, etc.)
+      properties:
+        listeningScore:
+          type: integer
+          minimum: 0
+        readingScore:
+          type: integer
+          minimum: 0
+        totalScore:
+          type: integer
+          minimum: 0
+        status:
+          type: string
+          enum: [PROVISIONAL, FINAL]

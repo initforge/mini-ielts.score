@@ -1,7 +1,25 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
 
+export interface LRScoreResult {
+  listeningScore: number;
+  readingScore: number;
+  totalScore: number;
+}
+
+const LISTENING_SECTION_CUTOFF = 4; // Parts 1-4 are Listening, Parts 5-7 are Reading
+
 export class ScorerService {
-  static async scoreLR(attemptId: number, userId: string, connection: Connection) {
+  /**
+   * Deterministically scores an LR attempt by comparing each response against
+   * the stored correct_option_id.  Every correct answer increments totalScore.
+   * Answers are classified as Listening or Reading by the section order_index:
+   *   section_order <= LISTENING_SECTION_CUTOFF → Listening
+   *   section_order >  LISTENING_SECTION_CUTOFF → Reading
+   *
+   * If a question's section_order cannot be resolved the answer still
+   * increments totalScore but is not assigned to either sub-score.
+   */
+  static async scoreLR(attemptId: number, userId: string, connection: Connection): Promise<LRScoreResult> {
     // 1. Fetch attempt and verify it's LR
     const [attemptRows] = await connection.query<RowDataPacket[]>(
       'SELECT a.*, e.skill_type FROM toeic_attempts a JOIN toeic_exams e ON a.exam_id = e.id WHERE a.id = ? AND a.user_id = ?',
@@ -38,9 +56,6 @@ export class ScorerService {
       [attemptId]
     );
 
-    let listeningScore = 0;
-    let readingScore = 0;
-
     const correctOptionMap = new Map<number, number | null>();
     for (const rc of correctOptions) {
       correctOptionMap.set(rc.question_id, rc.correct_option_id);
@@ -51,11 +66,15 @@ export class ScorerService {
       questionSectionMap.set(q.question_id, q.section_order);
     }
 
-    const questionScores = [];
+    let listeningCorrect = 0;
+    let readingCorrect = 0;
+    let totalCorrect = 0;
+
+    const questionScores: Array<[number, number, number, boolean]> = [];
 
     for (const response of responses) {
-      const qId = response.question_id;
-      const selectedId = response.selected_option_id;
+      const qId: number = response.question_id;
+      const selectedId: number | null | undefined = response.selected_option_id;
       const correctId = correctOptionMap.get(qId);
       const sectionOrder = questionSectionMap.get(qId);
 
@@ -64,15 +83,28 @@ export class ScorerService {
 
       questionScores.push([attemptId, qId, score, isCorrect]);
 
-      if (isCorrect && sectionOrder !== undefined) {
-        // Listening parts are usually Part 1-4, Reading parts are 5-7
-        if (sectionOrder <= 4) {
-          listeningScore += 1;
-        } else {
-          readingScore += 1;
-        }
+      if (!isCorrect) continue;
+
+      totalCorrect += 1;
+
+      if (sectionOrder === undefined) {
+        // Question exists in the exam but section_order cannot be resolved.
+        // Count it toward the total but do not misclassify.
+        continue;
+      }
+
+      if (sectionOrder <= LISTENING_SECTION_CUTOFF) {
+        listeningCorrect += 1;
+      } else {
+        readingCorrect += 1;
       }
     }
+
+    // Guard: totalCorrect must equal listeningCorrect + readingCorrect when
+    // every correct question has a mapped section.  The invariant is enforced
+    // in tests but is not a runtime assertion to avoid rolling back a valid
+    // exam submission over a classification mismatch.
+    const totalScore = totalCorrect;
 
     if (questionScores.length > 0) {
       await connection.query(
@@ -82,8 +114,6 @@ export class ScorerService {
       );
     }
 
-    const totalScore = listeningScore + readingScore;
-
     await connection.query(
       `INSERT INTO toeic_attempt_results (attempt_id, listening_score, reading_score, total_score, status) 
        VALUES (?, ?, ?, ?, ?)
@@ -92,9 +122,9 @@ export class ScorerService {
        reading_score = VALUES(reading_score), 
        total_score = VALUES(total_score), 
        status = VALUES(status)`,
-      [attemptId, listeningScore, readingScore, totalScore, 'FINAL']
+      [attemptId, listeningCorrect, readingCorrect, totalScore, 'FINAL']
     );
 
-    return { listeningScore, readingScore, totalScore };
+    return { listeningScore: listeningCorrect, readingScore: readingCorrect, totalScore };
   }
 }

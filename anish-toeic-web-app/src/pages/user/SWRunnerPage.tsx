@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button, Layout, Typography, Space, Progress, message, Input } from 'antd';
 import { AudioOutlined, SoundOutlined, ArrowLeftOutlined, ArrowRightOutlined, CloseOutlined } from '@ant-design/icons';
 
 // Simple debounce
-function debounce(func: Function, wait: number) {
-  let timeout: any;
-  return function executedFunction(...args: any[]) {
+function debounce<A extends unknown[]>(func: (...args: A) => void, wait: number) {
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+  return (...args: A) => {
     const later = () => {
       clearTimeout(timeout);
       func(...args);
@@ -45,42 +45,20 @@ export default function SWRunnerPage() {
 
   const currentQ = QUESTIONS[questionIndex];
 
-  useEffect(() => {
-    let timer: any;
-    if ((phase === 'speaking' || phase === 'mic_check') && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-    } else if (phase === 'speaking' && timeLeft === 0) {
-      if (speakingState === 'prep') {
-        setSpeakingState('recording');
-        setTimeLeft(currentQ.recordTime || 45);
-      } else {
-        handleNext();
-      }
-    }
-    return () => clearInterval(timer);
-  }, [timeLeft, phase, speakingState]);
-
-  const requestMic = async () => {
+  const handleSubmit = useCallback(async () => {
     try {
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-      setMicGranted(true);
+      if (attemptId) {
+        await fetch(`/api/toeic-attempts/${attemptId}/submit`, {
+          method: 'POST',
+        });
+      }
+      navigate(`/thi-thu/dang-xu-ly/${attemptId || 'demo'}`);
     } catch (err) {
-      message.error('Microphone access denied. Please allow it to continue.');
+      message.error('Failed to submit');
     }
-  };
+  }, [attemptId, navigate]);
 
-  const startMicTest = () => {
-    setMicTesting(true);
-    setTimeLeft(5); // 5 sec test
-    setTimeout(() => {
-      setMicTesting(false);
-      message.success('Microphone test completed!');
-    }, 5000);
-  };
-
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (phase === 'mic_check') setPhase('speaking_dir');
     else if (phase === 'speaking_dir') {
       setPhase('speaking');
@@ -111,6 +89,41 @@ export default function SWRunnerPage() {
         handleSubmit();
       }
     }
+  }, [phase, questionIndex, handleSubmit]);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval> | undefined;
+    if ((phase === 'speaking' || phase === 'mic_check') && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (phase === 'speaking' && timeLeft === 0) {
+      if (speakingState === 'prep') {
+        setSpeakingState('recording');
+        setTimeLeft(QUESTIONS[questionIndex].recordTime || 45);
+      } else {
+        handleNext();
+      }
+    }
+    return () => clearInterval(timer);
+  }, [timeLeft, phase, speakingState, questionIndex, handleNext]);
+
+  const requestMic = async () => {
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      setMicGranted(true);
+    } catch (err) {
+      message.error('Microphone access denied. Please allow it to continue.');
+    }
+  };
+
+  const startMicTest = () => {
+    setMicTesting(true);
+    setTimeLeft(5); // 5 sec test
+    setTimeout(() => {
+      setMicTesting(false);
+      message.success('Microphone test completed!');
+    }, 5000);
   };
 
   const handlePrev = () => {
@@ -138,19 +151,6 @@ export default function SWRunnerPage() {
   const handleWritingChange = (val: string) => {
     setResponses(prev => ({ ...prev, [currentQ.id]: val }));
     debouncedSave(currentQ.id, val);
-  };
-
-  const handleSubmit = async () => {
-    try {
-      if (attemptId) {
-        await fetch(`/api/toeic-attempts/${attemptId}/submit`, {
-          method: 'POST',
-        });
-      }
-      navigate(`/thi-thu/dang-xu-ly/${attemptId || 'demo'}`);
-    } catch (err) {
-      message.error('Failed to submit');
-    }
   };
 
   const formatTime = (sec: number) => {

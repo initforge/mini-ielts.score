@@ -70,8 +70,8 @@ export const useExamStore = create<ExamState>((set, get) => ({
         responses: responsesMap,
         isLoading: false,
       });
-    } catch (err: any) {
-      set({ error: err.message || 'Failed to fetch attempt', isLoading: false });
+    } catch (err) {
+      set({ error: err instanceof Error ? err.message : 'Failed to fetch attempt', isLoading: false });
     }
   },
 
@@ -142,8 +142,8 @@ export const useExamStore = create<ExamState>((set, get) => ({
     try {
       await api.post(`/toeic-attempts/${attemptId}/submit`);
       set({ isSubmitting: false });
-    } catch (err: any) {
-      set({ error: err.message || 'Failed to submit attempt', isSubmitting: false });
+    } catch (err) {
+      set({ error: err instanceof Error ? err.message : 'Failed to submit attempt', isSubmitting: false });
       throw err;
     }
   },

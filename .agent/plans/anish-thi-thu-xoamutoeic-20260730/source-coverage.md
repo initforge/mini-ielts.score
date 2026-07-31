@@ -17,6 +17,7 @@ ledger carries the same IDs.
 | DISC-001 | Existing reference folder contains 44 screenshots plus DOM/a11y evidence but no complete Chrome Webpage Complete corpus | S0 |
 | DISC-002 | XoaMu anonymous S&W grading fails late, some media is missing, and public payloads expose review content | S2,S5-BE,S5-FE,S6-BE,S6-FE,S7 |
 | DISC-003 | Current repo install/lint/media baseline is not clean and cannot be used as merge contract | S1,S7 |
+| INJ-001 | Owner accepts real-Chrome CDP `Page.captureSnapshot({ format: "mhtml" })` as equivalent to Ctrl+S Webpage Complete, conditional on complete per-state artifacts, SHA-256 manifest, and successful offline reopen | S0 |
 
 ## Injection handling
 

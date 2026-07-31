@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
+    "build": "tsc && node -e \"const fs=require('fs'),p=require('path');for(const f of fs.readdirSync('src/migrations'))if(f.endsWith('.sql'))fs.copyFileSync(p.join('src/migrations',f),p.join('dist/migrations',f));\"",
     "start": "node dist/server.js",
     "lint": "eslint . --ext ts",
     "typecheck": "tsc --noEmit",

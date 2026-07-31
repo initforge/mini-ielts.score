@@ -10,3 +10,4 @@ DROP TABLE IF EXISTS toeic_questions;
 DROP TABLE IF EXISTS toeic_exam_sections;
 DROP TABLE IF EXISTS toeic_exams;
 DROP TABLE IF EXISTS toeic_exam_collections;
+DROP TABLE IF EXISTS users;

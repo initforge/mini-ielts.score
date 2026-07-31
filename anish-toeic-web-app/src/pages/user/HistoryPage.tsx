@@ -7,6 +7,18 @@ import api from '../../api';
 
 const { Title, Text } = Typography;
 
+interface AttemptRecord {
+  id: number;
+  status: string;
+  createdAt?: string;
+  exam?: { title?: string };
+  result?: {
+    totalScore?: number;
+    listeningScore?: number;
+    readingScore?: number;
+  };
+}
+
 const HistoryPage: React.FC = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['attempts-history'],
@@ -21,7 +33,7 @@ const HistoryPage: React.FC = () => {
       title: 'Tên Đề',
       dataIndex: ['exam', 'title'],
       key: 'examTitle',
-      render: (text: string, record: any) => (
+      render: (text: string, record: AttemptRecord) => (
         <div>
           <Text strong className="block">{text || 'Bài thi TOEIC'}</Text>
           <Text type="secondary" className="text-xs">ID: {record.id}</Text>
@@ -37,7 +49,7 @@ const HistoryPage: React.FC = () => {
     {
       title: 'Điểm',
       key: 'score',
-      render: (_: any, record: any) => {
+      render: (_: unknown, record: AttemptRecord) => {
         if (record.status === 'COMPLETED') {
           const total = record.result?.totalScore || ((record.result?.listeningScore || 0) + (record.result?.readingScore || 0));
           return <Tag color="green" className="font-bold text-sm px-3 py-1">{total || 0} / 990</Tag>;
@@ -59,7 +71,7 @@ const HistoryPage: React.FC = () => {
     {
       title: 'Hành Động',
       key: 'action',
-      render: (_: any, record: any) => {
+      render: (_: unknown, record: AttemptRecord) => {
         if (record.status === 'COMPLETED') {
           return (
             <Link to={`/thi-thu/ket-qua/${record.id}`}>

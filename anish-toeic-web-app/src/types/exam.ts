@@ -1,3 +1,25 @@
+// Maps the public catalog projection returned by GET /api/toeic-exams
+// (S2 `SELECT *` row shape — snake_case column names kept verbatim).
+export interface Exam {
+  id: number;
+  collection_id: number;
+  slug: string;
+  title: string;
+  duration_minutes: number;
+  question_count: number;
+  skill_type: 'LR' | 'SW';
+}
+
+export type ExamMode = 'exam' | 'practice';
+
+export interface CatalogResponse {
+  items: Exam[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
 export interface Section {
   id: number;
   exam_id: number;

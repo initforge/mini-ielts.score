@@ -14,8 +14,8 @@ const app = express();
 app.use(express.json());
 app.use('/api', toeicRoutes);
 
-const mockUserToken = jwt.sign({ userId: 'mock-user-id' }, process.env.JWT_SECRET || 'fallback_secret');
-const wrongUserToken = jwt.sign({ userId: 'wrong-user-id' }, process.env.JWT_SECRET || 'fallback_secret');
+const mockUserToken = jwt.sign({ sub: 'mock-user-id' }, process.env.JWT_SECRET as string);
+const wrongUserToken = jwt.sign({ sub: 'wrong-user-id' }, process.env.JWT_SECRET as string);
 
 describe('Integration AC7: Auth, ownership, revision, idempotency', () => {
   beforeEach(() => {
@@ -34,7 +34,7 @@ describe('Integration AC7: Auth, ownership, revision, idempotency', () => {
         .send({ clientRevision: 1 });
 
       expect(res.status).toBe(403);
-      expect(res.body.error).toContain('Unauthorized');
+      expect(res.body.error).toContain('Attempt not found or access denied');
     });
   });
 
@@ -49,7 +49,7 @@ describe('Integration AC7: Auth, ownership, revision, idempotency', () => {
         .send({ clientRevision: 1 });
 
       expect(res.status).toBe(409);
-      expect(res.body.error).toContain('Conflict');
+      expect(res.body.error).toContain('Attempt is not IN_PROGRESS');
     });
 
     it('should return idempotency success if submitAttempt called on SUBMITTED attempt', async () => {
@@ -78,7 +78,9 @@ describe('Integration AC7: Auth, ownership, revision, idempotency', () => {
       mockQuery.mockResolvedValueOnce([[{ id: 1, status: 'IN_PROGRESS', exam_id: 10 }]]);
       // Query 2: question check
       mockQuery.mockResolvedValueOnce([[{ id: 101 }]]);
-      // Query 3: existing response with client_revision = 5
+      // Query 3: selected option belongs to the question
+      mockQuery.mockResolvedValueOnce([[{ id: 1001 }]]);
+      // Query 4: existing response with client_revision = 5
       mockQuery.mockResolvedValueOnce([[{ client_revision: 5 }]]);
 
       const res = await request(app)

@@ -11,6 +11,11 @@ Thư mục này chỉ chứa bằng chứng khảo sát và tài liệu đối c
 - `local-prototype/`: giao diện repo hiện tại, console/network và bằng chứng lỗi audio.
 - `audit/`: route-flow matrix, phát hiện kỹ thuật và baseline Git/repository.
 
+S0 acceptance note: CDP MHTML captured by real Chrome is accepted as equivalent
+to `Ctrl+S -> Webpage, Complete` when each state has a complete artifact,
+SHA-256 manifest, and successful offline reopen. See
+`xoamutoeic/manifests/manifest.json`.
+
 Tổng cộng tại thời điểm lập chỉ mục:
 
 - 44 ảnh PNG.
