@@ -1,0 +1,56 @@
+S6-FE XSS probe console (errors/warnings) + /api network proof
+timestamp: 2026-07-31T22:04:22.279Z
+
+=== XSS DESKTOP console ===
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+ERROR: Failed to load resource: the server responded with a status of 409 (Conflict)
+WARNING: [SWStore] conflict on autosave q 25 — reconciling revision
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+=== XSS MOBILE console ===
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+ERROR: Failed to load resource: the server responded with a status of 409 (Conflict)
+WARNING: [SWStore] conflict on autosave q 25 — reconciling revision
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+=== XSS DESKTOP network ===
+RES 200 GET /api/toeic-attempts/157
+RES 200 GET /api/toeic-attempts/157
+RES 200 PATCH /api/toeic-attempts/157/responses/25
+RES 200 PATCH /api/toeic-attempts/157/responses/25
+RES 200 POST /api/toeic-attempts/157/submit
+RES 409 PATCH /api/toeic-attempts/157/responses/25
+RES 200 GET /api/toeic-attempts/157
+RES 200 GET /api/toeic-attempts/157/grading-status
+RES 200 GET /api/toeic-attempts/157/grading-status
+RES 200 GET /api/toeic-attempts/157/result
+RES 200 GET /api/toeic-exams?page=1&pageSize=100
+RES 200 GET /api/toeic-attempts/157
+RES 200 GET /api/toeic-attempts/157/review
+RES 200 GET /api/toeic-exams?page=1&pageSize=100
+RES 200 GET /api/toeic-attempts/157
+RES 200 GET /api/toeic-attempts/157/result
+RES 200 GET /api/toeic-attempts/157/review
+
+=== XSS MOBILE network ===
+RES 200 GET /api/toeic-attempts/158
+RES 200 GET /api/toeic-attempts/158
+RES 200 PATCH /api/toeic-attempts/158/responses/25
+RES 200 PATCH /api/toeic-attempts/158/responses/25
+RES 200 POST /api/toeic-attempts/158/submit
+RES 409 PATCH /api/toeic-attempts/158/responses/25
+RES 200 GET /api/toeic-attempts/158
+RES 200 GET /api/toeic-attempts/158/grading-status
+RES 200 GET /api/toeic-attempts/158/grading-status
+RES 200 GET /api/toeic-attempts/158/result
+RES 200 GET /api/toeic-exams?page=1&pageSize=100
+RES 200 GET /api/toeic-attempts/158
+RES 200 GET /api/toeic-attempts/158/review
+RES 200 GET /api/toeic-exams?page=1&pageSize=100
+RES 200 GET /api/toeic-attempts/158
+RES 200 GET /api/toeic-attempts/158/result
+RES 200 GET /api/toeic-attempts/158/review

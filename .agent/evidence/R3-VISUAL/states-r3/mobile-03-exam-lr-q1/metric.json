@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/mobile/03-exam-lr-q1.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/mobile03-lr-q1.png",
+  "rmse": 165.04196,
+  "diffPixelsPct": 99.3942,
+  "dims": {
+    "equal": false,
+    "reference": "390x844",
+    "actual": "375x812"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/mobile-03-exam-lr-q1/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/mobile-03-exam-lr-q1/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/mobile-03-exam-lr-q1/metric.json"
+  }
+}

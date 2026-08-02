@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/01-exams-sw-list-full.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/desktop01-catalog-sw.png",
+  "rmse": 201.195533,
+  "diffPixelsPct": 99.9944,
+  "dims": {
+    "equal": false,
+    "reference": "1280x2130",
+    "actual": "1264x893"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-01-exams-sw-list-full/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-01-exams-sw-list-full/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-01-exams-sw-list-full/metric.json"
+  }
+}

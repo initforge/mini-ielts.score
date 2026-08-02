@@ -1,0 +1,9 @@
+R2-LR catalog loading + empty states (route interception, client-side only)
+timestamp: 2026-08-01T02:39:42.751Z
+errors: 0
+CHECKLIST | R2-LR (states) | PASS=1 FAIL=0
+  PASS catalog loading state rendered (skeleton)
+
+[2026-08-01T02:39:42.475Z] SCREENSHOT catalog loading state (desktop) -> states-catalog-loading.png
+[2026-08-01T02:39:42.737Z] SCREENSHOT catalog empty state (desktop) -> states-catalog-empty.png
+[2026-08-01T02:39:42.737Z] STEP loading + empty catalog states captured (route interception, client-side only)

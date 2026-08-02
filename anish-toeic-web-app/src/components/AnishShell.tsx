@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Menu, Moon } from 'lucide-react';
 
 const NAV_LINKS: { label: string; to: string }[] = [

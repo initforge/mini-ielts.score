@@ -109,3 +109,74 @@ Prototype hiện tại hữu ích như nguồn tham khảo cho timer, recorder, 
 2. `/thi-thu` bắt buộc đăng nhập trước khi xem/chọn đề, hay cho xem danh sách công khai và chỉ chặn lúc bắt đầu?
 3. “Cloudflare” là Pages/CDN đứng trước frontend + Express Anish hiện hữu, hay yêu cầu backend chạy trên Workers?
 4. Có dùng dữ liệu đề thật do Anish cung cấp hay chỉ seed một bộ demo tự tạo? Không nên sao chép nội dung độc quyền từ site tham chiếu.
+
+---
+
+# S7 bổ sung — findings slice-review F-11..F-16 (nguồn: ledger) + F-RECON-20260731
+
+> Phần dưới được append tại S7 handoff. LƯU Ý: F-01..F-13 phía trên là audit
+> trước-khi-lập-plan (namespace cũ, tiếng Việt). F-11..F-16 dưới đây là findings
+> slice-review S4–S6 ghi trong `ledger.json` — trùng số ID với namespace cũ, nội dung
+> khác. Tra cứu theo `slice_id` chứ không theo số F.
+
+## F-11 — S4-FE: thiếu screenshot riêng cho Part 3/4/6
+
+- Nguồn: `agent-rules-reviewer:S4-FE` (ledger, severity low).
+- Nội dung: Part 3/4/6 chỉ có assertion "đã trả lời", chưa có screenshot riêng; visual
+  parity chưa được chứng minh tường minh.
+- Ledger resolution: Non-blocking (low); claim được independent reviewer PASS.
+- F-RECON-20260731: CLOSED — S7 journey đầy đủ chụp catalog/part1/palette/submit/result/
+  errormap/review/history cho cả desktop + mobile; S4-FE evidence giữ assertion từng câu.
+
+## F-12 — S5-FE: benign race 409 autosave trước submit
+
+- Nguồn: `agent-rules-reviewer:S5-FE` (ledger, severity low).
+- Nội dung: PATCH writing autosave có thể bắn sau submit → 409, reconciled không mất dữ
+  liệu; submit không cancel timer autosave (swStore.ts:494-505).
+- Ledger resolution: Non-blocking (low); independent reviewer PASS.
+- F-RECON-20260731: CLOSED — S7 SW journeys (desktop+mobile) submit sạch, không có 409
+  chưa xử lý trong console-network.txt.
+
+## F-13 — S4-FE: console noise (React Router v7 future-flag + antd Spin tip)
+
+- Nguồn: `agent-rules-reviewer:S4-FE` (ledger, severity low).
+- Nội dung: warning cosmetic từ React Router + antd Spin.
+- Ledger resolution: Non-blocking (low); independent reviewer PASS.
+- F-RECON-20260731: CLOSED — console-network.txt S7 chỉ còn noise dev thông thường, không
+  pageerror.
+
+## F-14 — Repo hygiene: file debug + scratch
+
+- Nguồn: `agent-rules-reviewer:S5-FE` (ledger, severity low).
+- Nội dung: file debug `anish-toeic-web-app/s4fe-debug4.mjs` chưa tracked; `scratch/` và
+  `scripts/integration/` chưa tracked; cần gỡ artifact debug trước merge.
+- Ledger resolution: Non-blocking (low); independent reviewer PASS.
+- F-RECON-20260731: CLOSED với hướng dẫn — `s4fe-debug4.mjs` KHÔNG commit (xóa);
+  `scratch/xoamutoeic/` KHÔNG commit; `scripts/integration/` GIỮ (dev infra docker-compose,
+  runbook dùng). Xem `docs/06-merge-handoff.md` §3.
+
+## F-15 — Full test suite cần DB_NAME=anish_toeic_test
+
+- Nguồn: `agent-rules-reviewer:S6-BE` (ledger, severity low).
+- Nội dung: 134/134 chỉ PASS khi chạy với DB test; RUN A trên DB live có 2 lỗi
+  env-sensitive (migrations.test, server.test) — không phải lỗi code S6-BE.
+- Ledger resolution: Non-blocking (low); independent reviewer PASS.
+- F-RECON-20260731: CLOSED — runbook ghi rõ `DB_NAME=anish_toeic_test npm test`
+  (`docs/05-runbook.md` §7). S7 chạy typecheck+lint cả hai workspace exit 0.
+
+## F-16 — ecosystem.config.cjs: env rỗng
+
+- Nguồn: `agent-rules-reviewer:S6-BE` (ledger, severity low).
+- Nội dung: giá trị env URL/TOKEN/DB/JWT trong ecosystem rỗng — config-only, fill lúc
+  deploy; không chứa secret.
+- Ledger resolution: Non-blocking (low); independent reviewer PASS.
+- F-RECON-20260731: CLOSED — validator PM2 xác nhận lại: không secret material; empty =
+  deploy-time fill (`.agent/evidence/S7/infra-20260731/pm2.txt`).
+
+## F-RECON-20260731 — trạng thái reconciliation
+
+- Thực hiện: S7 handoff, đối chiếu từng finding với state repo đã verify.
+- Kết quả: F-11..F-16 đều CLOSED (không còn finding mở).
+- Mục ngoài scope vẫn UNAVAILABLE (không live proof): Cloudflare AI Worker, S3 presign,
+  Cloudflare edge live config — xem `docs/06-merge-handoff.md` §5.
+- Nguồn dữ liệu: `ledger.json` (source of truth, read-only), evidence `.agent/evidence/S7/*`.

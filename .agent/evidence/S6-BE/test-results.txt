@@ -1,0 +1,28 @@
+S6-BE | AC17/AC19 — typecheck + lint + full Jest suite
+Work package: anish-thi-thu-xoamutoeic-20260730 | slice S6-BE
+Generated: 2026-07-31T15:43:18Z
+Workspace: anish-toeic-web-services (real MySQL 127.0.0.1:13306, Redis 127.0.0.1:16379)
+============================================================
+[1] npm run typecheck  -> exit 0
+    TYPECHECK EXIT=0
+[2] npm run lint       ->
+    LINT EXIT=0
+[3] npm test (full suite) — RUN A: live seeded DB (DB_NAME=toeic, env thật)
+    jest --silent (env from .env, NODE_ENV=development)
+    Test Suites: 2 failed, 9 passed, 11 total
+    Tests:       2 failed, 132 passed, 134 total
+    TEST EXIT=1
+    failing tests (PRE-EXISTING, env-sensitive, not S6-BE code):
+      - src/tests/migrations.test.ts: needs an EMPTY schema (destructive clean-slate up/down
+        round-trip); against the already-seeded live toeic DB the up step hits 'Table users already
+        exists'. Same behavior as S2 migration-clean.txt which ran it on a dedicated clean DB.
+      - src/tests/server.test.ts: auth-router-mount guard POST /api/auth/login with unknown user
+        a@b.com. Against live seeded DB the correct response is 401 (invalid credentials), so the
+        guard's 'not 401' assertion fails. Designed for the unprovisioned test DB (500 not 401).
+[4] npm test (full suite) — RUN B: intended test config (DB_NAME=anish_toeic_test unprovisioned,
+    NODE_ENV=test, JWT_SECRET test-only; jest.setup.js default)
+    command: NODE_ENV=test DB_NAME=anish_toeic_test JWT_SECRET=test-only-... npx jest --silent
+    Test Suites: 11 passed, 11 total
+    Tests:       134 passed, 134 total
+    TEST EXIT=0
+[5] S6-BE grading tests in isolation (both envs): 13/13 pass (see retry-stale.txt [1])

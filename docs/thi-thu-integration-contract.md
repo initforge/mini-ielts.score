@@ -13,7 +13,7 @@ The repository is split into two independent npm workspaces:
 
 ## 3. Deployment and Infrastructure
 - Database: MySQL (empty initial seed, test fixtures only).
-- Background Worker: Redis backing for idempotent S&W grading via Gemini.
+- Background Worker: Redis backing for idempotent S&W grading; the worker calls a Cloudflare AI Worker over HTTP through a provider-neutral adapter, with `AI_GRADING_TEST_MODE=true` substituting a deterministic test double (no network, no randomness) for dev/test.
 - Media: AWS S3 or Cloudinary with presigned bounded upload URLs.
 - App Runtime: PM2 for Express, Nginx for static frontend and `/api` proxy.
 

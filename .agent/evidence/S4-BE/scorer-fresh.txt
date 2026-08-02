@@ -1,0 +1,91 @@
+S4-BE | AC13 — L&R scoring service and API projection compute scores deterministically
+Work package: anish-thi-thu-xoamutoeic-20260730 | slice S4-BE
+Generated: 2026-07-31T13:19:56Z | runner-backed FRESH proof
+============================================================
+
+[1] JEST UNIT TESTS (scorer)
+--------------------------------
+Command as specified: npm test --workspace anish-toeic-web-services -- --testPathPattern "scorer"
+Exit code: 1 -- COMMAND FAILS: jest 30 renamed CLI flag --testPathPattern -> --testPathPatterns (see finding)
+npm notice run anish-toeic-web-services@0.1.0 test
+npm notice run jest --testPathPattern scorer
+testPathPattern:
+
+  Option "testPathPattern" was replaced by "--testPathPatterns". "--testPathPatterns" is only available as a command-line option.
+  
+  Please update your configuration.
+
+  CLI Options Documentation:
+  https://jestjs.io/docs/cli
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /home/linhnx/Projects/mini-toeic.score/anish-toeic-web-services
+npm error workspace anish-toeic-web-services@0.1.0
+npm error location /home/linhnx/Projects/mini-toeic.score/anish-toeic-web-services
+npm error command failed
+npm error command sh -c jest --testPathPattern scorer
+
+Equivalent command (jest 30 flag): jest --testPathPatterns "scorer"
+Exit code: 0
+Test Suites: 1 passed, 1 total
+Tests:       16 passed, 16 total
+Time:        5.742 s
+
+[2] LIVE API PROOF (dev backend :7000, MySQL 13306, Redis 16379)
+--------------------------------
+== S4-BE AC13 live proof: L&R scoring deterministic ==
+ts: 2026-07-31T13:18:46Z
+LOGIN status: OK, token len 185
+EXAM anish-full-lr-001 id=1
+ANSWERS: 1:1:1 2:8:0 3:12:1 4:13:1 5:18:0 6:22:1 7:26:1 8:30:0 9:35:1 10:38:1 11:44:0 12:45:1 13:49:1 14:53:1 15:57:0 16:61:1 17:65:0 18:70:1 19:73:1 20:79:0 21:82:1
+# expected: listening correct = q1,3,4,6,7,9,10,12 = 8 ; reading correct = q13,14,16,18,19,21 = 6 ; total 14
+
+== ATTEMPT A1 ==
+CREATE attempt HTTP 201 body: {"attemptId":4,"status":"IN_PROGRESS","mode":"EXAM"}
+ATTEMPT_ID=4
+PATCHed 21 responses; non-200 count: 0
+SUBMIT HTTP 200 body: {"success":true}
+GRADING-STATUS body: {"error":"Status not found"}
+RESULT body: {"listeningScore":8,"readingScore":6,"totalScore":14,"status":"FINAL"}
+
+== ATTEMPT A2 ==
+CREATE attempt HTTP 201 body: {"attemptId":5,"status":"IN_PROGRESS","mode":"EXAM"}
+ATTEMPT_ID=5
+PATCHed 21 responses; non-200 count: 0
+SUBMIT HTTP 200 body: {"success":true}
+GRADING-STATUS body: {"error":"Status not found"}
+RESULT body: {"listeningScore":8,"readingScore":6,"totalScore":14,"status":"FINAL"}
+
+== DETERMINISM CHECK (attempt 4 vs 5, identical answers) ==
+RESULT_A1: {"listeningScore":8,"readingScore":6,"totalScore":14,"status":"FINAL"}
+RESULT_A2: {"listeningScore":8,"readingScore":6,"totalScore":14,"status":"FINAL"}
+DETERMINISTIC: PASS (identical JSON)
+
+== DB cross-check (SQL recount for attempt 4) ==
+mysql: [Warning] Using a password on the command line interface can be insecure.
+listening	reading
+8	6
+mysql: [Warning] Using a password on the command line interface can be insecure.
+attempt_id	listening_score	reading_score	total_score	status
+4	8	6	14	FINAL
+5	8	6	14	FINAL
+
+[3] Math.random AUDIT
+--------------------------------
+rg -n 'Math.random' anish-toeic-web-services/src/ -> only a comment in migrations/seed.ts line 4;
+no Math.random in src/services/scorer.service.ts, grading.service.ts, toeic.service.ts,
+src/workers/grading.worker.ts, src/controllers/toeic.controller.ts, src/validations/*.ts
+Scoring logic: strict === comparison against stored correct_option_id; fixed boundary
+LISTENING_SECTION_CUTOFF=4; no random/clock/iteration-order dependence.
+
+[4] ENV / BRIEFING NOTES
+--------------------------------
+- Task brief creds (seed.owner@anish.test / SeedPass123!) do not exist in DB.
+  Seeded users (src/migrations/seed.ts): seed.owner@example.com & seed.other@example.com, password seed-password-123.
+  Proof executed with actual seed creds.
+- Task brief mode 'exam' is rejected (400, invalid_enum_value). API contract: 'EXAM' | 'PRACTICE' (uppercase).
+  Proof executed with mode 'EXAM'.
+- LR grading is inline at submit (ScorerService.scoreLR in transaction) -> attempt COMPLETED immediately;
+  no grading_job row -> GET grading-status returns 404 'Status not found' (expected for LR).
+  Determinism proven: 2 attempts, identical answers, identical JSON result; SQL recount matches exactly.

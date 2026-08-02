@@ -1,0 +1,17 @@
+R3-FAILURE2 state 18 — forced grading failure (terminal FAILED, retry_count=3)
+PRE: submit attempt 281 (SW) then
+  UPDATE toeic_grading_jobs SET status='FAILED', error_message='forced fail', retry_count=3 WHERE attempt_id=281;
+  UPDATE toeic_attempts SET status='FAILED' WHERE id=281;
+
+--- API proof ---
+COMMAND: curl -b owner.jar http://localhost:7000/api/toeic-attempts/281/grading-status
+BODY: {"id":66,"attempt_id":281,"status":"FAILED","retry_count":3,"error_message":"forced fail",...}
+COMMAND: curl -b owner.jar http://localhost:7000/api/toeic-attempts/281/result
+BODY: {"error":"Result not found"}   STATUS: 404  (no completed score row)
+
+--- UI proof ---
+UI PROOF: 18-grading-failed.png — ProcessingPage: 'Không thể hoàn tất chấm bài' + Alert 'Chấm điểm thất bại' + 'Đã thử 3 lần. Vui lòng thử làm lại bài thi hoặc liên hệ hỗ trợ.' + button 'Thử chấm lại lần cuối'
+DOM PROBE: failed title=1 ; 'Đã thử 3 lần'=1 ; retry-last button=1
+UI PROOF: 18-result-no-score.png — ResultPage: error Alert 'Chưa có kết quả' / 'Kết quả chưa sẵn sàng hoặc bài thi không tồn tại.' ; certificate absent ; score shown=false ; 'Thử lại' present
+
+VERDICT: PASS

@@ -1,0 +1,5 @@
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+console:error Failed to load resource: the server responded with a status of 429 (Too Many Requests)
+DIALOG: alert :: Bạn đã thử đăng nhập quá nhiều lần. Vui lòng thử lại sau 8 phút.

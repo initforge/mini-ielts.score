@@ -1,0 +1,34 @@
+R3-P0-PROTO: root package.json dependencies before/after
+=========================================================
+
+BEFORE (this task):
+  dependencies:
+    "class-variance-authority": "^0.7.1"
+    "clsx": "^2.1.1"
+    "lucide-react": "^1.28.0"
+    "tailwind-merge": "^3.6.0"
+
+AFTER (this task):
+  no "dependencies" block at all. package.json = name/version/private,
+  workspaces (anish-toeic-web-app, anish-toeic-web-services), scripts
+  (dev/build/typecheck/lint/test via --workspaces). No "main".
+
+Changes:
+  - Removed class-variance-authority ^0.7.1
+  - Removed clsx ^2.1.1
+  - Removed lucide-react ^1.28.0
+  - Removed tailwind-merge ^3.6.0
+  - All four were used only by deleted root src/ prototype
+    (src/lib/utils.ts, src/components/ui/*). Workspaces declare their own
+    deps (e.g. anish-toeic-web-app lucide-react ^0.300.0).
+
+Lockfile (package-lock.json):
+  - npm install run after edit: exit 0.
+  - Root dependency entries removed; lock still contains workspace-owned
+    matches (anish-toeic-web-app lucide-react ^0.300.0 + transitive clsx
+    deps of workspaces) — verified by grep:
+      anish-toeic-web-app/node_modules/lucide-react (workspace)
+      node_modules/clsx (transitive)
+    No root-level class-variance-authority / lucide-react ^1.28.0 /
+    tailwind-merge entries remain.
+  - Before: 17 matching lines; after: 6 matching lines (workspace-only).

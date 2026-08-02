@@ -1,0 +1,25 @@
+[STATE 11 UI] ProcessingPage 223 queued->processing->completed
+--- QUEUED ---
+Lịch sử luyện tập
+ID: 223
+Đang chờ xếp hàng...
+Bài của bạn đang trong hàng đợi. Sẽ được chấm trong giây lát.
+Đang vào hàng đợi
+5%
+Đang vào hàng đợi
+Đang tải câu trả lời
+Phân tích ngữ pháp
+Phân tích từ
+--- PROCESSING ---
+Lịch sử luyện tập
+ID: 223
+AI đang chấm bài của bạn...
+Đang tải câu trả lời của bạn để phân tích.
+Đang tải câu trả lời
+12%
+Đang vào hàng đợi
+Đang tải câu trả lời
+Phân tích ngữ pháp
+Phân tích từ vựng
+Tí
+--- (completed state captured separately on attempt 180, 11-grading-completed-ui.txt) ---

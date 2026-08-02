@@ -1,0 +1,19 @@
+R2-RELEASE-RECHECK — Builds (clean snapshot, npm ci)
+====================================================
+
+npm ci (root workspaces):
+  exit=0
+  warnings: 3 install scripts blocked (allowScripts not set): @swc/core, unrs-resolver, esbuild (non-fatal; builds succeeded)
+  npm ci reported: 19 vulnerabilities (2 low, 2 moderate, 15 high) — full tree incl. dev deps
+
+anish-toeic-web-app:
+  npm run typecheck : exit=0 (tsc --noEmit clean)
+  npm run build     : exit=0
+    dist/assets/index-apOZhuxB.css  78.04 kB | gzip 13.41 kB
+    dist/assets/index-CWNjpp5a.js  1845.50 kB | gzip 567.33 kB
+    warning: chunk > 500 kB (non-fatal)
+
+anish-toeic-web-services:
+  npm run typecheck : exit=0 (tsc --noEmit clean)
+  npm run lint      : exit=0
+  npm run build     : exit=0 (tsc && copy src/migrations/*.sql to dist/migrations)

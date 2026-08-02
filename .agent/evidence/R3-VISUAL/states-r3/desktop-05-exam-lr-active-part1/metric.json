@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/05-exam-lr-active-part1.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/desktop05-listening-directions.png",
+  "rmse": 204.151359,
+  "diffPixelsPct": 98.0849,
+  "dims": {
+    "equal": false,
+    "reference": "1280x749",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-05-exam-lr-active-part1/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-05-exam-lr-active-part1/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-05-exam-lr-active-part1/metric.json"
+  }
+}

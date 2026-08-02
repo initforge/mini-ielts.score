@@ -1,0 +1,114 @@
+R3-SW journey (mobile 375x812) — viewport {"width":375,"height":812}
+timestamp: 2026-08-01T06:08:34.705Z
+attemptId: 247
+finalScore: 400
+resultStatus: FINAL
+errors: 1
+CHECKLIST | R3-SW (mobile) | PASS=71 FAIL=1
+  FAIL anonymous-login intent auto-reopens mode dialog (SW exam)
+  PASS SW attempt created (id=247)
+  PASS real UI login POST /api/auth/login returned 200
+  PASS mic granted via fake media device (--use-fake-ui-for-media-stream)
+  PASS speaking q1 blob captured + playback ready
+  PASS speaking q1 presigned PUT to MinIO returned 200 :: key=uploads/attempts/247/q22/q22.webm content-length=null
+  PASS q1 read-aloud prompt shown
+  PASS speaking q2 blob captured + playback ready
+  PASS speaking q2 presigned PUT to MinIO returned 200 :: key=uploads/attempts/247/q23/q23.webm content-length=null
+  PASS q3 describe-picture SVG image (data:image/svg+xml;base64) :: {"src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My","w":640,"h":420}
+  PASS q3 image rendered (naturalWidth>0) :: {"src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My","w":640,"h":420}
+  PASS speaking q3 blob captured + playback ready
+  PASS speaking q3 presigned PUT to MinIO returned 200 :: key=uploads/attempts/247/q24/q24.webm content-length=null
+  PASS speaking q4 blob captured + playback ready
+  PASS speaking q4 presigned PUT to MinIO returned 200 :: key=uploads/attempts/247/q25/q25.webm content-length=null
+  PASS q5 respond-to-questions prompt shown
+  PASS speaking q5 blob captured + playback ready
+  PASS speaking q5 presigned PUT to MinIO returned 200 :: key=uploads/attempts/247/q26/q26.webm content-length=null
+  PASS speaking q6 blob captured + playback ready
+  PASS speaking q6 presigned PUT to MinIO returned 200 :: key=uploads/attempts/247/q27/q27.webm content-length=null
+  PASS speaking q7 blob captured + playback ready
+  PASS speaking q7 presigned PUT to MinIO returned 200 :: key=uploads/attempts/247/q28/q28.webm content-length=null
+  PASS q8 information prompt (plans table) shown
+  PASS speaking q8 blob captured + playback ready
+  PASS speaking q8 presigned PUT to MinIO returned 200 :: key=uploads/attempts/247/q29/q29.webm content-length=null
+  PASS writing q1 picture SVG image :: {"src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My","w":640,"h":420}
+  PASS writing q1 image rendered (naturalWidth>0)
+  PASS WRITING start page (part/question header + min-words hint)
+  PASS q1 word-count label rendered
+  PASS q1 min_words hint rendered
+  PASS q1 word count >= 10 (got 21)
+  PASS q1 autosaved (Đã lưu)
+  PASS q2 word-count label rendered
+  PASS q2 min_words hint rendered
+  PASS q2 word count >= 10 (got 17)
+  PASS q2 autosaved (Đã lưu)
+  PASS q3 word-count label rendered
+  PASS q3 min_words hint rendered
+  PASS q3 word count >= 10 (got 17)
+  PASS q3 autosaved (Đã lưu)
+  PASS q4 word-count label rendered
+  PASS q4 min_words hint rendered
+  PASS q4 word count >= 10 (got 16)
+  PASS q4 autosaved (Đã lưu)
+  PASS q5 word-count label rendered
+  PASS q5 min_words hint rendered
+  PASS q5 word count >= 10 (got 15)
+  PASS q5 autosaved (Đã lưu)
+  PASS q6 word-count label rendered
+  PASS q6 min_words hint rendered
+  PASS q6 word count >= 10 (got 54)
+  PASS q6 autosaved (Đã lưu)
+  PASS q7 word-count label rendered
+  PASS q7 min_words hint rendered
+  PASS q7 word count >= 10 (got 29)
+  PASS q7 autosaved (Đã lưu)
+  PASS q8 word-count label rendered
+  PASS q8 min_words hint rendered
+  PASS q8 word count >= 10 (got 65)
+  PASS q8 autosaved (Đã lưu)
+  PASS processing page progress UI rendered
+  PASS result certificate header
+  PASS TOTAL SCORE section
+  PASS total score 400 displayed
+  PASS status FINAL tag
+  PASS Speaking + Writing sections
+  PASS history lists attempt 247 with Xem kết quả link
+  PASS review opens result from history
+  PASS token cookie present in CDP Network.getAllCookies (name='token') :: {"name":"token","httpOnly":true,"secure":false,"sameSite":"Lax","path":"/"}
+  PASS token cookie httpOnly=true
+  PASS token cookie sameSite=Lax (Strict/Lax acceptable)
+  PASS localStorage does NOT contain token key :: {"anish-toeic-catalog:LR%3A-%3A-":"{\"savedAt\":1785564425062,\"items\":[{\"id\":1,\"collection_id\":1,\"slug\":\"anish-full-lr-001\",\"title\":\"Anish Full Practice 1 — Listening & Reading\",\"duration_minutes\":120,\"question_count\":21,\"skill_type\":\"LR\",\"created_at\":\"2026-08-01T01:35:26.000Z\",\"updated_at\":\"2026-08-01T01:35:26.000Z\"}]}","anish-toeic-catalog:SW%3A-%3A-":"{\"savedAt\":1785564414596,\"items\":[{\"id\":2,\"collection_id\":1,\"slug\":\"anish-full-sw-001\",\"title\":\"Anish Full Practice 1 — Speaking & Writing\",\"duration_minutes\":60,\"question_count\":16,\"skill_type\":\"SW\",\"created_at\":\"2026-08-01T01:35:27.000Z\",\"updated_at\":\"2026-08-01T01:35:27.000Z\"}]}"}
+
+STEP transcript:
+[2026-08-01T06:06:54.518Z] SCREENSHOT catalog SW tab (mobile) -> mobile01-catalog-sw.png
+[2026-08-01T06:06:54.641Z] STEP catalog SW tab rendered
+[2026-08-01T06:06:54.836Z] SCREENSHOT exam detail -> undefined.png
+[2026-08-01T06:06:54.836Z] STEP exam detail rendered
+[2026-08-01T06:07:11.045Z] NOTE REAL-BUG: anonymous-login intent dialog did not auto-reopen for SW exam — resuming manually
+[2026-08-01T06:07:11.461Z] STEP attempt created: 247 (bounced-to-login=true)
+[2026-08-01T06:07:17.710Z] STEP speaking q1: recorded ~2s, PUT 200 uploads/attempts/247/q22/q22.webm
+[2026-08-01T06:07:17.753Z] SCREENSHOT speaking question (mobile) -> mobile-sw-speaking.png
+[2026-08-01T06:07:21.548Z] STEP speaking q2: recorded ~2s, PUT 200 uploads/attempts/247/q23/q23.webm
+[2026-08-01T06:07:25.362Z] STEP speaking q3: recorded ~2s, PUT 200 uploads/attempts/247/q24/q24.webm
+[2026-08-01T06:07:29.199Z] STEP speaking q4: recorded ~2s, PUT 200 uploads/attempts/247/q25/q25.webm
+[2026-08-01T06:07:33.020Z] STEP speaking q5: recorded ~2s, PUT 200 uploads/attempts/247/q26/q26.webm
+[2026-08-01T06:07:36.838Z] STEP speaking q6: recorded ~2s, PUT 200 uploads/attempts/247/q27/q27.webm
+[2026-08-01T06:07:40.682Z] STEP speaking q7: recorded ~2s, PUT 200 uploads/attempts/247/q28/q28.webm
+[2026-08-01T06:07:44.501Z] STEP speaking q8: recorded ~2s, PUT 200 uploads/attempts/247/q29/q29.webm
+[2026-08-01T06:07:44.501Z] STEP all 8 speaking questions recorded
+[2026-08-01T06:07:48.927Z] STEP writing q1: typed, word count 21, autosaved
+[2026-08-01T06:07:48.984Z] SCREENSHOT writing q1 picture (mobile, typed) -> mobile04-writing-q1-picture.png
+[2026-08-01T06:07:49.031Z] SCREENSHOT writing question (mobile) -> mobile-sw-writing.png
+[2026-08-01T06:07:53.415Z] STEP writing q2: typed, word count 17, autosaved
+[2026-08-01T06:07:57.678Z] STEP writing q3: typed, word count 17, autosaved
+[2026-08-01T06:08:01.847Z] STEP writing q4: typed, word count 16, autosaved
+[2026-08-01T06:08:06.024Z] STEP writing q5: typed, word count 15, autosaved
+[2026-08-01T06:08:12.663Z] STEP writing q6: typed, word count 54, autosaved
+[2026-08-01T06:08:17.668Z] STEP writing q7: typed, word count 29, autosaved
+[2026-08-01T06:08:25.262Z] STEP writing q8: typed, word count 65, autosaved
+[2026-08-01T06:08:25.262Z] STEP writing q1/q6/q8 answered (all 8 writing done)
+[2026-08-01T06:08:26.030Z] STEP submitted -> processing page (attempt 247)
+[2026-08-01T06:08:33.582Z] STEP result rendered: score 400, status FINAL
+[2026-08-01T06:08:33.611Z] SCREENSHOT SW result certificate (extra) -> mobile08-exam-sw-result.png
+[2026-08-01T06:08:34.695Z] SCREENSHOT history -> review (extra) -> mobile09-exam-sw-history-review.png
+[2026-08-01T06:08:34.695Z] STEP history/review verified
+NOTE: token cookie secure=false (httpOnly=true sameSite=Lax) — dev-over-HTTP, expected

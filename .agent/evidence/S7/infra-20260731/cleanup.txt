@@ -1,0 +1,6 @@
+### Cleanup: stop and remove anish-toeic infra (dev-only, this work package)
+Run when work package done:
+
+docker compose -f scripts/integration/docker-compose.yml down -v
+
+Note: -v also deletes named volumes anish-toeic-mysql-data / anish-toeic-redis-data (all data).

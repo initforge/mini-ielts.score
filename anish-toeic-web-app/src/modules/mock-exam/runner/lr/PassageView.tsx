@@ -15,7 +15,7 @@ interface PassageViewProps {
   bilingual: boolean;
   annotationOpen: boolean;
   annotationKey: string;
-  onSelect: (questionId: number) => void;
+  onSelectOption: (questionId: number, optionId: number) => void;
 }
 
 export function PassageView({
@@ -28,7 +28,7 @@ export function PassageView({
   bilingual,
   annotationOpen,
   annotationKey,
-  onSelect,
+  onSelectOption,
 }: PassageViewProps) {
   // Convention: the passage for Parts 6-7 lives in section.instructions
   // ("Questions N-M refer to the following text." + passage HTML). If a
@@ -83,7 +83,7 @@ export function PassageView({
                 <OptionList
                   options={options[q.id] ?? []}
                   selectedOptionId={draft?.selected_option_id ?? null}
-                  onSelect={onSelect}
+                  onSelect={(oid) => onSelectOption(q.id, oid)}
                   bilingual={bilingual}
                 />
               </div>

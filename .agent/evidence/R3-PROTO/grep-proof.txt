@@ -1,0 +1,20 @@
+### cmd: rg -ri 'GEMINI_API_KEY|gemini|generative|vercel' . --glob '!node_modules/**' --glob '!.agent/**' --glob '!references/**' --glob '!scratch/**' --glob '!docs/**'
+exit=0 (matches found)
+
+./README.md:![Gemini](https://img.shields.io/badge/Gemini-AI-8E75B2?logo=googlei&logoColor=fff)
+./README.md:![Vercel](https://img.shields.io/badge/Vercel-Serverless-000?logo=i&logoColor=fff)
+./README.md:| AI | ![Gemini](https://img.shields.io/badge/Gemini-Model_Fallback-8E75B2?logo=googlei&logoColor=fff) | Audio transcription, multimodal prompt grading, JSON feedback generation. |
+./README.md:| API | ![Vercel](https://img.shields.io/badge/Vercel-Functions-000?logo=i&logoColor=fff) ![Express](https://img.shields.io/badge/Express-VPS-111?logo=express&logoColor=fff) | Same grading handlers support Vercel and a Node/VPS wrapper. |
+./README.md:i=your_i_api_key
+./README.md:GEMINI_MODEL_CHAIN=i-3.0-pro,i-2.5-flash,i-2.0-flash-exp,i-1.5-flash
+./README-vi.md:![Gemini](https://img.shields.io/badge/Gemini-AI-8E75B2?logo=googlei&logoColor=fff)
+./README-vi.md:![Vercel](https://img.shields.io/badge/Vercel-Serverless-000?logo=i&logoColor=fff)
+./README-vi.md:| AI | ![Gemini](https://img.shields.io/badge/Gemini-Model_Fallback-8E75B2?logo=googlei&logoColor=fff) | Transcribe audio, chấm multimodal prompt, sinh JSON feedback. |
+./README-vi.md:| API | ![Vercel](https://img.shields.io/badge/Vercel-Functions-000?logo=i&logoColor=fff) ![Express](https://img.shields.io/badge/Express-VPS-111?logo=express&logoColor=fff) | Handler chấm điểm chạy được ở Vercel và được bọc lại bởi Express khi deploy VPS. |
+./README-vi.md:i=your_i_api_key
+./README-vi.md:GEMINI_MODEL_CHAIN=i-3.0-pro,i-2.5-flash,i-2.0-flash-exp,i-1.5-flash
+./README-vi.md:Người học cũng có thể nhập Gemini key trực tiếp trong modal. Key này lưu ở `localStorage` và được gửi kèm request chấm điểm; `i` trên server chỉ là fallback.
+
+### follow-up: same pattern, code/build surface only
+### rg -ri 'GEMINI_API_KEY|gemini|generative|vercel' anish-toeic-web-app anish-toeic-web-services package.json package-lock.json nginx scripts env.example env.production.example seed.sql ecosystem.config.cjs tsconfig.json tsconfig.node.json public
+exit=1 (0 lines)

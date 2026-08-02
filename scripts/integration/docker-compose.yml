@@ -1,0 +1,98 @@
+# Dev-only infrastructure for work package anish-thi-thu-xoamutoeic-20260730.
+# MySQL/Redis dùng cho migration, seed và browser journeys. KHÔNG dùng cho production.
+# Password dev-only (`toeic_dev_pw`) — không phải secret thật, không tái sử dụng ở môi trường khác.
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: anish-toeic-mysql
+    restart: unless-stopped
+    # Append-only audit tables use BEFORE UPDATE/DELETE triggers. MySQL 8.4
+    # enables binary logging, so the disposable non-SUPER migration user needs
+    # this dev-only trust flag to create deterministic triggers.
+    command: ["--log-bin-trust-function-creators=1"]
+    environment:
+      MYSQL_DATABASE: toeic
+      MYSQL_USER: toeic
+      MYSQL_PASSWORD: toeic_dev_pw
+      MYSQL_ROOT_PASSWORD: toeic_root_dev_pw
+    ports:
+      - "127.0.0.1:13306:3306"
+    volumes:
+      - anish-toeic-mysql-data:/var/lib/mysql
+    networks:
+      - anish-toeic-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ptoeic_dev_pw"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    container_name: anish-toeic-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "127.0.0.1:16379:6379"
+    volumes:
+      - anish-toeic-redis-data:/data
+    networks:
+      - anish-toeic-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+  # R3-P1-MINIO: local S3-compatible media store for presigned upload E2E.
+  # API on 19000, console on 19001. Dev-only credentials — never reuse in prod.
+  minio:
+    image: minio/minio:latest
+    container_name: anish-toeic-minio
+    restart: unless-stopped
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "127.0.0.1:19000:9000"
+      - "127.0.0.1:19001:9001"
+    volumes:
+      - anish-toeic-minio-data:/data
+    networks:
+      - anish-toeic-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  # One-shot bootstrap: alias + create the toeic-media bucket, then exit 0.
+  mc-init:
+    image: minio/mc:latest
+    container_name: anish-toeic-mc-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c
+      "mc alias set local http://minio:9000 minioadmin minioadmin &&
+       mc mb -p local/toeic-media &&
+       exit 0"
+    networks:
+      - anish-toeic-net
+
+volumes:
+  anish-toeic-mysql-data:
+    name: anish-toeic-mysql-data
+  anish-toeic-redis-data:
+    name: anish-toeic-redis-data
+  anish-toeic-minio-data:
+    name: anish-toeic-minio-data
+
+networks:
+  anish-toeic-net:
+    name: anish-toeic-net

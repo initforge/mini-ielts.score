@@ -1,0 +1,23 @@
+== validateWorkerEnv ==
+PASS  [complete env] expected=pass → RESOLVED
+❌ Environment validation failed (worker): JWT_SECRET: Required
+PASS  [missing JWT_SECRET] expected=fail → THREW: Environment validation failed (worker): JWT_SECRET: Required
+❌ Environment validation failed (worker): DB_HOST: Required
+PASS  [missing DB_HOST] expected=fail → THREW: Environment validation failed (worker): DB_HOST: Required
+❌ Environment validation failed (worker): JWT_SECRET: JWT_SECRET must not be a placeholder (contains 'REPLACE_WITH') — PM2/VPS must supply a real secret
+PASS  [placeholder JWT_SECRET] expected=fail → THREW: Environment validation failed (worker): JWT_SECRET: JWT_SECRET must not be a placeholder (contains 'REPLACE_WITH') — PM2/VPS must supply a real secret
+❌ Environment validation failed (worker): JWT_SECRET: JWT_SECRET is required and must be at least 32 characters
+PASS  [short JWT_SECRET] expected=fail → THREW: Environment validation failed (worker): JWT_SECRET: JWT_SECRET is required and must be at least 32 characters
+❌ Environment validation failed: AI_GRADING_TEST_MODE=true is forbidden in production
+PASS  [AI_GRADING_TEST_MODE in prod] expected=fail → THREW: Environment validation failed: AI_GRADING_TEST_MODE=true is forbidden in production
+== validateServerEnv ==
+PASS  [complete env] expected=pass → RESOLVED
+❌ Environment validation failed (server): CORS_ORIGIN: CORS_ORIGIN='*' is forbidden: server.ts always sets credentials:true, and browsers reject '*' with credentials — use an explicit origin list
+PASS  [CORS_ORIGIN=* rejected] expected=fail → THREW: Environment validation failed (server): CORS_ORIGIN: CORS_ORIGIN='*' is forbidden: server.ts always sets credentials:true, and browsers reject '*' with credentials — use an explicit origin list
+
+ALL SMOKE CHECKS PASSED
+
+Worker process-level fail-closed check:
+  NODE_ENV=production DB_HOST=h DB_USER=u DB_NAME=d node dist/workers/grading.worker.js
+  → '❌ Environment validation failed (worker): JWT_SECRET: JWT_SECRET is required...'
+  → '[Grading Worker] FATAL: invalid environment — refusing to start...' (exit 1)

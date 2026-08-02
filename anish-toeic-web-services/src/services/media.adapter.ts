@@ -31,19 +31,21 @@ export interface MediaAdapter {
 }
 
 /**
- * Build an AWS S3 presigned URL.
+ * Build an S3 presigned URL.
  *
- * Only instantiated when the required env vars are present
- * at runtime (AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET).
- * Falls back to a mock adapter in test/development.
+ * Required at runtime: access key + secret (S3_ACCESS_KEY/S3_SECRET_KEY, or the
+ * AWS_* legacy equivalents). Optional: S3_ENDPOINT (custom S3-compatible store
+ * such as MinIO — enables forcePathStyle), S3_REGION (default us-east-1),
+ * S3_BUCKET (default toeic-media). Falls back to a mock adapter in test/dev.
  */
 function buildS3Adapter(): MediaAdapter | null {
-  const region = process.env.AWS_REGION;
-  const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-  const bucket = process.env.S3_BUCKET || process.env.AWS_S3_BUCKET;
+  const endpoint = process.env.S3_ENDPOINT;
+  const region = process.env.S3_REGION || process.env.AWS_REGION || 'us-east-1';
+  const accessKeyId = process.env.S3_ACCESS_KEY || process.env.AWS_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.S3_SECRET_KEY || process.env.AWS_SECRET_ACCESS_KEY;
+  const bucket = process.env.S3_BUCKET || process.env.AWS_S3_BUCKET || 'toeic-media';
 
-  if (!region || !accessKeyId || !secretAccessKey || !bucket) {
+  if (!accessKeyId || !secretAccessKey) {
     return null;
   }
 
@@ -57,6 +59,9 @@ function buildS3Adapter(): MediaAdapter | null {
     const client = new S3Client({
       region,
       credentials: { accessKeyId, secretAccessKey },
+      // MinIO and other path-style stores: force path-style addressing and
+      // override the endpoint instead of defaulting to AWS virtual-hosted URLs.
+      ...(endpoint ? { endpoint, forcePathStyle: true } : {}),
     });
 
     return {
@@ -112,7 +117,7 @@ export function createTestMediaAdapter(): MediaAdapter {
 
 /**
  * Singleton adapter. Priorities:
- * 1. Real S3 adapter if AWS credentials are available
+ * 1. Real S3 adapter when S3 credentials are available (incl. MinIO via S3_ENDPOINT)
  * 2. Test adapter for test/development environments
  */
 let _adapter: MediaAdapter | null = null;
@@ -120,18 +125,21 @@ let _adapter: MediaAdapter | null = null;
 export function getMediaAdapter(): MediaAdapter {
   if (_adapter) return _adapter;
 
+  // Real adapter whenever credentials are present (dev + prod alike). In
+  // development the env may set S3_ENDPOINT to a local MinIO instance.
+  const s3Adapter = buildS3Adapter();
+  if (s3Adapter) {
+    _adapter = s3Adapter;
+    return _adapter;
+  }
+
   if (process.env.NODE_ENV === 'production') {
-    const s3Adapter = buildS3Adapter();
-    if (s3Adapter) {
-      _adapter = s3Adapter;
-      return _adapter;
-    }
     throw new Error(
-      'Production environment requires AWS credentials (AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET)'
+      'Production environment requires S3 credentials (S3_ACCESS_KEY/S3_SECRET_KEY or AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY)'
     );
   }
 
-  // Development/test: use mock adapter
+  // Development/test without S3 credentials: use mock adapter
   _adapter = createTestMediaAdapter();
   return _adapter;
 }

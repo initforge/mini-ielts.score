@@ -1,0 +1,37 @@
+R3-FE-FIX browser verification — Playwright (chromium 1.62.0, headless), vite :5173, real backend :7000, seeded DB.
+Date: 2026-08-01. Baseline HEAD 620c111. Worktree dirty (no commit/add/stash/reset).
+
+Environment
+  - anish-toeic-web-services: node dist/server.js, PORT=7000, health GET /api/health -> 200 {"status":"ok"}
+  - anish-toeic-web-app: npm run dev (vite 5.4.21) on http://localhost:5173, proxy /api -> 127.0.0.1:7000
+  - seed login: seed.owner@example.com / seed-password-123 -> POST /api/auth/login HTTP 200
+  - fresh `npm ci` after `rm -rf node_modules anish-toeic-web-app/node_modules anish-toeic-web-services/node_modules`
+
+Bug 1 — antd v5 static APIs under React 19: PASS
+  - @ant-design/v5-patch-for-react-19@1.0.3 installed (hoisted), first import in src/main.tsx.
+  - (a) LR runner: 'Sang Reading →' -> Modal.confirm RENDERED title="Sang phần Reading?" [skip-rendered.png]
+  - (a) LR runner: 'NỘP BÀI' (reading) -> Modal.confirm RENDERED title="Nộp bài?" [submit-confirm-rendered.png]
+  - No antd render regression in console; both .ant-modal-confirm DOM nodes visible.
+
+Bug 2 — duplicate React hoist: PASS
+  - root package.json overrides { react, react-dom } = 19.2.8; clean install.
+  - npm ls react react-dom --depth=0 -> single react@19.2.8 / react-dom@19.2.8 (overridden), zero react@18 nodes.
+  - App boots + runner + modals render with NO 'Invalid hook call' in browser console across scenarios (a)/(b)/(c).
+
+Bug 3 — SW return-URL tab=sw: PASS
+  - ExamModeDialog 401 branch: tabParam='&tab=sw' when exam.skill_type==='SW' -> returnUrl=/thi-thu?exam=2&mode=exam&tab=sw.
+  - CatalogPage consumes tab: skillType = 'SW' when tabParam==='sw'; dialog auto-opens from ?exam=&mode=.
+  - (b) anonymous SW start -> /dang-nhap?returnUrl=%2Fthi-thu%3Fexam%3D2%26mode%3Dexam%26tab%3Dsw -> login
+    -> landed /thi-thu?exam=2&mode=exam&tab=sw, SW tab aria-pressed=true, mode dialog visible=true.
+  - [sw-returnurl-after-login.png, returnurl-sw.txt]
+
+Bug 4 — History auth gate: PASS
+  - HistoryPage: query error status 401 -> navigate('/dang-nhap?returnUrl=' + encodeURIComponent('/thi-thu/lich-su')).
+  - (c) anonymous GET /thi-thu/lich-su -> landed /dang-nhap?returnUrl=%2Fthi-thu%2Flich-su.
+  - [history-gate.png, history-gate.txt]
+
+Static checks: typecheck=0 lint=0 build=0 (tsc && vite build, dist emitted). [build.txt]
+
+Evidence
+  antd-patch.txt, npm-ls.txt, returnurl-sw.txt + sw-returnurl-after-login.png,
+  history-gate.txt + history-gate.png, build.txt, verify.txt

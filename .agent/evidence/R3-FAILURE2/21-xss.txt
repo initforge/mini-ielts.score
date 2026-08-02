@@ -1,0 +1,15 @@
+R3-FAILURE2 state 21 — stored XSS sanitized on review/result pages
+PAYLOAD (attempt 286, SW): PATCH text_response='<img src=x onerror=alert(1)><script>alert(2)</script> safe text' (q30,q31); attempt graded COMPLETED.
+
+--- API proof ---
+COMMAND: PATCH /api/toeic-attempts/286/responses/30 with XSS payload → 200; submit → job COMPLETED
+GET /api/toeic-attempts/286 → responses carry the raw payload (stored as-is; rendering layer sanitizes)
+
+--- UI proof (result review modal + error-map) ---
+UI PROOF: 21-xss-review.png  (result page 'Xem lại chi tiết' modal)
+UI PROOF: 21-xss-errormap.png (error-map / Xem lại bài thi)
+DOM PROBE (result modal): script tag present=false ; onerror present=false ; img[src=x] present=true (relative src, NO onerror → inert) ; payload text visible=true ; dialogs triggered=0
+DOM PROBE (error-map): img elements=[{src:x,hasOnerror:false},{src:x,hasOnerror:false}] ; onerror anywhere=false ; alert() call=false ; explicit <script>alert(2)</script>=false ; dialogs=0
+CONSOLE: no page errors (only pre-existing CSP connect-src warning)
+
+VERDICT: PASS — event handlers and <script> stripped, no dialog, no console error.

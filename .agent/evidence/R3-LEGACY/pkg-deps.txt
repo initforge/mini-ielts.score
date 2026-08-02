@@ -1,0 +1,34 @@
+R3-P0-LEGACY: root package.json dependencies before/after
+=========================================================
+
+BEFORE (HEAD commit):
+  dependencies:
+    "@google/generative-ai": "^0.24.1"
+    "class-variance-authority": "^0.7.1"
+    "clsx": "^2.1.1"
+    "lucide-react": "^1.28.0"
+    "tailwind-merge": "^3.6.0"
+
+AFTER (this task):
+  dependencies:
+    "class-variance-authority": "^0.7.1"
+    "clsx": "^2.1.1"
+    "lucide-react": "^1.28.0"
+    "tailwind-merge": "^3.6.0"
+
+Changes:
+  - Removed "@google/generative-ai": "^0.24.1"
+  - No @vercel/node or @vercel/sdk present before or after (grep 'vercel' in
+    package.json package-lock.json = 0 lines).
+
+Lockfile:
+  - npm install run after edit (exit 0).
+  - grep -n 'generative|vercel' package-lock.json = 0 lines (before: 3 lines:
+    1 dependency entry + 1 lock node entry + 1 resolved URL).
+
+FINDING (flagged, NOT touched — out of assigned scope):
+  Remaining root deps class-variance-authority/clsx/lucide-react/tailwind-merge
+  are used ONLY by the old root src/ prototype (src/lib/utils.ts, components/ui/*).
+  Workspaces declare their own deps (e.g. web-app lucide-react ^0.300.0).
+  If root src/ prototype is dead legacy, these 4 deps could later be removed.
+  Per task: "do NOT delete more than assigned" — left in place.

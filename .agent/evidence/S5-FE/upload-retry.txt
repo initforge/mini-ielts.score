@@ -1,0 +1,7 @@
+S5-FE upload lifecycle (presign → PUT, bounded retries, no base64)
+timestamp: 2026-07-31T14:07:56.228Z
+
+Backend dev mode uses createTestMediaAdapter (mock presigned URL) — real S3 is UNAVAILABLE
+(no AWS creds), so the direct PUT to test-bucket.s3.test.amazonaws.com fails by design.
+This is expected and recorded as the retryable failure path.
+

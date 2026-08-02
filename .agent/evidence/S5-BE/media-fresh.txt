@@ -1,0 +1,102 @@
+S5-BE | AC15 — Audio upload presigned URL generation is secure, bounded, and validated
+Work package: anish-thi-thu-xoamutoeic-20260730 | slice S5-BE
+Generated: 2026-07-31T13:20:00Z | runner-backed FRESH proof
+============================================================
+
+[1] JEST UNIT TESTS (toeicMedia)
+--------------------------------
+Command as specified: npm test --workspace anish-toeic-web-services -- --testPathPattern "toeicMedia"
+Exit code: 1 -- COMMAND FAILS: jest 30 renamed CLI flag --testPathPattern -> --testPathPatterns (see finding)
+Equivalent command (jest 30 flag): jest --testPathPatterns "toeicMedia"
+Exit code: 0
+Test Suites: 1 passed, 1 total
+Tests:       22 passed, 22 total
+Time:        5.165 s
+
+[2] LIVE PRESIGN VALIDATION MATRIX (dev backend :7000)
+--------------------------------
+== S5-BE AC15 live proof: presign secure/bounded/validated ==
+ts: 2026-07-31T13:19:07Z
+LOGIN owner + other: OK (token lens 185/185)
+CREATE SW attempt id=6 (owner)
+
+== CASE 1: VALID presign (audio/webm, safe filename) ==
+--- valid-200
+REQ payload: {"questionId":22,"fileName":"recording.webm","fileType":"audio/webm","fileSize":102400}
+RESP: {"uploadUrl":"https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F6%2Fq22%2Frecording.webm?X-Amz-Test-Signature=mock","s3Key":"uploads/attempts/6/q22/recording.webm","expiresAt":"2026-07-31T13:24:08.394Z"}
+HTTP_200
+
+== CASE 2: INVALID filename (path traversal) ==
+--- traversal-4xx
+REQ payload: {"questionId":22,"fileName":"../../etc/passwd","fileType":"audio/webm","fileSize":102400}
+RESP: {"error":[{"validation":"regex","code":"invalid_string","message":"fileName must be a safe audio file name (e.g., recording.webm) without path separators","path":["fileName"]}]}
+HTTP_400
+
+== CASE 3: INVALID base64 content in body ==
+--- base64-content-4xx
+REQ payload: {"questionId":22,"fileName":"recording.webm","fileType":"audio/webm","fileSize":102400,"content":"data:audio/webm;base64,GkXfo59ChoEBQveBAULygQRC82EICiFCdEVTQ0mMR0lTVE9PR9C0c2VlYl9jb250ZW50"}
+RESP: {"error":[{"code":"custom","message":"base64 audio content must not be sent in request body — use presigned S3 upload","path":["content"]}]}
+HTTP_400
+
+== CASE 4: INVALID mime type ==
+--- mime-4xx
+REQ payload: {"questionId":22,"fileName":"recording.webm","fileType":"application/pdf","fileSize":102400}
+RESP: {"error":[{"code":"custom","message":"fileType must be an allowed audio MIME type","path":["fileType"]}]}
+HTTP_400
+
+== CASE 5: INVALID fileSize (30MB > 25MB cap) ==
+--- size-4xx
+REQ payload: {"questionId":22,"fileName":"recording.webm","fileType":"audio/webm","fileSize":31457280}
+RESP: {"error":[{"code":"too_big","maximum":26214400,"type":"number","inclusive":true,"exact":false,"message":"fileSize must not exceed 26214400 bytes","path":["fileSize"]}]}
+HTTP_400
+
+== CASE 6: UNAUTHORIZED (no token) ==
+--- unauthorized-401
+RESP: {"error":"Unauthorized: Missing token"}
+HTTP_401
+
+== CASE 7: CROSS-USER (other user token on owner attempt) ==
+--- cross-user-403
+REQ payload: {"questionId":22,"fileName":"recording.webm","fileType":"audio/webm","fileSize":102400}
+RESP: {"error":"Attempt not found or access denied"}
+HTTP_403
+
+== CASE 8: fileName does NOT belong to attempt exam ==
+--- wrong-question-4xx
+REQ payload: {"questionId":1,"fileName":"recording.webm","fileType":"audio/webm","fileSize":102400}
+RESP: {"error":"Question does not belong to this exam"}
+HTTP_409
+
+== DB: toeic_attempt_media rows ==
+mysql: [Warning] Using a password on the command line interface can be insecure.
+attempt_id	question_id	s3_key
+6	22	uploads/attempts/6/q22/recording.webm
+
+Summary matrix:
+  valid audio/webm safe filename          -> 200 presigned URL + s3Key (bounded)
+  fileName '../../etc/passwd'             -> 400 (regex reject)
+  base64 content in body                  -> 400 (refuse, presign channel only)
+  fileType application/pdf                -> 400 (allowlist)
+  fileSize 30MB (>25MB cap)               -> 400 (bounded)
+  no token                                -> 401
+  cross-user token                        -> 403 (ownership scoped)
+  questionId not in attempt's exam        -> 409
+  s3Key format: uploads/attempts/{id}/q{questionId}/{fileName} (no traversal possible)
+
+[3] Math.random AUDIT
+--------------------------------
+rg -n 'Math.random' src/services/media.adapter.ts src/services/toeic.service.ts
+  src/validations/toeic.validation.ts src/validations/toeicMedia.validation.ts
+  src/controllers/toeic.controller.ts -> no matches.
+Media adapter: S3 getSignedUrl via @aws-sdk (V4 signature, server-side); dev uses
+deterministic createTestMediaAdapter mock URL. No randomness in key construction.
+
+[4] ENV / BRIEFING NOTES
+--------------------------------
+- Task brief creds (seed.owner@anish.test / SeedPass123!) do not exist in DB.
+  Seeded users: seed.owner@example.com / seed-password-123 (src/migrations/seed.ts).
+- Dev NODE_ENV=development => createTestMediaAdapter mock URL (no AWS creds). Production path
+  uses @aws-sdk getSignedUrl (V4 sig) with expiresIn clamped to [60,3600]s, key format
+  uploads/attempts/{attemptId}/q{questionId}/{fileName}, CacheControl no-store.
+- Validation proven live: traversal/base64/bad-mime/oversize all 4xx; no token 401;
+  cross-user 403; question not in exam 409; media row recorded only for valid case.

@@ -1,0 +1,12 @@
+R3-DOCS-FIX — .nvmrc check
+Before: 18
+After:  22
+
+$ cat .nvmrc
+22
+
+Reason: react-router 8.3.0 requires node >=22.22.0 (react-router 7.18.2-era
+node 18 support does not apply). Verified against the workspaces:
+  anish-toeic-web-app/package.json  -> react-router 8.3.0
+
+Exit check: no other scope changes touch node engine config.

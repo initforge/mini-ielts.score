@@ -1,0 +1,16 @@
+R3-FAILURE2 state 23 — cross-user result/review/media access (anti-oracle, no data leak)
+TARGET: attempt 286 = owner's COMPLETED SW attempt (result FINAL). Non-owner = seed.other@example.com.
+
+--- non-owner reads (expect 404, opaque) ---
+GET  /api/toeic-attempts/286            → {"error":"Attempt not found"}           [404]
+GET  /api/toeic-attempts/286/result     → {"error":"Result not found"}            [404]
+GET  /api/toeic-attempts/286/review     → {"error":"Review not found"}            [404]
+GET  /api/toeic-attempts/286/grading-status → {"error":"Status not found"}        [404]
+
+--- non-owner write (expect 403) ---
+POST /api/toeic-attempts/286/media/presign → {"error":"Attempt not found or access denied"} [403]
+
+--- owner control (expect 200 + scores) ---
+GET  /api/toeic-attempts/286/result → {"listeningScore":0,"readingScore":0,"totalScore":400,"status":"FINAL"} [200]
+
+VERDICT: PASS — no cross-user data returned; reads 404, writes 403; owner access intact.

@@ -1,0 +1,12 @@
+R3-FAILURE2 state 11 — mic denied + mic unavailable
+SIMULATION: getUserMedia rejected deterministically via init script (NotAllowedError / NotFoundError) — drives the real store states.
+
+--- (a) mic permission denied ---
+UI PROOF: 11-mic-denied.png
+DOM PROBE: red card 'Microphone access denied' visible=1 ; settings hint 'allow access for this site' visible=1
+
+--- (b) mic unavailable (no audio device) ---
+UI PROOF: 11-mic-unavailable.png
+DOM PROBE: error 'No microphone found' visible=1 (store state 'disconnected' — no device to enumerate)
+
+VERDICT: PASS

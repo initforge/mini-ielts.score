@@ -1,0 +1,214 @@
+diff --git a/anish-toeic-web-app/src/modules/mock-exam/components/CatalogStates.tsx b/anish-toeic-web-app/src/modules/mock-exam/components/CatalogStates.tsx
+index 985772c..0d3346a 100644
+--- a/anish-toeic-web-app/src/modules/mock-exam/components/CatalogStates.tsx
++++ b/anish-toeic-web-app/src/modules/mock-exam/components/CatalogStates.tsx
+@@ -1,4 +1,4 @@
+-import { AlertTriangle, Inbox, RefreshCw, SearchX } from 'lucide-react';
++import { AlertTriangle, Inbox, RefreshCw, SearchX, WifiOff } from 'lucide-react';
+ 
+ export function CatalogLoading({ count = 6 }: { count?: number }) {
+   return (
+@@ -59,3 +59,36 @@ export function CatalogError({ onRetry }: { onRetry: () => void }) {
+     </div>
+   );
+ }
++
++/** Non-intrusive amber banner shown above cached data while offline. */
++export function CatalogOfflineBanner() {
++  return (
++    <div
++      role="status"
++      className="mb-4 flex items-center gap-2 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
++    >
++      <WifiOff className="h-4 w-4 shrink-0" />
++      <span>Đang ngoại tuyến — hiển thị dữ liệu đã lưu</span>
++    </div>
++  );
++}
++
++/** Explicit offline error state for when no cached data is available. */
++export function CatalogOffline({ onRetry }: { onRetry: () => void }) {
++  return (
++    <div className="col-span-full flex flex-col items-center justify-center gap-3 py-16 text-center">
++      <WifiOff className="w-10 h-10 text-destructive/70" />
++      <p className="text-destructive font-medium">Không có kết nối mạng</p>
++      <p className="text-muted-foreground text-sm">
++        Kiểm tra kết nối internet và thử lại.
++      </p>
++      <button
++        onClick={onRetry}
++        className="inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
++      >
++        <RefreshCw className="w-4 h-4" />
++        Thử lại
++      </button>
++    </div>
++  );
++}
+diff --git a/anish-toeic-web-app/src/modules/mock-exam/lib/attemptStorage.ts b/anish-toeic-web-app/src/modules/mock-exam/lib/attemptStorage.ts
+index 1817709..1b28ea6 100644
+--- a/anish-toeic-web-app/src/modules/mock-exam/lib/attemptStorage.ts
++++ b/anish-toeic-web-app/src/modules/mock-exam/lib/attemptStorage.ts
+@@ -9,6 +9,7 @@
+  * mode / old WebViews) so the runner degrades gracefully instead of dropping
+  * acknowledged answers.
+  */
++import type { Exam } from '../../../types/exam';
+ 
+ export interface PendingResponse {
+   key: string;
+@@ -24,6 +25,36 @@ export interface AttemptSnapshot {
+   data: Record<string, unknown>;
+ }
+ 
++/**
++ * Offline catalog cache (P3): last successful catalog response persisted to
++ * localStorage so the catalog page renders cached data on an offline reload
++ * (react-query's in-memory cache does not survive a page reload).
++ */
++export interface CatalogCacheEntry {
++  savedAt: number;
++  items: Exam[];
++}
++
++const CATALOG_CACHE_PREFIX = 'anish-toeic-catalog:';
++
++export function saveCatalogCache(key: string, items: Exam[]): void {
++  try {
++    const entry: CatalogCacheEntry = { savedAt: Date.now(), items };
++    localStorage.setItem(CATALOG_CACHE_PREFIX + key, JSON.stringify(entry));
++  } catch {
++    // quota / privacy mode: ignore, best effort only
++  }
++}
++
++export function loadCatalogCache(key: string): CatalogCacheEntry | null {
++  try {
++    const raw = localStorage.getItem(CATALOG_CACHE_PREFIX + key);
++    return raw ? (JSON.parse(raw) as CatalogCacheEntry) : null;
++  } catch {
++    return null;
++  }
++}
++
+ const DB_NAME = 'anish-toeic-attempt';
+ const DB_VERSION = 1;
+ const PENDING_STORE = 'pending';
+diff --git a/anish-toeic-web-app/src/pages/user/CatalogPage.tsx b/anish-toeic-web-app/src/pages/user/CatalogPage.tsx
+index 942d590..f05a9bb 100644
+--- a/anish-toeic-web-app/src/pages/user/CatalogPage.tsx
++++ b/anish-toeic-web-app/src/pages/user/CatalogPage.tsx
+@@ -1,5 +1,5 @@
+ import { useEffect, useState } from 'react';
+-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
++import { Link, useNavigate, useSearchParams } from 'react-router';
+ import { ArrowLeft, Headphones, History, Mic, Search } from 'lucide-react';
+ import { useExamsQuery } from '../../modules/mock-exam/catalogApi';
+ import { getCollections } from '../../modules/mock-exam/collections';
+@@ -10,7 +10,15 @@ import {
+   CatalogError,
+   CatalogLoading,
+   CatalogNoResult,
++  CatalogOffline,
++  CatalogOfflineBanner,
+ } from '../../modules/mock-exam/components/CatalogStates';
++import {
++  catalogCacheKey,
++  isNetworkOffline,
++  useOnlineStatus,
++} from '../../modules/mock-exam/lib/examCatalog';
++import { loadCatalogCache, saveCatalogCache } from '../../modules/mock-exam/lib/attemptStorage';
+ import { AnishFooter, AnishHeader } from '../../components/AnishShell';
+ import { Exam, ExamMode } from '../../types/exam';
+ 
+@@ -31,7 +39,10 @@ const CatalogPage = () => {
+   const [dialogMode, setDialogMode] = useState<ExamMode>('exam');
+   const [isModeDialogOpen, setIsModeDialogOpen] = useState(false);
+ 
+-  const { data, isLoading, isError, refetch } = useExamsQuery({
++  const isOnline = useOnlineStatus();
++  const cacheKey = catalogCacheKey(skillType, collectionId, search);
++
++  const { data, isLoading, isError, error, refetch } = useExamsQuery({
+     skillType,
+     collectionId: collectionId || undefined,
+     search: search || undefined,
+@@ -42,6 +53,23 @@ const CatalogPage = () => {
+   const isNoResult = !isLoading && !isError && data?.total === 0 && hasFilters;
+   const isEmpty = !isLoading && !isError && data?.total === 0 && !hasFilters;
+ 
++  // lastCachedData: react-query cache (same tab) + localStorage mirror (reload).
++  // P3: reload-offline must render cached cards, never a blank screen.
++  const [cachedItems, setCachedItems] = useState<Exam[] | null>(() => loadCatalogCache(cacheKey)?.items ?? null);
++
++  useEffect(() => {
++    setCachedItems(loadCatalogCache(cacheKey)?.items ?? null);
++  }, [cacheKey]);
++
++  useEffect(() => {
++    if (!data) return;
++    setCachedItems(data.items);
++    saveCatalogCache(cacheKey, data.items);
++  }, [data, cacheKey]);
++
++  const isOffline = !isOnline || isNetworkOffline(error);
++  const renderCached = isOffline && cachedItems !== null;
++
+   // Preserve anonymous-login intent: /dang-nhap?returnUrl=/thi-thu?exam=<id>&mode=<mode>
+   useEffect(() => {
+     const examId = searchParams.get('exam');
+@@ -172,7 +200,18 @@ const CatalogPage = () => {
+ 
+             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+               <div>
+-                {isLoading ? (
++                {renderCached ? (
++                  <>
++                    <CatalogOfflineBanner />
++                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
++                      {cachedItems.map((exam) => (
++                        <ExamCard key={exam.id} exam={exam} onOpenModeDialog={openModeDialog} />
++                      ))}
++                    </div>
++                  </>
++                ) : isOffline ? (
++                  <CatalogOffline onRetry={() => void refetch()} />
++                ) : isLoading ? (
+                   <CatalogLoading />
+                 ) : isError ? (
+                   <CatalogError onRetry={() => void refetch()} />
+
+===== anish-toeic-web-app/src/modules/mock-exam/lib/examCatalog.ts (untracked file; additions by R3-FE-OFFLINE) =====
+/**
+ * Shared catalog lookups for result/review/history pages (S6-FE).
+ *
+ * `toeic_attempts` rows carry only exam_id (no skill_type, no title), so the
+ * pages map exam_id → exam via the public catalog. One shared query avoids an
+ * N+1 fetch per page and keeps the SW/LR branching in one place.
+ */
+import { useEffect, useState } from 'react';
+  return exams.find((e) => e.id === examId);
+}
+
+/* ---- P3 offline catalog UX ---- */
+
+/** True when the device reports offline or the query failed as a network error. */
+export function isNetworkOffline(error: unknown): boolean {
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) return true;
+  return error instanceof AxiosError && !error.response;
+}
+
+/** Reactive `navigator.onLine`, updated via online/offline events. */
+export function useOnlineStatus(): boolean {
+  const [online, setOnline] = useState(() => navigator.onLine);
+  useEffect(() => {
+    const on = () => setOnline(true);
+    const off = () => setOnline(false);
+    window.addEventListener('online', on);
+    window.addEventListener('offline', off);
+    return () => {
+      window.removeEventListener('online', on);
+      window.removeEventListener('offline', off);
+    };
+  }, []);
+  return online;

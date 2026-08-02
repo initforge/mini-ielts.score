@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/12-exam-lr-reading-part6-question131.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/desktop12-part6-q131.png",
+  "rmse": 211.402674,
+  "diffPixelsPct": 98.125,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-12-exam-lr-reading-part6-question131/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-12-exam-lr-reading-part6-question131/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-12-exam-lr-reading-part6-question131/metric.json"
+  }
+}

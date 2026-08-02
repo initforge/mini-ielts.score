@@ -1,0 +1,7 @@
+# R3-P1-MINIO BE test suite (DB_NAME=anish_toeic_test npm test)
+# 2026-08-01T04:37:11Z
+
+Test Suites: 12 passed, 12 total
+Tests:       142 passed, 142 total
+toeicMedia.test.ts: PASS (incl. presign URL generation, MIME, fileName, ownership 403, question-membership 409, state 409, size/base64 rejection)
+exit: 0

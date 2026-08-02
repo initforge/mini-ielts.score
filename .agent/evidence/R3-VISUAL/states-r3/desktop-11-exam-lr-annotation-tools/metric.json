@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/11-exam-lr-annotation-tools.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/desktop11-annotation.png",
+  "rmse": 212.278064,
+  "diffPixelsPct": 98.1407,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-11-exam-lr-annotation-tools/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-11-exam-lr-annotation-tools/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-11-exam-lr-annotation-tools/metric.json"
+  }
+}

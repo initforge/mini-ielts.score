@@ -1,0 +1,98 @@
+R2-LR mobile LR journey — viewport {"width":375,"height":812}
+timestamp: 2026-08-01T02:39:42.751Z
+attemptId: 212
+errors: 0
+CHECKLIST | R2-LR (mobile) | PASS=62 FAIL=0
+  PASS LR exam card in catalog (LR tab default)
+  PASS detail: 120 phút metadata
+  PASS detail: 21 câu hỏi metadata
+  PASS detail: 7 phần thi metadata
+  PASS detail: Bắt đầu (Start) button present
+  PASS detail: instructions panel present
+  PASS detail: Part 1 section listed in instructions
+  PASS mode dialog: Thi thử (exam) mode option
+  PASS mode dialog: Luyện tập (practice) mode option
+  PASS anonymous start -> /dang-nhap?returnUrl intent :: returnUrl=/thi-thu?exam=1&mode=exam
+  PASS post-login intent preserved: mode dialog auto-reopened with target exam
+  PASS post-login intent preserved: dialog in Thi thử (exam) mode
+  PASS LR attempt created via dialog (id=212)
+  PASS listening intro directions content shown
+  PASS Part1 Q1 photograph renders (SVG data URI img)
+  PASS Part1 Q1 image src starts with data:image/svg+xml;base64
+  PASS Part1 Q1: no audio_url in seed (audio only on Parts 2-4) — documented data reality
+  PASS answered Part1 Q1 (correct option)
+  PASS palette: Q1 shows answered marker
+  PASS answered q2
+  PASS answered q3
+  PASS Part2 Q4: audio player rendered
+  PASS answered q4
+  PASS answered q5
+  PASS answered q6
+  PASS answered q7
+  PASS answered q8
+  PASS answered q9
+  PASS answered q10
+  PASS answered q11
+  PASS answered q12
+  PASS Sang Reading confirm dialog shown
+  PASS Part5: no audio (reading)
+  PASS Part5: 3 question cards in split layout
+  PASS answered q13
+  PASS answered q14
+  PASS answered q15
+  PASS Part6: split layout shown
+  PASS answered q16
+  PASS answered q17
+  PASS answered q18
+  PASS Part7: split layout shown
+  PASS answered q19
+  PASS answered q20
+  PASS answered q21
+  PASS annotation toolbar toggle button present in header (reading)
+  PASS annotation toolbar rendered (highlight tool)
+  PASS bilingual toggle button present
+  PASS bilingual toggled ON (button now "Ẩn song ngữ")
+  PASS submit confirmation dialog shown
+  PASS result: certificate "/ 990"
+  PASS result: score 14 rendered
+  PASS result API totalScore=14 (got 14)
+  PASS result API status=FINAL (got FINAL)
+  PASS score table modal: table rendered
+  PASS error map: chart section
+  PASS error map: wrong question list
+  PASS review modal: table rendered
+  PASS history: attempt 212 listed
+  PASS history: COMPLETED status (Hoàn thành)
+  PASS attempt status COMPLETED (got COMPLETED)
+  PASS review rows=21 (got 21)
+
+STEP transcript:
+[2026-08-01T02:39:13.092Z] STEP started; attempt-GET started_at shim active (stack clock skew workaround, see summary)
+[2026-08-01T02:39:13.442Z] SCREENSHOT catalog LR tab -> mobile02-catalog-lr.png
+[2026-08-01T02:39:13.567Z] SCREENSHOT catalog SW tab -> mobile01-catalog-sw.png
+[2026-08-01T02:39:13.743Z] SCREENSHOT exam detail page -> mobile04-exam-detail.png
+[2026-08-01T02:39:13.800Z] SCREENSHOT mode dialog (start) -> mobile03-mode-dialog.png
+[2026-08-01T02:39:13.875Z] SCREENSHOT login page with returnUrl (anonymous gate) -> mobile20-login-returnUrl.png
+[2026-08-01T02:39:14.039Z] STEP login via cookie injection (same httpOnly session cookie the UI login sets)
+[2026-08-01T02:39:14.040Z] STEP post-login URL: http://localhost:5173/thi-thu?exam=1&mode=exam
+[2026-08-01T02:39:14.131Z] SCREENSHOT post-login return (catalog + dialog, intent preserved) -> mobile21-post-login-return.png
+[2026-08-01T02:39:14.185Z] ATTEMPT_ID=212
+[2026-08-01T02:39:14.295Z] SCREENSHOT runner: listening intro directions -> mobile05-listening-directions.png
+[2026-08-01T02:39:14.370Z] SCREENSHOT runner: Part 1 directions -> mobile06-part1-directions.png
+[2026-08-01T02:39:14.449Z] SCREENSHOT runner: Part 1 Q1 (photograph) -> mobile07-part1-q1.png
+[2026-08-01T02:39:14.783Z] SCREENSHOT runner: palette open with answered marker -> mobile08-palette-answered.png
+[2026-08-01T02:39:18.729Z] SCREENSHOT runner: audio player visible (Part 2 Q4) -> mobile22-part2-audio-player.png
+[2026-08-01T02:39:28.786Z] STEP answered listening q1-12
+[2026-08-01T02:39:29.518Z] SCREENSHOT runner: Part 5 (q13-15) reading split layout -> mobile09-part5.png
+[2026-08-01T02:39:31.188Z] SCREENSHOT runner: Part 6 (q16-18) -> mobile10-part6.png
+[2026-08-01T02:39:32.898Z] SCREENSHOT runner: Part 7 (q19-21) -> mobile11-part7.png
+[2026-08-01T02:39:33.737Z] STEP answered all 21 LR questions (q1-14 correct, q15-21 wrong -> 14/990)
+[2026-08-01T02:39:34.284Z] SCREENSHOT runner: annotation toolbar (Part 7) -> mobile12-annotation-toolbar.png
+[2026-08-01T02:39:35.081Z] SCREENSHOT runner: bilingual toggle ON state -> mobile13-bilingual-on.png
+[2026-08-01T02:39:35.180Z] SCREENSHOT runner: submit confirmation dialog -> mobile14-submit-confirm.png
+[2026-08-01T02:39:37.184Z] SCREENSHOT result page (certificate) -> mobile15-result.png
+[2026-08-01T02:39:37.309Z] SCREENSHOT score table modal (Bảng kết quả) -> mobile16-score-table-modal.png
+[2026-08-01T02:39:38.750Z] SCREENSHOT error map page -> mobile17-error-map.png
+[2026-08-01T02:39:38.846Z] SCREENSHOT review detail modal -> mobile18-review-detail.png
+[2026-08-01T02:39:40.926Z] SCREENSHOT history page -> mobile19-history.png
+[2026-08-01T02:39:40.952Z] STEP history + API checks done

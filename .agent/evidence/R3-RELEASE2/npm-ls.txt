@@ -1,0 +1,6 @@
+anish-toeic-monorepo@1.0.0 /tmp/opencode/anish-snap3-1zmxDR
+└─┬ anish-toeic-web-app@0.1.0 -> ./anish-toeic-web-app
+  ├── react-dom@19.2.8 overridden
+  └── react@19.2.8 overridden
+
+EXIT=0

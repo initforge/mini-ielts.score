@@ -111,13 +111,29 @@ function draftFromServer(r: {
   };
 }
 
+/** Exam order: section order_index, then per-question order_index.
+ *  The backend returns questions ordered by q.order_index alone, which
+ *  restarts per section — without this sort the cross-section order (and
+ *  every displayNumber) is undefined. */
+export function sortSessionQuestions(sections: Section[], questions: Question[]): Question[] {
+  const sectionOrder = new Map<number, number>(sections.map((s) => [s.id, s.order_index]));
+  return [...questions].sort((a, b) => {
+    const sa = sectionOrder.get(a.section_id) ?? Number.MAX_SAFE_INTEGER;
+    const sb = sectionOrder.get(b.section_id) ?? Number.MAX_SAFE_INTEGER;
+    return sa - sb || a.order_index - b.order_index;
+  });
+}
+
 function normalizeAttempt(attempt: Attempt): {
   questions: Question[];
   options: Record<number, Option[]>;
   sections: Section[];
   responses: Record<number, ResponseDraft>;
 } {
-  const questions = attempt.session.questions.map((q, i) => ({ ...q, displayNumber: i + 1 }));
+  const questions = sortSessionQuestions(attempt.session.sections, attempt.session.questions).map((q, i) => ({
+    ...q,
+    displayNumber: i + 1,
+  }));
   const options: Record<number, Option[]> = {};
   for (const o of attempt.session.options) {
     if (!options[o.question_id]) options[o.question_id] = [];

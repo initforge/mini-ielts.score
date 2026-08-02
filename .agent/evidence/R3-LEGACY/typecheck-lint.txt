@@ -1,0 +1,11 @@
+npm notice run anish-toeic-monorepo@1.0.0 typecheck
+npm notice run npm run typecheck --workspaces
+npm notice run anish-toeic-web-app@0.1.0 typecheck
+npm notice run tsc --noEmit
+npm notice run anish-toeic-web-services@0.1.0 typecheck
+npm notice run anish-toeic-monorepo@1.0.0 lint
+npm notice run npm run lint --workspaces
+npm notice run anish-toeic-web-app@0.1.0 lint
+npm notice run eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+npm notice run anish-toeic-web-services@0.1.0 lint
+npm notice run eslint . --ext ts

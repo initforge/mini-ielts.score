@@ -1,7 +1,7 @@
 # Operations & Risk Register
 
-> Updated: 2026-05-26
-> Scope: local setup, deployment choices, audio serving, verification, and current risks.
+> Updated: 2026-08-01 (R3-DOCS-FIX — legacy third-party grading surface removed)
+> Scope: local setup, deployment, AI grading adapter, media, verification, and current risks.
 
 ## 1. Local Development
 
@@ -35,126 +35,107 @@ Vite proxies `/api` to `http://localhost:4000` through `vite.config.ts`, so `npm
 
 | Variable | Used by | Purpose |
 |---|---|---|
-| `GEMINI_API_KEY` | `api/lib/gemini.ts` | Server-side fallback Gemini key. |
-| `GEMINI_MODEL_CHAIN` | `api/lib/gemini.ts` | Ordered text grading model candidates. |
-| `GEMINI_MODEL` | `api/lib/gemini.ts` | Single preferred text model candidate. |
-| `GEMINI_TRANSCRIBE_MODEL_CHAIN` | `api/lib/gemini.ts` | Ordered transcription model candidates. |
-| `GEMINI_TRANSCRIBE_MODEL` | `api/lib/gemini.ts` | Single preferred transcription model candidate. |
-| `VITE_AUDIO_BASE_URL` | `src/lib/speakingAudio.ts` | Base URL for speaking instruction audio. |
-| `PORT` | `server/index.ts` | Express production port; defaults to `3000`. |
+| `NODE_ENV`, `PORT` | `config/env.ts` (server boot) | Runtime mode; Express port (`7000` in prod, defaults enforced by zod). |
+| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` | server + grading worker | MySQL — exams, users, attempts, results, grading jobs. |
+| `JWT_SECRET` | server | ≥32 chars, placeholder rejected at boot (fail closed). |
+| `JWT_EXPIRES_IN` | server | Session TTL; also the `jti` TTL in Redis. |
+| `REDIS_URL` | grading worker | Grading queue, job locks, and `jti` session store. |
+| `CLOUDFLARE_AI_WORKER_URL` | grading worker (`adapters/ai-grading.adapter.ts`) | Cloudflare AI Worker endpoint (optional; absent ⇒ `AI_PROVIDER_NOT_CONFIGURED`). |
+| `CLOUDFLARE_AI_WORKER_TOKEN` | grading worker | Bearer token for the worker endpoint. |
+| `CLOUDFLARE_AI_TIMEOUT_MS` | grading worker | Request timeout to the AI worker; default `60000`. |
+| `AI_GRADING_TEST_MODE` | grading worker | `true` ⇒ deterministic test double, no network AI. Dev/test ONLY; `NODE_ENV=production` fails fast. |
+| `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY`, `S3_SECRET_KEY` | server (`media.adapter.ts`) | S3-compatible presigned media uploads (MinIO dev / AWS prod). Absent ⇒ presign 503. |
+| `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | server | AWS S3 fallback when `S3_*` are empty. |
+| `CORS_ORIGIN` | server | Explicit origin list; `*` rejected because credentials are always sent. |
+| `TRUST_PROXY` | server | `true` only behind nginx/Cloudflare so rate-limit identity resolves to the real client IP. |
 
-The frontend key modal writes `localStorage.GEMINI_API_KEY`. That key is user-controlled and sent with grading requests.
+Auth is cookie-based: the session token lives in an HttpOnly cookie (JWT with `jti`), `jti` is stored in Redis, and logout revokes it. No API key or token is stored in `localStorage` or sent in JSON bodies.
 
-## 3. Vercel Deployment
+## 3. AI Grading (Cloudflare AI Worker)
 
-`vercel.json` expects:
+Grading is asynchronous and never calls an AI model directly from Express. The grading worker (`dist/workers/grading.worker.js`) polls `grading_jobs` (`QUEUED`/`RETRY`) and POSTs submissions to a Cloudflare AI Worker over HTTP via the provider-neutral adapter:
 
-```text
-buildCommand: npm run build
-outputDirectory: dist
-rewrite /api/(.*) -> /api/$1
-```
+- **Production**: `CLOUDFLARE_AI_WORKER_URL` + `CLOUDFLARE_AI_WORKER_TOKEN` (endpoint contract `POST /api/grade`), bounded by `CLOUDFLARE_AI_TIMEOUT_MS`.
+- **Dev/test**: `AI_GRADING_TEST_MODE=true` substitutes a deterministic test double — fixed rubric scores, no network, no randomness. Forbidden in production (zod guard fails fast).
+- **Missing config**: absent URL/token + test mode off ⇒ `AiProviderNotConfiguredError` ⇒ job fails with `AI_PROVIDER_NOT_CONFIGURED`.
 
-This route is aligned with the current API handler shape. The main risk is function runtime duration for Speaking, especially when many audio answers require transcription. `api/grade-speaking.ts` sets `maxDuration = 300`, but the actual platform limit depends on the Vercel plan.
+Because grading is queued, long-running AI calls do not block API request handlers; Nginx API timeouts are set to 300s for submission and grading-related traffic.
 
 ## 4. VPS Deployment
 
-The VPS path exists in:
+The VPS path lives in:
 
-- `server/index.ts`
-- `server/dev-server.ts`
-- `ecosystem.config.cjs`
-- `nginx/nginx.conf`
-- `nginx/audio-config.conf`
-- `scripts/*.sh`
+- `anish-toeic-web-services` (`dist/server.js`, `dist/workers/grading.worker.js`)
+- `ecosystem.config.cjs` (PM2: API + grading worker)
+- `nginx/nginx.conf`, `nginx/audio-config.conf`
+- `anish-toeic-web-app/dist` (Vite build served as SPA)
 
 The Express server serves:
 
 ```text
-GET  /health
-POST /api/grade-speaking
-POST /api/grade-writing
-GET  /* -> dist/index.html
+GET    /api/health
+POST   /api/auth/login | register | logout
+GET    /api/toeic-exams | /api/toeic-exams/:slug
+POST   /api/toeic-exams/:id/attempts
+GET    /api/toeic-attempts | /api/toeic-attempts/:id
+PATCH  /api/toeic-attempts/:id/responses/:questionId
+POST   /api/toeic-attempts/:id/media/presign
+POST   /api/toeic-attempts/:id/submit
+GET    /api/toeic-attempts/:id/grading-status | /result
+GET    /* -> SPA fallback (dist/index.html)
 ```
 
 Nginx is configured for:
 
-- HTTPS termination through Certbot paths;
-- `/api/` proxy to `127.0.0.1:3000`;
-- `/assets/` static alias to `dist/assets`;
-- `/audio/speaking/` static alias to `public/audio/speaking`;
-- long API read/send timeouts of 300 seconds for Gemini calls.
+- HTTPS termination (Cloudflare edge + origin certs);
+- `/api/` proxy to `127.0.0.1:7000`;
+- `/assets/` static alias to `anish-toeic-web-app/dist/assets`;
+- server-level security headers (CSP, HSTS, XFO, nosniff) and `server_tokens off`;
+- long API read/send timeouts of 300 seconds (submission and grading traffic).
 
-## 5. Audio Serving
+## 5. Media Serving
 
-The app expects audio under:
+Learner media (speaking audio, prompt images) is not proxied through Nginx. It lives in S3-compatible storage and is uploaded directly via presigned URLs (`POST /api/toeic-attempts/:id/media/presign`). Local dev uses MinIO (`127.0.0.1:19000`, from `scripts/integration/docker-compose.yml`); production uses MinIO-on-VPS or AWS S3 (`S3_ENDPOINT`/`S3_*` or AWS vars).
 
-```text
-/audio/speaking/system/beep.mp3
-/audio/speaking/system/begin-preparing.mp3
-/audio/speaking/system/begin-speaking.mp3
-/audio/speaking/directions/part1.mp3
-/audio/speaking/directions/part2.mp3
-/audio/speaking/directions/part3.mp3
-/audio/speaking/directions/part4.mp3
-/audio/speaking/directions/part5.mp3
-```
-
-The source repo currently stores source MP3s in `audio-temp/`, while `public/audio` only contains `.gitkeep`. The VPS script `scripts/setup-audio-vps.sh` uploads and renames files into the structure expected by `src/lib/speakingAudio.ts`.
-
-This is why the old `docs/HTTPS_AUDIO_FIX.md` existed. Its content is now folded here because the old file had encoding corruption and stale references.
-
-Manual Nginx block:
-
-```nginx
-location /audio/speaking/ {
-    alias /var/www/mini-ielts-score/public/audio/speaking/;
-    add_header Cache-Control "public, max-age=31536000";
-    add_header Access-Control-Allow-Origin "*";
-    add_header Access-Control-Allow-Methods "GET, OPTIONS";
-    types { audio/mpeg mp3; }
-    default_type audio/mpeg;
-    try_files $uri $uri/ =404;
-}
-```
+The old static `/audio/speaking/` Nginx fragment (`nginx/audio-config.conf`) and `scripts/setup-audio-vps.sh` are **legacy**: the current app has no `VITE_AUDIO_BASE_URL` or `src/lib/speakingAudio.ts` references. Kept for reference only — not part of the media path.
 
 Verification:
 
 ```bash
-curl -I https://your-domain.com/audio/speaking/system/beep.mp3
-curl -I https://your-domain.com/health
+curl -I https://your-domain.com/api/health
 ```
 
 Expected:
 
-- audio returns `200` and `audio/mpeg`;
 - health returns JSON from Express;
+- presign returns `200` with a PUT URL when S3/MinIO is configured (503 otherwise);
 - microphone works only on `https://` or `localhost`.
 
 ## 6. Verification Status
 
-During this docs pass:
+Refreshed at R3 (source basis: R3-RELEASE2 clean-snapshot, R3-SECURITY, R3-SW evidence):
 
 | Check | Result |
 |---|---|
-| Source audit | Passed: frontend, contexts, API handlers, Gemini wrapper, server, Nginx, scripts were read. |
-| Screenshot capture | Passed: Playwright captured homepage, Speaking selector, Writing selector. |
-| `npm ci` | Failed: lockfile is out of sync with `package.json`. |
-| `npm install --package-lock=false` | Passed for local inspection only; lockfile was not intentionally updated. |
-| `npm run build` | Passed; Vite warns that `audioStorage.ts` and `utils.ts` are both dynamically and statically imported, so those dynamic imports do not form separate chunks. |
-| `npm run lint` | Blocked by missing ESLint config; the script exists, but ESLint cannot find a configuration file. |
+| Source audit | Passed: FE runner/state, BE auth, attempt/media routes, grading worker + adapter, nginx, PM2 config were read. |
+| `npm ci` (root, workspaces) | Passed from a clean snapshot. |
+| `npm run build` (FE + BE) | Passed; Vite warns main bundle ≈ 1.8 MB (non-blocking). |
+| `npm run typecheck`, `npm run lint` | Passed (both workspaces). |
+| BE test suite | Passed against real MySQL (`DB_NAME=anish_toeic_test`). |
+| `npm audit --omit=dev` | 0/0 findings (both workspaces). |
 
 ## 7. Risk Register
 
 | Risk | Severity | Evidence | Recommended fix |
 |---|---|---|---|
-| Lockfile drift | High | `npm ci` fails with missing Express/CORS transitive dependencies | Run a dependency maintenance commit that updates `package-lock.json`, then verify `npm ci`. |
+| External AI/S3 not live-proven | Medium | Cloudflare AI Worker and AWS S3 never exercised against live accounts; dev uses `AI_GRADING_TEST_MODE` + MinIO | First prod deploy must smoke-test the real adapter and presign path. |
+| Media provisioning | Medium | Prompt images and instruction audio must exist in MinIO/S3 | Provision bucket objects at deploy; verify presigned GET/PUT E2E. |
 | Source encoding corruption | Medium | Vietnamese text in TS/MD/scripts contains mojibake | Separate UI text cleanup pass; verify screenshots after changing strings. |
-| Audio deployment split | Medium | `public/audio` is empty; scripts depend on `audio-temp` | Either commit normalized audio under `public/audio/speaking` or document `audio-temp` as deployment input with checksum. |
-| User API key in localStorage | Medium | `GeminiKeyInput.tsx` saves raw key | Acceptable for a personal tool; for shared deployment, move key ownership server-side. |
-| Long Speaking request duration | Medium | Batch delay can be 60s plus model latency | Keep Vercel max duration in mind; VPS path may be more predictable. |
-| No submission persistence | Low/Medium | No DB or auth layer | Fine for practice lab; insufficient for learner history or admin review. |
+| FE bundle size | Low/Medium | Main bundle ≈ 1.8 MB (Vite chunk warning) | Code-splitting pass post-merge. |
 | Product naming drift | Low | Repo name says IELTS, source says TOEIC | README now clarifies; rename repo only if public branding matters. |
+| `TRUST_PROXY` misconfiguration | Medium | If false in prod, rate-limit identity collapses to 127.0.0.1 | Keep `TRUST_PROXY=true` behind nginx/Cloudflare; never enable when origin is directly reachable. |
+
+Resolved in prior passes: localStorage API key (replaced by HttpOnly cookie + `jti` revocation), lockfile drift (`npm ci` passes), static audio split (legacy), no submission persistence (MySQL attempts/results).
 
 ## 8. Cleanup Decisions
 

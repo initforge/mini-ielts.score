@@ -1,0 +1,17 @@
+S6-FE verification — anish-toeic-web-app
+timestamp: 2026-07-31T22:12:54Z
+============================================================
+1) npm run typecheck  (tsc --noEmit)
+   exit code: 0   -> PASS (no TypeScript errors)
+
+2) npm run lint      (eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0)
+   exit code: 0   -> PASS (no eslint errors; max-warnings 0)
+
+3) npm test
+   package.json "test" script = "tsc --noEmit" (there is NO dedicated FE test
+   suite — no vitest/jest/playwright test runner configured in the web app).
+   The script runs typecheck again: exit code 0 -> PASS.
+   Note: E2E coverage for this slice is provided by the Playwright evidence
+   journeys in .agent/evidence/S6-FE/ (journey-script.mjs, xss-script.mjs).
+
+Environment: Node v26.4.0, Vite dev on :5173, API proxied to :7000.

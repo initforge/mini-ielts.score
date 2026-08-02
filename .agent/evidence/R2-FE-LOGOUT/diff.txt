@@ -1,0 +1,54 @@
+--- /tmp/opencode/HistoryPage.before.tsx	2026-08-01 09:51:51.302526240 +0700
++++ /home/linhnx/Projects/mini-toeic.score/anish-toeic-web-app/src/pages/user/HistoryPage.tsx	2026-08-01 09:49:58.097027578 +0700
+@@ -1,8 +1,8 @@
+ import React from 'react';
+-import { Link } from 'react-router-dom';
++import { Link, useNavigate } from 'react-router-dom';
+ import { Table, Typography, Button, Spin, Alert, Empty } from 'antd';
+ import { useQuery } from '@tanstack/react-query';
+-import { Play, FileText, ArrowRight, RefreshCw } from 'lucide-react';
++import { Play, FileText, ArrowRight, RefreshCw, LogOut } from 'lucide-react';
+ import api from '../../api';
+ import { useExamCatalog } from '../../modules/mock-exam/lib/examCatalog';
+ 
+@@ -35,9 +35,19 @@
+ };
+ 
+ const HistoryPage: React.FC = () => {
++  const navigate = useNavigate();
+   const { data: exams } = useExamCatalog();
+   const examById = new Map((exams ?? []).map((e) => [e.id, e]));
+ 
++  const handleLogout = async () => {
++    try {
++      await api.post('/auth/logout');
++    } catch {
++      // Ignore server errors; the cookie is cleared server-side, navigate regardless.
++    }
++    navigate('/thi-thu');
++  };
++
+   const { data, isLoading, isError, refetch } = useQuery({
+     queryKey: ['attempts-history'],
+     queryFn: async () => {
+@@ -209,11 +219,16 @@
+             </Title>
+             <Text type="secondary">Xem lại các bài thi bạn đã làm và theo dõi tiến độ của bản thân.</Text>
+           </div>
+-          <Link to="/thi-thu">
+-            <Button size="large" className="rounded-full shadow-sm hover:shadow-md">
+-              ← Về danh sách đề thi
++          <div className="flex items-center gap-3">
++            <Link to="/thi-thu">
++              <Button size="large" className="rounded-full shadow-sm hover:shadow-md">
++                ← Về danh sách đề thi
++              </Button>
++            </Link>
++            <Button danger size="large" icon={<LogOut size={16} />} onClick={() => void handleLogout()}>
++              Đăng xuất
+             </Button>
+-          </Link>
++          </div>
+         </div>
+ 
+         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">

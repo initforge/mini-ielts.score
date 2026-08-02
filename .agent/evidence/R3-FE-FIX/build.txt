@@ -1,0 +1,28 @@
+== typecheck ==
+npm notice run anish-toeic-web-app@0.1.0 typecheck
+npm notice run tsc --noEmit
+TYPECHECK_EXIT=0
+
+== lint ==
+npm notice run anish-toeic-web-app@0.1.0 lint
+npm notice run eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+LINT_EXIT=0
+
+== build ==
+npm notice run anish-toeic-web-app@0.1.0 build
+npm notice run tsc && vite build
+vite v5.4.21 building for production...
+transforming...
+✓ 3975 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                     0.64 kB │ gzip:   0.43 kB
+dist/assets/index-BHXsRH8H.css     53.93 kB │ gzip:  10.10 kB
+dist/assets/index-BlJgBiao.js   1,689.70 kB │ gzip: 523.02 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 4.83s
+BUILD_EXIT=0

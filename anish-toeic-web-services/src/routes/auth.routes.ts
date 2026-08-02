@@ -1,10 +1,11 @@
 import { Router, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { randomBytes, scrypt, timingSafeEqual } from 'crypto';
+import { randomBytes, randomUUID, scrypt, timingSafeEqual } from 'crypto';
 import { promisify } from 'util';
 import { pool } from '../services/db.service';
 import { registerSchema, loginSchema } from '../validations/auth.validation';
 import { HttpError } from '../errors/http.error';
+import { storeSessionJti, revokeSessionJti } from '../middlewares/auth.middleware';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
 const scryptAsync = promisify(scrypt);
@@ -39,10 +40,15 @@ async function verifyPassword(password: string, stored: string): Promise<boolean
   return derivedKey.length === expected.length && timingSafeEqual(derivedKey, expected);
 }
 
-function signToken(userId: number, email: string): string {
-  return jwt.sign({ sub: String(userId), email }, getJwtSecret(), {
+// R3-SECURITY: signToken now mints a random jti per session. The jti is
+// persisted in Redis (jti:<jti> -> userId, TTL = JWT_EXPIRES_IN) so logout
+// can revoke the session server-side and requireAuth rejects revoked tokens.
+function createSession(userId: number, email: string): { token: string; jti: string } {
+  const jti = randomUUID();
+  const token = jwt.sign({ sub: String(userId), email, jti }, getJwtSecret(), {
     expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as jwt.SignOptions['expiresIn'],
   });
+  return { token, jti };
 }
 
 function setAuthCookie(res: Response, token: string): void {
@@ -67,10 +73,13 @@ router.post('/register', async (req: Request, res: Response) => {
       );
 
       const userId = result.insertId;
-      const token = signToken(userId, email);
+      const { token, jti } = createSession(userId, email);
+      // R3-SECURITY: register the session in Redis before handing out the
+      // cookie — a session that cannot be revoked is not issued.
+      await storeSessionJti(jti, String(userId));
       setAuthCookie(res, token);
+      // INJ-003: token never in JSON body — httpOnly cookie carries the session.
       return res.status(201).json({
-        token,
         user: { id: String(userId), email, displayName: displayName || email.split('@')[0] },
       });
     } catch (err: unknown) {
@@ -115,10 +124,12 @@ router.post('/login', async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    const token = signToken(userRow.id, userRow.email);
+    const { token, jti } = createSession(userRow.id, userRow.email);
+    // R3-SECURITY: register the session in Redis before handing out the cookie.
+    await storeSessionJti(jti, String(userRow.id));
     setAuthCookie(res, token);
+    // INJ-003: token never in JSON body — httpOnly cookie carries the session.
     return res.json({
-      token,
       user: { id: String(userRow.id), email: userRow.email, displayName: userRow.display_name },
     });
   } catch (err: unknown) {
@@ -132,7 +143,21 @@ router.post('/login', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/logout', (_req: Request, res: Response) => {
+router.post('/logout', async (req: Request, res: Response) => {
+  // R3-SECURITY: revoke the server-side session before clearing the cookie so
+  // a stolen cookie is dead even if the client never actually logged out.
+  const cookies = (req as Request & { cookies?: Record<string, string> }).cookies;
+  const cookieToken = cookies && cookies[COOKIE_NAME];
+  if (cookieToken) {
+    try {
+      const decoded = jwt.verify(cookieToken, getJwtSecret());
+      if (typeof decoded !== 'string' && typeof decoded.jti === 'string' && decoded.jti.length > 0) {
+        await revokeSessionJti(decoded.jti);
+      }
+    } catch {
+      // Token already invalid — nothing to revoke.
+    }
+  }
   res.clearCookie(COOKIE_NAME, { path: '/' });
   return res.json({ success: true });
 });

@@ -1,0 +1,43 @@
+S5-FE r2 upload lifecycle (presign → PUT, bounded retries, no base64)
+timestamp: 2026-07-31T15:36:47.583Z
+
+Backend dev mode uses createTestMediaAdapter (mock presigned URL) — real S3 is UNAVAILABLE
+(no AWS creds), so the direct PUT to test-bucket.s3.test.amazonaws.com fails by design.
+
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F53%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED
+REQ-PUT PUT https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock
+PUT-FAILED https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F55%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock :: net::ERR_NAME_NOT_RESOLVED

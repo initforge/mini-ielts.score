@@ -1,0 +1,56 @@
+Work ID: anish-thi-thu-xoamutoeic-20260730 — Slice S2
+Evidence: deterministic, idempotent seed (src/migrations/seed.ts, npm run seed).
+Date: 2026-07-31
+Command: npm run seed  (ts-node src/migrations/seed.ts) with env
+  DB_HOST=127.0.0.1 DB_PORT=13306 DB_USER=toeic DB_PASSWORD=toeic_dev_pw DB_NAME=toeic
+
+────────────────────────────────────────────────────────────────────────────
+1) Run 1 (fresh DB, schema from migration up):
+   exit code: 0 — output: "Seed completed."
+
+2) Run 2 (immediately after, same DB):
+   exit code: 0 — output: "Seed completed."
+
+3) Row counts are IDENTICAL after run 1 and run 2 (idempotent, no duplicates):
+
+   table                          count
+   users                           2
+   toeic_exam_collections          1
+   toeic_exams                     2
+   toeic_exam_sections             9
+   toeic_questions                26
+   toeic_question_options         84
+   toeic_question_review_content  26
+
+   Breakdown:
+   - users: seed.owner@example.com, seed.other@example.com (ownership tests)
+   - collections: 1 ("Anish Full Practice")
+   - exams: 1 LR (anish-full-lr-001, 21 questions) + 1 SW (anish-full-sw-001, 5 questions)
+   - sections: LR Parts 1-7 (order_index 1..7, listening cutoff at 4) + SW Speaking/Writing (1..2)
+   - questions: 21 LR (Parts 1-7, 3 each) + 3 SPEAKING + 2 WRITING
+   - options: 21 LR x 4 = 84
+   - review_content: 26 (every question) — LR rows carry correct_option_id
+     answer key; SW rows carry sample_response + rubric.
+
+4) Answer key present for LR grading:
+   SELECT COUNT(DISTINCT e.id) FROM toeic_exams e
+     JOIN toeic_exam_sections s ON s.exam_id = e.id
+     JOIN toeic_questions q ON q.section_id = s.id
+     JOIN toeic_question_review_content rc ON rc.question_id = q.id
+     WHERE rc.correct_option_id IS NOT NULL;
+   -> 1 (the LR exam; all 21 LR questions have correct_option_id)
+
+5) Determinism / stable IDs across a 3rd run (count + MAX(id) unchanged):
+
+   before 3rd seed:
+     users 2/2, collections 1/1, exams 2/2, sections 9/9,
+     questions 26/26, options 84/84, review_content 26/26
+   after 3rd seed (exit 0, "Seed completed."):
+     users 2/2, collections 1/1, exams 2/2, sections 9/9,
+     questions 26/26, options 84/84, review_content 26/26
+
+   MAX(id) identical => select-then-insert idempotency, stable foreign keys.
+
+6) No Math.random anywhere in src (see test-results.txt / grep evidence).
+
+7) Content is self-written synthetic fixture material — no real exam data.

@@ -1,0 +1,88 @@
+S6-FE AC18/AC19 failure + ownership evidence
+timestamp: 2026-07-31T22:02:30.365Z
+
+--- SECTION 1: AC18 failure — processing page transport error (nonexistent attempt) ---
+CHECKLIST | AC18 (notfound-desktop) | PASS=3 FAIL=0
+  PASS friendly 404 message shown
+  PASS Thử lại (retry) button present
+  PASS no raw error / stack trace leaked
+STEP logged in as seed.owner
+SCREENSHOT processing notfound transport-error state → processing-notfound-desktop.png
+STEP notfound transport-error state verified
+
+CHECKLIST | AC18 (notfound-mobile) | PASS=3 FAIL=0
+  PASS friendly 404 message shown
+  PASS Thử lại (retry) button present
+  PASS no raw error / stack trace leaked
+STEP logged in as seed.owner
+SCREENSHOT processing notfound transport-error state → processing-notfound-mobile.png
+STEP notfound transport-error state verified
+
+--- SECTION 2: AC19 ownership — seed.other cannot read seed.owner attempt ---
+CHECKLIST | AC19 (ownership-desktop) | PASS=10 FAIL=0
+  PASS other user GET / → 404 (403/404) :: {"error":"Attempt not found"}
+  PASS no data leak via /
+  PASS other user GET /result → 404 (403/404) :: {"error":"Result not found"}
+  PASS no data leak via /result
+  PASS other user GET /grading-status → 404 (403/404) :: {"error":"Status not found"}
+  PASS no data leak via /grading-status
+  PASS other user GET /review → 404 (403/404) :: {"error":"Review not found"}
+  PASS no data leak via /review
+  PASS friendly error (not certificate) rendered
+  PASS certificate NOT rendered for other user
+STEP logged in as seed.other
+GET /toeic-attempts/151/ → 404, leak=false
+GET /toeic-attempts/151/result → 404, leak=false
+GET /toeic-attempts/151/grading-status → 404, leak=false
+GET /toeic-attempts/151/review → 404, leak=false
+SCREENSHOT ownership blocked result page → ownership-desktop.png
+STEP ownership (API 404 + UI blocked) verified
+
+CHECKLIST | AC19 (ownership-mobile) | PASS=10 FAIL=0
+  PASS other user GET / → 404 (403/404) :: {"error":"Attempt not found"}
+  PASS no data leak via /
+  PASS other user GET /result → 404 (403/404) :: {"error":"Result not found"}
+  PASS no data leak via /result
+  PASS other user GET /grading-status → 404 (403/404) :: {"error":"Status not found"}
+  PASS no data leak via /grading-status
+  PASS other user GET /review → 404 (403/404) :: {"error":"Review not found"}
+  PASS no data leak via /review
+  PASS friendly error (not certificate) rendered
+  PASS certificate NOT rendered for other user
+STEP logged in as seed.other
+GET /toeic-attempts/151/ → 404, leak=false
+GET /toeic-attempts/151/result → 404, leak=false
+GET /toeic-attempts/151/grading-status → 404, leak=false
+GET /toeic-attempts/151/review → 404, leak=false
+SCREENSHOT ownership blocked result page → ownership-mobile.png
+STEP ownership (API 404 + UI blocked) verified
+
+--- SECTION 3: AC18 failure — grading FAILED state (worker swap) ---
+timestamp: 2026-07-31T22:12:07.195Z
+
+Mechanism: killed the AI_GRADING_TEST_MODE=true worker, created SW attempt 159
+via API (POST /toeic-exams/2/attempts + PATCH responses/25 + POST submit → job QUEUED),
+started a SECOND worker WITHOUT AI_GRADING_TEST_MODE (CLOUDFLARE_AI_WORKER_URL empty)
+so getAiGradingAdapter() throws AiProviderNotConfiguredError → job FAILED terminal
+with sanitized code AI_PROVIDER_NOT_CONFIGURED. Then restored the test-mode worker
+(AI_GRADING_TEST_MODE=true) — services healthy again.
+
+Live API observation (poll grading-status for attempt 159):
+  STATUS=FAILED  RETRY_COUNT=0  ERROR_MESSAGE=AI_PROVIDER_NOT_CONFIGURED
+  SANITIZED=true (no stack frames, no JWT, no SQL, no "Error:" prefix)
+  CODE_ONLY=true (error_message is a fixed uppercase code)
+  failed worker log: [Grading Worker] Processing job 35 → FAILED
+
+ProcessingPage UI for /thi-thu/dang-xu-ly/159 (desktop + mobile):
+PASS error code AI_PROVIDER_NOT_CONFIGURED shown (sanitized)
+PASS FAILED-state title shown (Đang thử chấm lại)
+PASS retry button (Thử chấm lại) present
+PASS no raw stack / Error: prefix leaked
+PASS no JWT token leaked in UI
+SCREENSHOT processing-failed-desktop.png
+SCREENSHOT processing-failed-mobile.png
+
+Note: AI_PROVIDER_NOT_CONFIGURED is classified non-retryable (retry_count stays 0), so
+the FAILED-state UI shows the amber retryable-FAILED view with the sanitized code; the
+terminal UI ("Không thể hoàn tất chấm bài", red, after MAX_RETRIES=3) is reached via the
+RETRY-path in grading.service.ts for retryable provider errors.

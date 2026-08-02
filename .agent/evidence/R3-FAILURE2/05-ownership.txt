@@ -1,0 +1,33 @@
+R3-FAILURE2 state 05 — ownership / anti-oracle (owner attempt 270 read/written by non-owner seed.other)
+AUTH: owner=seed.owner@example.com (jar owner.jar), non-owner=seed.other@example.com (jar other.jar)
+Attempt 270 belongs to owner only.
+
+--- [1] GET /api/toeic-attempts/270 (non-owner) ---
+COMMAND: curl -b other.jar http://localhost:7000/api/toeic-attempts/270
+BODY: {"error":"Attempt not found"}   STATUS: 404   (attempt invisible → no data leak)
+
+--- [2] GET /api/toeic-attempts/270/grading-status (non-owner) ---
+COMMAND: curl -b other.jar http://localhost:7000/api/toeic-attempts/270/grading-status
+BODY: {"error":"Status not found"}   STATUS: 404
+
+--- [3] GET /api/toeic-attempts/270/result (non-owner) ---
+COMMAND: curl -b other.jar http://localhost:7000/api/toeic-attempts/270/result
+BODY: {"error":"Result not found"}   STATUS: 404
+
+--- [4] GET /api/toeic-attempts/270/review (non-owner) ---
+COMMAND: curl -b other.jar http://localhost:7000/api/toeic-attempts/270/review
+BODY: {"error":"Review not found"}   STATUS: 404
+
+--- [5] PATCH /api/toeic-attempts/270/responses/1 (non-owner) ---
+COMMAND: curl -b other.jar -X PATCH .../responses/1 -d "{\"selectedOptionId\":1}"
+BODY: {"error":"Attempt not found or access denied"}   STATUS: 403
+
+--- [6] POST /api/toeic-attempts/270/media/presign (non-owner) ---
+COMMAND: curl -b other.jar -X POST .../media/presign -d "{\"questionId\":1,...}"
+BODY: {"error":"Attempt not found or access denied"}   STATUS: 403
+
+--- [7] POST /api/toeic-attempts/270/submit (non-owner) ---
+COMMAND: curl -b other.jar -X POST .../submit
+BODY: {"error":"Attempt not found or access denied"}   STATUS: 403
+
+VERDICT: PASS — no cross-user data returned; reads 404, writes 403.

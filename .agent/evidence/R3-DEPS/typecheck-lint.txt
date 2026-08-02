@@ -1,0 +1,4 @@
+npm notice run anish-toeic-web-app@0.1.0 typecheck
+npm notice run tsc --noEmit
+npm notice run anish-toeic-web-app@0.1.0 lint
+npm notice run eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0

@@ -1,4 +1,4 @@
-import { AlertTriangle, Inbox, RefreshCw, SearchX } from 'lucide-react';
+import { AlertTriangle, Inbox, RefreshCw, SearchX, WifiOff } from 'lucide-react';
 
 export function CatalogLoading({ count = 6 }: { count?: number }) {
   return (
@@ -49,6 +49,39 @@ export function CatalogError({ onRetry }: { onRetry: () => void }) {
     <div className="col-span-full flex flex-col items-center justify-center gap-3 py-16 text-center">
       <AlertTriangle className="w-10 h-10 text-destructive/70" />
       <p className="text-destructive">Không thể tải thư viện đề thi. Vui lòng thử lại.</p>
+      <button
+        onClick={onRetry}
+        className="inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+      >
+        <RefreshCw className="w-4 h-4" />
+        Thử lại
+      </button>
+    </div>
+  );
+}
+
+/** Non-intrusive amber banner shown above cached data while offline. */
+export function CatalogOfflineBanner() {
+  return (
+    <div
+      role="status"
+      className="mb-4 flex items-center gap-2 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+    >
+      <WifiOff className="h-4 w-4 shrink-0" />
+      <span>Đang ngoại tuyến — hiển thị dữ liệu đã lưu</span>
+    </div>
+  );
+}
+
+/** Explicit offline error state for when no cached data is available. */
+export function CatalogOffline({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="col-span-full flex flex-col items-center justify-center gap-3 py-16 text-center">
+      <WifiOff className="w-10 h-10 text-destructive/70" />
+      <p className="text-destructive font-medium">Không có kết nối mạng</p>
+      <p className="text-muted-foreground text-sm">
+        Kiểm tra kết nối internet và thử lại.
+      </p>
       <button
         onClick={onRetry}
         className="inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"

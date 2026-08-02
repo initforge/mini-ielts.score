@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { ArrowLeft, Lock, LogIn, Mail } from 'lucide-react';
 import { Spin } from 'antd';
 import api from '../../api';
@@ -18,9 +18,9 @@ const LoginPage = () => {
     try {
       const { data } = await api.post('/auth/login', { email, password });
 
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        // Open-redirect guard: only allow relative return URLs.
+      if (data.user) {
+        // INJ-003: no token in body / localStorage — httpOnly cookie is set by
+        // the server and sent automatically (withCredentials on the api client).
         const rawReturnUrl = searchParams.get('returnUrl');
         const returnUrl = rawReturnUrl && rawReturnUrl.startsWith('/') ? rawReturnUrl : '/';
         navigate(returnUrl);
@@ -29,8 +29,20 @@ const LoginPage = () => {
       }
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const message = (error as any)?.response?.data?.error;
-      alert(message || 'Không thể kết nối đến máy chủ');
+      const anyErr = error as any;
+      const status = anyErr?.response?.status;
+      if (status === 429) {
+        // AC19 rate-limit: friendly message, never a raw body or retry internals.
+        const retryAfter = parseInt(anyErr?.response?.headers?.['retry-after'], 10);
+        alert(
+          retryAfter && retryAfter > 0
+            ? `Bạn đã thử đăng nhập quá nhiều lần. Vui lòng thử lại sau ${Math.ceil(retryAfter / 60)} phút.`
+            : 'Bạn đã thử đăng nhập quá nhiều lần. Vui lòng thử lại sau ít phút.',
+        );
+      } else {
+        const message = anyErr?.response?.data?.error;
+        alert(message || 'Không thể kết nối đến máy chủ');
+      }
     } finally {
       setIsLoading(false);
     }

@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/25-exam-sw-speaking-q5-respond.png",
+  "actual": ".agent/evidence/R3-SW/desktop25-q5-respond.png",
+  "rmse": 214.74498,
+  "diffPixelsPct": 97.7194,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-25-exam-sw-speaking-q5-respond/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-25-exam-sw-speaking-q5-respond/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-25-exam-sw-speaking-q5-respond/metric.json"
+  }
+}

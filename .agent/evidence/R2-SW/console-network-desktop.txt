@@ -1,0 +1,192 @@
+R2-SW console (errors/warnings) + network (/api) + media PUT + failed requests — desktop
+timestamp: 2026-08-01T02:44:48.375Z
+
+=== CONSOLE ===
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq22%2Fq22.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq24%2Fq24.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq24%2Fq24.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq24%2Fq24.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq24%2Fq24.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq23%2Fq23.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq25%2Fq25.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq25%2Fq25.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq25%2Fq25.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq25%2Fq25.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq24%2Fq24.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq24%2Fq24.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq26%2Fq26.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq26%2Fq26.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq26%2Fq26.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq26%2Fq26.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq25%2Fq25.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq25%2Fq25.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq27%2Fq27.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq27%2Fq27.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq27%2Fq27.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq27%2Fq27.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq26%2Fq26.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq26%2Fq26.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq28%2Fq28.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq28%2Fq28.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq28%2Fq28.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq28%2Fq28.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq27%2Fq27.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq27%2Fq27.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq29%2Fq29.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq29%2Fq29.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq29%2Fq29.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq29%2Fq29.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq28%2Fq28.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq28%2Fq28.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Connecting to 'https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq29%2Fq29.webm?X-Amz-Test-Signature=mock' violates the following Content Security Policy directive: "connect-src 'self'". The action has been blocked.
+ERROR: Fetch API cannot load https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F215%2Fq29%2Fq29.webm?X-Amz-Test-Signature=mock. Refused to connect because it violates the document's Content Security Policy.
+ERROR: Failed to load resource: the server responded with a status of 409 (Conflict)
+WARNING: [SWStore] conflict on autosave q 37 — reconciling revision
+
+=== API NETWORK ===
+REQ POST /api/auth/login
+RES 200 POST /api/auth/login
+REQ GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+RES 200 GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ GET /api/toeic-exams?skillType=SW&page=1&pageSize=100
+RES 200 GET /api/toeic-exams?skillType=SW&page=1&pageSize=100
+REQ GET /api/toeic-exams/anish-full-sw-001
+RES 200 GET /api/toeic-exams/anish-full-sw-001
+REQ GET /api/toeic-attempts
+RES 200 GET /api/toeic-attempts
+REQ POST /api/toeic-exams/2/attempts
+RES 201 POST /api/toeic-exams/2/attempts
+REQ GET /api/toeic-attempts/215
+REQ GET /api/toeic-attempts/215
+RES 200 GET /api/toeic-attempts/215
+RES 200 GET /api/toeic-attempts/215
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ PATCH /api/toeic-attempts/215/responses/30
+RES 200 PATCH /api/toeic-attempts/215/responses/30
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ PATCH /api/toeic-attempts/215/responses/30
+RES 200 PATCH /api/toeic-attempts/215/responses/30
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ PATCH /api/toeic-attempts/215/responses/30
+REQ PATCH /api/toeic-attempts/215/responses/31
+RES 200 PATCH /api/toeic-attempts/215/responses/30
+RES 200 PATCH /api/toeic-attempts/215/responses/31
+REQ POST /api/toeic-attempts/215/media/presign
+RES 200 POST /api/toeic-attempts/215/media/presign
+REQ PATCH /api/toeic-attempts/215/responses/31
+RES 200 PATCH /api/toeic-attempts/215/responses/31
+REQ PATCH /api/toeic-attempts/215/responses/31
+REQ PATCH /api/toeic-attempts/215/responses/32
+RES 200 PATCH /api/toeic-attempts/215/responses/31
+RES 200 PATCH /api/toeic-attempts/215/responses/32
+REQ PATCH /api/toeic-attempts/215/responses/32
+RES 200 PATCH /api/toeic-attempts/215/responses/32
+REQ PATCH /api/toeic-attempts/215/responses/32
+REQ PATCH /api/toeic-attempts/215/responses/33
+RES 200 PATCH /api/toeic-attempts/215/responses/32
+RES 200 PATCH /api/toeic-attempts/215/responses/33
+REQ PATCH /api/toeic-attempts/215/responses/33
+RES 200 PATCH /api/toeic-attempts/215/responses/33
+REQ PATCH /api/toeic-attempts/215/responses/33
+REQ PATCH /api/toeic-attempts/215/responses/34
+RES 200 PATCH /api/toeic-attempts/215/responses/33
+RES 200 PATCH /api/toeic-attempts/215/responses/34
+REQ PATCH /api/toeic-attempts/215/responses/34
+RES 200 PATCH /api/toeic-attempts/215/responses/34
+REQ PATCH /api/toeic-attempts/215/responses/34
+REQ PATCH /api/toeic-attempts/215/responses/35
+RES 200 PATCH /api/toeic-attempts/215/responses/34
+RES 200 PATCH /api/toeic-attempts/215/responses/35
+REQ PATCH /api/toeic-attempts/215/responses/35
+RES 200 PATCH /api/toeic-attempts/215/responses/35
+REQ PATCH /api/toeic-attempts/215/responses/35
+REQ PATCH /api/toeic-attempts/215/responses/36
+RES 200 PATCH /api/toeic-attempts/215/responses/35
+RES 200 PATCH /api/toeic-attempts/215/responses/36
+REQ PATCH /api/toeic-attempts/215/responses/36
+RES 200 PATCH /api/toeic-attempts/215/responses/36
+REQ PATCH /api/toeic-attempts/215/responses/36
+REQ PATCH /api/toeic-attempts/215/responses/37
+RES 200 PATCH /api/toeic-attempts/215/responses/36
+RES 200 PATCH /api/toeic-attempts/215/responses/37
+REQ PATCH /api/toeic-attempts/215/responses/37
+RES 200 PATCH /api/toeic-attempts/215/responses/37
+REQ POST /api/toeic-attempts/215/submit
+RES 200 POST /api/toeic-attempts/215/submit
+REQ PATCH /api/toeic-attempts/215/responses/37
+RES 409 PATCH /api/toeic-attempts/215/responses/37
+REQ GET /api/toeic-attempts/215
+REQ GET /api/toeic-attempts/215/grading-status
+RES 200 GET /api/toeic-attempts/215
+RES 200 GET /api/toeic-attempts/215/grading-status
+REQ GET /api/toeic-attempts/215/grading-status
+RES 200 GET /api/toeic-attempts/215/grading-status
+REQ GET /api/toeic-attempts/215/grading-status
+RES 200 GET /api/toeic-attempts/215/grading-status
+REQ GET /api/toeic-attempts/215/result
+REQ GET /api/toeic-attempts/215
+REQ GET /api/toeic-exams?page=1&pageSize=100
+RES 200 GET /api/toeic-attempts/215/result
+REQ GET /api/toeic-attempts/215/review
+RES 200 GET /api/toeic-exams?page=1&pageSize=100
+RES 200 GET /api/toeic-attempts/215
+RES 200 GET /api/toeic-attempts/215/review
+
+=== MEDIA (S3 PUT) ===
+(none)
+
+=== FAILED REQUESTS ===
+(none)

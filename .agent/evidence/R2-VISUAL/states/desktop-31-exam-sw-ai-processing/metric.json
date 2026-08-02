@@ -1,0 +1,16 @@
+{
+  "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/31-exam-sw-ai-processing.png",
+  "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop31-exam-sw-processing.png",
+  "rmse": 27.976131,
+  "diffPixelsPct": 76.5164,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-31-exam-sw-ai-processing/overlay.png",
+    "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-31-exam-sw-ai-processing/diff.png",
+    "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-31-exam-sw-ai-processing/metric.json"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/14-exam-lr-submit-confirm.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/desktop14-submit-confirm.png",
+  "rmse": 203.15457,
+  "diffPixelsPct": 99.9749,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-14-exam-lr-submit-confirm/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-14-exam-lr-submit-confirm/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-14-exam-lr-submit-confirm/metric.json"
+  }
+}

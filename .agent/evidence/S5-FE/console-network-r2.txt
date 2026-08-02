@@ -1,0 +1,156 @@
+S5-FE r2 console (errors/warnings) + network request/response proof
+timestamp: 2026-07-31T15:36:47.584Z
+
+=== DESKTOP console ===
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+ERROR: Failed to load resource: the server responded with a status of 409 (Conflict)
+WARNING: [SWStore] conflict on autosave q 26 — reconciling revision
+
+=== MOBILE console ===
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ERROR: Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+ERROR: Failed to load resource: the server responded with a status of 409 (Conflict)
+WARNING: [SWStore] conflict on autosave q 26 — reconciling revision
+
+=== DESKTOP network ===
+REQ POST http://localhost:5173/api/auth/login body={"email":"seed.owner@example.com","password":"seed-password-123"}
+RES 200 POST http://localhost:5173/api/auth/login
+REQ GET http://localhost:5173/api/toeic-exams?skillType=LR&page=1&pageSize=100 body=
+RES 200 GET http://localhost:5173/api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ GET http://localhost:5173/api/toeic-exams?skillType=SW&page=1&pageSize=100 body=
+RES 200 GET http://localhost:5173/api/toeic-exams?skillType=SW&page=1&pageSize=100
+REQ POST http://localhost:5173/api/toeic-exams/2/attempts body={"mode":"EXAM"}
+RES 201 POST http://localhost:5173/api/toeic-exams/2/attempts
+REQ GET http://localhost:5173/api/toeic-attempts/53 body=
+REQ GET http://localhost:5173/api/toeic-attempts/53 body=
+RES 200 GET http://localhost:5173/api/toeic-attempts/53
+RES 200 GET http://localhost:5173/api/toeic-attempts/53
+REQ POST http://localhost:5173/api/toeic-attempts/53/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":48596}
+RES 200 POST http://localhost:5173/api/toeic-attempts/53/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/53/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":48596}
+RES 200 POST http://localhost:5173/api/toeic-attempts/53/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/53/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":48596}
+RES 200 POST http://localhost:5173/api/toeic-attempts/53/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/53/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":48596}
+RES 200 POST http://localhost:5173/api/toeic-attempts/53/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/53/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":48596}
+RES 200 POST http://localhost:5173/api/toeic-attempts/53/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/53/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":48596}
+RES 200 POST http://localhost:5173/api/toeic-attempts/53/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/53/media/presign body={"questionId":23,"fileName":"q23.webm","fileType":"audio/webm;codecs=opus","fileSize":48596}
+RES 200 POST http://localhost:5173/api/toeic-attempts/53/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/53/media/presign body={"questionId":23,"fileName":"q23.webm","fileType":"audio/webm;codecs=opus","fileSize":48596}
+RES 200 POST http://localhost:5173/api/toeic-attempts/53/media/presign
+REQ PATCH http://localhost:5173/api/toeic-attempts/53/responses/25 body={"textResponse":"","clientRevision":0}
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/53/responses/25
+REQ POST http://localhost:5173/api/toeic-attempts/53/media/presign body={"questionId":23,"fileName":"q23.webm","fileType":"audio/webm;codecs=opus","fileSize":48596}
+RES 200 POST http://localhost:5173/api/toeic-attempts/53/media/presign
+REQ PATCH http://localhost:5173/api/toeic-attempts/53/responses/25 body={"textResponse":"Dear Ms. Tran,\n\nI would like to request two days of leave next month to help my family move to a new house.\nI will finish all pending tasks before the leave and my colleague will c
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/53/responses/25
+REQ GET http://localhost:5173/api/toeic-attempts/53 body=
+REQ GET http://localhost:5173/api/toeic-attempts/53 body=
+RES 200 GET http://localhost:5173/api/toeic-attempts/53
+REQ PATCH http://localhost:5173/api/toeic-attempts/53/responses/25 body={"textResponse":"Dear Ms. Tran,\n\nI would like to request two days of leave next month to help my family move to a new house.\nI will finish all pending tasks before the leave and my colleague will c
+RES 200 GET http://localhost:5173/api/toeic-attempts/53
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/53/responses/25
+REQ PATCH http://localhost:5173/api/toeic-attempts/53/responses/25 body={"textResponse":"Dear Ms. Tran,\n\nI would like to request two days of leave next month to help my family move to a new house.\nI will finish all pending tasks before the leave and my colleague will c
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/53/responses/25
+REQ PATCH http://localhost:5173/api/toeic-attempts/53/responses/25 body={"textResponse":"Dear Ms. Tran,\n\nI would like to request two days of leave next month to help my family move to a new house.\nI will finish all pending tasks before the leave and my colleague will c
+REQ PATCH http://localhost:5173/api/toeic-attempts/53/responses/26 body={"textResponse":"","clientRevision":0}
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/53/responses/25
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/53/responses/26
+REQ PATCH http://localhost:5173/api/toeic-attempts/53/responses/26 body={"textResponse":"I visited the restaurant last week. The food was fresh and the staff were friendly. I suggest adding an online reservation system.","clientRevision":1}
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/53/responses/26
+REQ POST http://localhost:5173/api/toeic-attempts/53/submit body=
+RES 200 POST http://localhost:5173/api/toeic-attempts/53/submit
+REQ PATCH http://localhost:5173/api/toeic-attempts/53/responses/26 body={"textResponse":"I visited the restaurant last week. The food was fresh and the staff were friendly. I suggest adding an online reservation system.","clientRevision":2}
+RES 409 PATCH http://localhost:5173/api/toeic-attempts/53/responses/26
+REQ GET http://localhost:5173/api/toeic-attempts/53 body=
+REQ GET http://localhost:5173/api/toeic-attempts/53/grading-status body=
+RES 200 GET http://localhost:5173/api/toeic-attempts/53/grading-status
+RES 200 GET http://localhost:5173/api/toeic-attempts/53
+
+=== MOBILE network ===
+REQ POST http://localhost:5173/api/auth/login body={"email":"seed.owner@example.com","password":"seed-password-123"}
+RES 200 POST http://localhost:5173/api/auth/login
+REQ GET http://localhost:5173/api/toeic-exams?skillType=LR&page=1&pageSize=100 body=
+RES 200 GET http://localhost:5173/api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ GET http://localhost:5173/api/toeic-exams?skillType=SW&page=1&pageSize=100 body=
+RES 200 GET http://localhost:5173/api/toeic-exams?skillType=SW&page=1&pageSize=100
+REQ POST http://localhost:5173/api/toeic-exams/2/attempts body={"mode":"EXAM"}
+RES 201 POST http://localhost:5173/api/toeic-exams/2/attempts
+REQ GET http://localhost:5173/api/toeic-attempts/55 body=
+REQ GET http://localhost:5173/api/toeic-attempts/55 body=
+RES 200 GET http://localhost:5173/api/toeic-attempts/55
+RES 200 GET http://localhost:5173/api/toeic-attempts/55
+REQ POST http://localhost:5173/api/toeic-attempts/55/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":46664}
+RES 200 POST http://localhost:5173/api/toeic-attempts/55/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/55/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":46664}
+RES 200 POST http://localhost:5173/api/toeic-attempts/55/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/55/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":46664}
+RES 200 POST http://localhost:5173/api/toeic-attempts/55/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/55/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":46664}
+RES 200 POST http://localhost:5173/api/toeic-attempts/55/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/55/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":46664}
+RES 200 POST http://localhost:5173/api/toeic-attempts/55/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/55/media/presign body={"questionId":22,"fileName":"q22.webm","fileType":"audio/webm;codecs=opus","fileSize":46664}
+RES 200 POST http://localhost:5173/api/toeic-attempts/55/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/55/media/presign body={"questionId":23,"fileName":"q23.webm","fileType":"audio/webm;codecs=opus","fileSize":46664}
+RES 200 POST http://localhost:5173/api/toeic-attempts/55/media/presign
+REQ POST http://localhost:5173/api/toeic-attempts/55/media/presign body={"questionId":23,"fileName":"q23.webm","fileType":"audio/webm;codecs=opus","fileSize":46664}
+RES 200 POST http://localhost:5173/api/toeic-attempts/55/media/presign
+REQ PATCH http://localhost:5173/api/toeic-attempts/55/responses/25 body={"textResponse":"","clientRevision":0}
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/55/responses/25
+REQ POST http://localhost:5173/api/toeic-attempts/55/media/presign body={"questionId":23,"fileName":"q23.webm","fileType":"audio/webm;codecs=opus","fileSize":46664}
+RES 200 POST http://localhost:5173/api/toeic-attempts/55/media/presign
+REQ PATCH http://localhost:5173/api/toeic-attempts/55/responses/25 body={"textResponse":"Dear Ms. Tran,\n\nI would like to request two days of leave next month to help my family move to a new house.\nI will finish all pending tasks before the leave and my colleague will c
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/55/responses/25
+REQ GET http://localhost:5173/api/toeic-attempts/55 body=
+REQ GET http://localhost:5173/api/toeic-attempts/55 body=
+RES 200 GET http://localhost:5173/api/toeic-attempts/55
+REQ PATCH http://localhost:5173/api/toeic-attempts/55/responses/25 body={"textResponse":"Dear Ms. Tran,\n\nI would like to request two days of leave next month to help my family move to a new house.\nI will finish all pending tasks before the leave and my colleague will c
+RES 200 GET http://localhost:5173/api/toeic-attempts/55
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/55/responses/25
+REQ PATCH http://localhost:5173/api/toeic-attempts/55/responses/25 body={"textResponse":"Dear Ms. Tran,\n\nI would like to request two days of leave next month to help my family move to a new house.\nI will finish all pendi Additional note: I can be reached by email durin
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/55/responses/25
+REQ PATCH http://localhost:5173/api/toeic-attempts/55/responses/25 body={"textResponse":"Dear Ms. Tran,\n\nI would like to request two days of leave next month to help my family move to a new house.\nI will finish all pendi Additional note: I can be reached by email durin
+REQ PATCH http://localhost:5173/api/toeic-attempts/55/responses/26 body={"textResponse":"","clientRevision":0}
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/55/responses/25
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/55/responses/26
+REQ PATCH http://localhost:5173/api/toeic-attempts/55/responses/26 body={"textResponse":"I visited the restaurant last week. The food was fresh and the staff were friendly. I suggest adding an online reservation system.","clientRevision":1}
+RES 200 PATCH http://localhost:5173/api/toeic-attempts/55/responses/26
+REQ POST http://localhost:5173/api/toeic-attempts/55/submit body=
+RES 200 POST http://localhost:5173/api/toeic-attempts/55/submit
+REQ PATCH http://localhost:5173/api/toeic-attempts/55/responses/26 body={"textResponse":"I visited the restaurant last week. The food was fresh and the staff were friendly. I suggest adding an online reservation system.","clientRevision":2}
+RES 409 PATCH http://localhost:5173/api/toeic-attempts/55/responses/26
+REQ GET http://localhost:5173/api/toeic-attempts/55 body=
+REQ GET http://localhost:5173/api/toeic-attempts/55/grading-status body=
+RES 200 GET http://localhost:5173/api/toeic-attempts/55/grading-status
+RES 200 GET http://localhost:5173/api/toeic-attempts/55

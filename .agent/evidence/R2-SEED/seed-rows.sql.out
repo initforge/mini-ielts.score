@@ -1,0 +1,44 @@
+# seed-rows.sql.out â€” R2-S5-SEED
+# ts: 2026-08-01T01:38:47Z
+# cmd: docker exec anish-toeic-mysql mysql -utoeic -ptoeic_dev_pw toeic (rows) + SELECT samples
+
+== row counts (live toeic DB, after reseed x2) ==
+t	c
+users	3
+collections	1
+exams	2
+sections	9
+questions	37
+options	84
+review_content	37
+
+== samples: LR Part 1 (image_url) ==
+id	type	order_index	content	image_url_prefix
+1	MULTIPLE_CHOICE	1	The photograph shows a man reading a menu at a table in a re	data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAw
+2	MULTIPLE_CHOICE	2	The photograph shows a busy train station with several platf	data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAw
+3	MULTIPLE_CHOICE	3	The photograph shows a woman carrying an umbrella while walk	data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAw
+== samples: LR Part 2 (audio_url) ==
+id	order_index	content	audio_url_prefix	len
+4	1	When does the meeting start?	data:audio/wav;base64,UklGRnwCAABXQVZFZm10IBAAAAAB	882
+5	2	Why did you cancel the order?	data:audio/wav;base64,UklGRnwCAABXQVZFZm10IBAAAAAB	882
+6	3	How often does the bus run?	data:audio/wav;base64,UklGRnwCAABXQVZFZm10IBAAAAAB	882
+== samples: SW Speaking kinds ==
+order_index	type	content	has_img	prep	rec
+1	SPEAKING	Welcome to our company’s annual health fair. Pleas	0	30	45
+2	SPEAKING	Due to unexpected maintenance, the elevator on the	0	30	45
+3	SPEAKING	Look at the picture. Describe what you see in as m	1	30	45
+4	SPEAKING	Your supervisor asks: “Which project should we pri	0	30	60
+5	SPEAKING	A colleague asks: “Do you think we should move the	0	30	60
+6	SPEAKING	The table shows delivery times for the three shipp	0	30	60
+7	SPEAKING	The schedule shows the times of three daily tours.	0	30	60
+8	SPEAKING	The chart lists the monthly subscription plans. A 	0	30	60
+== samples: SW Writing kinds ==
+order_index	type	content	has_img	min_words
+1	WRITING	Write a sentence about the picture.	1	25
+2	WRITING	Write a sentence about the picture.	1	25
+3	WRITING	Write a sentence about the picture.	1	25
+4	WRITING	Write a sentence about the picture.	1	25
+5	WRITING	Write a sentence about the picture.	1	25
+6	WRITING	Your company’s training coordinator has 	0	60
+7	WRITING	The office manager has announced that th	0	60
+8	WRITING	Some companies allow employees to work f	0	200

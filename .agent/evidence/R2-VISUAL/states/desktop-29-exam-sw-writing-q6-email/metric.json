@@ -1,0 +1,16 @@
+{
+  "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/29-exam-sw-writing-q6-email.png",
+  "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop29-exam-sw-writing-q6-email.png",
+  "rmse": 42.539104,
+  "diffPixelsPct": 36.3724,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-29-exam-sw-writing-q6-email/overlay.png",
+    "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-29-exam-sw-writing-q6-email/diff.png",
+    "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-29-exam-sw-writing-q6-email/metric.json"
+  }
+}

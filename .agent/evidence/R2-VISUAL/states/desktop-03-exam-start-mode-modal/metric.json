@@ -1,0 +1,16 @@
+{
+  "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/03-exam-start-mode-modal.png",
+  "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop03-mode-dialog.png",
+  "rmse": 49.473297,
+  "diffPixelsPct": 85.9173,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-03-exam-start-mode-modal/overlay.png",
+    "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-03-exam-start-mode-modal/diff.png",
+    "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-03-exam-start-mode-modal/metric.json"
+  }
+}

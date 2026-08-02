@@ -15,9 +15,28 @@ import {
 
 const EMPTY_MIC: MicStatus = { state: 'idle', codec: null, error: null };
 
+function isConflict(err: unknown): boolean {
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    'response' in err &&
+    (err.response as { status?: number } | undefined)?.status === 409
+  );
+}
+
 const AUTOSAVE_DELAY_MS = 900;
-const PRESIGN_ENDPOINT = '/toeic-media/presign';
-type SWQuestionPayload = { id: number; skill_type?: string; part?: number; content?: string; image_url?: string | null; prep_time_seconds?: number; record_time_seconds?: number; min_words?: number };
+// Payload mirrors GET /api/toeic-attempts/:id → attempt.session.questions.
+type SWQuestionPayload = {
+  id: number;
+  type?: string;
+  section_id?: number;
+  order_index?: number;
+  content?: string;
+  image_url?: string | null;
+  prep_time_seconds?: number;
+  record_time_seconds?: number;
+  min_words?: number;
+};
 
 // ── store state shape ────────────────────────────────────────────────────
 
@@ -120,9 +139,25 @@ export const useSWStore = create<SWStore>((set, get) => {
         writingRevisions: { ...s.writingRevisions, [questionId]: rev + 1 },
       }));
     } catch (err: unknown) {
-      if (typeof err === 'object' && err !== null && 'response' in err && (err.response as { status?: number }).status === 409) {
-        // Server revision ahead — caller should reconcile
-        console.warn('[SWStore] conflict on autosave q', questionId);
+      if (isConflict(err)) {
+        // Server revision ahead — reconcile: adopt server revision as the new
+        // base (+1 so the next save is strictly newer) and keep local text.
+        console.warn('[SWStore] conflict on autosave q', questionId, '— reconciling revision');
+        try {
+          const res = await api.get(`/toeic-attempts/${attemptId}`);
+          const resp = (res.data.responses ?? []).find(
+            (r: { question_id: number }) => r.question_id === questionId
+          );
+          const serverRev: number = resp?.client_revision ?? 0;
+          set((s) => ({
+            writingRevisions: { ...s.writingRevisions, [questionId]: serverRev + 1 },
+            writingDirty: { ...s.writingDirty, [questionId]: true },
+          }));
+          // Retry immediately with the reconciled revision.
+          void doWritingAutosave(questionId);
+        } catch {
+          // Keep dirty; next keystroke/exit will retry.
+        }
       }
     }
   };
@@ -143,14 +178,13 @@ export const useSWStore = create<SWStore>((set, get) => {
     if (!attemptId || !resp?.blob) return false;
 
     try {
-      // 1. Request presigned URL
-      const presignRes = await api.post(PRESIGN_ENDPOINT, {
-        attemptId,
+      // 1. Request presigned URL (POST /api/toeic-attempts/:id/media/presign).
+      //    No audio bytes in the JSON body — the blob travels via PUT to the URL.
+      const presignRes = await api.post(`/toeic-attempts/${attemptId}/media/presign`, {
         questionId,
         fileName: `q${questionId}.webm`,
         fileType: resp.blob.type || 'audio/webm',
         fileSize: resp.blob.size,
-        expiresInSeconds: 300,
       });
       const { uploadUrl, s3Key } = presignRes.data;
 
@@ -219,17 +253,25 @@ export const useSWStore = create<SWStore>((set, get) => {
       try {
         const res = await api.get(`/toeic-attempts/${id}`);
         const attempt = res.data;
-        const questions: SWQuestion[] = (attempt.session?.questions ?? []).map((q: SWQuestionPayload, i: number) => ({
-          id: q.id,
-          skill: q.skill_type === 'speaking' ? 'speaking' : 'writing',
-          part: q.part ?? 1,
-          questionNumber: i + 1,
-          content: q.content ?? '',
-          imageUrl: q.image_url ?? null,
-          prepTimeSeconds: q.prep_time_seconds ?? 45,
-          recordTimeSeconds: q.record_time_seconds ?? 45,
-          minWords: q.min_words ?? undefined,
-        }));
+        const rawQuestions: Array<SWQuestionPayload> = attempt.session?.questions ?? [];
+        const questions: SWQuestion[] = rawQuestions
+          .map((q: SWQuestionPayload, i: number): SWQuestion => ({
+            id: q.id,
+            // Backend question rows carry `type` ('SPEAKING' | 'WRITING'),
+            // not `skill_type`.
+            skill: q.type === 'SPEAKING' ? 'speaking' : 'writing',
+            part: 1,
+            questionNumber: q.order_index ?? i + 1,
+            content: q.content ?? '',
+            imageUrl: q.image_url ?? null,
+            prepTimeSeconds: q.prep_time_seconds ?? 45,
+            recordTimeSeconds: q.record_time_seconds ?? 45,
+            minWords: q.min_words ?? undefined,
+          }))
+          // TOEIC S&W order: all Speaking questions first, then Writing.
+          .sort((a, b) =>
+            a.skill === b.skill ? a.questionNumber - b.questionNumber : a.skill === 'speaking' ? -1 : 1
+          );
 
         // Restore existing responses from server
         const existingResponses = attempt.responses ?? [];
@@ -240,7 +282,9 @@ export const useSWStore = create<SWStore>((set, get) => {
         for (const r of existingResponses) {
           if (r.text_response) {
             writingMap[r.question_id] = r.text_response;
-            writingRevMap[r.question_id] = r.client_revision ?? 0;
+            // Base revision one ahead of the server so the next autosave is
+            // strictly newer (backend 409s when clientRevision <= current).
+            writingRevMap[r.question_id] = (r.client_revision ?? 0) + 1;
           }
           // Audio responses come back as S3 keys (no blob on refresh)
           if (r.audio_s3_key) {
@@ -256,10 +300,18 @@ export const useSWStore = create<SWStore>((set, get) => {
           }
         }
 
+        // Resume: an attempt with saved writing answers skips the mic check
+        // and lands directly on the first writing question.
+        const firstWrittenId = existingResponses.find((r: { text_response?: string | null }) => !!r.text_response)
+          ?.question_id;
+        const resumeIndex = firstWrittenId
+          ? questions.findIndex((q) => q.id === firstWrittenId)
+          : -1;
+
         set({
           questions,
-          currentQuestionIndex: 0,
-          phase: 'mic_check',
+          currentQuestionIndex: resumeIndex >= 0 ? resumeIndex : 0,
+          phase: resumeIndex >= 0 ? 'writing' : 'mic_check',
           loading: false,
           speakingResponses: speakingMap,
           writingTexts: writingMap,

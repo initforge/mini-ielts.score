@@ -75,6 +75,7 @@ export function SpeakingView({ question }: SpeakingViewProps) {
   const uploadErrors = useSWStore((s) => s.uploadErrors);
   const micStatus = useSWStore((s) => s.micStatus);
   const setMicStatus = useSWStore((s) => s.setMicStatus);
+  const startPrep = useSWStore((s) => s.startPrep);
   const startRecording = useSWStore((s) => s.startRecording);
   const finishRecording = useSWStore((s) => s.finishRecording);
   const retryUpload = useSWStore((s) => s.retryUpload);
@@ -273,8 +274,15 @@ export function SpeakingView({ question }: SpeakingViewProps) {
             />
           </div>
           <p className="text-xs text-blue-600 mt-3">
-            You have {question.prepTimeSeconds}s to prepare. Recording will start automatically.
+            You have {question.prepTimeSeconds}s to prepare. Recording starts after preparation.
           </p>
+          <button
+            onClick={() => useSWStore.getState().finishPrep()}
+            className="mt-3 text-xs text-blue-600 underline hover:text-blue-800"
+            aria-label="Skip preparation"
+          >
+            Bỏ qua chuẩn bị
+          </button>
         </div>
       )}
 
@@ -360,11 +368,22 @@ export function SpeakingView({ question }: SpeakingViewProps) {
 
       {/* Recording controls */}
       <div className="flex flex-col items-center gap-4">
+        {/* Start prep (speaking_prep with no active prep) */}
+        {phase === 'speaking_prep' && !prepActive && !hasAudio && !recordingLocked && (
+          <button
+            onClick={startPrep}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors active:scale-95"
+            aria-label="Start preparation"
+          >
+            <Clock className="w-5 h-5" /> Bắt đầu chuẩn bị
+          </button>
+        )}
+
         {/* Record button */}
         {!isPlayback && !isRec && !recordingLocked && !hasAudio && (
           <button
             onClick={handleStartRecording}
-            disabled={recordingLocked}
+            disabled={recordingLocked || (phase === 'speaking_prep' && prepActive)}
             className="flex items-center justify-center w-20 h-20 rounded-full bg-red-500 text-white shadow-lg shadow-red-500/30 hover:bg-red-600 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Start recording"
           >

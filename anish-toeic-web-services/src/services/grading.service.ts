@@ -33,6 +33,14 @@ const GRADING_LOCK_TTL = 180; // seconds (3 minutes)
 
 const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
+/** Close the grading Redis client when a Jest worker finishes. */
+export async function shutdownGradingRedis(): Promise<void> {
+  if (typeof (redis as Redis & { quit?: unknown }).quit !== 'function') return;
+  const status = redis.status;
+  if (status === 'wait' || status === 'close' || (status as string) === 'closing') return;
+  await Promise.resolve(redis.quit()).catch(() => undefined);
+}
+
 // ---------------------------------------------------------------------------
 // Error classification
 // ---------------------------------------------------------------------------
@@ -152,8 +160,13 @@ export class GradingService {
           await connection.rollback();
           return { success: true, message: 'Job still processing (recent activity)' };
         }
-        // Stale — recover it
-        currentRetry > 0; // preserve retry count
+        // Stale — transition to RETRY, preserving retry count for safe recovery
+        await connection.query(
+          `UPDATE toeic_grading_jobs SET status = 'RETRY', error_message = 'Stale processing recovered', updated_at = NOW() WHERE id = ?`,
+          [jobId]
+        );
+        await connection.commit();
+        return { success: true, message: 'Stale job recovered — will retry' };
       }
 
       // 5. Transition to PROCESSING
@@ -209,6 +222,13 @@ export class GradingService {
       };
 
       if (gradingRequest.responses.length === 0) {
+        // Always persist a results row (zero scores, FINAL) so COMPLETED
+        // attempts never leave GET /result missing (INJ-003 BUG 2).
+        await persistAttemptResult(
+          attemptId,
+          { speakingScore: 0, writingScore: 0, totalScore: 0 },
+          'COMPLETED'
+        );
         await finalizeCompleted(jobId, attemptId, { speakingScore: 0, writingScore: 0, totalScore: 0 }, []);
         return { success: true, message: 'No responses to grade — completed' };
       }

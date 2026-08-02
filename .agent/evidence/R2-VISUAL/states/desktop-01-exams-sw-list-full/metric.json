@@ -1,0 +1,16 @@
+{
+  "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/01-exams-sw-list-full.png",
+  "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop01-catalog-sw.png",
+  "rmse": 101.64422,
+  "diffPixelsPct": 98.8816,
+  "dims": {
+    "equal": false,
+    "reference": "1280x2130",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-01-exams-sw-list-full/overlay.png",
+    "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-01-exams-sw-list-full/diff.png",
+    "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-01-exams-sw-list-full/metric.json"
+  }
+}

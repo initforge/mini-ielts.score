@@ -1,0 +1,16 @@
+{
+  "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/15-exam-lr-result-certificate.png",
+  "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop15-result.png",
+  "rmse": 54.310118,
+  "diffPixelsPct": 99.6352,
+  "dims": {
+    "equal": false,
+    "reference": "1280x728",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-15-exam-lr-result-certificate/overlay.png",
+    "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-15-exam-lr-result-certificate/diff.png",
+    "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-15-exam-lr-result-certificate/metric.json"
+  }
+}

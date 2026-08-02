@@ -1,0 +1,4 @@
+Test Suites: 12 passed, 12 total
+Tests:       142 passed, 142 total
+Ran all test suites.
+TEST_EXIT=0

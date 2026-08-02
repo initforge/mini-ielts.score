@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/15-exam-lr-result-certificate.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/desktop15-result-certificate.png",
+  "rmse": 203.302277,
+  "diffPixelsPct": 99.9749,
+  "dims": {
+    "equal": false,
+    "reference": "1280x728",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-15-exam-lr-result-certificate/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-15-exam-lr-result-certificate/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-15-exam-lr-result-certificate/metric.json"
+  }
+}

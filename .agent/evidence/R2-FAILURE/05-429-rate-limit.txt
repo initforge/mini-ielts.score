@@ -1,0 +1,35 @@
+=== STATE 5: burst 25 logins (auth limiter=20/15min) ===
+login#1 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#2 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#3 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#4 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#5 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#6 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#7 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#8 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#9 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#10 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#11 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#12 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#13 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#14 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#15 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#16 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#17 -> 200 {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+login#18 -> 429 Too many requests, please try again later.
+login#19 -> 429 Too many requests, please try again later.
+login#20 -> 429 Too many requests, please try again later.
+login#21 -> 429 Too many requests, please try again later.
+login#22 -> 429 Too many requests, please try again later.
+login#23 -> 429 Too many requests, please try again later.
+login#24 -> 429 Too many requests, please try again later.
+login#25 -> 429 Too many requests, please try again later.
+=== STATE 5b: 429 response headers ===
+HTTP/1.1 429 Too Many Requests
+x-content-type-options: nosniff
+ratelimit-policy: 20;w=900
+ratelimit-limit: 20
+ratelimit-remaining: 0
+ratelimit-reset: 560
+retry-after: 560
+content-type: text/html; charset=utf-8

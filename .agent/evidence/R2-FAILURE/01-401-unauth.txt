@@ -1,0 +1,6 @@
+=== STATE 1a: no cookie ===
+{"error":"Unauthorized: Missing token"}
+status:401
+=== STATE 1b: forged cookie ===
+{"error":"Unauthorized: Invalid or expired token"}
+status:401

@@ -1,0 +1,20 @@
+R3-SECURITY full test suite run (DB_NAME=anish_toeic_test npx jest --verbose)
+===================================================================
+
+
+New/updated R3 test coverage:
+  server.test.ts — R3: rejects CORS_ORIGIN=* (credentials:true is always set)
+  server.test.ts — R3: worker env validation passes with all required vars
+  server.test.ts — R3: worker env validation fails when JWT_SECRET is missing
+  server.test.ts — R3: worker env validation fails closed on the documented placeholder
+  auth.test.ts   — revokes the session on logout: login -> authed 200 -> logout -> old cookie 401
+  auth.test.ts   — rejects a Bearer token whose jti was revoked even if the signature is valid
+  auth.test.ts   — TRUST_PROXY=false ignores spoofed X-Forwarded-For / cf-connecting-ip (shared 127.0.0.1 bucket)
+
+Summary:
+A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.
+Test Suites: 12 passed, 12 total
+Tests:       142 passed, 142 total
+Snapshots:   0 total
+Time:        11.021 s
+Ran all test suites.

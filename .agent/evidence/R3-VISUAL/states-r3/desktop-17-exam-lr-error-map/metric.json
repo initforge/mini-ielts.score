@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/17-exam-lr-error-map.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/desktop17-error-map.png",
+  "rmse": 192.087954,
+  "diffPixelsPct": 100,
+  "dims": {
+    "equal": false,
+    "reference": "1280x728",
+    "actual": "1264x2273"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-17-exam-lr-error-map/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-17-exam-lr-error-map/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-17-exam-lr-error-map/metric.json"
+  }
+}

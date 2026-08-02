@@ -9,7 +9,6 @@ export function MicrophoneSetup() {
   const micStatus = useSWStore((s) => s.micStatus);
   const requestMic = useSWStore((s) => s.requestMic);
   const setPhase = useSWStore((s) => s.setPhase);
-  const startPrep = useSWStore((s) => s.startPrep);
 
   const [testing, setTesting] = useState(false);
   const [testPassed, setTestPassed] = useState(false);
@@ -63,10 +62,10 @@ export function MicrophoneSetup() {
   }, [requestMic]);
 
   const handleContinue = useCallback(() => {
+    // Move to the directions screen; the runner page starts prep when the
+    // user taps "Bắt đầu" there.
     setPhase('directions');
-    // Auto-start prep after directions
-    setTimeout(() => startPrep(), 100);
-  }, [setPhase, startPrep]);
+  }, [setPhase]);
 
   const micGranted = micStatus.state === 'granted' || micStatus.state === 'empty';
 

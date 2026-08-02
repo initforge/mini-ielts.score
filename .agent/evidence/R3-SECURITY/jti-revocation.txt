@@ -1,0 +1,12 @@
+== 1. REGISTER ==
+{"user":{"id":"8","email":"r3c21785559253@example.com","displayName":"r3c21785559253"}} [HTTP 201]
+captured raw cookie token: eyJhbGciOiJIUzI1NiIsInR5c...
+
+== 2. AUTHED GET with fresh cookie (expect 200) ==
+[] [HTTP 200]
+
+== 3. LOGOUT with fresh cookie (expect success) ==
+{"success":true} [HTTP 200]
+
+== 4. SAME (now-revoked) token on protected route (expect 401 Session revoked) ==
+{"error":"Unauthorized: Session revoked or expired"} [HTTP 401]

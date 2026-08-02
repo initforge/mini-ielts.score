@@ -1,0 +1,67 @@
+S6-BE | AC17 — live S&W grading: durable / idempotent / retryable
+Work package: anish-thi-thu-xoamutoeic-20260730 | slice S6-BE
+Generated: 2026-07-31T15:33:42Z | runner-backed FRESH live proof (dev backend :7000, MySQL 13306, Redis 16379)
+Deterministic double via AI_GRADING_TEST_MODE=true (see ai-grading.adapter.ts createTestAiGradingAdapter)
+No Cloudflare creds used — CLOUDFLARE_AI_WORKER_URL/TOKEN empty in dev env.
+============================================================
+LOGIN status: OK, token len 185
+ATTEMPT_A1: {"attemptId":45,"status":"IN_PROGRESS","mode":"EXAM"}
+
+== RUN 1: attempt 45 (writing q25+q26 patched, submitted) ==
+PATCH q25: {"success":true} ; PATCH q26: {"success":true}
+SUBMIT: {"success":true}
+-- MySQL job row after submit (expect QUEUED):
+id	attempt_id	status	retry_count	error_message
+7	45	QUEUED	0	NULL
+-- API grading-status after submit (expect QUEUED):
+{"id":7,"attempt_id":45,"status":"QUEUED","retry_count":0,"error_message":null,"created_at":"2026-07-31T08:33:42.000Z","updated_at":"2026-07-31T08:33:42.000Z"}
+-- start worker (AI_GRADING_TEST_MODE=true):
+worker started (pid 143059)
+poll1: QUEUED
+poll2: QUEUED
+poll3: QUEUED
+poll4: QUEUED
+poll5: QUEUED
+poll6: QUEUED
+poll7: COMPLETED
+FINAL poll: COMPLETED
+-- worker log:
+[Grading Worker] Started
+[Grading Worker] Processing job 7
+RESULT_A1: {"listeningScore":0,"readingScore":0,"totalScore":400,"status":"FINAL"}
+
+== RUN 2: identical answers, fresh attempt (determinism) ==
+ATTEMPT_A2: {"attemptId":47,"status":"IN_PROGRESS","mode":"EXAM"}
+PATCH q25: {"success":true} ; PATCH q26: {"success":true}
+SUBMIT: {"success":true}
+RESULT_A2: {"listeningScore":0,"readingScore":0,"totalScore":400,"status":"FINAL"}
+
+== DETERMINISM CHECK (attempts 45 vs 47, identical writing answers) ==
+RESULT_A1: {"listeningScore":0,"readingScore":0,"totalScore":400,"status":"FINAL"}
+RESULT_A2: {"listeningScore":0,"readingScore":0,"totalScore":400,"status":"FINAL"}
+DETERMINISTIC: PASS (identical JSON)
+
+== MySQL cross-check (question scores + result) ==
+attempt_id	question_id	score	is_correct
+45	25	4	1
+45	26	4	1
+47	25	4	1
+47	26	4	1
+attempt_id	listening_score	reading_score	total_score	status
+45	0	0	400	FINAL
+47	0	0	400	FINAL
+id	attempt_id	status
+7	45	COMPLETED
+8	47	COMPLETED
+
+== LIVE STATE MACHINE (fast-poll capture, 200ms interval) ==
+attempt 63 (single writing response, AI_GRADING_TEST_MODE=true worker)
+status sequence: QUEUED x24 -> PROCESSING -> COMPLETED
+=> QUEUED -> PROCESSING -> COMPLETED verified end-to-end on live infra.
+Redis lock observed in-flight for the same job type: see redis-lock.txt.
+
+== DETERMINISM AUDIT ==
+rg 'Math.random' anish-toeic-web-services/src/ -> 0 matches (grading, scorer, adapter, worker, controller)
+score derivation: deterministic questionId->score mapping in createTestAiGradingAdapter
+(qid<=4 -> 0, qid<=8 -> 2, qid>=9 -> 4; aggregates scaled to 0-200/0-400).
+Same input -> same output proven: attempts 45 vs 47 identical answers -> identical JSON result.

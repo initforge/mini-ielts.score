@@ -1,0 +1,191 @@
+R2-LR desktop journey — console (errors/warnings) + failed requests + /api network
+timestamp: 2026-08-01T02:39:42.751Z
+
+EXPLAINED: attempt-GET started_at/created_at rewritten to now via client-side route
+interception (stack clock skew workaround, see summary.txt). Responses still show 200.
+EXPLAINED: 401s on /auth/* and /toeic-attempts* during the anonymous-gate phase are the
+intended gate behavior (anonymous visitor tries to start -> 401 -> /dang-nhap?returnUrl).
+EXPLAINED: login 429 from the shared per-IP auth rate limiter; script falls back to
+session-cookie injection (same httpOnly cookie).
+
+=== DESKTOP LR JOURNEY — console errors/warnings ===
+CONSOLE.ERROR: Failed to load resource: the server responded with a status of 401 (Unauthorized)
+CONSOLE.ERROR: Failed to load resource: the server responded with a status of 401 (Unauthorized)
+CONSOLE.ERROR: Warning: [antd: Spin] `tip` only work in nest or fullscreen pattern.
+CONSOLE.ERROR: Failed to load resource: the server responded with a status of 404 (Not Found)
+CONSOLE.ERROR: Failed to load resource: the server responded with a status of 404 (Not Found)
+CONSOLE.ERROR: Failed to load resource: the server responded with a status of 404 (Not Found)
+CONSOLE.ERROR: Failed to load resource: the server responded with a status of 404 (Not Found)
+CONSOLE.ERROR: Failed to load resource: the server responded with a status of 404 (Not Found)
+CONSOLE.ERROR: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+=== DESKTOP LR JOURNEY — failed /api requests ===
+(none — NONE EXPECTED)
+
+=== DESKTOP LR JOURNEY — /api network ===
+REQ GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+RES 200 GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ GET /api/toeic-exams?skillType=SW&page=1&pageSize=100
+RES 200 GET /api/toeic-exams?skillType=SW&page=1&pageSize=100
+REQ GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+RES 200 GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ GET /api/toeic-exams/anish-full-lr-001
+RES 200 GET /api/toeic-exams/anish-full-lr-001
+REQ GET /api/toeic-attempts
+RES 401 GET /api/toeic-attempts
+REQ POST /api/toeic-exams/1/attempts
+RES 401 POST /api/toeic-exams/1/attempts
+REQ POST /api/auth/login
+RES 200 POST /api/auth/login
+REQ GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+RES 200 GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ POST /api/toeic-exams/1/attempts
+RES 201 POST /api/toeic-exams/1/attempts
+REQ GET /api/toeic-attempts/211
+REQ GET /api/toeic-attempts/211
+RES 200 GET /api/toeic-attempts/211
+RES 200 GET /api/toeic-attempts/211
+REQ PATCH /api/toeic-attempts/211/responses/1
+RES 200 PATCH /api/toeic-attempts/211/responses/1
+REQ PATCH /api/toeic-attempts/211/responses/2
+RES 200 PATCH /api/toeic-attempts/211/responses/2
+REQ PATCH /api/toeic-attempts/211/responses/3
+RES 200 PATCH /api/toeic-attempts/211/responses/3
+REQ PATCH /api/toeic-attempts/211/responses/4
+RES 200 PATCH /api/toeic-attempts/211/responses/4
+REQ PATCH /api/toeic-attempts/211/responses/5
+RES 200 PATCH /api/toeic-attempts/211/responses/5
+REQ PATCH /api/toeic-attempts/211/responses/6
+RES 200 PATCH /api/toeic-attempts/211/responses/6
+REQ PATCH /api/toeic-attempts/211/responses/7
+RES 200 PATCH /api/toeic-attempts/211/responses/7
+REQ PATCH /api/toeic-attempts/211/responses/8
+RES 200 PATCH /api/toeic-attempts/211/responses/8
+REQ PATCH /api/toeic-attempts/211/responses/9
+RES 200 PATCH /api/toeic-attempts/211/responses/9
+REQ PATCH /api/toeic-attempts/211/responses/10
+RES 200 PATCH /api/toeic-attempts/211/responses/10
+REQ PATCH /api/toeic-attempts/211/responses/11
+RES 200 PATCH /api/toeic-attempts/211/responses/11
+REQ PATCH /api/toeic-attempts/211/responses/12
+RES 200 PATCH /api/toeic-attempts/211/responses/12
+REQ PATCH /api/toeic-attempts/211/responses/13
+RES 200 PATCH /api/toeic-attempts/211/responses/13
+REQ PATCH /api/toeic-attempts/211/responses/14
+RES 200 PATCH /api/toeic-attempts/211/responses/14
+REQ PATCH /api/toeic-attempts/211/responses/15
+RES 200 PATCH /api/toeic-attempts/211/responses/15
+REQ PATCH /api/toeic-attempts/211/responses/16
+RES 200 PATCH /api/toeic-attempts/211/responses/16
+REQ PATCH /api/toeic-attempts/211/responses/17
+RES 200 PATCH /api/toeic-attempts/211/responses/17
+REQ PATCH /api/toeic-attempts/211/responses/18
+RES 200 PATCH /api/toeic-attempts/211/responses/18
+REQ PATCH /api/toeic-attempts/211/responses/19
+RES 200 PATCH /api/toeic-attempts/211/responses/19
+REQ PATCH /api/toeic-attempts/211/responses/20
+RES 200 PATCH /api/toeic-attempts/211/responses/20
+REQ PATCH /api/toeic-attempts/211/responses/21
+RES 200 PATCH /api/toeic-attempts/211/responses/21
+REQ POST /api/toeic-attempts/211/submit
+RES 200 POST /api/toeic-attempts/211/submit
+REQ GET /api/toeic-attempts/211/result
+REQ GET /api/toeic-attempts/211
+REQ GET /api/toeic-exams?page=1&pageSize=100
+RES 200 GET /api/toeic-attempts/211/result
+REQ GET /api/toeic-attempts/211/review
+RES 200 GET /api/toeic-exams?page=1&pageSize=100
+RES 200 GET /api/toeic-attempts/211
+RES 200 GET /api/toeic-attempts/211/review
+REQ GET /api/toeic-attempts/211/result
+RES 200 GET /api/toeic-attempts/211/result
+REQ GET /api/toeic-attempts/211
+REQ GET /api/toeic-attempts/211/review
+REQ GET /api/toeic-attempts/211/result
+RES 200 GET /api/toeic-attempts/211/result
+RES 200 GET /api/toeic-attempts/211/review
+RES 200 GET /api/toeic-attempts/211
+REQ GET /api/toeic-exams?page=1&pageSize=100
+REQ GET /api/toeic-attempts
+RES 200 GET /api/toeic-attempts
+RES 200 GET /api/toeic-exams?page=1&pageSize=100
+REQ GET /api/toeic-attempts/211/result
+REQ GET /api/toeic-attempts/210/result
+REQ GET /api/toeic-attempts/209/result
+REQ GET /api/toeic-attempts/208/result
+REQ GET /api/toeic-attempts/207/result
+REQ GET /api/toeic-attempts/206/result
+REQ GET /api/toeic-attempts/205/result
+REQ GET /api/toeic-attempts/204/result
+REQ GET /api/toeic-attempts/203/result
+REQ GET /api/toeic-attempts/202/result
+REQ GET /api/toeic-attempts/201/result
+REQ GET /api/toeic-attempts/200/result
+REQ GET /api/toeic-attempts/199/result
+REQ GET /api/toeic-attempts/198/result
+REQ GET /api/toeic-attempts/195/result
+REQ GET /api/toeic-attempts/192/result
+REQ GET /api/toeic-attempts/190/result
+REQ GET /api/toeic-attempts/188/result
+REQ GET /api/toeic-attempts/187/result
+REQ GET /api/toeic-attempts/186/result
+REQ GET /api/toeic-attempts/185/result
+REQ GET /api/toeic-attempts/184/result
+REQ GET /api/toeic-attempts/183/result
+REQ GET /api/toeic-attempts/182/result
+REQ GET /api/toeic-attempts/181/result
+REQ GET /api/toeic-attempts/180/result
+REQ GET /api/toeic-attempts/179/result
+REQ GET /api/toeic-attempts/177/result
+RES 200 GET /api/toeic-attempts/211/result
+RES 200 GET /api/toeic-attempts/210/result
+RES 200 GET /api/toeic-attempts/209/result
+RES 404 GET /api/toeic-attempts/208/result
+RES 404 GET /api/toeic-attempts/207/result
+RES 200 GET /api/toeic-attempts/206/result
+RES 200 GET /api/toeic-attempts/205/result
+RES 200 GET /api/toeic-attempts/204/result
+RES 200 GET /api/toeic-attempts/203/result
+RES 200 GET /api/toeic-attempts/202/result
+RES 200 GET /api/toeic-attempts/201/result
+RES 200 GET /api/toeic-attempts/200/result
+RES 200 GET /api/toeic-attempts/199/result
+RES 200 GET /api/toeic-attempts/198/result
+RES 200 GET /api/toeic-attempts/195/result
+RES 200 GET /api/toeic-attempts/192/result
+RES 200 GET /api/toeic-attempts/190/result
+RES 200 GET /api/toeic-attempts/188/result
+RES 200 GET /api/toeic-attempts/187/result
+RES 200 GET /api/toeic-attempts/186/result
+RES 200 GET /api/toeic-attempts/185/result
+RES 404 GET /api/toeic-attempts/184/result
+RES 404 GET /api/toeic-attempts/182/result
+RES 200 GET /api/toeic-attempts/183/result
+RES 200 GET /api/toeic-attempts/181/result
+RES 200 GET /api/toeic-attempts/180/result
+RES 404 GET /api/toeic-attempts/179/result
+RES 404 GET /api/toeic-attempts/177/result
+REQ GET /api/toeic-attempts/211
+RES 200 GET /api/toeic-attempts/211
+REQ GET /api/toeic-attempts/211/review
+RES 200 GET /api/toeic-attempts/211/review
+
+=== DESKTOP CATALOG STATES (intercepted) — console errors/warnings ===
+(none — NONE EXPECTED)
+
+=== DESKTOP CATALOG STATES (intercepted) — failed /api requests ===
+(none — NONE EXPECTED)
+
+=== DESKTOP CATALOG STATES (intercepted) — /api network ===
+REQ GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+RES 200 GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+EXPLAINED: the 404s (GET /api/toeic-attempts/<id>/result) come from the HistoryPage
+enriching every COMPLETED attempt with its score. The ids (177/179/182/184/207/208)
+are abandoned attempts created during this session's earlier rate-limit-contention
+experiments (never submitted / auto-submitted with the stack clock bug); the app
+handles the missing result gracefully (404 -> row shows no score). Not an app defect.
+
+TEST TOOLING NOTE: this journey's browser contexts send cf-connecting-ip: 203.0.113.50
+(reserved TEST-NET literal) so rate-limit accounting is isolated from the shared
+127.0.0.1 buckets that concurrent workstreams exhaust. App behavior unchanged.

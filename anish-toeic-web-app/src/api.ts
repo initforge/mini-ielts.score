@@ -3,14 +3,8 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: '/api',
   timeout: 10000,
-});
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  // INJ-003: session travels in the httpOnly cookie; send it on every request.
+  withCredentials: true,
 });
 
 export default api;

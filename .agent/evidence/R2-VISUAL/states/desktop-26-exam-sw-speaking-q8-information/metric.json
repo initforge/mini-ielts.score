@@ -1,0 +1,16 @@
+{
+  "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/26-exam-sw-speaking-q8-information.png",
+  "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop26-exam-sw-speaking-q8.png",
+  "rmse": 51.305029,
+  "diffPixelsPct": 78.9746,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-26-exam-sw-speaking-q8-information/overlay.png",
+    "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-26-exam-sw-speaking-q8-information/diff.png",
+    "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-26-exam-sw-speaking-q8-information/metric.json"
+  }
+}

@@ -1,0 +1,25 @@
+R3-FAILURE2 state 22 — logout revocation (jti in Redis removed; old cookie dead)
+STACK: Redis anish-toeic-redis (:16379). Fresh login token kept for replay.
+
+--- [1] login (fresh session) ---
+COMMAND: POST /api/auth/login {email,password} → {"user":{...}}  STATUS: 200
+jti extracted from cookie: ace8460c-1078-4b38-b4c4-a24c2f55b45d
+
+--- [2] authed request before logout ---
+COMMAND: GET /api/toeic-attempts with Cookie: token=<jwt> → STATUS: 200
+
+--- [3] Redis session key present ---
+COMMAND: docker exec anish-toeic-redis redis-cli EXISTS jti:ace8460c-... → 1
+redis-cli KEYS 'jti:*' lists the session among 59 live sessions
+
+--- [4] logout ---
+COMMAND: POST /api/auth/logout with cookie → {"success":true}  STATUS: 200
+
+--- [5] old cookie replayed after logout ---
+COMMAND: GET /api/toeic-attempts with the SAME pre-logout cookie value
+BODY: {"error":"Unauthorized: Session revoked or expired"}  STATUS: 401
+
+--- [6] Redis key gone ---
+COMMAND: redis-cli EXISTS jti:ace8460c-... → 0
+
+VERDICT: PASS

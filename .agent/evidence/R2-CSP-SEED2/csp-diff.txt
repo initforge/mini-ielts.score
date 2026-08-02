@@ -1,0 +1,23 @@
+R2-CSP-SEED2 — CSP connect-src before/after
+Date: 2026-08-01T02:51:46Z
+HEAD: 620c111686534899fb980dfb481c9927cb2596bd (worktree dirty per assignment)
+
+FILES: nginx/nginx.conf, anish-toeic-web-app/vite.config.ts
+
+===== DIFF (before -> after) =====
+1,2c1,3
+< nginx/nginx.conf:69:    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'" always;
+< anish-toeic-web-app/vite.config.ts:8:  "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'";
+---
+> nginx/nginx.conf:69:    # R2-CSP (connect-src): presigned PUT uploads go to S3/Cloudinary — allow those
+> nginx/nginx.conf:71:    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://*.amazonaws.com https://*.s3.*.amazonaws.com https://*.cloudinary.com; font-src 'self' data:; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'" always;
+> anish-toeic-web-app/vite.config.ts:8:  "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://*.amazonaws.com https://*.s3.*.amazonaws.com https://*.cloudinary.com; font-src 'self' data:; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'";
+
+===== AFTER (both files) =====
+nginx/nginx.conf:69:    # R2-CSP (connect-src): presigned PUT uploads go to S3/Cloudinary — allow those
+nginx/nginx.conf:71:    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://*.amazonaws.com https://*.s3.*.amazonaws.com https://*.cloudinary.com; font-src 'self' data:; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'" always;
+anish-toeic-web-app/vite.config.ts:8:  "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://*.amazonaws.com https://*.s3.*.amazonaws.com https://*.cloudinary.com; font-src 'self' data:; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'";
+
+img-src 'self' data: blob: preserved: yes (both files)
+media-src 'self' data: blob: preserved: yes (both files)
+connect-src: 'self' kept + https://*.amazonaws.com + https://*.s3.*.amazonaws.com + https://*.cloudinary.com

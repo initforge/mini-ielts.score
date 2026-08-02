@@ -18,11 +18,15 @@ ledger carries the same IDs.
 | DISC-002 | XoaMu anonymous S&W grading fails late, some media is missing, and public payloads expose review content | S2,S5-BE,S5-FE,S6-BE,S6-FE,S7 |
 | DISC-003 | Current repo install/lint/media baseline is not clean and cannot be used as merge contract | S1,S7 |
 | INJ-001 | Owner accepts real-Chrome CDP `Page.captureSnapshot({ format: "mhtml" })` as equivalent to Ctrl+S Webpage Complete, conditional on complete per-state artifacts, SHA-256 manifest, and successful offline reopen | S0 |
+| INJ-002 | Production S&W grading calls a provider-neutral Cloudflare AI Worker adapter over HTTP; deterministic tests remain local; no direct Google Generative AI call or `Math.random` in Express | S6-BE,S7 |
+| INJ-003 | Resume required fresh runner-backed proof for all prior claims, 35-state visual mapping, full failure/security/release matrices, real media fixtures and clean-snapshot verification; expected dirty deliverables are not a blocker | S2,S3,S4-FE,S5-FE,S6-FE,S7 |
+| INJ-004 | Survey and adapt the customer public shell/auth return around `/thi-thu`; add only the mock-exam Admin surfaces (`Đề thi ONLINE`, `Đề hỗn hợp`, `Kết quả thi ONLINE`), bulk Word/media authoring and unresolved learner media/grading fixes; use up to ten logical roles with host-cap-aware waves and independent browser/security/release review | R4-CONTRACT,R4-SURVEY,R4-ADMIN-BE,R4-ADMIN-FE,R4-IMPORT,R4-LEARNER,R4-QA,R4-RELEASE |
 
 ## Injection handling
 
-Any later owner instruction is recorded with the next free `INJ-NNN` ID via
-`workctl add-source`, mapped to affected slices before execution continues.
+Any later owner instruction is recorded with the next free `INJ-NNN` ID in the
+existing runtime ledger through the governing workctl harness, then mapped here
+before execution continues. Never create another work ID, plan or ledger.
 Changing an acceptance claim invalidates its old receipt and requires fresh
 proof.
 

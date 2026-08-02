@@ -1,0 +1,55 @@
+R3-SW canonical screenshots (exact refids)
+timestamp: 2026-08-01T06:08:34.719Z
+
+desktop20-exam-sw-detail.png
+desktop21-mic-test.png
+desktop22-speaking-directions.png
+desktop23-q1-prep.png
+desktop24-q3-picture.png
+desktop25-q5-respond.png
+desktop26-q8-information.png
+desktop27-WRITING-DIRECTIONS.png
+desktop28-writing-q1-picture.png
+desktop29-writing-q6-email.png
+desktop30-writing-q8-essay.png
+desktop31-processing.png
+mobile01-catalog-sw.png
+mobile-sw-speaking.png
+mobile-sw-writing.png
+mobile04-writing-q1-picture.png
+
+MinIO PUT responses observed via CDP:
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q22/q22.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q22/q22.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q23/q23.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q23/q23.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q24/q24.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q24/q24.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q25/q25.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q25/q25.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q26/q26.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q26/q26.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q27/q27.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q27/q27.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q28/q28.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q28/q28.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q29/q29.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/246/q29/q29.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q22/q22.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q22/q22.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q23/q23.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q23/q23.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q24/q24.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q24/q24.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q25/q25.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q25/q25.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q26/q26.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q26/q26.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q27/q27.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q27/q27.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q28/q28.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q28/q28.webm
+PUT 204 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q29/q29.webm
+PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q29/q29.webm
+
+extras: desktop32-exam-sw-result.png, mobile08-exam-sw-result.png, desktop33-exam-sw-history-review.png, mobile09-exam-sw-history-review.png

@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/22-exam-sw-speaking-directions.png",
+  "actual": ".agent/evidence/R3-SW/desktop22-speaking-directions.png",
+  "rmse": 207.586284,
+  "diffPixelsPct": 97.3789,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-22-exam-sw-speaking-directions/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-22-exam-sw-speaking-directions/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-22-exam-sw-speaking-directions/metric.json"
+  }
+}

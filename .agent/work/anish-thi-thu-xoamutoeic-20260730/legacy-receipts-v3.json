@@ -1,0 +1,119 @@
+[
+  {
+    "id": "S0-IMPLEMENTER-20260731",
+    "slice_id": "S0",
+    "role": "implementer",
+    "status": "COMPLETE",
+    "summary": "32/35 real-Chrome CDP MHTML captures; 32/32 offline reopen and SHA-256 pass; 3 states now classified as live-drift (2) and historical-exception (1) per INJ-001 amendment.",
+    "evidence": [
+      ".agent/evidence/S0/capture-report.md",
+      ".agent/evidence/S0/offline-verification.txt",
+      "references/xoamutoeic/manifests/manifest.json"
+    ]
+  },
+  {
+    "id": "S0-ACK-20260731",
+    "slice_id": "S0",
+    "role": "coordinator",
+    "status": "acknowledged",
+    "summary": "Owner decision recorded: CDP MHTML from real Chrome accepted equivalent to Ctrl+S Webpage Complete under complete artifact, SHA-256 manifest, offline reopen conditions.",
+    "source_id": "INJ-001"
+  },
+  {
+    "id": "S0-CLOSE-20260731",
+    "slice_id": "S0",
+    "role": "verifier",
+    "status": "PASS",
+    "summary": "S0 close: manifest classification upgraded to v2 (captured | live-drift | historical-exception). ledger source_history amended with INJ-001. verify-offline.mjs upgraded with manifest-driven semantic assertions. S0 status -> pass, AC1 -> pass, AC2 -> pass. All artifacts preserved. No application source modified.",
+    "evidence": [
+      ".agent/evidence/S0/verify-offline.mjs",
+      ".agent/evidence/S0/offline-verification.txt",
+      "references/xoamutoeic/manifests/manifest.json",
+      ".agent/work/anish-thi-thu-xoamutoeic-20260730/ledger.json"
+    ]
+  },
+  {
+    "id": "S1-VERIFY-20260731",
+    "slice_id": "S1",
+    "role": "implementer",
+    "status": "PASS",
+    "summary": "Root build, typecheck, lint and real workspace tests pass after baseline repair.",
+    "evidence": [
+      "npm run build",
+      "npm run typecheck",
+      "npm run lint",
+      "npm run test"
+    ]
+  },
+  {
+    "id": "S2-IMPLEMENTER-20260731",
+    "slice_id": "S2",
+    "role": "implementer",
+    "status": "PARTIAL",
+    "summary": "Auth, ownership, revisions, membership, transactional submit and protected projections implemented; real-service proof remains environment-dependent.",
+    "evidence": [
+      "anish-toeic-web-services/src/tests/security.test.ts",
+      "anish-toeic-web-services/src/tests/migrations.test.ts"
+    ]
+  },
+  {
+    "id": "S4BE-IMPLEMENTER-20260731",
+    "slice_id": "S4-BE",
+    "role": "implementer",
+    "status": "PASS",
+    "summary": "Deterministic scorer and protected result projection implemented; scorer/API tests pass.",
+    "evidence": [
+      "anish-toeic-web-services/src/tests/scorer.test.ts"
+    ]
+  },
+  {
+    "id": "S5BE-IMPLEMENTER-20260731",
+    "slice_id": "S5-BE",
+    "role": "implementer",
+    "status": "PARTIAL",
+    "summary": "Bounded media adapter and validation implemented; live provider proof remains external-service dependent.",
+    "evidence": [
+      "anish-toeic-web-services/src/tests/toeicMedia.test.ts"
+    ]
+  },
+  {
+    "id": "S6BE-IMPLEMENTER-20260731",
+    "slice_id": "S6-BE",
+    "role": "implementer",
+    "status": "PARTIAL",
+    "summary": "Cloudflare provider-neutral adapter, deterministic double, Zod, timeout, retry, idempotency and sanitized errors implemented; credentials intentionally absent.",
+    "source_id": "INJ-002",
+    "evidence": [
+      "anish-toeic-web-services/src/services/adapters/ai-grading.adapter.ts",
+      "anish-toeic-web-services/src/tests/grading.test.ts"
+    ]
+  },
+  {
+    "id": "S7-INFRA-20260731",
+    "slice_id": "S7",
+    "role": "implementer",
+    "status": "PARTIAL",
+    "summary": "PM2/Nginx/env contracts updated to Anish :5173 -> /api -> :7000 topology; static validation 63/63 pass.",
+    "evidence": [
+      "docs/04-infra-nginx-pm2-validation.md",
+      "ecosystem.config.cjs",
+      "nginx/nginx.conf"
+    ]
+  },
+  {
+    "id": "S7-LOCAL-SMOKE-20260731",
+    "slice_id": "S7",
+    "role": "coordinator",
+    "status": "PARTIAL",
+    "summary": "Fresh npm ci, build, typecheck, lint and 134 tests pass. Tailwind Vite integration was repaired. Desktop and 390px mobile catalog shells render with no document-level horizontal overflow; /api/health returns 200. Catalog data remains unavailable because no real MySQL/Redis instance is configured, so full E2E and parity are not claimed.",
+    "evidence": [
+      ".agent/evidence/S7/desktop-smoke-20260731.png",
+      ".agent/evidence/S7/mobile-smoke-20260731.png",
+      "npm ci --ignore-scripts",
+      "npm run build",
+      "npm run typecheck",
+      "npm run lint",
+      "npm run test"
+    ]
+  }
+]

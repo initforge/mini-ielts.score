@@ -1,0 +1,12 @@
+R3-FAILURE2 state 07 — offline runner (banner/error, never blank)
+ATTEMPT: 272 (LR, IN_PROGRESS, owner). SIMULATION: API aborted + navigator.onLine=false.
+
+--- (a) resume with local snapshot ---
+UI PROOF: 07-offline-runner-snapshot.png
+DOM PROBE: snapshot records in IndexedDB=1 ; amber banner 'Đang ngoại tuyến — câu trả lời được lưu cục bộ...' visible=1 ; body length=326 (non-blank)
+
+--- (b) fresh context (empty IndexedDB) offline ---
+UI PROOF: 07-offline-runner-fresh.png
+DOM PROBE: error state 'Không thể tải bài thi.' visible=1 ; 'Thử lại' button visible=1 ; body length=62 (non-blank)
+
+VERDICT: PASS

@@ -1,0 +1,49 @@
+R3-RELEASE2 FINAL CLEAN-SNAPSHOT REPRODUCIBILITY — SUMMARY
+Repo: /home/linhnx/Projects/mini-toeic.score  HEAD=620c111686534899fb980dfb481c9927cb2596bd
+Snapshot: /tmp/opencode/anish-snap3-1zmxDR (mktemp), working tree copied excluding
+.git/.agent/node_modules/scratch/dist/audio-temp/*.log/temp; ALL 16 must-include
+untracked build-imported files present (examCatalog.ts, WritingView.tsx, ErrorMapPage.tsx,
+ExamDetailPage.tsx, seed.ts, 002_media_columns.up/down.sql, services/.env.example,
+docs/05-runbook.md, docs/06-merge-handoff.md, scripts/integration/docker-compose.yml,
+root package.json/package-lock.json, ecosystem.config.cjs, env.example, env.production.example).
+Root package.json overrides react/react-dom => 19.2.8.
+
+EXIT CODES / TOTALS
+ 1. snapshot copy           PASS   (267 files in manifest, no node_modules/dist)
+ 2. sha256 manifest         PASS   snapshot-manifest.txt (267 entries)
+ 3. npm ci                  exit 0 (node v26.4.0 / npm 12.0.1)
+    npm ls react react-dom --depth=0  -> react@19.2.8 + react-dom@19.2.8, single each,
+       "overridden", root-level hoist, NO react@18 anywhere (npm ls react@18 = empty). PASS
+ 4. typecheck               exit 0
+    build                   exit 0 (Vite ✓ built 7.89s; services tsc + sql copy)
+    lint                    exit 0 (eslint --max-warnings 0)
+ 5. backend tests           142/142 passed, 12/12 suites, exit 0
+       (DB_NAME=anish_toeic_test DB_PORT=13306 DB_USER=toeic DB_PASSWORD=toeic_dev_pw)
+       NOTE: anish_toeic_test already existed; toeic user LACKS global CREATE — for
+       snap3 DB used root (MYSQL_ROOT_PASSWORD=toeic_root_dev_pw from container env) then
+       GRANT ALL on anish_toeic_snap3.* to toeic.
+ 6. migration + seed        PASS
+       migrate up: 001_schema + 002_media_columns applied, exit 0
+       tables = 14, questions = 37
+       seed run 1 -> exit 0 "Seed completed."  fingerprint 946f815c2cc68c317ed178f0809b1b01
+       seed run 2 -> exit 0 "Seed completed."  fingerprint 946f815c2cc68c317ed178f0809b1b01
+       (fingerprint = md5 of per-table count + sorted id list, excl. schema_migrations)
+       DOUBLE-GATE (idempotent re-seed) PASS
+ 7. startup smoke           PASS
+       server: /api/health HTTP 200, killed
+       worker: "[Grading Worker] Started", killed
+       NEGATIVE JWT_SECRET: ''->exit1, 'short'->exit1, REPLACE_WITH*->exit1, all with
+       clear "Environment validation failed (server): JWT_SECRET: ..." messages
+ 8. docker compose config -q exit 0
+       images: mysql:8.4, redis:7-alpine, minio/minio:latest, minio/mc:latest
+ 9. nginx structural        PASS (server 443 + 80 blocks, /api/ /assets/ /health / locations,
+       CSP header at server level inherited by index.html location; nginx binary absent ->
+       "VPS-only nginx -t" noted)
+10. npm audit --omit=dev    0/0 both workspaces, exit 0 each
+11. evidence written to .agent/evidence/R3-RELEASE2/
+    snapshot dir /tmp/opencode/anish-snap3-1zmxDR removed (rm -rf) after evidence capture
+
+MISSING-FILE DEPENDENCY: none — CRITICAL: NO missing files. All 16 build-imported
+untracked files present in snapshot and listed in manifest.
+
+VERDICT: PASS

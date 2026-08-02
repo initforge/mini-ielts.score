@@ -1,0 +1,52 @@
+S6-BE | AC17 — retry / failure / stale-recovery
+Work package: anish-thi-thu-xoamutoeic-20260730 | slice S6-BE
+Generated: 2026-07-31T15:36:52Z | unit (mock) + live proof
+============================================================
+
+== [1] UNIT TESTS (grading.test.ts, mocked adapter/redis) ==
+-- covers: RETRY on retryable error, max-retries->FAILED, stale PROCESSING recovery,
+-- sanitized errors, PARTIAL, duplicate lock, idempotent terminal states.
+Test Suites: 1 passed, 1 total
+Tests:       13 passed, 13 total
+EXIT=0
+
+== [2] LIVE FAILED PATH (no provider config -> AI_PROVIDER_NOT_CONFIGURED) ==
+queued_before=1
+drained leftover jobs (see /tmp/opencode/w-drain.log)
+ATTEMPT: {"attemptId":60,"status":"IN_PROGRESS","mode":"EXAM"}
+queued: 16:QUEUED
+-- start worker WITHOUT AI_GRADING_TEST_MODE and WITHOUT CLOUDFLARE_AI_WORKER_* (production-like missing config):
+-- worker log:
+[Grading Worker] Started
+[Grading Worker] Processing job 16
+-- job + attempt after FAILED:
+id	attempt_id	status	retry_count	error_message
+16	60	FAILED	0	AI_PROVIDER_NOT_CONFIGURED
+id	status
+60	FAILED
+API grading-status (expect FAILED, sanitized error):
+{"id":16,"attempt_id":60,"status":"FAILED","retry_count":0,"error_message":"AI_PROVIDER_NOT_CONFIGURED","created_at":"2026-07-31T08:37:23.000Z","updated_at":"2026-07-31T08:37:28.000Z"}
+-- RESUBMIT (FAILED -> QUEUED, idempotent reset) then worker with test double:
+{"success":true}
+id	attempt_id	status	retry_count
+16	60	COMPLETED	0
+RECOVERED_AFTER_FAILED: PASS
+
+== [3] LIVE STALE RECOVERY (>10 min PROCESSING) — no 10-min wait, forced timestamp ==
+ATTEMPT: {"attemptId":61,"status":"IN_PROGRESS","mode":"EXAM"}
+queued: 18:QUEUED
+-- simulate a crashed worker: force status=PROCESSING with updated_at 11 minutes ago
+id	attempt_id	status	updated_at
+18	61	PROCESSING	2026-07-31 15:27:14
+-- call recoverStaleProcessingJobs() (worker does this every 30s):
+recovered=1
+id	attempt_id	status	error_message
+18	61	RETRY	Stale processing recovered
+-- worker picks up RETRY -> COMPLETED:
+[Grading Worker] Started
+[Grading Worker] Processing job 18
+id	attempt_id	status	retry_count
+18	61	COMPLETED	0
+id	status
+61	COMPLETED
+STALE_RECOVERY_LIVE: PASS

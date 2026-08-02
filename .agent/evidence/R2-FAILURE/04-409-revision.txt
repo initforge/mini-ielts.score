@@ -1,0 +1,12 @@
+=== STATE 4: create attempt ===
+{"attemptId":178,"status":"IN_PROGRESS","mode":"PRACTICE"}
+status:201
+=== PATCH rev=1 (ok) ===
+{"success":true}
+status:200
+=== PATCH rev=1 again same payload (replay ok) ===
+{"success":true,"replayed":true}
+status:200
+=== PATCH rev=0 stale (expect 409) ===
+{"error":"Stale client_revision"}
+status:409

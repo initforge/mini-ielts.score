@@ -1,0 +1,57 @@
+R3-P1-MINIO browser SW journey — REAL upload to local MinIO (127.0.0.1:19000)
+timestamp: 2026-08-01T04:39:24.554Z
+attemptId: 236
+errors: 0
+CHECKLIST | R3-MINIO-SW | PASS=8 FAIL=0
+  PASS session HttpOnly cookie in jar
+  PASS SW attempt created (id=236)
+  PASS mic test "Allow Microphone Access" shown
+  PASS mic granted via fake media device
+  PASS speaking q1 blob captured + playback ready
+  PASS presigned PUT to MinIO returned 200 :: RES-PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/236/q22/q22.webm?X-Amz-Algorithm=AWS4-
+  PASS no upload error surfaced in UI
+  PASS no CSP connection refusals in console :: none
+
+STEP transcript:
+[2026-08-01T04:39:15.065Z] STEP logged in as seed.owner
+[2026-08-01T04:39:15.394Z] STEP exam detail rendered
+[2026-08-01T04:39:21.449Z] STEP speaking q1: recorded ~2s, upload enqueued
+[2026-08-01T04:39:24.449Z] STEP upload round-trip complete
+NOTE: console CSP messages — ERROR: The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored. ; ERROR: The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.
+
+R3-MINIO console (errors/warnings) + network (/api) + media PUT + failed requests
+timestamp: 2026-08-01T04:39:24.554Z
+
+=== CONSOLE ===
+ERROR: The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.
+ERROR: Failed to load resource: the server responded with a status of 404 (Not Found)
+ERROR: The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.
+
+=== API NETWORK ===
+REQ POST /api/auth/login
+RES 200 POST /api/auth/login
+REQ GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+RES 200 GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ GET /api/toeic-exams?skillType=SW&page=1&pageSize=100
+RES 200 GET /api/toeic-exams?skillType=SW&page=1&pageSize=100
+REQ GET /api/toeic-exams/anish-full-sw-001
+RES 200 GET /api/toeic-exams/anish-full-sw-001
+REQ GET /api/toeic-attempts
+RES 200 GET /api/toeic-attempts
+REQ POST /api/toeic-exams/2/attempts
+RES 201 POST /api/toeic-exams/2/attempts
+REQ GET /api/toeic-attempts/236
+REQ GET /api/toeic-attempts/236
+RES 200 GET /api/toeic-attempts/236
+RES 200 GET /api/toeic-attempts/236
+REQ POST /api/toeic-attempts/236/media/presign
+RES 200 POST /api/toeic-attempts/236/media/presign
+
+=== MEDIA (MinIO PUT) ===
+REQ-PUT PUT http://127.0.0.1:19000/toeic-media/uploads/attempts/236/q22/q22.webm?X-Amz-Algorithm=AWS4-
+RES-PUT 200 http://127.0.0.1:19000/toeic-media/uploads/attempts/236/q22/q22.webm?X-Amz-Algorithm=AWS4-
+PUT-FAILED http://127.0.0.1:19000/toeic-media/uploads/attempts/236/q22/q22.webm?X-Amz-Algorithm=AWS4- :: net::ERR_ABORTED
+
+=== FAILED REQUESTS ===
+(none)

@@ -1,0 +1,14 @@
+R2-S2-BE health receipt
+Date: 2026-08-01T01:35:30Z
+cmd: curl -s http://127.0.0.1:7000/api/health
+exit: 0
+response: {"status":"ok","service":"anish-toeic-web-services"}
+
+Restart receipt:
+  old PID 223544 killed (port freed)
+  first restart (nohup) PID 1801180 verified then recycled by the sandbox shell's
+  background-job cleanup; restarted detached via setsid to survive shell exit.
+  cmd: set -a; source .env; set +a; setsid node dist/server.js > /tmp/opencode/r2-be.log 2>&1 < /dev/null &
+  current PID: 1817569 (confirmed alive: /api/health returns ok)
+  log: /tmp/opencode/r2-be.log  ->  "Server running on port 7000"
+  FE vite on :5173 untouched (still listening, 200 on [::1]:5173).

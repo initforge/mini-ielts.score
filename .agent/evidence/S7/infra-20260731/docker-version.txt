@@ -1,0 +1,4 @@
+### Docker & Compose versions
+Captured: 2026-07-31T19:29:46+07:00
+Docker version 29.6.2, build dfc4efb1e2
+Docker Compose version 5.3.1

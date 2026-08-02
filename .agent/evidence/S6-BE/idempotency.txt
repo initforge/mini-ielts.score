@@ -1,0 +1,46 @@
+S6-BE | AC17 — idempotency: submit 2x -> 1 job; 2 workers -> 1 result
+Work package: anish-thi-thu-xoamutoeic-20260730 | slice S6-BE
+Generated: 2026-07-31T15:36:26Z | live proof, dev env
+============================================================
+
+== [1] DOUBLE SUBMIT (same attempt, submit endpoint called twice) ==
+ATTEMPT: {"attemptId":57,"status":"IN_PROGRESS","mode":"EXAM"}
+SUBMIT #1:
+{"success":true}
+SUBMIT #2:
+{"success":true,"alreadySubmitted":true}
+SUBMIT #3:
+{"success":true,"alreadySubmitted":true}
+-- job rows for attempt 57 (expect exactly 1):
+job_rows
+1
+
+== [2] TWO CONCURRENT WORKERS (same QUEUED job) ==
+ATTEMPT: {"attemptId":58,"status":"IN_PROGRESS","mode":"EXAM"}
+job queued: 14	QUEUED
+worker A pid 156712, worker B pid 156714
+poll1: QUEUED
+poll2: QUEUED
+poll3: QUEUED
+poll4: COMPLETED
+-- result rows for attempt 58 (expect exactly 1, no duplicate):
+result_rows
+1
+attempt_id	total_score	status
+58	400	FINAL
+-- worker A log:
+[Grading Worker] Started
+[Grading Worker] Processing job 11
+[Grading Worker] Processing job 12
+[Grading Worker] Processing job 13
+[Grading Worker] Processing job 14
+-- worker B log:
+[Grading Worker] Started
+[Grading Worker] Processing job 10
+[Grading Worker] Processing job 11
+[Grading Worker] Processing job 12
+[Grading Worker] Processing job 13
+[Grading Worker] Processing job 14
+
+== VERDICT ==
+IDEMPOTENCY: PASS (1 job per attempt, 1 result row under 2 concurrent workers)

@@ -1,0 +1,32 @@
+R2-FE / INJ-003 — Task 1: BRANDING "Xóa Mù TOEIC" -> "Anish TOEIC"
+====================================================================
+Date: 2026-08-01  (git HEAD 620c111686534899fb980dfb481c9927cb2596bd)
+
+BEFORE rg -i "xóa mù|xoá mù|xoa mu|xoamu|XÓA MÙ|XOÁ MÙ" anish-toeic-web-app/src
+------------------------------------------------------------------------------
+  anish-toeic-web-app/src/pages/user/ResultPage.tsx:305
+      XÓA MÙ <span className="text-[#f97316]">TOEIC</span>
+  anish-toeic-web-app/src/pages/user/RunnerPage.tsx:117
+      Xoá<span className="text-white">Mù</span><span className="text-orange-400">TOEIC</span>
+  anish-toeic-web-app/src/modules/mock-exam/pages/MockExamRunnerPage.tsx:255
+      Xoá<span className="text-white">Mù</span><span className="text-orange-400">TOEIC</span>
+  (non-UI hit, left as-is: runner/core/format.ts:19 comment referencing the real
+   file path references/xoamutoeic/snapshots/exam-lr-reading-bilingual.md)
+
+EDITS (3 UI spots)
+------------------
+MockExamRunnerPage.tsx:255  Xoá<span>Mù</span><span class="text-orange-400">TOEIC</span>
+                            -> Anish <span className="text-orange-400">TOEIC</span>
+RunnerPage.tsx:117          Xoá<span>Mù</span><span class="text-orange-400">TOEIC</span>
+                            -> Anish<span className="text-orange-400">TOEIC</span>
+ResultPage.tsx:305          XÓA MÙ <span className="text-[#f97316]">TOEIC</span>
+                            -> ANISH <span className="text-[#f97316]">TOEIC</span>
+
+AFTER rg -i "xóa mù|xoá mù|xoa mu|xoamu|XÓA MÙ|XOÁ MÙ" anish-toeic-web-app/src
+-----------------------------------------------------------------------------
+  0 UI hits.  Only remaining match is the code comment in
+  modules/mock-exam/runner/core/format.ts:19 (documentation path reference, not
+  rendered UI).
+
+Result page screenshot (result-page.png) shows "ANISH TOEIC / GIỎI TOEIC, SÁNG
+TƯƠNG LAI" header.  PASS.

@@ -1,0 +1,16 @@
+{
+  "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/mobile/01-exams-sw-list-full.png",
+  "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/mobile01-catalog-sw.png",
+  "rmse": 95.584511,
+  "diffPixelsPct": 98.66,
+  "dims": {
+    "equal": false,
+    "reference": "431x6001",
+    "actual": "375x812"
+  },
+  "outputs": {
+    "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-01-exams-sw-list-full/overlay.png",
+    "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-01-exams-sw-list-full/diff.png",
+    "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-01-exams-sw-list-full/metric.json"
+  }
+}

@@ -1,0 +1,42 @@
+R2-RELEASE-RECHECK — Final re-prove: clean snapshot build + test (G1 + G13)
+================================================================================
+
+Snapshot dir (temporary): /tmp/opencode/anish-snapshot-tddxVT
+Source HEAD: 620c111 (worktree dirty, uncommitted R2-SEC-FIX changes included)
+
+Exit codes:
+  npm ci (root workspaces)        : 0
+  web-app typecheck               : 0
+  web-app build                   : 0
+  services typecheck              : 0
+  services lint                   : 0
+  services build                  : 0
+  backend jest (DB_NAME=anish_toeic_test) : 0
+
+Tests:
+  Suites: 11 passed, 11 total
+  Tests:  135 passed, 135 total  (was 133 + 2 fixed by R2-SEC-FIX => 135/135, EXPECTED MATCH)
+  Snapshots: 0
+
+Audit (npm audit --omit=dev):
+  anish-toeic-web-app: 3 vulnerabilities (1 low, 2 high, 0 critical)
+    - quill (direct, low): XSS via HTML export — GHSA-v3m3-f69x-jf25
+    - react-router-dom (direct, high): RSC mode CSRF bypass — GHSA-qwww-vcr4-c8h2
+    - react-router (transitive, high): same advisory
+  anish-toeic-web-services: 0 vulnerabilities
+  (no critical, no moderate)
+
+Env for tests (real DB path verified):
+  DB_HOST=127.0.0.1 DB_PORT=13306 DB_USER=toeic DB_PASSWORD=toeic_dev_pw DB_NAME=anish_toeic_test
+  Container anish-toeic-mysql healthy, maps 127.0.0.1:13306 -> 3306 (NOT host 3306).
+  anish_toeic_test DB existed but empty; migrations bootstrapped by migrations.test.ts
+  (runMigrations('up') applied 001_schema + 002_media_columns, then 'down' rollback).
+  Zero "DB not available" fallbacks in final run — all suites ran against the live DB.
+  (Earlier attempts with DB_PORT=3306 hit ECONNREFUSED and exercised the no-DB fallback path;
+  final run used 13306.)
+
+VERDICT: PASS
+  - All builds green from clean snapshot (no node_modules/dist/.git copied).
+  - 135/135 tests PASS (11 suites).
+  - Missing-file dependencies: NONE — all untracked build-imported sources present:
+    examCatalog.ts, WritingView.tsx, ErrorMapPage.tsx, migrations/seed.ts, .env.example.

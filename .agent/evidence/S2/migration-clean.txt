@@ -1,0 +1,65 @@
+Work ID: anish-thi-thu-xoamutoeic-20260730 — Slice S2
+Evidence: migration from a truly clean database (drop + recreate toeic, then up).
+Date: 2026-07-31
+Infra: MySQL 8.4.11 @ 127.0.0.1:13306 (container anish-toeic-mysql, healthy),
+       Redis 7.4.9 @ 127.0.0.1:16379 (container anish-toeic-redis, healthy).
+
+────────────────────────────────────────────────────────────────────────────
+1) Clean DB: drop database toeic (local disposable only), recreate empty.
+   command:
+   docker exec anish-toeic-mysql mysql -utoeic -ptoeic_dev_pw -e \
+     "DROP DATABASE IF EXISTS toeic; CREATE DATABASE toeic CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; SELECT 'recreated' AS status;"
+   output:
+   status
+   recreated
+   exit code: 0
+   table count in empty DB: 0
+
+2) Migration up (env via shell):
+   DB_HOST=127.0.0.1 DB_PORT=13306 DB_USER=toeic DB_PASSWORD=toeic_dev_pw DB_NAME=toeic
+   node dist/migrations/runner.js up
+   exit code: 0
+   output:
+   Running migrations: up
+   Applied: 001_schema.up.sql
+   Migrations completed successfully.
+
+3) Tables after up (SHOW TABLES FROM toeic):
+   schema_migrations
+   toeic_attempt_media
+   toeic_attempt_responses
+   toeic_attempt_results
+   toeic_attempts
+   toeic_exam_collections
+   toeic_exam_sections
+   toeic_exams
+   toeic_grading_jobs
+   toeic_question_options
+   toeic_question_review_content
+   toeic_question_scores
+   toeic_questions
+   users
+   14 tables total.
+
+4) schema_migrations recorded exactly once:
+   SELECT name FROM schema_migrations;
+   001_schema.up.sql
+
+5) Re-run up is idempotent:
+   node dist/migrations/runner.js up
+   exit code: 0
+   output:
+   Running migrations: up
+   Skipping already-applied migration: 001_schema.up.sql
+   Migrations completed successfully.
+
+6) Down direction (validated by migrations.test.ts against the same real
+   MySQL — test wipes schema_migrations + all 13 app tables and asserts no
+   table remains; see test-results.txt).
+
+Runner notes: transactions per migration file (schema_migrations recorded in
+the same transaction as the file's statements), robust multi-statement
+splitting (respects quotes, backticks, -- and block comments), stop-on-error
+with rollback. MySQL DDL auto-commits, so partial-DDL recovery is manual —
+this is the strongest atomicity MySQL permits and the runner leaves the
+migration unrecorded on failure.

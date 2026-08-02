@@ -1,0 +1,3 @@
+NAMES               IMAGE            PORTS                                  STATUS
+anish-toeic-redis   redis:7-alpine   127.0.0.1:16379->6379/tcp              Up 47 seconds (healthy)
+anish-toeic-mysql   mysql:8.4        33060/tcp, 127.0.0.1:13306->3306/tcp   Up 47 seconds (healthy)

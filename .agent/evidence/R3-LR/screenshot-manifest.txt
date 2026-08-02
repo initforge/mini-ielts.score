@@ -1,0 +1,26 @@
+R3-LR-JOURNEY2 canonical screenshots (filename <-> reference id mapping)
+timestamp: 2026-08-01T07:09:17.342Z
+FILES:
+desktop01-catalog-sw.png	desktop/01	fullPage
+desktop02-catalog-lr.png	desktop/02	fullPage
+desktop03-mode-dialog.png	desktop/03	viewport
+desktop04-exam-detail.png	desktop/04	fullPage
+desktop05-listening-directions.png	desktop/05	fullPage
+desktop06-part1-directions.png	desktop/06	fullPage
+desktop07-part1-q1.png	desktop/07	fullPage
+desktop08-palette.png	desktop/08	viewport
+desktop09-part5-q101.png	desktop/09	fullPage
+desktop10-bilingual-on.png	desktop/10	viewport
+desktop11-annotation.png	desktop/11	viewport
+desktop12-part6-q131.png	desktop/12	fullPage
+desktop13-part7-q147.png	desktop/13	fullPage
+desktop14-submit-confirm.png	desktop/14	viewport
+desktop15-result-certificate.png	desktop/15	viewport
+desktop16-score-table-modal.png	desktop/16	viewport
+desktop17-error-map.png	desktop/17	fullPage
+desktop18-review-detail.png	desktop/18	viewport
+desktop19-HISTORY-AUTH-GATE.png	desktop/19	viewport
+mobile02-catalog-lr.png	mobile/02	fullPage
+mobile03-lr-q1.png	mobile/03	fullPage
+mobile-detail.png	(no ref — app-side)	fullPage
+mobile-lr-runner.png	(no ref — app-side)	fullPage

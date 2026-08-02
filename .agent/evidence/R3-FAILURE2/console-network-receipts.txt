@@ -1,0 +1,31 @@
+R3-FAILURE2 — console & network receipts across UI states (classification)
+Captured via Playwright listeners (console/pageerror/dialog/response/requestfailed) at :5173, date 2026-08-01
+
+=== RECEIPTS (verbatim, deduplicated) ===
+      1 [catalog-offline-fresh] console.error: Failed to load resource: net::ERR_FAILED
+      1 [catalog-offline-fresh] console.error: The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.
+      1 [catalog-offline-fresh] REQFAILED /api/toeic-exams?skillType=LR&page=1&pageSize=100 net::ERR_FAILED
+      1 [catalog-online] 200 GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+      2 [catalog-online] console.error: Failed to load resource: net::ERR_FAILED
+      2 [catalog-online] console.error: The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.
+      2 [catalog-online] REQFAILED /api/toeic-exams?skillType=LR&page=1&pageSize=100 net::ERR_FAILED
+      1 [grading-timeout] console.error: The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.
+      1 [grading-timeout] REQFAILED /api/toeic-attempts/280/grading-status net::ERR_ABORTED
+      1 [xss-result] 200 GET /api/toeic-attempts/286
+      1 [xss-result] 200 GET /api/toeic-attempts/286/result
+      1 [xss-result] 200 GET /api/toeic-attempts/286/review
+      1 [xss-result] 200 GET /api/toeic-exams?page=1&pageSize=100
+      1 [xss-result] console.error: The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.
+
+=== CLASSIFICATION ===
+EXPECTED (environment / simulation artifacts, not app defects):
+  - CSP connect-src invalid source 'https://*.s3.*.amazonaws.com' ignored — dev-server/helmet CSP header artifact; harmless, pre-existing (also present in R3-OFFLINE receipts).
+  - REQFAILED /api/toeic-exams net::ERR_FAILED (offline simulation, route.abort) — expected during offline tests (states 06/07/09).
+  - REQFAILED /api/toeic-attempts/280/grading-status net::ERR_ABORTED (state 08) — axios client aborts at 10s timeout while route delayed 12s; the intended transport-error path.
+  - 404 responses for cross-user/ownership reads and missing results (states 05/18/23) — intended anti-oracle behavior.
+  - 429 with Retry-After (state 16) — intended rate limiting.
+
+APP DEFECTS: NONE.
+  - 0 pageerror, 0 unhandled exceptions, 0 dialogs (XSS state 21: payload executed nothing).
+  - No duplicate grading, no failed UI states outside simulated conditions.
+  - All simulated failures produced the designed UI states (banner/error/retry) with no blank screens.

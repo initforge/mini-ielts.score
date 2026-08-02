@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/29-exam-sw-writing-q6-email.png",
+  "actual": ".agent/evidence/R3-SW/desktop29-writing-q6-email.png",
+  "rmse": 212.179923,
+  "diffPixelsPct": 97.7709,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-29-exam-sw-writing-q6-email/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-29-exam-sw-writing-q6-email/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-29-exam-sw-writing-q6-email/metric.json"
+  }
+}

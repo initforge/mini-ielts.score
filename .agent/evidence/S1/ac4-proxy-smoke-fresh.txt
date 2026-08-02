@@ -1,0 +1,4 @@
+frontend http://localhost:5173/ -> 200
+proxy http://localhost:5173/api/health -> 200
+body: {"status":"ok","service":"anish-toeic-web-services"}
+backend direct :7000/api/health -> 200

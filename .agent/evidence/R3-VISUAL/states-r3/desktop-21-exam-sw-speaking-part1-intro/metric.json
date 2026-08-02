@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/21-exam-sw-speaking-part1-intro.png",
+  "actual": ".agent/evidence/R3-SW/desktop21-mic-test.png",
+  "rmse": 214.38713,
+  "diffPixelsPct": 99.98,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-21-exam-sw-speaking-part1-intro/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-21-exam-sw-speaking-part1-intro/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-21-exam-sw-speaking-part1-intro/metric.json"
+  }
+}

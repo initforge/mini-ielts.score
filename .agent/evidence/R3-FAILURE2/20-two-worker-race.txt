@@ -1,0 +1,20 @@
+R3-FAILURE2 state 20 — two-worker race (duplicate-processing guard)
+
+--- setup ---
+Second worker started: node dist/workers/grading.worker.js (AI_GRADING_TEST_MODE=true), PID 3741176, log worker2.log; killed after the run.
+Attempt 285 (SW, owner) submitted while BOTH workers polling.
+
+--- worker logs ---
+worker1 (r3-sec-worker.log): [Grading Worker] Processing job 70
+worker2 (worker2.log): [Grading Worker] Started  (never processed job 70 — Redis NX lock held by worker1)
+
+--- API/DB proof ---
+COMMAND: SELECT COUNT(*) FROM toeic_attempt_results WHERE attempt_id=285;
+RESULT: 1 row  (id=141, status=FINAL, total_score=0) — no duplicate results despite 2 workers
+COMMAND: GET /api/toeic-attempts/285/result → {"listeningScore":0,"readingScore":0,"totalScore":0,"status":"FINAL"} [200] — single result
+Attempt status: COMPLETED at t=3s post-submit.
+
+--- teardown ---
+extra worker killed: 'worker2 stopped'
+
+VERDICT: PASS — single toeic_attempt_results row + single result under two-worker race.

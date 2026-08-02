@@ -1,0 +1,22 @@
+R3-SECURITY trust-proxy test evidence
+======================================
+
+Test: "TRUST_PROXY=false ignores spoofed X-Forwarded-For / cf-connecting-ip (shared 127.0.0.1 bucket)"
+File: anish-toeic-web-services/src/tests/auth.test.ts
+
+Command:
+  DB_NAME=anish_toeic_test npx jest src/tests/auth.test.ts -t "TRUST_PROXY" --verbose
+
+Result: Test Suites: 1 passed, 1 total | Tests: 2 skipped, 1 passed, 3 total
+
+What it proves:
+  The production clientIp() rate-limit identity function (exported from
+  src/server.ts) is mounted on a fresh limiter (limit 5 / 60s) over
+  /api/auth. Five login attempts each carrying a DIFFERENT spoofed
+  X-Forwarded-For AND cf-connecting-ip header all share ONE rate-limit
+  bucket keyed on the real direct-client IP (127.0.0.1) because
+  TRUST_PROXY=false in the test env. All five return 401 (credential
+  failure, not rate-limit) and the 6th request — with yet another spoofed
+  IP — is rejected with HTTP 429, proving the spoofed headers are IGNORED.
+  If they were honored, each spoofed IP would have its own fresh bucket and
+  the 6th request would have returned 401, not 429.

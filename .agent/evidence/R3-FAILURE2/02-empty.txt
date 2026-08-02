@@ -1,0 +1,5 @@
+R3-FAILURE2 state 02 — empty / no-result catalog state
+METHOD: catalog search query 'zzzz-no-such-exam' (no match) via search form submit.
+UI PROOF: 02-empty.png
+DOM PROBE: no-result text 'Không tìm thấy đề thi nào phù hợp.' visible=1 ; 'Xóa bộ lọc' reset button visible=1
+VERDICT: PASS

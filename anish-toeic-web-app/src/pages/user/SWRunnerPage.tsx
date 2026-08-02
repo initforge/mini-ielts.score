@@ -1,287 +1,242 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Button, Layout, Typography, Space, Progress, message, Input } from 'antd';
-import { AudioOutlined, SoundOutlined, ArrowLeftOutlined, ArrowRightOutlined, CloseOutlined } from '@ant-design/icons';
-
-// Simple debounce
-function debounce<A extends unknown[]>(func: (...args: A) => void, wait: number) {
-  let timeout: ReturnType<typeof setTimeout> | undefined;
-  return (...args: A) => {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
-
-const { Header, Content } = Layout;
-const { Title, Text, Paragraph } = Typography;
-const { TextArea } = Input;
-
-// Mock data
-const QUESTIONS = [
-  { id: 's1', type: 'speaking', title: 'Questions 1 - 2: Read a text aloud', prepTime: 45, recordTime: 45, content: 'In this part of the test, you will read aloud the text on the screen.' },
-  { id: 's2', type: 'speaking', title: 'Question 3 — Describe a Picture', prepTime: 45, recordTime: 45, image: 'https://placehold.co/400x300', content: 'Describe the picture on your screen in as much detail as you can.' },
-  { id: 'w1', type: 'writing', title: 'Questions 1–5: Write a sentence based on a picture', content: 'Write ONE sentence based on the picture using the TWO words or phrases provided.' },
-  { id: 'w2', type: 'writing', title: 'Question 8: Write an opinion essay', content: 'Write an essay in response to a specific opinion or issue.' },
-];
+/**
+ * SWRunnerPage — real S&W runner wired to the full-feature sw module:
+ * swStore (attempt lifecycle, mic, prep/record timers, presigned upload +
+ * retry, writing autosave with clientRevision), MicrophoneSetup, SpeakingView
+ * and WritingView (Quill + DOMPurify + word count + autosave/restore).
+ *
+ * Covers AC14 (mic + speaking timers/recording), AC15 (bounded upload
+ * lifecycle, presign, no base64) and AC16 (writing sanitize/count/restore).
+ */
+import { useEffect, useCallback } from 'react';
+import { useParams, useNavigate, Link } from 'react-router';
+import {
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Loader2,
+  AlertTriangle,
+  Send,
+} from 'lucide-react';
+import { useSWStore } from '../../modules/mock-exam/runner/sw/swStore';
+import { MicrophoneSetup } from '../../modules/mock-exam/runner/sw/MicrophoneSetup';
+import { SpeakingView } from '../../modules/mock-exam/runner/sw/SpeakingView';
+import { WritingView } from '../../modules/mock-exam/runner/sw/WritingView';
 
 export default function SWRunnerPage() {
-  const { attemptId } = useParams();
+  const { attemptId } = useParams<{ attemptId: string }>();
   const navigate = useNavigate();
-  
-  const [phase, setPhase] = useState<'mic_check' | 'speaking_dir' | 'speaking' | 'writing_dir' | 'writing'>('mic_check');
-  const [questionIndex, setQuestionIndex] = useState(0);
-  
-  const [speakingState, setSpeakingState] = useState<'prep' | 'recording'>('prep');
-  const [timeLeft, setTimeLeft] = useState(0);
-  
-  const [micGranted, setMicGranted] = useState(false);
-  const [micTesting, setMicTesting] = useState(false);
-  
-  const [responses, setResponses] = useState<Record<string, string>>({});
 
-  const currentQ = QUESTIONS[questionIndex];
+  const questions = useSWStore((s) => s.questions);
+  const phase = useSWStore((s) => s.phase);
+  const loading = useSWStore((s) => s.loading);
+  const error = useSWStore((s) => s.error);
+  const submitting = useSWStore((s) => s.submitting);
+  const submitted = useSWStore((s) => s.submitted);
+  const currentQuestionIndex = useSWStore((s) => s.currentQuestionIndex);
+  const loadAttempt = useSWStore((s) => s.loadAttempt);
+  const nextQuestion = useSWStore((s) => s.nextQuestion);
+  const prevQuestion = useSWStore((s) => s.prevQuestion);
+  const setPhase = useSWStore((s) => s.setPhase);
+  const submit = useSWStore((s) => s.submit);
+  const reset = useSWStore((s) => s.reset);
 
-  const handleSubmit = useCallback(async () => {
-    try {
-      if (attemptId) {
-        await fetch(`/api/toeic-attempts/${attemptId}/submit`, {
-          method: 'POST',
-        });
-      }
-      navigate(`/thi-thu/dang-xu-ly/${attemptId || 'demo'}`);
-    } catch (err) {
-      message.error('Failed to submit');
+  // Load attempt once.
+  useEffect(() => {
+    if (attemptId) void loadAttempt(attemptId);
+  }, [attemptId, loadAttempt]);
+
+  // Flush pending autosaves when the tab is hidden/closed; reset store on exit.
+  useEffect(() => {
+    const flush = () => {
+      void useSWStore.getState().flushAllAutosaves();
+    };
+    window.addEventListener('pagehide', flush);
+    window.addEventListener('beforeunload', flush);
+    return () => {
+      window.removeEventListener('pagehide', flush);
+      window.removeEventListener('beforeunload', flush);
+      reset();
+    };
+  }, [reset]);
+
+  // Submission done → processing page (AC6).
+  useEffect(() => {
+    if (submitted && attemptId) {
+      navigate(`/thi-thu/dang-xu-ly/${attemptId}`, { replace: true });
     }
-  }, [attemptId, navigate]);
+  }, [submitted, attemptId, navigate]);
+
+  const current = questions[currentQuestionIndex];
+  const isLast = currentQuestionIndex === questions.length - 1;
+  const isFirst = currentQuestionIndex === 0;
 
   const handleNext = useCallback(() => {
-    if (phase === 'mic_check') setPhase('speaking_dir');
-    else if (phase === 'speaking_dir') {
-      setPhase('speaking');
-      setQuestionIndex(0);
-      setSpeakingState('prep');
-      setTimeLeft(QUESTIONS[0].prepTime || 45);
-    }
-    else if (phase === 'speaking') {
-      const nextIndex = questionIndex + 1;
-      if (nextIndex < QUESTIONS.length && QUESTIONS[nextIndex].type === 'speaking') {
-        setQuestionIndex(nextIndex);
-        setSpeakingState('prep');
-        setTimeLeft(QUESTIONS[nextIndex].prepTime || 45);
-      } else {
-        setPhase('writing_dir');
-      }
-    }
-    else if (phase === 'writing_dir') {
-      setPhase('writing');
-      const firstW = QUESTIONS.findIndex(q => q.type === 'writing');
-      setQuestionIndex(firstW);
-    }
-    else if (phase === 'writing') {
-      const nextIndex = questionIndex + 1;
-      if (nextIndex < QUESTIONS.length) {
-        setQuestionIndex(nextIndex);
-      } else {
-        handleSubmit();
-      }
-    }
-  }, [phase, questionIndex, handleSubmit]);
+    nextQuestion();
+  }, [nextQuestion]);
 
-  useEffect(() => {
-    let timer: ReturnType<typeof setInterval> | undefined;
-    if ((phase === 'speaking' || phase === 'mic_check') && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-    } else if (phase === 'speaking' && timeLeft === 0) {
-      if (speakingState === 'prep') {
-        setSpeakingState('recording');
-        setTimeLeft(QUESTIONS[questionIndex].recordTime || 45);
-      } else {
-        handleNext();
-      }
-    }
-    return () => clearInterval(timer);
-  }, [timeLeft, phase, speakingState, questionIndex, handleNext]);
+  const handlePrev = useCallback(() => {
+    prevQuestion();
+  }, [prevQuestion]);
 
-  const requestMic = async () => {
+  const handleSubmit = useCallback(async () => {
+    if (submitting || submitted) return;
     try {
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-      setMicGranted(true);
-    } catch (err) {
-      message.error('Microphone access denied. Please allow it to continue.');
+      // Ensure no dirty writing text is left behind.
+      await useSWStore.getState().flushAllAutosaves();
+      await submit();
+    } catch {
+      // error surfaced via store.error; keep user on the runner to retry.
     }
-  };
+  }, [submit, submitting, submitted]);
 
-  const startMicTest = () => {
-    setMicTesting(true);
-    setTimeLeft(5); // 5 sec test
-    setTimeout(() => {
-      setMicTesting(false);
-      message.success('Microphone test completed!');
-    }, 5000);
-  };
+  // ── loading / error ────────────────────────────────────────────────
 
-  const handlePrev = () => {
-    if (questionIndex > 0) {
-      setQuestionIndex(questionIndex - 1);
-    }
-  };
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-50">
+        <div className="flex items-center gap-3 text-slate-600">
+          <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+          <span className="font-medium">Đang tải bài thi...</span>
+        </div>
+      </div>
+    );
+  }
 
-  // Debounced autosave
-  const debouncedSave = useRef(
-    debounce(async (qId: string, val: string) => {
-      if (!attemptId) return;
-      try {
-        await fetch(`/api/toeic-attempts/${attemptId}/responses/${qId}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ value: val }),
-        });
-      } catch (err) {
-        console.error('Autosave failed', err);
-      }
-    }, 1000)
-  ).current;
+  if (error) {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center bg-gray-50 gap-4 p-6 text-center">
+        <AlertTriangle className="w-12 h-12 text-red-500" />
+        <p className="text-slate-700 font-medium">Không thể tải bài thi.</p>
+        <p className="text-slate-500 text-sm max-w-md">{error}</p>
+        <div className="flex gap-3">
+          <button
+            onClick={() => attemptId && void loadAttempt(attemptId)}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700"
+          >
+            Thử lại
+          </button>
+          <Link
+            to="/thi-thu"
+            className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-100"
+          >
+            Về danh sách đề
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
-  const handleWritingChange = (val: string) => {
-    setResponses(prev => ({ ...prev, [currentQ.id]: val }));
-    debouncedSave(currentQ.id, val);
-  };
-
-  const formatTime = (sec: number) => {
-    const m = Math.floor(sec / 60).toString().padStart(2, '0');
-    const s = (sec % 60).toString().padStart(2, '0');
-    return `00:${m}:${s}`;
-  };
+  const skillLabel = current?.skill === 'speaking' ? 'SPEAKING' : 'WRITING';
+  const isWritingPhase = phase === 'writing';
 
   return (
-    <Layout className="min-h-screen bg-gray-50">
-      <Header className="bg-white border-b px-4 flex items-center justify-between h-14 shadow-sm">
-        <Space>
-          <Link to="/exams" className="text-blue-600 hover:underline">Danh sách đề</Link>
-          <Text className="text-gray-400">|</Text>
-          <Text strong>XoáMùTOEIC</Text>
-        </Space>
-        
-        {phase === 'speaking' || phase === 'writing' ? (
-          <Space size="large">
-            <Text className="font-semibold">{phase === 'speaking' ? 'SPEAKING' : 'WRITING'}</Text>
-            <Text className="text-gray-500">Question {questionIndex + 1} of {QUESTIONS.length}</Text>
-          </Space>
-        ) : null}
+    <div className="h-screen flex flex-col bg-slate-50 overflow-hidden font-sans">
+      {/* TOP BAR */}
+      <header
+        className="h-[60px] px-4 flex items-center justify-between shrink-0 shadow-md relative z-10"
+        style={{
+          background:
+            'linear-gradient(90deg, rgb(29, 78, 216) 0%, rgb(37, 99, 235) 50%, rgb(59, 130, 246) 100%)',
+        }}
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <Link
+            to="/thi-thu"
+            className="text-white/90 hover:text-white text-sm font-medium flex items-center gap-1 shrink-0"
+          >
+            <ArrowLeft className="w-4 h-4" /> Danh sách đề
+          </Link>
+          <span className="hidden sm:block text-white/90 text-sm font-semibold truncate ml-2">
+            Speaking &amp; Writing
+          </span>
+        </div>
 
-        <Space size="middle">
-          <Button icon={<SoundOutlined />} />
-          <Button icon={<ArrowLeftOutlined />} onClick={handlePrev} disabled={questionIndex === 0} />
-          <Button icon={<ArrowRightOutlined />} type="primary" onClick={handleNext}>Next</Button>
-          <Button icon={<CloseOutlined />} danger onClick={() => navigate('/thi-thu')} />
-        </Space>
-      </Header>
+        <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex flex-col items-center leading-none">
+          <span className="text-white font-bold text-[13px]">{skillLabel}</span>
+          {current && (
+            <span className="text-white/80 text-[10px]">
+              Question {current.questionNumber} of {questions.length}
+            </span>
+          )}
+        </div>
 
-      <Content className="flex flex-col items-center p-8">
-        {phase === 'mic_check' && (
-          <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow text-center">
-            <Title level={2}>Microphone Setup</Title>
-            <Paragraph className="mb-8">
-              Before starting the Speaking test, we need to check your microphone.
-            </Paragraph>
-            {!micGranted ? (
-              <Button type="primary" size="large" onClick={requestMic} icon={<AudioOutlined />}>
-                Allow Microphone Access
-              </Button>
-            ) : (
-              <Space direction="vertical" size="large" className="w-full">
-                <Text type="success" className="text-lg">Microphone access granted!</Text>
-                <Button loading={micTesting} onClick={startMicTest} size="large">
-                  {micTesting ? `Recording... (${timeLeft}s)` : 'Test Microphone'}
-                </Button>
-                {timeLeft === 0 && !micTesting && (
-                  <Button type="primary" size="large" onClick={handleNext}>Continue to Test</Button>
-                )}
-              </Space>
-            )}
-          </div>
-        )}
+        <button
+          onClick={handleSubmit}
+          disabled={submitting || submitted}
+          className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl px-5 py-2 font-bold transition-colors shadow-sm disabled:opacity-60"
+        >
+          {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+          {submitting ? 'Đang nộp...' : 'NỘP BÀI'}
+        </button>
+      </header>
 
-        {phase === 'speaking_dir' && (
-          <div className="w-full max-w-3xl bg-white p-10 rounded-lg shadow">
-            <Title level={1} className="text-center mb-8">DIRECTIONS</Title>
-            <Title level={2}>Questions 1 - 2: Read a text aloud</Title>
-            <Paragraph className="text-lg leading-relaxed mt-4">
-              In this part of the test, you will read aloud the text on the screen. 
-              You will have 45 seconds to prepare. Then you will have 45 seconds to read the text aloud.
-            </Paragraph>
-            <div className="text-center mt-12">
-              <Button type="primary" size="large" onClick={handleNext}>BẮT ĐẦU</Button>
-            </div>
-          </div>
-        )}
+      {/* MAIN CONTENT */}
+      <main className="flex-1 overflow-y-auto">
+        <div className="min-h-full flex items-start justify-center py-8 px-4">
+          {phase === 'mic_check' && <MicrophoneSetup />}
 
-        {phase === 'speaking' && (
-          <div className="w-full max-w-3xl bg-white p-8 rounded-lg shadow flex flex-col items-center">
-            {currentQ.image && (
-              <img src={currentQ.image} alt="Question prompt" className="max-w-full h-64 object-contain mb-6" />
-            )}
-            <Title level={4}>{currentQ.title}</Title>
-            <Paragraph className="text-lg text-center my-6">{currentQ.content}</Paragraph>
-
-            <div className="mt-8 p-6 bg-gray-50 rounded-lg w-full max-w-md text-center border">
-              <Title level={3} className={speakingState === 'recording' ? 'text-red-500' : 'text-blue-500'}>
-                {speakingState === 'prep' ? 'PREPARATION TIME' : 'RECORDING TIME'}
-              </Title>
-              <div className="text-4xl font-mono mt-4 font-bold">{formatTime(timeLeft)}</div>
-              <Progress 
-                percent={(timeLeft / (currentQ.recordTime || 45)) * 100} 
-                showInfo={false} 
-                status={speakingState === 'recording' ? 'exception' : 'active'}
-                className="mt-4"
-              />
-            </div>
-          </div>
-        )}
-
-        {phase === 'writing_dir' && (
-          <div className="w-full max-w-3xl bg-white p-10 rounded-lg shadow">
-            <Title level={1} className="text-center mb-8">WRITING TEST DIRECTIONS</Title>
-            <Paragraph className="text-lg leading-relaxed mt-4">
-              This is the TOEIC Writing Test. This test includes eight questions that measure different aspects of your writing ability. The test lasts approximately one hour.
-            </Paragraph>
-            <div className="text-center mt-12">
-              <Button type="primary" size="large" onClick={handleNext}>BẮT ĐẦU WRITING</Button>
-            </div>
-          </div>
-        )}
-
-        {phase === 'writing' && (
-          <div className="w-full max-w-4xl flex gap-6">
-            <div className="flex-1 bg-white p-6 rounded-lg shadow">
-              <Title level={4}>{currentQ.title}</Title>
-              <Paragraph className="text-lg my-4">{currentQ.content}</Paragraph>
-              {currentQ.image && (
-                <img src={currentQ.image} alt="Question prompt" className="max-w-full h-48 object-contain my-4" />
-              )}
-            </div>
-            <div className="flex-1 bg-white p-6 rounded-lg shadow flex flex-col">
-              <Title level={5} className="mb-4">Your Response:</Title>
-              <TextArea
-                rows={12}
-                value={responses[currentQ.id] || ''}
-                onChange={e => handleWritingChange(e.target.value)}
-                className="flex-1 text-lg"
-                placeholder="Type your answer here..."
-              />
-              <div className="text-right mt-2 text-gray-500">
-                Word count: {(responses[currentQ.id] || '').split(/\s+/).filter(Boolean).length}
+          {phase === 'directions' && (
+            <div className="w-full max-w-3xl bg-white p-10 rounded-2xl shadow-sm border border-slate-200 text-center">
+              <Clock className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+              <h1 className="text-3xl font-bold text-slate-900 mb-4">DIRECTIONS</h1>
+              <p className="text-lg text-slate-700 leading-relaxed">
+                Bài thi Speaking &amp; Writing gồm các câu hỏi Speaking (ghi âm câu trả lời)
+                và Writing (soạn câu trả lời). Bạn sẽ có thời gian chuẩn bị và ghi âm cho
+                từng câu Speaking, và câu trả lời Writing được tự động lưu khi bạn gõ.
+              </p>
+              <div className="text-center mt-10">
+                <button
+                  onClick={() => setPhase('speaking_prep')}
+                  className="px-8 py-3 bg-green-600 text-white rounded-xl font-bold text-lg hover:bg-green-700 transition-colors"
+                >
+                  BẮT ĐẦU
+                </button>
               </div>
             </div>
-          </div>
-        )}
-      </Content>
-    </Layout>
+          )}
+
+          {current && phase !== 'writing' && phase !== 'mic_check' && phase !== 'directions' && (
+            <SpeakingView key={current.id} question={current} />
+          )}
+
+          {phase === 'writing' && current && (
+            <WritingView key={current.id} question={current} />
+          )}
+        </div>
+      </main>
+
+      {/* BOTTOM BAR */}
+      <footer
+        className="h-[60px] flex items-center justify-between shrink-0 px-4 relative z-20"
+        style={{ background: 'linear-gradient(90deg, rgb(30, 64, 175) 0%, rgb(30, 58, 138) 100%)' }}
+      >
+        <button
+          onClick={handlePrev}
+          disabled={isFirst || submitting}
+          className="flex items-center gap-1 text-slate-700 bg-white hover:bg-slate-50 px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm disabled:opacity-50"
+        >
+          <ChevronLeft className="w-5 h-5" /> Câu trước
+        </button>
+
+        <div className="text-white/80 text-sm font-medium">
+          {current && !isWritingPhase ? (
+            <span>
+              {current.questionNumber}/{questions.length}
+            </span>
+          ) : (
+            <span className="hidden sm:inline">Tự động lưu mọi thay đổi</span>
+          )}
+        </div>
+
+        <button
+          onClick={handleNext}
+          disabled={isLast || submitting}
+          className="flex items-center gap-1 text-white bg-orange-500 hover:bg-orange-600 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm disabled:opacity-50"
+        >
+          Câu tiếp <ChevronRight className="w-5 h-5" />
+        </button>
+      </footer>
+    </div>
   );
 }

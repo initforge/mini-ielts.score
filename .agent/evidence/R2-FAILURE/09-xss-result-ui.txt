@@ -1,0 +1,39 @@
+[STATE 9 UI] result 180
+--- dialogs (must be empty) ---
+--- visible text ---
+Lịch sử luyện tập
+ANISH
+TOEIC
+GIỎI TOEIC, SÁNG TƯƠNG LAI
+SPEAKING AND WRITING
+AI GRADING RESULT
+SPEAKING
+0
+Your score
+0
+200
+WRITING
+0
+Your score
+0
+200
+TOTAL SCORE
+400
+/ 400
+FINAL
+✨
+Bắt đầu hành trình!
+Ai cũng từng bắt đầu từ con số nhỏ. Hãy quay lại làm bài này sau 1 tuần luyện tập — bạn sẽ bất ngờ!
+Bảng kết quả
+Xem lại chi tiết
+Xem lại bài thi
+Lịch sử luyện tập
+--- console ---
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+--- network ---
+200 /api/toeic-attempts/180/result
+200 /api/toeic-exams?page=1&pageSize=100
+200 /api/toeic-attempts/180
+200 /api/toeic-attempts/180/review

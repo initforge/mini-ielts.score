@@ -1,0 +1,21 @@
+R2-FE / INJ-003 — Task 4: MOBILE TIMER PILL
+=============================================
+Date: 2026-08-01
+
+File: anish-toeic-web-app/src/modules/mock-exam/pages/MockExamRunnerPage.tsx
+
+Problem: center timer pill was absolutely positioned
+  (absolute left-1/2 -translate-x-1/2) inside the header and overlapped the
+  header action buttons on small screens.
+
+Fix: the pill container is now hidden below the md breakpoint:
+  class changed from "absolute left-1/2 transform -translate-x-1/2 flex items-center gap-3 pointer-events-none z-[1]"
+  to       "absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center gap-3 pointer-events-none z-[1]"
+
+The md:flex restores it on >=768px screens. Below md the timer is not shown;
+countdown still runs and expiry auto-submit is unaffected (deadline/tick live
+in the zustand store, not the DOM).
+
+Browser verification at 375x812 (verify.js, attempt route stubbed):
+  MOBILE_PILL: pillFound=true, pillVisible=false, absContainerHiddenClass=true
+  -> mobile-timer-375.png  PASS

@@ -325,7 +325,7 @@ describe('GradingService — Durable Lifecycle (S6-BE)', () => {
   // 6. Stale PROCESSING recovery
   // -----------------------------------------------------------------------
 
-  it('should recover stale PROCESSING jobs (picks up existing retry_count)', async () => {
+  it('should recover stale PROCESSING jobs (transition to RETRY)', async () => {
     // Job is PROCESSING but stale (updated more than 10 min ago)
     const staleDate = new Date(Date.now() - 11 * 60 * 1000);
     mockConnection.query.mockResolvedValueOnce([
@@ -340,39 +340,22 @@ describe('GradingService — Durable Lifecycle (S6-BE)', () => {
         },
       ],
     ]);
-    // Update job → PROCESSING with preserved retry_count
+    // Transition stale job to RETRY
     mockConnection.query.mockResolvedValueOnce([{ affectedRows: 1 }]);
-    mockConnection.query.mockResolvedValueOnce([{ affectedRows: 1 }]);
+    // Commit after RETRY transition
     mockConnection.commit.mockResolvedValue(undefined);
-
-    (pool.query as jest.Mock).mockResolvedValueOnce([
-      [{ id: 10, exam_id: 100, skill_type: 'SW', status: 'GRADING' }],
-    ]);
-    (pool.query as jest.Mock).mockResolvedValueOnce([
-      [{ question_id: 5, text_response: 'Test', s3_key: null }],
-    ]);
-
-    mockAiGrade.mockResolvedValueOnce({
-      status: 'COMPLETED',
-      questionScores: [{ questionId: 5, score: 3, isCorrect: true, aiConfidence: 0.9 }],
-      aggregateScores: { speakingScore: 150, writingScore: 150, totalScore: 300 },
-      workerTraceId: 'trace-stale',
-    });
-
-    (pool.query as jest.Mock).mockResolvedValueOnce([{ affectedRows: 1 }]);
-    (pool.query as jest.Mock).mockResolvedValueOnce([{ affectedRows: 1 }]);
-    (pool.query as jest.Mock).mockResolvedValueOnce([{ affectedRows: 1 }]);
-    (pool.query as jest.Mock).mockResolvedValueOnce([{ affectedRows: 1 }]);
 
     const result = await GradingService.processJob(1);
 
     expect(result.success).toBe(true);
-    expect(result.message).toBe('Grading completed');
+    expect(result.message).toBe('Stale job recovered — will retry');
 
-    // Idempotency key should be grad-10-v1 (preserved retry_count = 1)
-    expect(mockAiGrade).toHaveBeenCalledTimes(1);
-    const aiCall = mockAiGrade.mock.calls[0][0];
-    expect(aiCall.idempotencyKey).toBe('grading-10-v1');
+    // Verify RETRY was set
+    const retryCall = mockConnection.query.mock.calls.find(
+      (c) => typeof c[0] === 'string' && c[0].includes("status = 'RETRY'")
+    );
+    expect(retryCall).toBeDefined();
+    expect(retryCall![1][0]).toBe(1); // jobId
   });
 
   it('should skip actively processing jobs (updated recently)', async () => {
@@ -478,6 +461,8 @@ describe('GradingService — Durable Lifecycle (S6-BE)', () => {
     // No responses
     (pool.query as jest.Mock).mockResolvedValueOnce([[]]);
 
+    // persistAttemptResult (zero scores, FINAL)
+    (pool.query as jest.Mock).mockResolvedValueOnce([{ affectedRows: 1 }]);
     // finalizeCompleted
     (pool.query as jest.Mock).mockResolvedValueOnce([{ affectedRows: 1 }]);
     (pool.query as jest.Mock).mockResolvedValueOnce([{ affectedRows: 1 }]);
@@ -488,6 +473,30 @@ describe('GradingService — Durable Lifecycle (S6-BE)', () => {
     expect(result.message).toContain('No responses');
     // AI adapter should NOT have been called
     expect(mockAiGrade).not.toHaveBeenCalled();
+
+    // Regression (INJ-003 BUG 2): a results row must still be inserted so
+    // GET /toeic-attempts/:id/result returns 200, not 404 forever.
+    const resultInsert = (pool.query as jest.Mock).mock.calls.find(
+      (c: unknown[]) =>
+        typeof c[0] === 'string' &&
+        c[0].includes('INSERT INTO toeic_attempt_results') &&
+        c[0].includes('ON DUPLICATE KEY UPDATE')
+    );
+    expect(resultInsert).toBeDefined();
+    const [, params] = resultInsert as [string, unknown[]];
+    expect(params[0]).toBe(10); // attempt_id
+    expect(params[1]).toBe(0); // listening_score
+    expect(params[2]).toBe(0); // reading_score
+    expect(params[3]).toBe(0); // total_score
+    expect(params[4]).toBe('FINAL'); // result status
+
+    // Attempt must end COMPLETED
+    const attemptFinalize = (pool.query as jest.Mock).mock.calls.find(
+      (c: unknown[]) =>
+        typeof c[0] === 'string' &&
+        c[0].includes("toeic_attempts SET status = 'COMPLETED'")
+    );
+    expect(attemptFinalize).toBeDefined();
   });
 
   // -----------------------------------------------------------------------

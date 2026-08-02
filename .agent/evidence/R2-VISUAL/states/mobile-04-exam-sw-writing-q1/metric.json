@@ -1,0 +1,16 @@
+{
+  "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/mobile/04-exam-sw-writing-q1.png",
+  "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/mobile04-exam-sw-writing-q1.png",
+  "rmse": 107.796529,
+  "diffPixelsPct": 72.9661,
+  "dims": {
+    "equal": false,
+    "reference": "390x986",
+    "actual": "375x812"
+  },
+  "outputs": {
+    "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-04-exam-sw-writing-q1/overlay.png",
+    "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-04-exam-sw-writing-q1/diff.png",
+    "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-04-exam-sw-writing-q1/metric.json"
+  }
+}

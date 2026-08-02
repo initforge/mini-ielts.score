@@ -1,227 +1,129 @@
-# Nginx / PM2 Infrastructure Validation
+# Nginx / PM2 Infrastructure Validation — S7 verified
 
-> Version: 2.0.0 — updated for S7 infra gap closure (anish-toeic-web-services :7000 + anish frontend static).
-> Target suites: `ecosystem.config.cjs`, `nginx/nginx.conf`, `anish-toeic-web-services/dist/server.js`.
+> Version: 3.0.0 — refreshed at S7 (Integration / VPS readiness) with the VERIFIED final
+> configs. Evidence: `.agent/evidence/S7/infra-20260731/{nginx,pm2,env,cloudflare-edge,build}.txt`.
+> Target suites: `ecosystem.config.cjs`, `nginx/nginx.conf`, `nginx/audio-config.conf`.
 
-## 1. Architecture Map
+## 1. Architecture Map (verified at S7)
 
 ```
 Browser (HTTPS)
   │
   ▼
+Cloudflare edge (DNS proxy / CDN / TLS)      ← DEC-002: Cloudflare is DNS/CDN/TLS, NOT Workers
+  │ origin HTTPS 443 (full-strict)
+  ▼
 Nginx :443 (nginx/nginx.conf)
-  ├─ /api/*      → upstream node_backend → 127.0.0.1:7000
-  ├─ /assets/*   → alias /var/www/mini-ielts-score/anish-toeic-web-app/dist/assets/
-  ├─ /audio/speaking/* → alias /var/www/mini-ielts-score/public/audio/speaking/
-  ├─ /health     → proxy_pass http://node_backend
-  └─ /*          → root /var/www/mini-ielts-score/anish-toeic-web-app/dist (SPA)
+  ├─ /api/      → upstream node_backend → 127.0.0.1:7000   (Express, PM2 fork)
+  ├─ /assets/*  → alias …/anish-toeic-web-app/dist/assets/ (immutable, 1y)
+  ├─ /health    → rewrite → /api/health → node_backend
+  └─ /*         → SPA root …/dist; index.html no-cache (nested location)
 
-PM2 (ecosystem.config.cjs)
-  └─ anish-toeic-web-services → node anish-toeic-web-services/dist/server.js :7000
+PM2 (ecosystem.config.cjs) — 2 apps
+  ├─ anish-toeic-web-services → node anish-toeic-web-services/dist/server.js  :7000
+  └─ toeic-grading-worker     → node anish-toeic-web-services/dist/workers/grading.worker.js
 
-Vite Dev Proxies (development only)
-  ├─ root  vite.config.ts      → /api → localhost:4000 (server/dev-server.ts)
-  └─ app   vite.config.ts      → /api → 127.0.0.1:7000 (anish-toeic-web-services)
+Dev proxies (development only)
+  └─ anish-toeic-web-app/vite.config.ts → /api → 127.0.0.1:7000
 ```
 
-## 2. Production Validation Procedure
+## 2. Verified Nginx Config (nginx/nginx.conf — S7 edits)
 
-### 2.1 PM2 Status
+S7 fixed the following gaps (in place, NOT deployed):
 
-```bash
-pm2 status
-pm2 logs anish-toeic-web-services --lines 20
-pm2 monit
-```
+| Gap (pre-S7) | S7 fix |
+|---|---|
+| Security headers only on `location /` (missing on /api /assets /health) | Headers moved to server level: `X-Frame-Options SAMEORIGIN`, `X-Content-Type-Options nosniff`, `X-XSS-Protection`, + added `Strict-Transport-Security`, `Referrer-Policy` |
+| `proxy_set_header Connection 'upgrade'` always → upstream keepalive inert | `map $http_upgrade $connection_upgrade` — real WebSocket upgrade only |
+| `server_tokens` version banner exposed | `server_tokens off` |
+| Bare `GET /api` fell into SPA fallback (200 index.html) | `location = /api { return 308 /api/; }` |
+| gzip_types missed `image/svg+xml`, `application/wasm` | Extended |
+| audio-config.conf regex `location ~` shadowed the serving prefix block | OPTIONS handled inside the prefix location (fragment is now legacy/optional) |
 
-**Expected:**
-- Process `anish-toeic-web-services` is `online`, `exec_mode: fork`, `status` green.
-- Logs show `Server running on port 7000`.
-- Memory < 512 MB (restart threshold set in ecosystem).
+Final block-by-block rationale is in `nginx.txt` (evidence). Key invariants:
+- `proxy_pass http://node_backend` in `location /api/` has NO URI part → /api prefix preserved.
+- `client_max_body_size 50M` at server level — audio uploads are presigned PUT to S3;
+  50M is headroom for any future direct uploads.
+- `/assets/*` → `Cache-Control: public, immutable` + `expires 1y` (Vite hashes filenames).
+- `/index.html` (nested in `location /`) → `no-cache, no-store, must-revalidate` (fresh deploys).
+- API timeouts: connect 60s, send/read 300s (grading/submission can exceed 2 minutes).
+- HTTP:80 block → 301 HTTPS (fallback; Cloudflare edge also enforces HTTPS).
+- `nginx -t` not runnable on this dev box (nginx is VPS-only) — config validated
+  structurally; always run `nginx -t && systemctl reload nginx` on the VPS.
 
-### 2.2 PM2 Config Audit
+## 3. Verified PM2 Config (ecosystem.config.cjs)
 
-| Property | Expected Value | Source |
+`pm2` CLI is VPS-only; validated via `node require()` + on-disk checks (see `pm2.txt`):
+
+| Property | app[0] anish-toeic-web-services | app[1] toeic-grading-worker |
 |---|---|---|
-| `name` | `anish-toeic-web-services` | `ecosystem.config.cjs` |
-| `script` | `node` | `ecosystem.config.cjs` |
-| `args` | `anish-toeic-web-services/dist/server.js` | `ecosystem.config.cjs` |
-| `instances` | `1` | `ecosystem.config.cjs` |
-| `exec_mode` | `fork` | `ecosystem.config.cjs` |
-| `PORT` | `7000` | `ecosystem.config.cjs` |
-| `max_memory_restart` | `512M` | `ecosystem.config.cjs` |
+| script/args | `node` `anish-toeic-web-services/dist/server.js` | `node` `anish-toeic-web-services/dist/workers/grading.worker.js` |
+| instances / exec_mode | 1 / fork | 1 / fork |
+| PORT / NODE_ENV | `7000` / `production` | — / `production` |
+| env | DB_*, JWT_SECRET/EXPIRES_IN, CORS_ORIGIN, CLOUDFLARE_AI_*, AWS_*+S3_BUCKET | DB_*, REDIS_URL, CLOUDFLARE_AI_* |
+| autorestart / max_memory_restart | true / `512M` | true / `512M` |
+| logs | `./logs/err.log` / `out.log` | `./logs/worker-err.log` / `worker-out.log` |
 
-Check that the PM2 process is actually using the configured script:
+- Secret env values are EMPTY in the config (deploy-time fill — F-16 verified again). No secret material.
+- `PORT: 7000` is declared as a number; PM2 stringifies it into `process.env.PORT` at runtime.
+- Worker additionally requires `REDIS_URL`; the web-service app does not need Redis directly.
+- Live env cross-check (dev box): grading worker runs with `DB_PORT=13306`, `AI_GRADING_TEST_MODE=true`;
+  production config ships `DB_PORT=3306` and NO `AI_GRADING_TEST_MODE` (real Cloudflare AI in prod).
 
-```bash
-pm2 show anish-toeic-web-services | grep -E 'script|args|exec mode|status'
-```
+## 4. Production Builds (verified — see `build.txt`)
 
-### 2.3 Nginx Syntax & Reload
-
-```bash
-nginx -t && systemctl reload nginx
-```
-
-**Expected:** `syntax is ok` and `test is successful`.
-
-### 2.4 Nginx Config Audit
-
-| Directive | Expected Value | Rationale |
+| Command (from repo root) | Exit | Output |
 |---|---|---|
-| `listen` | `443 ssl http2` | TLS termination |
-| `server_name` | `webinprogress.click` + IP | Known domain |
-| `client_max_body_size` | `50M` | Large audio/image uploads |
-| `proxy_connect_timeout` | `60s` | Fast connect, long read/send |
-| `proxy_read_timeout` | `300s` | Gemini batch processing |
-| `proxy_send_timeout` | `300s` | Gemini batch processing |
-| `gzip` | `on` | Compression for text assets |
-| `X-Frame-Options` | `SAMEORIGIN` | Clickjacking protection |
-| `X-Content-Type-Options` | `nosniff` | MIME sniffing protection |
+| `cd anish-toeic-web-app && npm run build` | 0 | `dist/index.html` + `dist/assets/index-*.{js,css}` (vite 5.4.21, 4455 modules) |
+| `cd anish-toeic-web-services && npm run build` | 0 | `dist/server.js`, `dist/workers/grading.worker.js`, `dist/migrations/*.sql` |
+| `npm run typecheck` (both workspaces) | 0 | — |
+| `npm run lint` (both workspaces) | 0 | — |
 
-### 2.5 Endpoint Smoke (Production)
+Note: FE main bundle ≈ 1.8 MB (Vite chunk-size warning). Non-blocking; post-merge perf
+pass (code-splitting) is recommended.
 
-```bash
-# Health
-curl -sS https://webinprogress.click/health | jq .
-# Expected: {"status":"ok","timestamp":"..."}
+## 5. Environment Variable Table
 
-# API proxy is alive (catalog public)
-curl -sS https://webinprogress.click/api/toeic-exams | jq .
-# Expected: {"items":[],"total":0,...} or actual catalog data
-
-# Auth route not swallowed (must NOT return 401 "Missing token")
-curl -sS -X POST https://webinprogress.click/api/auth/login \
-  -H 'Content-Type: application/json' \
-  -d '{"email":"test@example.com","password":"test"}'
-# Expected: 401 "Invalid email or password" — NOT "Missing token"
-
-# SPA fallback returns index.html (HTML response, not 404)
-curl -sS -o /dev/null -w '%{http_code}' https://webinprogress.click/thi-thu
-# Expected: 200
-
-# Audio serving
-curl -sS -I https://webinprogress.click/audio/speaking/system/beep.mp3
-# Expected: 200, content-type: audio/mpeg
-
-# Asset caching headers
-curl -sS -I https://webinprogress.click/assets/index-something.js 2>/dev/null | grep -i cache
-# Expected: Cache-Control: public, immutable
-```
-
-### 2.6 CORS Verification
-
-```bash
-curl -sS -I -H 'Origin: http://localhost:5173' https://webinprogress.click/api/health
-# Expected: access-control-allow-origin: http://localhost:5173
-```
-
-## 3. Development Proxy Validation
-
-### 3.1 Root App (Port 5173 → Port 4000)
-
-```bash
-# In one terminal:
-npm run dev:api     # Starts dev-server on :4000
-
-# In another:
-npm run dev         # Starts Vite on :5173, proxies /api → :4000
-```
-
-Then test:
-```bash
-curl http://localhost:5173/api/grade-speaking
-# Expected: 405 Method Not Allowed (route exists, wrong method) — NOT 404
-```
-
-### 3.2 Web App (Port 5173 → Port 7000)
-
-```bash
-# In one terminal:
-cd anish-toeic-web-services && npm run dev  # Starts on :7000
-
-# In another:
-cd anish-toeic-web-app && npm run dev       # Vite on :5173, proxy → :7000
-```
-
-Then test:
-```bash
-curl http://localhost:5173/api/health
-# Expected: {"status":"ok","service":"anish-toeic-web-services"}
-```
-
-## 4. Route Coverage Matrix
-
-### 4.1 Nginx → Express (anish-toeic-web-services :7000)
-
-| Nginx Location | Express Route | Expected | Verified |
-|---|---|---|---|
-| `/health` | `GET /api/health` | 200 JSON | ☐ |
-| `/api/*` | All anish-toeic-web-services routes | 200/401/etc. | ☐ |
-| `/*` | Static SPA fallback | 200 HTML | ☐ |
-| `/assets/*` | Static alias | 200 + cache headers | ☐ |
-| `/audio/speaking/*` | Static alias | 200 audio/mpeg | ☐ |
-
-### 4.2 Web Services Backend (anish-toeic-web-services on :7000)
-
-| Method | Path | Auth | Status |
-|---|---|---|---|
-| GET | `/api/health` | No | 200 |
-| POST | `/api/auth/register` | No | 201 |
-| POST | `/api/auth/login` | No | 200/401 |
-| POST | `/api/auth/logout` | No | 200 |
-| GET | `/api/toeic-exams` | No | 200 |
-| GET | `/api/toeic-exams/:slug` | No | 200/404 |
-| POST | `/api/toeic-exams/:id/attempts` | Bearer | 201 |
-| GET | `/api/toeic-attempts` | Bearer | 200 |
-| GET | `/api/toeic-attempts/:id` | Bearer | 200/404 |
-| PATCH | `/api/toeic-attempts/:id/responses/:qid` | Bearer | 200/409 |
-| POST | `/api/toeic-attempts/:id/media/presign` | Bearer | 200 |
-| POST | `/api/toeic-attempts/:id/submit` | Bearer | 200 |
-| GET | `/api/toeic-attempts/:id/grading-status` | Bearer | 200/404 |
-| GET | `/api/toeic-attempts/:id/result` | Bearer | 200/404 |
-| GET | `/api/toeic-attempts/:id/review` | Bearer | 200/403/404 |
-
-## 5. Package Script Validation
-
-| Script | Workspace | Expected Outcome |
+| Var | Where required | Status |
 |---|---|---|
-| `npm run test` (root) | All | Runs Jest suites in web-services, tsc in web-app |
-| `npm run typecheck` (root) | All | tsc --noEmit passes in both |
-| `npm run build` (root) | All | tsc + vite build; dist directory populated |
-| `npm run dev` (root) | All | Both dev servers start (separate terminals) |
+| NODE_ENV, PORT | server boot (env.ts) | required |
+| DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME | server + worker | required |
+| JWT_SECRET (≥32 chars, not placeholder) | server | required |
+| JWT_EXPIRES_IN, CORS_ORIGIN | server | optional (defaults) |
+| REDIS_URL | worker queue (grading.service / grading.worker) | required for worker |
+| CLOUDFLARE_AI_WORKER_URL / TOKEN / TIMEOUT_MS | grading adapter | UNAVAILABLE-optional (absent ⇒ AI_PROVIDER_NOT_CONFIGURED) |
+| AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET | media presign | UNAVAILABLE-optional (absent ⇒ presign 503 in prod) |
+| AI_GRADING_TEST_MODE=true | deterministic grading | dev/test ONLY; NEVER true in production |
 
-```bash
-# Validate from workspace root:
-npm run test --workspace=anish-toeic-web-services 2>&1 | tail -20
-npm run typecheck --workspace=anish-toeic-web-app 2>&1
-```
+`.env.example` trio (root `env.example`, root `env.production.example`,
+`anish-toeic-web-services/.env.example`) is complete after S7 edits. No FE runtime
+env vars (FE has zero `import.meta.env` references). `.env*` (except `.env.example`)
+is gitignored — secrets are never committed.
 
-## 6. Known Imbalances (Post-S7)
+## 6. Docker Compose Dev Infrastructure (scripts/integration/docker-compose.yml)
 
-| Issue | Detail | Mitigation |
+Dev-only, matches the live environment used by all slice evidence:
+- `anish-toeic-mysql` mysql:8.4 → `127.0.0.1:13306` (db `toeic`, user `toeic` / dev pw)
+- `anish-toeic-redis` redis:7 → `127.0.0.1:16379`
+- Bring up: `docker compose -f scripts/integration/docker-compose.yml up -d`
+- NOT for production (dev password, localhost binds).
+
+## 7. Route Coverage (Nginx → Express :7000)
+
+| Nginx location | Express route | Status (S7 live smoke via dev proxy) |
 |---|---|---|
-| ~~**PM2 runs old SW lab server only**~~ | ~~`ecosystem.config.cjs` runs `server/index.ts:3000`~~ | **RESOLVED in S7:** PM2 now runs `anish-toeic-web-services` on `:7000` with the compiled `dist/server.js`. |
-| **Dual Vite proxies** | Root vite config proxies to `:4000` while web-app proxies to `:7000`. This is intentional — they serve different features. | No action required; both proxies are validated by proxy-smoke.test.ts. |
-| **Nginx timeouts at 300s** | Set for Gemini batch transcription; Vercel plan limits may differ. | VPS path is preferred for long-running grading. |
-| **Health check path mismatch** | Nginx proxies `/health` but Express serves on `/api/health`. The old `server/index.ts` had `GET /health`; the new web-services uses `GET /api/health`. | Nginx should proxy `/health` -> rewrite or web-services should add a bare `/health` alias. Currently the nginx health check will 404. **Action:** add `GET /health` redirect to web-services or update nginx location to `/api/health`. |
+| `/api/` → node_backend | all `/api/*` (catalog, auth, attempts, media, result, review) | verified (journeys passed through `/api` proxy) |
+| `/health` → rewrite → `/api/health` | `GET /api/health` | verified (`{"status":"ok",…}` on :7000 and via :5173 proxy) |
+| `/` SPA fallback | — | verified (browser journeys) |
+| `/assets/*` alias | — | config-only (no live nginx) |
 
-## 7. Quick Validation Script
+## 8. Known Imbalances / Gaps (S7 close)
 
-Save and run this one-liner to verify the core VPS topology:
-
-```bash
-#!/bin/bash
-set -e
-echo "=== PM2 ==="
-pm2 status 2>/dev/null || echo "PM2 not running (expected on dev machine)"
-echo "=== Nginx config test ==="
-nginx -t 2>/dev/null || echo "Nginx not installed (expected on dev machine)"
-echo "=== Backend health (local) ==="
-curl -sS http://localhost:7000/api/health 2>/dev/null || echo ":7000 not reachable"
-curl -sS http://localhost:4000/health 2>/dev/null || echo ":4000 not reachable"
-curl -sS http://localhost:3000/health 2>/dev/null || echo ":3000 not reachable"
-echo "=== Jest suites ==="
-npx jest --config anish-toeic-web-services/jest.config.js --listTests 2>/dev/null | wc -l
-echo "=== Done ==="
-```
+| Item | Status |
+|---|---|
+| nginx/nginx.conf + audio-config.conf fixes | DONE in repo (no deploy — task constraint) |
+| `nginx -t` on VPS | pending deploy |
+| Cloudflare edge live config (proxy mode, SSL, cache rules) | UNAVAILABLE — no CF credentials; contract in `cloudflare-edge.txt` |
+| Cloudflare AI Worker + S3 live proof | UNAVAILABLE — env empty; S&W verified with `AI_GRADING_TEST_MODE=true` |
+| FE bundle size 1.8 MB | non-blocking; code-splitting later |
+| Health path `/health` vs `/api/health` | nginx rewrites; Express serves `/api/health` only — keep the rewrite |

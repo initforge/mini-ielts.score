@@ -1,0 +1,16 @@
+Running migrations: up
+Applied: 001_schema.up.sql
+Applied: 002_media_columns.up.sql
+Migrations completed successfully.
+MIGRATE_UP_EXIT=0
+
+Seed completed.
+SEED1_EXIT=0
+
+Seed completed.
+SEED2_EXIT=0
+
+tables=14 questions=37
+seed_fingerprint_run1=946f815c2cc68c317ed178f0809b1b01
+seed_fingerprint_run2=946f815c2cc68c317ed178f0809b1b01
+FINGERPRINT_MATCH=YES

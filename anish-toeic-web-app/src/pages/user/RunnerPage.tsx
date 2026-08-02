@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router';
 import { Spin, message } from 'antd';
 import { 
   ArrowLeft, 
@@ -114,7 +114,7 @@ const RunnerPage = () => {
             <ArrowLeft className="w-4 h-4" /> Danh sách đề
           </Link>
           <div className="text-white font-extrabold text-lg tracking-tight truncate ml-4 hidden sm:block">
-            Xoá<span className="text-white">Mù</span><span className="text-orange-400">TOEIC</span>
+            Anish<span className="text-orange-400">TOEIC</span>
           </div>
         </div>
 

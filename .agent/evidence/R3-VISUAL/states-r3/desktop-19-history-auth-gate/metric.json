@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/19-history-auth-gate.png",
+  "actual": ".agent/evidence/R3-FE-FIX/history-gate.png",
+  "rmse": 68.585382,
+  "diffPixelsPct": 90.4834,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1440x900"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-19-history-auth-gate/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-19-history-auth-gate/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-19-history-auth-gate/metric.json"
+  }
+}

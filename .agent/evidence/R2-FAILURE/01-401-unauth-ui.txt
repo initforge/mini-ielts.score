@@ -1,0 +1,19 @@
+[STATE 1 UI] /thi-thu/lich-su logged out
+--- visible text ---
+Không thể tải lịch sử
+Vui lòng thử lại sau.
+Thử lại
+--- network ---
+401 /api/toeic-attempts
+200 /api/toeic-exams?page=1&pageSize=100
+401 /api/toeic-attempts
+401 /api/toeic-attempts
+401 /api/toeic-attempts
+--- console ---
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+console:error Failed to load resource: the server responded with a status of 401 (Unauthorized)
+console:error Failed to load resource: the server responded with a status of 401 (Unauthorized)
+console:error Failed to load resource: the server responded with a status of 401 (Unauthorized)
+console:error Failed to load resource: the server responded with a status of 401 (Unauthorized)

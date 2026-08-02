@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/04-exam-lr-detail-start.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/desktop04-exam-detail.png",
+  "rmse": 211.69774,
+  "diffPixelsPct": 99.9938,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1264x1163"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-04-exam-lr-detail-start/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-04-exam-lr-detail-start/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-04-exam-lr-detail-start/metric.json"
+  }
+}

@@ -1,0 +1,37 @@
+# R2-SEC-FIX — env schema coverage check
+
+## Change
+CLOUDFLARE_AI_TIMEOUT_MS added to zod schema (anish-toeic-web-services/src/config/env.ts):
+- schema line 23: `CLOUDFLARE_AI_TIMEOUT_MS: z.string().regex(/^\d+$/, 'CLOUDFLARE_AI_TIMEOUT_MS must be numeric').default('60000')`
+- defaults line 52: `CLOUDFLARE_AI_TIMEOUT_MS: source.CLOUDFLARE_AI_TIMEOUT_MS ?? '60000'`
+
+Default mirrors ai-grading.adapter.ts:160: `const timeoutMs = timeoutMsRaw ? parseInt(timeoutMsRaw, 10) : 60000;`
+(clamped there to 5000..300000).
+
+## env.production.example keys vs zod schema (all covered)
+| Key | In schema | Default |
+|---|---|---|
+| NODE_ENV | enum(development/test/production) | development |
+| PORT | string | 7000 |
+| CLOUDFLARE_AI_WORKER_URL | optional string | '' |
+| CLOUDFLARE_AI_WORKER_TOKEN | optional string | '' |
+| CLOUDFLARE_AI_TIMEOUT_MS | numeric string (NEW) | 60000 |
+| AI_GRADING_TEST_MODE | enum(true/false) | false |
+| REDIS_URL | string | redis://localhost:6379 |
+| DB_HOST | required | prod:'' dev:localhost |
+| DB_PORT | numeric regex | 3306 |
+| DB_USER | required | prod:'' dev:root |
+| DB_PASSWORD | optional string | '' |
+| DB_NAME | required | prod:'' dev:anish_toeic |
+| JWT_SECRET | min 32 + placeholder rejected | '' |
+| JWT_EXPIRES_IN | string | 7d |
+| AWS_REGION / AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / S3_BUCKET | optional strings | '' |
+| CORS_ORIGIN | string | http://localhost:5173 |
+| TRUST_PROXY | enum(true/false) | false |
+
+PASS: every key in env.production.example is covered by the zod schema.
+
+## Verify (typecheck + build)
+npm run typecheck  → pass
+npm run lint       → pass
+npm run build      → pass (exit 0)

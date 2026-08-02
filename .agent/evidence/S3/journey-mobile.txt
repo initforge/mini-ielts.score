@@ -1,0 +1,39 @@
+STEP1 anonymous catalog: cards=["Anish Full Practice 1 — Listening & Reading"]
+STEP4 dialog text: Anish Full Practice 1 — Speaking & Writing Thi thử Luyện tập Đề thi đầy đủ 5 câu Mô phỏng bài thi hoàn chỉnh trong 60 phút Bắt đầu Thời gian: 60 phút Tổng: 5 câu
+STEP5 login URL: http://localhost:5173/dang-nhap?returnUrl=%2Fthi-thu%3Fexam%3D2%26mode%3Dpractice%26tab%3Dsw
+STEP6 returned URL: http://localhost:5173/thi-thu?exam=2&mode=practice&tab=sw dialog=Anish Full Practice 1 — Speaking & Writing Thi thử Luyện tập Luyện tập từng phần Luyện tập không áp lực thời gian, có th
+STEP7 error state ok
+STEP7 retry ok
+STEP8 empty state ok
+STEP9 loading skeleton ok took=2189ms
+
+--- CHECKS ---
+PASS LR tab shows exactly 1 exam card :: ["Anish Full Practice 1 — Listening & Reading"]
+PASS LR card is Listening & Reading exam :: Anish Full Practice 1 — Listening & Reading
+PASS SW tab present
+PASS LR tab present
+PASS Collection filter chip ETS 2024 present
+PASS SW tab shows 1 SW exam card :: ["Anish Full Practice 1 — Speaking & Writing"]
+PASS SW tab reflected in URL ?tab=sw :: http://localhost:5173/thi-thu?tab=sw
+PASS Search no-result state visible
+PASS Reset filters restores list
+PASS Dialog has both mode toggles
+PASS Dialog shows full-test question count :: Anish Full Practice 1 — Speaking & Writing Thi thử Luyện tập Đề thi đầy đủ 5 câu Mô phỏng bài thi hoàn chỉnh trong 60 ph
+PASS Dialog has Bắt đầu button
+PASS Dialog has time+count chips
+PASS Dialog width within XoaMu max-w-md geometry :: {"x":0,"y":291,"width":390,"height":262}
+PASS Practice mode description updates :: Anish Full Practice 1 — Speaking & Writing Thi thử Luyện tập Luyện tập từng phần Luyện tập không áp lực thời gian, có th
+PASS Redirected to /dang-nhap
+PASS returnUrl preserves exam+mode :: /thi-thu?exam=2&mode=practice&tab=sw
+PASS returnUrl exactly /thi-thu?exam=2&mode=practice&tab=sw :: /thi-thu?exam=2&mode=practice&tab=sw
+PASS Return URL after login keeps intent :: http://localhost:5173/thi-thu?exam=2&mode=practice&tab=sw
+PASS Dialog reopens in practice mode (intent preserved) :: Anish Full Practice 1 — Speaking & Writing Thi thử Luyện tập Luyện tập từng phần Luyện tập không áp lực thời gian, có thể xem đáp án Bắt đầu
+PASS Dialog is Luyện tập mode
+PASS Error state visible with Thử lại
+PASS Thử lại retry recovers list
+PASS Empty state visible
+PASS Loading skeleton visible during fetch
+PASS Collection filter ETS 2024 returns list
+PASS filter no-param mode
+
+ERRORS: 0

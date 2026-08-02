@@ -1,0 +1,16 @@
+R3-FAILURE2 state 19 — stale worker recovery (PROCESSING >10min → reclaimed → COMPLETED)
+PRE (attempt 284): submit → UPDATE toeic_grading_jobs SET status='PROCESSING', updated_at=DATE_SUB(NOW(), INTERVAL 20 MINUTE) WHERE attempt_id=284;
+
+--- worker log (r3-sec-worker.log) ---
+[Grading Worker] Recovered 1 stale PROCESSING job(s)
+[Grading Worker] Processing job 69   <- reclaimed job (attempt 284)
+
+--- API proof (attempt 283, 0.5s polling) ---
+t=0s:  PROCESSING (stale, error_message='-')
+t=30s: COMPLETED  (worker recovery loop ran at 30s; RETRY window sub-second)
+
+--- UI proof ---
+UI PROOF: 19-stale-processing.png — ProcessingPage shows 'AI đang chấm bài của bạn...' while job stale
+UI PROOF: 19-recovered-completed.png — after ~35s the page auto-navigated to /thi-thu/ket-qua/284
+
+VERDICT: PASS

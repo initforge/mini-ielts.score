@@ -48,7 +48,7 @@ describe('AC6 Catalog: public contract, pagination, protected-field isolation', 
 
     const rowsQuery = mockQuery.mock.calls.find((c) => c[0].includes('LIMIT ? OFFSET ?'));
     expect(rowsQuery).toBeDefined();
-    expect(rowsQuery[1]).toEqual([10, 20]);
+    expect(rowsQuery[1]).toEqual(['PUBLISHED', 10, 20]);
   });
 
   it('clamps pageSize to a sane maximum and ignores negative pages', async () => {
@@ -88,7 +88,8 @@ describe('AC6 Catalog: public contract, pagination, protected-field isolation', 
     const res = await request(app).get('/api/toeic-exams?skillType=SW');
     expect(res.status).toBe(200);
     const filterCall = mockQuery.mock.calls.find((c) => c[0].includes('skill_type = ?'));
-    expect(filterCall[1][0]).toBe('SW');
+    expect(filterCall[1][0]).toBe('PUBLISHED'); // status is the first filter param
+    expect(filterCall[1][1]).toBe('SW');
     expect(res.body.items[0].explanation).toBeUndefined();
   });
 });

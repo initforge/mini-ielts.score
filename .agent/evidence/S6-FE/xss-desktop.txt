@@ -1,0 +1,22 @@
+S6-FE AC19 XSS probe — viewport {"width":1440,"height":900}
+timestamp: 2026-07-31T22:04:22.279Z
+attemptId: 157
+errors: 0
+
+CHECKLIST | AC19 (xss-desktop) | PASS=11 FAIL=0
+  PASS XSS attempt created via API (id=157)
+  PASS editor: no <script> element
+  PASS editor: no event-handler attributes (on*) :: attrs=0
+  PASS editor: payload stored as literal text
+  PASS no alert dialog fired :: dialogs=0
+  PASS no page JS error
+  PASS no executable script carrying the payload :: evilScripts=0
+  PASS no <script> inside review question cards
+  PASS no [onerror] attribute in rendered DOM
+  PASS img tag rendered without onerror handler
+  PASS backend stores payload verbatim as plain text (sanitize at FE render boundary) :: 4c9a8d85be18005b
+
+STEP transcript:
+SCREENSHOT XSS payload typed in writing editor → xss-editor-desktop.png
+SCREENSHOT XSS payload rendered sanitized in review → xss-writing-desktop.png
+STEP XSS render-boundary verified (dialogs=0, pageErrors=0)

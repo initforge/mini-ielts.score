@@ -1,0 +1,6 @@
+R3-FAILURE2 state 08 — request timeout (grading-status delayed 12s > axios 10s timeout)
+METHOD: Playwright route.delay 12000ms on GET /api/toeic-attempts/271/grading-status; FE axios timeout=10000ms.
+UI PROOF: 08-request-timeout.png
+DOM PROBE: transport-error card 'Không thể kiểm tra trạng thái' visible=1 ; 'Thử lại' retry button visible=1 ; 'Quay lại lịch sử' visible=1
+API CONTEXT: request eventually completed after 12s; client-side timeout is what the user sees.
+VERDICT: PASS

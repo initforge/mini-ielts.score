@@ -1,0 +1,29 @@
+# R2-SEC-FIX — live restart & smoke verification (Task 7)
+
+## Restart
+- pkill -f 'node dist/server.js'  → old server terminated (port 7000 freed).
+- set -a; source .env; set +a; nohup node dist/server.js > /tmp/opencode/r2-secfix.log 2>&1 &
+- Log: `Server running on port 7000`
+- PID of new server: (see below)
+
+## /api/health
+curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:7000/api/health
+→ HTTP 200
+
+## Login (cookie jar)
+curl -s -c /tmp/opencode/cj.txt -X POST http://127.0.0.1:7000/api/auth/login \
+  -H 'Content-Type: application/json' -d '{"email":"a@b.com","password":"password123"}'
+→ HTTP 200, body: {"user":{"id":"3","email":"a@b.com","displayName":"a"}}
+→ cookie jar contains token= (HttpOnly session cookie set)
+
+## Rate-limit headers + N1 gate live proof (TRUST_PROXY=false in .env)
+3 login attempts, each with a different spoofed `cf-connecting-ip`:
+  1.2.3.4  → HTTP 401, RateLimit-Limit: 20, RateLimit-Remaining: 18
+  5.6.7.8  → HTTP 401, RateLimit-Limit: 20, RateLimit-Remaining: 17
+  9.9.9.9  → HTTP 401, RateLimit-Limit: 20, RateLimit-Remaining: 16
+Remaining keeps decrementing across spoofed values → single shared bucket keyed by req.ip
+(127.0.0.1): the spoofed cf-connecting-ip is IGNORED when TRUST_PROXY is false. N1 fix confirmed live.
+
+## New server process
+ps -eo pid,cmd | grep 'dist/server.js'
+→ 2264997 node dist/server.js

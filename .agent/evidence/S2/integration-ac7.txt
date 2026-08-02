@@ -1,0 +1,62 @@
+== 1. Health ==
+PASS: health (expected=200 actual=200)
+== 2. Public catalog without auth ==
+PASS: catalog 200 (expected=200 actual=200)
+PASS: catalog has LR exam (contains 'anish-full-lr-001')
+PASS: catalog has SW exam (contains 'anish-full-sw-001')
+PASS: catalog does not leak correct_option_id
+== 3. Auth 401 ==
+PASS: 401 no token create attempt (expected=401 actual=401)
+PASS: 401 no token get attempt (expected=401 actual=401)
+PASS: 401 no token submit (expected=401 actual=401)
+PASS: 401 no token result (expected=401 actual=401)
+PASS: 401 no token review (expected=401 actual=401)
+== 4. Login seeded users ==
+PASS: owner login token (len=185)
+PASS: other login token (len=185)
+== 5. Create LR attempt ==
+PASS: attempt created (expected=null actual=null)
+attemptId=4
+== 6. Session has no protected fields ==
+PASS: session 200 (expected=200 actual=200)
+PASS: session does not leak correct_option_id
+PASS: session does not leak explanation
+== 7. Answer all 21 LR questions correctly ==
+answered 21 questions
+== 8. Same-revision divergent write => 409 ==
+PASS: same-revision divergent write 409 (expected=409 actual=409)
+PASS: identical replay idempotent (expected=true actual=true)
+PASS: stale client_revision 409 (expected=409 actual=409)
+PASS: restore at rev 1 idempotent (expected=true actual=true)
+== 9. Duplicate submit idempotent ==
+PASS: first submit success (expected=true actual=true)
+PASS: second submit idempotent alreadySubmitted (expected=true actual=true)
+grading job status (LR has no job): null
+== 10. LR result is deterministic and owner-only ==
+PASS: result status FINAL (expected=FINAL actual=FINAL)
+PASS: listening 12 (expected=12 actual=12)
+PASS: reading 9 (expected=9 actual=9)
+PASS: total 21 (expected=21 actual=21)
+PASS: result other user 404 (expected=404 actual=404)
+== 11. Review: 403 before COMPLETED, 200 after, owner-only ==
+PASS: review 403 while IN_PROGRESS (expected=403 actual=403)
+PASS: review 404 for other user (expected=404 actual=404)
+PASS: review 200 after completed (expected=200 actual=200)
+PASS: review has correct_option_id (contains 'correct_option_id')
+PASS: review has explanation (contains 'explanation')
+PASS: review other user 404 (expected=404 actual=404)
+== 12. Ownership 403/404 cross-user ==
+PASS: updateResponse other user 403 (expected=403 actual=403)
+PASS: getAttempt other user 404 (expected=404 actual=404)
+PASS: submit other user 403 (expected=403 actual=403)
+PASS: grading-status other user 404 (expected=404 actual=404)
+== 13. SW attempt: submit enqueues grading job (Redis+MySQL durable) ==
+PASS: SW text response saved (expected=true actual=true)
+PASS: SW submit success (expected=true actual=true)
+SW grading job status: QUEUED
+PASS: SW grading job queued (expected=QUEUED actual=QUEUED)
+== 14. History ==
+owner attempts=6 other attempts=0
+PASS: other user sees 0 attempts (isolation)
+
+RESULT: PASS=41 FAIL=0

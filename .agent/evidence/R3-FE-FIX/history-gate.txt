@@ -1,0 +1,24 @@
+# Bug 4: History 401 auth gate
+## HistoryPage: 401 -> redirect /dang-nhap?returnUrl=/thi-thu/lich-su
+58-  });
+59-
+60:  // ANON-GATE: session is cookie-based; a 401 means the visitor isn't signed
+61-  // in — redirect to login preserving the history intent.
+62-  useEffect(() => {
+63-    const status =
+64-      typeof error === 'object' && error !== null
+65-        ? (error as { response?: { status?: number } }).response?.status
+66-        : undefined;
+67:    if (status === 401) {
+68-      navigate(`/dang-nhap?returnUrl=${encodeURIComponent('/thi-thu/lich-su')}`);
+69-    }
+70-  }, [error, navigate]);
+71-
+72-  // Enrich COMPLETED attempts with their result (LR /990, SW /400).
+73-  const { data: results } = useQuery({
+74-    queryKey: ['attempts-history-results', data?.map((a) => a.id) ?? []],
+75-    queryFn: async () => {
+
+## query retry disabled so 401 error surfaces to effect
+52:    queryKey: ['attempts-history'],
+57:    retry: false,

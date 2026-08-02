@@ -1,0 +1,14 @@
+=== npm run typecheck ===
+npm notice run anish-toeic-web-services@0.1.0 typecheck
+npm notice run tsc --noEmit
+typecheck exit: 0
+
+=== npm run lint ===
+npm notice run anish-toeic-web-services@0.1.0 lint
+npm notice run eslint . --ext ts
+lint exit: 0
+
+=== npm run build ===
+npm notice run anish-toeic-web-services@0.1.0 build
+npm notice run tsc && node -e "const fs=require('fs'),p=require('path');for(const f of fs.readdirSync('src/migrations'))if(f.endsWith('.sql'))fs.copyFileSync(p.join('src/migrations',f),p.join('dist/migrations',f));"
+build exit: 0

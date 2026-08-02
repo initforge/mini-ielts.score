@@ -1,0 +1,16 @@
+{
+  "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/mobile/03-exam-lr-q1.png",
+  "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/mobile07-part1-q1.png",
+  "rmse": 97.008599,
+  "diffPixelsPct": 90.7142,
+  "dims": {
+    "equal": false,
+    "reference": "390x844",
+    "actual": "375x812"
+  },
+  "outputs": {
+    "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-03-exam-lr-q1/overlay.png",
+    "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-03-exam-lr-q1/diff.png",
+    "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-03-exam-lr-q1/metric.json"
+  }
+}

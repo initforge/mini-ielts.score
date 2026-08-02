@@ -1,0 +1,55 @@
+[STATE 4 UI] SW runner genuine 409 reconcile
+attempt 220
+--- visible ---
+Danh sách đề
+Speaking & Writing
+WRITING
+Question 1 of 16
+NỘP BÀI
+PART 1 · QUESTION 1 · WRITING
+Write a sentence about the picture.
+Minimum 25 words.
+seeded answer typed text to provoke stale revision 409 reconcile
+Từ: 10
+Đã lưu
+Câu trước
+Tự động lưu mọi thay đổi
+Câu tiếp
+--- console ---
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+create 220
+seed q30 rev=1 -> 200 {"success":true}
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+phase after load: Question 1 of 16
+serverBump q30 rev=10 -> 200 {"success":true}
+console:error Failed to load resource: the server responded with a status of 409 (Conflict)
+console:warning [SWStore] conflict on autosave q 30 — reconciling revision
+after typing: Danh sách đề
+Speaking & Writing
+WRITING
+Question 1 of 16
+NỘP BÀI
+PART 1 · QUESTION 1 · WRITING
+Write a sentence about the picture.
+Minimum 25 words.
+seeded answer typed text to provoke stale revision 409 reconcile
+Từ: 10
+Đã lưu
+Câu trước
+Tự động lưu mọi thay đổi
+Câu tiếp
+--- network ---
+200 /api/toeic-exams?skillType=LR&page=1&pageSize=100
+201 /api/toeic-exams/2/attempts
+200 /api/toeic-attempts/220/responses/30
+200 /api/toeic-attempts/220
+200 /api/toeic-attempts/220
+200 /api/toeic-attempts/220/responses/30
+200 /api/toeic-attempts/220/responses/30
+409 /api/toeic-attempts/220/responses/30
+200 /api/toeic-attempts/220
+200 /api/toeic-attempts/220/responses/30

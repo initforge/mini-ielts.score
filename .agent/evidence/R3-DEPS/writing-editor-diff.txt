@@ -1,0 +1,129 @@
+NOTE: WritingView.tsx is UNTRACKED in git (one of 5 build-imported source files never committed, per R2-RELEASE).
+No git baseline exists; diff below reconstructed against the pre-change file content captured before this task ran.
+
+--- /tmp/opencode/r3deps/WritingView.before.tsx	2026-08-01 12:26:29.480063398 +0700
++++ /home/linhnx/Projects/mini-toeic.score/anish-toeic-web-app/src/modules/mock-exam/runner/sw/WritingView.tsx	2026-08-01 12:18:15.934246181 +0700
+@@ -1,24 +1,14 @@
+ /**
+- * WritingView — Quill-based writing editor with DOMPurify sanitization,
+- * live word count, debounced autosave (textResponse + clientRevision) and
+- * content restore on resume. Covers AC16.
++ * WritingView — plain-text writing editor with live word count,
++ * debounced autosave (textResponse + clientRevision) and content
++ * restore on resume. Covers AC16. Quill + DOMPurify removed: the
++ * answer is plain text, so a <textarea> is sufficient.
+  */
+-import { useEffect, useRef, useState } from 'react';
+-import Quill from 'quill';
+-import 'quill/dist/quill.snow.css';
+-import DOMPurify from 'dompurify';
++import { useEffect } from 'react';
+ import { Loader2, CheckCircle2, AlertTriangle } from 'lucide-react';
+ import { useSWStore } from './swStore';
+ import { SWQuestion } from './types';
+ 
+-const TOOLBAR = [
+-  [{ header: [1, 2, 3, false] }],
+-  ['bold', 'italic', 'underline', 'strike'],
+-  [{ list: 'ordered' }, { list: 'bullet' }],
+-  ['blockquote'],
+-  ['clean'],
+-];
+-
+ function countWords(text: string): number {
+   return text.trim().split(/\s+/).filter(Boolean).length;
+ }
+@@ -28,53 +18,19 @@
+ }
+ 
+ export function WritingView({ question }: WritingViewProps) {
+-  const containerRef = useRef<HTMLDivElement | null>(null);
+-  const quillRef = useRef<Quill | null>(null);
++  const text = useSWStore((s) => s.writingTexts[question.id] ?? '');
+   const dirty = useSWStore((s) => !!s.writingDirty[question.id]);
+-  const savedText = useSWStore((s) => s.writingTexts[question.id] ?? '');
+-  const [ready, setReady] = useState(false);
+-  const [wordCount, setWordCount] = useState(() => countWords(savedText));
++  const setWritingText = useSWStore((s) => s.setWritingText);
+ 
+-  // Create the editor once per question; restore any saved content.
++  // Flush pending autosave before leaving the question.
+   useEffect(() => {
+-    if (!containerRef.current || quillRef.current) return;
+-    // Fresh child element per mount (StrictMode-safe): Quill 2 refuses to
+-    // re-initialize a container it already owns.
+-    const el = document.createElement('div');
+-    containerRef.current.appendChild(el);
+-
+-    const quill = new Quill(el, {
+-      theme: 'snow',
+-      modules: { toolbar: TOOLBAR },
+-      placeholder: 'Nhập câu trả lời của bạn...',
+-    });
+-    quillRef.current = quill;
+-
+-    const restored = useSWStore.getState().writingTexts[question.id] ?? '';
+-    quill.setText(restored);
+-    setWordCount(countWords(quill.getText()));
+-
+-    quill.on('text-change', (_, _delta, source) => {
+-      // Only persist real user edits — programmatic restore (setText) must not
+-      // dirty the response or bump the server revision.
+-      const text = quill.getText().replace(/\s+$/, '');
+-      setWordCount(countWords(text));
+-      if (source === 'user') {
+-        // Persist plain text (safe for the AI grader). Quill's clipboard already
+-        // strips executable content; DOMPurify guards question content rendering.
+-        useSWStore.getState().setWritingText(question.id, text);
+-      }
+-    });
+-
+-    setReady(true);
+     return () => {
+-      // Flush pending autosave before leaving the question.
+       void useSWStore.getState().flushWritingAutosave(question.id);
+-      quillRef.current = null;
+-      el.remove();
+     };
+   }, [question.id]);
+ 
++  const wordCount = countWords(text);
++
+   return (
+     <div className="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+       {/* Prompt */}
+@@ -89,11 +45,7 @@
+             className="w-full max-h-64 object-contain rounded-xl mb-4 border border-slate-100"
+           />
+         )}
+-        <div
+-          className="prose prose-slate max-w-none text-lg"
+-          // Seed content is server-controlled; sanitize anyway at the render boundary.
+-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(question.content) }}
+-        />
++        <p className="text-slate-800 text-lg leading-relaxed whitespace-pre-wrap">{question.content}</p>
+         {question.minWords ? (
+           <p className="text-sm text-slate-500 mt-3">
+             Minimum {question.minWords} words.
+@@ -103,15 +55,12 @@
+ 
+       {/* Editor */}
+       <div className="p-6">
+-        {!ready ? (
+-          <div className="flex items-center justify-center gap-2 py-12 text-slate-500">
+-            <Loader2 className="w-5 h-5 animate-spin" /> Đang tải trình soạn thảo...
+-          </div>
+-        ) : null}
+-        <style>{'.ql-editor { min-height: 240px; font-size: 1rem; }'}</style>
+-        <div
+-          ref={containerRef}
+-          className={ready ? '' : 'hidden'}
++        <textarea
++          value={text}
++          onChange={(e) => setWritingText(question.id, e.target.value)}
++          placeholder="Nhập câu trả lời của bạn..."
++          rows={12}
++          className="w-full min-h-[240px] rounded-xl border border-slate-300 p-4 text-base leading-relaxed text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y"
+         />
+ 
+         {/* Footer: word count + autosave status */}

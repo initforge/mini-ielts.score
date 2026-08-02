@@ -1,0 +1,12 @@
+=== STATE 2: non-owner fetches owner attempt 177 ===
+{"error":"Attempt not found"}
+status:404
+=== STATE 2b: non-owner GET result ===
+{"error":"Result not found"}
+status:404
+=== STATE 2c: non-owner GET grading-status ===
+{"error":"Status not found"}
+status:404
+=== STATE 2d: non-owner PATCH response ===
+{"error":"Attempt not found or access denied"}
+status:403

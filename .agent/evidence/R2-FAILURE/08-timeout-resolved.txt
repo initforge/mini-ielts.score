@@ -1,0 +1,9 @@
+[STATE 8 UI] after delay resolves
+--- visible ---
+Lịch sử luyện tập
+ID: 179
+Không thể kiểm tra trạng thái
+Không thể kết nối đến máy chủ.
+Thử lại
+Quay lại lịch sử
+--- network ---

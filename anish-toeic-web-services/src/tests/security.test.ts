@@ -7,6 +7,26 @@ import toeicRoutes from '../routes/toeic.routes';
 import authRoutes from '../routes/auth.routes';
 import { pool } from '../services/db.service';
 
+// R3-SECURITY: stub ioredis — register/login persist the jti key in-memory.
+jest.mock('ioredis', () => {
+  const store = new Map();
+  const instance = {
+    setex: jest.fn((key, ttl) => {
+      store.set(key, Date.now() + ttl * 1000);
+      return Promise.resolve('OK');
+    }),
+    exists: jest.fn((key) => Promise.resolve(store.has(key) ? 1 : 0)),
+    del: jest.fn((key) => {
+      store.delete(key);
+      return Promise.resolve(1);
+    }),
+    set: jest.fn(),
+    get: jest.fn(),
+    quit: jest.fn(),
+  };
+  return { Redis: jest.fn(() => instance) };
+});
+
 jest.mock('../services/db.service', () => ({
   pool: {
     query: jest.fn(),
@@ -82,7 +102,8 @@ describe('AC7 Security: auth, ownership, membership, revision, idempotency', () 
 
       expect(res.status).toBe(201);
       expect(res.body.user.id).toBe('42');
-      expect(res.body.token).toBeTruthy();
+      // INJ-003: token must NOT leak in the JSON body — session is httpOnly cookie.
+      expect(res.body.token).toBeUndefined();
       expect(res.headers['set-cookie']?.[0]).toContain('HttpOnly');
 
       const insertCall = mockQuery.mock.calls.find((c) => c[0].includes('INSERT INTO users'));
@@ -125,7 +146,9 @@ describe('AC7 Security: auth, ownership, membership, revision, idempotency', () 
 
       expect(res.status).toBe(200);
       expect(res.body.user.id).toBe('5');
-      expect(res.body.token).toBeTruthy();
+      // INJ-003: token must NOT leak in the JSON body — session is httpOnly cookie.
+      expect(res.body.token).toBeUndefined();
+      expect(res.headers['set-cookie']?.[0]).toContain('HttpOnly');
     });
 
     it('returns 401 for an unknown user', async () => {
@@ -373,8 +396,8 @@ describe('AC7 Security: auth, ownership, membership, revision, idempotency', () 
       expect(jobInsert).toBeDefined();
       expect(jobInsert[1]).toEqual([1]);
 
-      const stateUpdate = conn.query.mock.calls.find((c) => c[0].includes('UPDATE toeic_attempts SET status'));
-      expect(stateUpdate[1]).toEqual(['SUBMITTED', 1]);
+      const stateUpdate = conn.query.mock.calls.find((c) => c[0].includes('UPDATE toeic_attempts'));
+      expect(stateUpdate[1]).toEqual(['SUBMITTED', undefined, 1]);
     });
 
     it('rolls back and surfaces errors instead of a partial state', async () => {

@@ -1,0 +1,16 @@
+R3-FAILURE2 state 16 — rate limit 429 (auth burst + submit burst)
+CONFIG: authLimiter 20 req/15min; submitLimiter 30 req/15min; keyed on client IP (TRUST_PROXY=false → req.ip).
+
+--- [1] burst login ---
+COMMAND: for i in {1..25}; do curl -X POST /api/auth/login -d "{\"email\":\"nobody@example.com\",\"password\":\"wrong\"}"; done
+RESULT: hit 429 at attempt #16 of the burst (window shared with earlier logins)
+RESPONSE HEADERS: HTTP/1.1 429 Too Many Requests ; Retry-After: 323
+BODY: "Too many requests, please try again later."
+
+--- [2] burst submit ---
+COMMAND: for i in {1..45}; do curl -b owner.jar -X POST /api/toeic-attempts/285/submit; done (idempotent alreadySubmitted 200s)
+RESULT: hit 429 at burst #26
+RESPONSE HEADERS: HTTP/1.1 429 Too Many Requests ; Retry-After: 503
+BODY: "Too many requests, please try again later."
+
+VERDICT: PASS — both credential and submit endpoints enforce 429 with Retry-After.

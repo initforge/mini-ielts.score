@@ -1,0 +1,27 @@
+[
+  {
+    "id": "S0-REVIEW-20260731",
+    "slice_id": "S0",
+    "role": "independent-reviewer",
+    "status": "PASS",
+    "summary": "Verified 35 screenshot inventory, 1:1 manifest mapping, 32 artifacts, hashes, offline evidence, CDP capture method, and three documented blockers.",
+    "evidence": [
+      ".agent/evidence/S0/capture-report.md",
+      ".agent/evidence/S0/offline-verification.txt",
+      "references/audit/parity-matrix.md"
+    ]
+  },
+  {
+    "id": "FINAL-REVIEW-20260731",
+    "slice_id": "S1-S7",
+    "role": "independent-reviewer",
+    "status": "PARTIAL",
+    "summary": "Build/typecheck/lint and 134 tests pass; browser visual parity, clean-install, real infrastructure and full E2E proof remain open.",
+    "evidence": [
+      "npm run build",
+      "npm run typecheck",
+      "npm run lint",
+      "npm run test"
+    ]
+  }
+]

@@ -1,0 +1,31 @@
+R3-FAILURE2 — matrix summary (23 states, all PASS)
+Repo HEAD 620c111; stack: FE :5173 / BE :7000 / MySQL :13306 / Redis :16379 / grading worker AI_GRADING_TEST_MODE=true
+Date: 2026-08-01
+
+state                                      api-proof    ui-proof     verdict      notes
+-----------------------------------------------------------------------------------------------------------------------------------------
+01-loading                                 n/a          01-loading.png PASS         route.delay 3s → skeleton cards (6 .animate-pulse, aria-busy)
+02-empty                                   n/a          02-empty.png PASS         search zzzz → 'Không tìm thấy đề thi nào phù hợp.' + Xóa bộ lọc
+03-validation                              03-validation-error.txt n/a          PASS         bad optionId 400; presign >25MB 400; base64 content 400
+04-401                                     04-401.txt   n/a          PASS         no cookie / forged token=abc / forged JWT → 401
+05-ownership                               05-ownership.txt n/a          PASS         non-owner: reads 404, PATCH/presign/submit 403
+06-offline-catalog                         n/a          06-offline-cached.png + 06-offline-fresh.png PASS         amber banner + cached cards; fresh → 'Không có kết nối mạng', non-blank
+07-offline-runner                          n/a          07-offline-runner-snapshot.png + fresh.png PASS         snapshot resume amber banner; fresh → error + Thử lại, non-blank
+08-request-timeout                         n/a          08-request-timeout.png PASS         12s delay > 10s axios timeout → transport-error card + Thử lại
+09-network-retry                           GET attempt 273 (txt) 09-offline-queued.png + online-flushed.png PASS         offline autosave → IDB pending queue → reconnect flush → server saved
+10-media-failure                           n/a          10-media-fail.png + media-retry-ok.png PASS         presign 200 + PUT abort → 'Upload failed'+Retry → retry 200 → Uploaded
+11-mic                                     n/a          11-mic-denied.png + 11-mic-unavailable.png PASS         NotAllowedError → denied card; NotFoundError → 'No microphone found'
+12-autosave-retry                          GET attempt 275 (txt) 12-autosave-retry.png PASS         PATCH 500 once → dirty persists → retried → 'Đã lưu', server rev bumped
+13-revision-conflict                       13-revision-conflict.txt 13-revision-reconcile.png PASS         stale clientRevision → 409 → adopt server rev → resave OK (rev3)
+14-expired-attempt                         DB status (txt) 14-expired-autosubmit.png PASS         started_at -2h → auto-submit → COMPLETED, navigated to result
+15-duplicate-submit                        15-duplicate-submit.txt n/a          PASS         2nd/3rd submit alreadySubmitted; UNIQUE attempt_id → 1 grading_job
+16-rate-limit                              16-rate-limit.txt n/a          PASS         burst login → 429 Retry-After:323; burst submit → 429 Retry-After:503
+17-grading-lifecycle                       17-grading-lifecycle.txt 17-processing.png + 17-completed.png PASS         real chain QUEUED→COMPLETED; UI PROCESSING + navigation
+18-forced-failure                          18-forced-grading-failure.txt 18-grading-failed.png + 18-result-no-score.png PASS         FAILED retry_count=3 → 'Đã thử 3 lần'; result 404, no score
+19-stale-recovery                          19-stale-recovery.txt 19-stale-processing.png + 19-recovered-completed.png PASS         stale PROCESSING → worker 'Recovered' → COMPLETED ~35s
+20-two-worker-race                         20-two-worker-race.txt n/a          PASS         2nd worker ran; 1 result row + 1 job; Redis NX lock prevented dup
+21-xss                                     21-xss.txt   21-xss-review.png + 21-xss-errormap.png PASS         onerror/script stripped; 0 dialogs; 0 console errors
+22-logout-revocation                       22-logout-revocation.txt n/a          PASS         jti EXISTS=1 → logout → old cookie 401 'Session revoked' → jti EXISTS=0
+23-cross-user                              23-cross-user-access.txt n/a          PASS         non-owner result/review/attempt 404, presign 403; owner 200 control
+
+TOTALS: 23/23 PASS, 0 FAIL.  API-only states (no UI exists): 03,04,05,15,16,22,23.  UI states verified via Playwright DOM probes + screenshots.

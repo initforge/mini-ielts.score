@@ -1,0 +1,9 @@
+[STATE 7 UI] catalog offline — reload while offline (dev server unreachable)
+--- visible text ---
+(empty)
+--- console ---
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+--- network ---
+200 /api/toeic-exams?skillType=LR&page=1&pageSize=100

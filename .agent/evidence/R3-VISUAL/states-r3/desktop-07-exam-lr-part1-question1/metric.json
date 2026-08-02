@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/07-exam-lr-part1-question1.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/desktop07-part1-q1.png",
+  "rmse": 184.732564,
+  "diffPixelsPct": 98.238,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-07-exam-lr-part1-question1/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-07-exam-lr-part1-question1/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-07-exam-lr-part1-question1/metric.json"
+  }
+}

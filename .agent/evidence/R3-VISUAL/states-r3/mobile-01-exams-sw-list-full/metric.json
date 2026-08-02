@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/mobile/01-exams-sw-list-full.png",
+  "actual": ".agent/evidence/R3-SW/mobile01-catalog-sw.png",
+  "rmse": 203.811361,
+  "diffPixelsPct": 99.9968,
+  "dims": {
+    "equal": false,
+    "reference": "431x6001",
+    "actual": "375x812"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/mobile-01-exams-sw-list-full/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/mobile-01-exams-sw-list-full/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/mobile-01-exams-sw-list-full/metric.json"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/24-exam-sw-speaking-q3-describe-picture.png",
+  "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop24-exam-sw-speaking-q3-image.png",
+  "rmse": 70.004911,
+  "diffPixelsPct": 84.1814,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-24-exam-sw-speaking-q3-describe-picture/overlay.png",
+    "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-24-exam-sw-speaking-q3-describe-picture/diff.png",
+    "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-24-exam-sw-speaking-q3-describe-picture/metric.json"
+  }
+}

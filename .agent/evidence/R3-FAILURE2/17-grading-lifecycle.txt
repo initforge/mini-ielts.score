@@ -1,0 +1,13 @@
+R3-FAILURE2 state 17 — grading lifecycle QUEUED → PROCESSING → COMPLETED
+
+--- API proof (real worker chain, attempt 279, 250ms sampling after submit) ---
+COMMAND: for i in $(seq 1 20); do curl -b owner.jar .../toeic-attempts/279/grading-status; sleep 0.25; done
+OBSERVED: t=250ms QUEUED ... t=4250ms COMPLETED (QUEUED for ~4s while worker idle between 5s polls)
+PROCESSING state: sub-250ms in real flow; captured UI-wide via DB-hold at PROCESSING (attempt 280).
+
+--- UI proof ---
+UI PROOF: 17-processing.png  — 'AI đang chấm bài của bạn...' + antd Progress bar (job status=PROCESSING)
+UI PROOF: 17-completed.png   — page auto-navigated to /thi-thu/ket-qua/280
+FINAL API: GET .../grading-status → {id:65, attempt_id:280, status:'COMPLETED', retry_count:0, error_message:null}
+
+VERDICT: PASS

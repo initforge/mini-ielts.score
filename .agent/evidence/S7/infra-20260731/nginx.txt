@@ -1,0 +1,121 @@
+S7 | AC20 | nginx config verification — final config + changes made
+timestamp: 2026-08-01T05:00:00Z (approx — see git status timestamps)
+slice: S7, dimension: nginx
+files: nginx/nginx.conf, nginx/audio-config.conf (edited in place, NOT deployed)
+
+================================================================================
+1. REVIEW OF PREVIOUS nginx.conf — GAPS IDENTIFIED
+================================================================================
+G-1  Security headers (X-Frame-Options, X-Content-Type-Options, X-XSS-Protection)
+     were set ONLY inside `location /`. Every /api/, /assets/, /health response
+     was served WITHOUT them. add_header does not inherit across sibling
+     locations when a location defines none at its own level.
+G-2  `proxy_set_header Connection 'upgrade'` was sent on EVERY request, defeating
+     upstream keepalive (keepalive 64 on upstream was inert). Standard fix is a
+     `map $http_upgrade $connection_upgrade` so only real WebSocket upgrade
+     requests carry `Connection: upgrade`.
+G-3  `server_tokens off` missing — nginx version string would be exposed.
+G-4  Bare `GET /api` (no trailing slash) fell through to `location /` SPA
+     fallback and served index.html (200) instead of the API root.
+G-5  gzip_types omitted `image/svg+xml` and `application/wasm` — Vite emits SVG
+     assets; WASM possible for future bundles.
+G-6  No HSTS and no Referrer-Policy headers (security baseline for an HTTPS-only
+     edge behind Cloudflare proxy mode).
+G-7  audio-config.conf fragment had a regex `location ~ ^/audio/speaking/.*$`
+     for OPTIONS that SHADOWED the prefix `location /audio/speaking/` serving
+     block (regex evaluated after prefix, overriding it) — GET audio requests
+     would have been served by the regex block with no try_files/alias.
+     NOTE: the anish-toeic app does NOT serve speaking audio statically —
+     recordings are uploaded via presigned PUT to S3 (S5-BE). The static audio
+     block is legacy/optional only.
+G-8  client_max_body_size 50M was already present at server level (audio uploads
+     are presigned PUT to S3, but 50M keeps headroom for direct uploads) — OK, kept.
+G-9  /health rewrite -> /api/health already present and correct — kept.
+
+================================================================================
+2. CHANGES MADE (in place, no deploy)
+================================================================================
+1. Security headers moved to server level (X-Frame-Options, X-Content-Type-Options,
+   X-XSS-Protection) + added Strict-Transport-Security (max-age 31536000) and
+   Referrer-Policy (strict-origin-when-cross-origin) -> now inherited by /api,
+   /assets/, /health, /audio.
+2. Added `server_tokens off;`.
+3. Added `map $http_upgrade $connection_upgrade` and switched /api/ location to
+   `proxy_set_header Connection $connection_upgrade;` (WebSocket-correct, keeps
+   HTTP/1.1 upstream keepalive for normal traffic).
+4. Added `location = /api { return 308 /api/; }` so a bare /api no longer hits the
+   SPA fallback.
+5. Extended gzip_types with `image/svg+xml` and `application/wasm`.
+6. audio-config.conf: merged OPTIONS handling into the prefix location (removed the
+   shadowing regex), documented legacy/optional status, kept CORS + cache headers.
+7. Updated header comments so each block documents its purpose (SPA no-cache for
+   index.html vs immutable /assets/, API timeouts 300s for grading paths).
+
+================================================================================
+3. FINAL CONFIG — WHY EACH BLOCK MATTERS (nginx/nginx.conf)
+================================================================================
+[map $http_upgrade $connection_upgrade]
+  Correct upgrade semantics: only websocket requests get Connection: upgrade;
+  all other /api traffic keeps HTTP/1.1 keepalive to Node upstream.
+
+[upstream node_backend]
+  Single upstream 127.0.0.1:7000 + keepalive 64 — Express under PM2 fork mode.
+  Nginx reuses upstream connections (proxy_http_version 1.1) instead of opening
+  a new TCP connection per request.
+
+[limit_req_zone ... api_limit 10r/s, general_limit 30r/s]
+  Rate limiting: /api/ is burst 20 nodelay at 10r/s (abuse + auth brute force),
+  static/SPA general_limit burst 50 at 30r/s.
+
+[server :443]
+  - `listen 443 ssl http2` — origin TLS termination. Cloudflare proxy mode sits
+    in front (client->CF TLS, CF->origin 443 full-strict with CF origin cert or
+    Certbot/Let's Encrypt).
+  - `client_max_body_size 50M` — upload headroom (see G-8).
+  - `gzip on; gzip_vary on; gzip_types ...` — text asset compression; Vary:
+    Accept-Encoding so CDN/proxies cache per-encoding.
+  - Security headers at server level — every response carries them.
+  - `location = /api { return 308 /api/; }` — canonical API root.
+
+[location /api/]
+  The core reverse proxy: FE SPA calls `/api/*`; nginx forwards to Express :7000
+  preserving the /api prefix (proxy_pass WITHOUT a URI part). Headers:
+  X-Real-IP / X-Forwarded-For / X-Forwarded-Proto keep the origin address for
+  Express rate limiting and secure cookies; X-Forwarded-Proto is essential so
+  Express builds https URLs behind TLS. Timeouts 300s read/send for the
+  submission + grading-status + result paths (grading worker may take minutes).
+
+[location /assets/]
+  Vite emits content-hashed assets (dist/assets/index-*.js/css). `expires 1y` +
+  `Cache-Control: public, immutable` — safe because the hash changes on rebuild.
+
+[location = /health]
+  Alias to GET /api/health for the monitoring stack (rewrite break + proxy_pass).
+
+[location /]
+  SPA: try_files -> /index.html (client-side routing). Nested `location = /index.html`
+  forces `Cache-Control: no-cache, no-store, must-revalidate` so every deploy's
+  new index.html (with new hashed asset URLs) is fetched fresh.
+
+[server :80]
+  HTTP -> HTTPS 301 redirect (kept from original; Cloudflare edge also does this
+  automatically in proxy mode — the block is a fallback for direct-origin access).
+
+================================================================================
+4. VALIDATION NOTES
+================================================================================
+- nginx binary NOT installed on dev box (VPS-only) -> `nginx -t` unavailable
+  locally. Config validated structurally: nginx.conf parses as a standalone
+  full-file config (server blocks + upstream + map), audio-config.conf as a
+  fragment to be included inside a server block.
+- VPS path constants in config: /var/www/mini-ielts-score/... (matches
+  scripts/deploy.sh). Repo-local equivalent is ./anish-toeic-web-app/dist.
+- Deploy procedure: nginx -t && systemctl reload nginx on the VPS after copying
+  (see docs/05-runbook.md).
+- Not deployed (task constraint: no deploy, no commit).
+
+================================================================================
+5. VERDICT
+================================================================================
+nginx dimension: PASS — config corrected in place for the VPS + Cloudflare edge
+topology; gaps G-1..G-7 fixed; no deploy performed.

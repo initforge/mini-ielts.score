@@ -3,14 +3,30 @@
  *
  * Safety:
  *  - Single isRunning guard prevents concurrent polling on same process.
- *  - Redis lock (NX) prevents duplicate workers from grabbing the same job.
+ *  - Redis lock ownership lives in GradingService.processJob (NX): duplicate
+ *    workers race for the same lock and only one processes. The worker must
+ *    NOT pre-acquire the lock itself, or the service's own NX acquisition
+ *    would fail (lock already held by the same process) and the job would
+ *    never progress.
  *  - Stale PROCESSING recovery runs every 30s.
  */
 
 import { pool } from '../services/db.service';
 import { Redis } from 'ioredis';
 import { GradingService, recoverStaleProcessingJobs } from '../services/grading.service';
+import { validateWorkerEnv } from '../config/env';
 import { RowDataPacket } from 'mysql2';
+
+// R3-SECURITY: worker env validation (separate, minimal worker schema).
+// Fail fast before polling/touching Redis/DB, with a message listing every
+// missing/invalid variable so PM2 misconfiguration is obvious at boot.
+try {
+  validateWorkerEnv();
+} catch (err) {
+  const msg = err instanceof Error ? err.message : String(err);
+  console.error(`[Grading Worker] FATAL: invalid environment — refusing to start. ${msg}`);
+  process.exit(1);
+}
 
 const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
@@ -36,20 +52,17 @@ async function pollJobs() {
     );
 
     for (const job of jobs) {
-      const lockKey = `grading_job_lock:${job.id}`;
-      const lockAcquired = await redis.set(lockKey, '1', 'EX', 180, 'NX');
-
-      if (lockAcquired) {
-        console.log(`[Grading Worker] Processing job ${job.id}`);
-        try {
-          await GradingService.processJob(job.id);
-        } catch (error: unknown) {
-          // Only log — GradingService handles its own state transitions
-          const msg = error instanceof Error ? error.message : String(error);
-          console.error(`[Grading Worker] Unhandled error for job ${job.id}:`, msg.substring(0, 200));
-        } finally {
-          await redis.del(lockKey).catch(() => {});
-        }
+      console.log(`[Grading Worker] Processing job ${job.id}`);
+      try {
+        // Lock ownership is inside GradingService.processJob (Redis NX + FOR
+        // UPDATE). If another worker currently holds the lock, processJob
+        // returns 'Lock not acquired' and this worker skips — the row stays
+        // QUEUED and is retried on the next poll. No duplicate processing.
+        await GradingService.processJob(job.id);
+      } catch (error: unknown) {
+        // Only log — GradingService handles its own state transitions
+        const msg = error instanceof Error ? error.message : String(error);
+        console.error(`[Grading Worker] Unhandled error for job ${job.id}:`, msg.substring(0, 200));
       }
     }
   } catch (error: unknown) {

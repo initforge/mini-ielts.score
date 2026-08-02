@@ -1,0 +1,53 @@
+S6-BE | AC19 — backend security: no secret/audio/transcript leaks, sanitized errors, rate limits, ownership
+Work package: anish-thi-thu-xoamutoeic-20260730 | slice S6-BE
+Generated: 2026-07-31T15:42:29Z | live grep + API negative checks
+============================================================
+[1] WORKER + BACKEND LOGS — secret/base64/transcript scan
+    scanned: /tmp/opencode/w-live1.log w-live2.log w-raceA.log w-raceB.log w-fail.log w-stale.log w-drain.log /tmp/opencode/backend.log
+    w-live1.log:      jwt_hits=0 base64_hits=0 transcript_hits=0
+    w-live2.log:      jwt_hits=0 base64_hits=0 transcript_hits=0
+    w-raceA.log:      jwt_hits=0 base64_hits=0 transcript_hits=0
+    w-raceB.log:      jwt_hits=0 base64_hits=0 transcript_hits=0
+    w-fail.log:       jwt_hits=0 base64_hits=0 transcript_hits=0
+    w-stale.log:      jwt_hits=0 base64_hits=0 transcript_hits=0
+    w-drain.log:      jwt_hits=0 base64_hits=0 transcript_hits=0
+    backend.log:      jwt_hits=0 base64_hits=0 transcript_hits=0
+    patterns: JWT dev secret literal, data:...;base64, long base64 blob, writing transcript substrings.
+    -> zero leaks in worker/backend logs.
+
+[2] DB error_message COLUMN (sanitized errors) — captured during live FAILED run (see retry-stale.txt)
+    job 16 / attempt 60 FAILED error_message='AI_PROVIDER_NOT_CONFIGURED' (fixed code, no raw provider text)
+    stale recovery sets error_message='Stale processing recovered' (fixed string)
+    classifyError(): AiProvider* errors -> fixed sanitized codes; generic errors -> strip 'Error:' prefix,
+    strip stack frames (/at \S+/), cap 255 chars. No Bearer tokens, SQL snippets, audio paths or transcripts
+    ever reach error_message.
+
+[3] CODE AUDIT — grading path never logs request payloads/tokens
+    console.* in grading path (all 7 hits log only job ids / fixed strings, never request bodies):
+      grading.worker.ts:43   console.log(`[Grading Worker] Processing job ${job.id}`)
+      grading.worker.ts:53   console.error('... Unhandled error for job ' + id + ':', msg.substring(0,200))
+      grading.worker.ts:58   console.error('[Grading Worker] Polling error:', msg.substring(0, 200))
+      grading.worker.ts:68   console.log('[Grading Worker] Recovered N stale PROCESSING job(s)')
+      grading.worker.ts:72   console.error('[Grading Worker] Stale recovery error:', ...)
+      grading.worker.ts:77   console.log('[Grading Worker] Started')
+      grading.worker.ts:89   console.log('[Grading Worker] Stopped')
+    grading.service.ts: no console.* calls (errors go to DB error_message via classifyError only).
+    ai-grading.adapter.ts: sanitizeErrorForLogging() redacts /Bearer\s+\S+/gi, /token[=:]\s*\S+/gi,
+      /key[=:]\s*\S+/gi, cap 500 chars; adapter sends only metadata (questionId, textResponse refs,
+      s3Key paths) to the AI worker — never base64 audio, never the token in a body (only Authorization header).
+
+[4] API NEGATIVE — cross-user ownership (live, dev backend)
+    login seed.owner@example.com + seed.other@example.com (password seed-password-123)
+    GET /api/toeic-attempts/45/result          with OTHER token -> HTTP 404  (owner self -> 200)
+    GET /api/toeic-attempts/45/grading-status  with OTHER token -> HTTP 404
+    GET /api/toeic-attempts/45/review          with OTHER token -> HTTP 404
+    -> ownership enforced: AND a.user_id = ? in getResult/getGradingStatus/getReview/getAttempt.
+
+[5] RATE LIMIT — express-rate-limit on /api/auth (login/register), windowMs=15min, limit=20
+    Observed during proof run: after ~20 auth calls in 15 min, login returned:
+      HTTP/1.1 429 Too Many Requests
+      RateLimit-Policy: 20;w=900
+      RateLimit-Limit: 20
+      RateLimit-Remaining: 0
+      Retry-After: 545
+    Every auth call carries RateLimit-Limit/RateLimit-Remaining/RateLimit-Reset headers (proven live).

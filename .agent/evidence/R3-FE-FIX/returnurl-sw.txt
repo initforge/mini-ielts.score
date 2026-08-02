@@ -1,0 +1,30 @@
+# Bug 3: SW return-URL carries tab=sw
+## ExamModeDialog 401 redirect (returnUrl with &tab=sw for SW exams)
+51-      if (status === 401) {
+52:        const tabParam = exam.skill_type === 'SW' ? '&tab=sw' : '';
+53:        const returnUrl = encodeURIComponent(`/thi-thu?exam=${exam.id}&mode=${mode}${tabParam}`);
+54:        navigate(`/dang-nhap?returnUrl=${returnUrl}`);
+55-        return;
+56-      }
+57-      console.error('Failed to create attempt:', error);
+
+## CatalogPage consumes tab param (SW tab active)
+31:  const tabParam = searchParams.get('tab');
+32:  const skillType: SkillTab = tabParam === 'sw' ? 'SW' : 'LR';
+43:  const cacheKey = catalogCacheKey(skillType, collectionId, search);
+46:    skillType,
+134:                  skillType === 'LR' ? 'bg-background text-foreground shadow-sm' : 'hover:bg-background/50 hover:text-foreground'
+136:                aria-pressed={skillType === 'LR'}
+143:                  skillType === 'SW' ? 'bg-background text-foreground shadow-sm' : 'hover:bg-background/50 hover:text-foreground'
+145:                aria-pressed={skillType === 'SW'}
+
+## CatalogPage auto-opens mode dialog from ?exam=&mode=
+73:  // Preserve anonymous-login intent: /dang-nhap?returnUrl=/thi-thu?exam=<id>&mode=<mode>
+74-  useEffect(() => {
+75-    const examId = searchParams.get('exam');
+76-    if (!data || !examId) return;
+77-    const target = data.items.find((e) => e.id === Number(examId));
+78-    if (target) {
+79-      setSelectedExam(target);
+80-      setDialogMode(searchParams.get('mode') === 'practice' ? 'practice' : 'exam');
+81-      setIsModeDialogOpen(true);

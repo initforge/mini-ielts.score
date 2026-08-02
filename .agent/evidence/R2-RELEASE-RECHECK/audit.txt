@@ -1,0 +1,37 @@
+R2-RELEASE-RECHECK — npm audit --omit=dev (clean snapshot)
+==========================================================
+anish-toeic-web-app: exit=1 (vulnerabilities found)
+  3 vulnerabilities: 1 low, 2 high, 0 moderate, 0 critical
+  - quill (direct, low): XSS via HTML export — GHSA-v3m3-f69x-jf25
+  - react-router-dom (direct, high): RSC Mode CSRF Bypass — GHSA-qwww-vcr4-c8h2
+  - react-router (transitive, high): same advisory
+  fixes: quill -> 'npm audit fix'; react-router -> 'npm audit fix --force' (breaking)
+
+# npm audit report
+
+quill  =2.0.3
+Quill is vulnerable to XSS via HTML export feature - https://github.com/advisories/GHSA-v3m3-f69x-jf25
+fix available via `npm audit fix`
+node_modules/quill
+
+react-router  7.12.0 - 8.2.0
+Severity: high
+React Router: RSC Mode CSRF Bypass Allows Action Execution Before 400 Response - https://github.com/advisories/GHSA-qwww-vcr4-c8h2
+fix available via `npm audit fix --force`
+Will install react-router-dom@7.11.0, which is a breaking change
+node_modules/react-router
+  react-router-dom  >=7.12.0-pre.0
+  Depends on vulnerable versions of react-router
+  node_modules/react-router-dom
+
+3 vulnerabilities (1 low, 2 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+anish-toeic-web-services: exit=0 — found 0 vulnerabilities
+
+found 0 vulnerabilities

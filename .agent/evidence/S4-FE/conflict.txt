@@ -1,0 +1,21 @@
+S4-FE conflict handling (AC11 revisions)
+timestamp: 2026-07-31T16:29:56.473Z
+attemptId: 97
+
+Two contexts, same question, same client_revision, different payload → 409
+→ refreshFromServer merges local dirty draft (rev bump) → re-save 200.
+
+PASS conflict attempt created (id=99)
+PASS concurrent editor PATCH rev+5 accepted (200)
+PASS stale PATCH rejected with HTTP 409
+PASS after 409 → re-save PATCH succeeds (reconcile)
+PASS final rev(q1)=6 ≥ base+6 (dirty draft re-saved, no ack lost)
+PASS no error banner after conflict reconcile
+
+baseline rev(q1)=0, qid=1
+final rev(q1)=6 (base 0)
+
+REQ PATCH /api/toeic-attempts/99/responses/1 body={"selectedOptionId":1,"markedForReview":false,"note":null,"clientRevision":1}
+RES 409 PATCH /api/toeic-attempts/99/responses/1
+REQ PATCH /api/toeic-attempts/99/responses/1 body={"selectedOptionId":1,"markedForReview":false,"note":null,"clientRevision":6}
+RES 200 PATCH /api/toeic-attempts/99/responses/1

@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/01-exams-sw-list-full.png",
+  "actual": "references/xoamutoeic/screenshots/desktop/01-exams-sw-list-full.png",
+  "rmse": 0,
+  "diffPixelsPct": 0,
+  "dims": {
+    "equal": true,
+    "reference": "1280x2130",
+    "actual": "1280x2130"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R2-VISUAL/smoke/01-vs-self/overlay.png",
+    "diff": ".agent/evidence/R2-VISUAL/smoke/01-vs-self/diff.png",
+    "metric": ".agent/evidence/R2-VISUAL/smoke/01-vs-self/metric.json"
+  }
+}

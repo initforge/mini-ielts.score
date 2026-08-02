@@ -1,0 +1,42 @@
+S5-FE console (errors/warnings) + network request/response proof
+timestamp: 2026-07-31T14:07:56.228Z
+
+=== DESKTOP console ===
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+=== MOBILE console ===
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+=== DESKTOP network ===
+REQ POST http://localhost:5173/api/auth/login body={"email":"seed.owner@example.com","password":"seed-password-123"}
+RES 200 POST http://localhost:5173/api/auth/login
+REQ GET http://localhost:5173/api/toeic-exams?skillType=LR&page=1&pageSize=100 body=
+RES 200 GET http://localhost:5173/api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ GET http://localhost:5173/api/toeic-exams?skillType=SW&page=1&pageSize=100 body=
+RES 200 GET http://localhost:5173/api/toeic-exams?skillType=SW&page=1&pageSize=100
+REQ POST http://localhost:5173/api/toeic-exams/2/attempts body={"mode":"EXAM"}
+RES 201 POST http://localhost:5173/api/toeic-exams/2/attempts
+REQ GET http://localhost:5173/api/toeic-attempts/28 body=
+REQ GET http://localhost:5173/api/toeic-attempts/28 body=
+RES 200 GET http://localhost:5173/api/toeic-attempts/28
+RES 200 GET http://localhost:5173/api/toeic-attempts/28
+
+=== MOBILE network ===
+REQ POST http://localhost:5173/api/auth/login body={"email":"seed.owner@example.com","password":"seed-password-123"}
+RES 200 POST http://localhost:5173/api/auth/login
+REQ GET http://localhost:5173/api/toeic-exams?skillType=LR&page=1&pageSize=100 body=
+RES 200 GET http://localhost:5173/api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ GET http://localhost:5173/api/toeic-exams?skillType=SW&page=1&pageSize=100 body=
+RES 200 GET http://localhost:5173/api/toeic-exams?skillType=SW&page=1&pageSize=100
+REQ POST http://localhost:5173/api/toeic-exams/2/attempts body={"mode":"EXAM"}
+RES 201 POST http://localhost:5173/api/toeic-exams/2/attempts
+REQ GET http://localhost:5173/api/toeic-attempts/29 body=
+REQ GET http://localhost:5173/api/toeic-attempts/29 body=
+RES 200 GET http://localhost:5173/api/toeic-attempts/29
+RES 200 GET http://localhost:5173/api/toeic-attempts/29

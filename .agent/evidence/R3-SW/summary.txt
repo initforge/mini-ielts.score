@@ -1,0 +1,114 @@
+R3-SW-JOURNEY2 — REAL-CDP full SW journey (desktop 1280x800 + mobile 375x812)
+timestamp: 2026-08-01T06:10:00Z
+browser: /opt/coccoc/browser/browser (Chrome/147.0.7727.150) --headless=new
+  --remote-debugging-port=9223 --user-data-dir=/tmp/opencode/r3-cdp-sw --no-sandbox
+  --use-fake-device-for-media-stream --use-fake-ui-for-media-stream
+  --autoplay-policy=no-user-gesture-required
+connect: playwright connectOverCDP('http://127.0.0.1:9223')
+CDP domains enabled: Network, Runtime, Log, Security (evidence: cdp-desktop.json / cdp-mobile.json)
+
+====================================================================
+ATTEMPTS / SCORES
+====================================================================
+desktop: attemptId 246, totalScore 400, status FINAL, mode EXAM, 8/8 writing persisted
+mobile:  attemptId 247, totalScore 400, status FINAL, mode EXAM, 8/8 writing persisted
+
+CHECKLIST
+desktop: PASS=71 FAIL=1 (FAIL: anonymous-login intent auto-reopens mode dialog (SW exam))
+mobile:  PASS=71 FAIL=1 (FAIL: anonymous-login intent auto-reopens mode dialog (SW exam))
+Full checklists in journey-desktop.txt / journey-mobile.txt.
+
+====================================================================
+REAL MINIO UPLOAD PROOF
+====================================================================
+16 objects persisted in bucket toeic-media (see minio-listing.txt for sha256+size):
+  8x uploads/attempts/246/q{22..29}/q{22..29}.webm  (desktop)
+  8x uploads/attempts/247/q{22..29}/q{22..29}.webm  (mobile)
+All: size 37004 bytes, Content-Type audio/webm;codecs=opus, sha256 per minio-listing.txt
+Upload transport (CDP): browser PUT to presigned URL http://127.0.0.1:19000/toeic-media/... -> HTTP 200
+  (8x per viewport, plus 8x OPTIONS preflight 204).
+Object LastModified matches journey wall-clock (desktop 06:05:36–06:06:03Z, mobile 06:07:17–06:07:44Z).
+
+====================================================================
+CDP TOTALS (desktop / mobile)
+====================================================================
+runtime exceptions:                       0 / 0
+MinIO PUT responses HTTP 200:             8 / 8
+network.loadingFailed:                    8 / 8  (all net::ERR_ABORTED canceled=true on the PUT
+                                                requestId that ALSO returned 200 and whose object
+                                                persisted — Chromium blob-body teardown artifact,
+                                                classified benign; not an app failure)
+console errors/warnings:
+  - [antd: compatible] antd v5 / React 19 compatibility notice (dev warning)  1 / 1
+  - [SWStore] conflict on autosave q37 — reconciling revision (warning)       2 / 2
+Log.entryAdded:
+  - CSP connect-src invalid-source format warning (https://*.s3.*.amazonaws.com
+    ignored per CSP spec; NOT a block — connect-src DOES include 127.0.0.1:19000
+    and the PUT succeeded)                                                    3 / 3
+  - 401 Unauthorized (anonymous attempt creation -> intentional bounce to login) 2 / 2
+  - 409 Conflict (writing q8 autosave race, reconciled by clientRevision)     2 / 2
+  - 404 Not Found (history page enrichment of legacy attempts without result) 6 / 6
+cookie flags: token httpOnly=true, sameSite=Lax, secure=false (localhost HTTP dev — recorded)
+localStorage: only catalog cache keys; NO 'token' key (both viewports) — PASS
+leak scan: no token/authorization in any request URL or header; no audio base64/blobs
+  on the network. Only data:image/svg+xml;base64 question-prompt images (by design).
+
+====================================================================
+REAL BUGS / FINDINGS
+====================================================================
+[REAL BUG — FAIL] Anonymous-login intent broken for SW exams (both viewports).
+  ExamModeDialog.tsx builds returnUrl as `/thi-thu?exam=<id>&mode=<mode>` WITHOUT
+  `tab=sw`. After login the CatalogPage defaults to the LR tab, the SW exam is not
+  in the LR items, and the auto-reopen effect never fires — the user is dropped on
+  the LR catalog after authenticating instead of resuming the SW attempt dialog.
+  Impact: SW exams cannot be started through the anonymous login path; user must
+  manually re-navigate to the SW tab -> exam -> Bắt đầu. LR exams unaffected
+  (exam id 1 sits on the default tab). Fix candidate: append `&tab=sw` when
+  exam.skill_type === 'SW'.
+  Evidence: journey-desktop.txt / journey-mobile.txt FAIL line; manual resume used.
+
+[OBSERVED — NOT a bug] CSP source-format warning for `https://*.s3.*.amazonaws.com`
+  is still logged by Chrome, but it is an "invalid source ... will be ignored"
+  spec message, NOT a connection refusal. connect-src includes
+  http://127.0.0.1:19000; the browser PUT to MinIO returned 200 and objects
+  persisted. The old dev-mode CSP *block* is gone.
+
+[MINOR — self-healed] Writing q8 autosave 409 conflict (responses/37) on both
+  viewports: two debounced autosaves raced (test types fast); store reconciled
+  via clientRevision and all 8 writing answers persisted server-side.
+  No data loss.
+
+[MINOR — expected] History page requests /toeic-attempts/{id}/result for legacy
+  COMPLETED attempts that have no result -> six 404 responses; the page catches
+  them per-row. Not part of the core journey.
+
+[INFRA DRIFT — recovered] On start, BE (node dist/server.js, port 7000) was
+  running WITHOUT S3_ENDPOINT/S3 credentials -> presign returned the mock
+  `test-bucket.s3.test.amazonaws.com` URL. Restarted BE with the documented env
+  (S3_ENDPOINT=http://127.0.0.1:19000, S3_REGION=us-east-1, S3_BUCKET=toeic-media,
+  S3_ACCESS_KEY/S3_SECRET_KEY=minioadmin, AI_GRADING_TEST_MODE=true) — presign now
+  returns real MinIO URLs and uploads persisted. Grading worker was already
+  running (AI_GRADING_TEST_MODE=true).
+
+====================================================================
+SCREENSHOTS (canonical refids, viewport 1280x800 / 375x812 to match the map)
+====================================================================
+desktop20-exam-sw-detail.png       desktop21-mic-test.png
+desktop22-speaking-directions.png  desktop23-q1-prep.png
+desktop24-q3-picture.png           desktop25-q5-respond.png
+desktop26-q8-information.png       desktop27-WRITING-DIRECTIONS.png  (writing start page)
+desktop28-writing-q1-picture.png   desktop29-writing-q6-email.png
+desktop30-writing-q8-essay.png     desktop31-processing.png
+mobile01-catalog-sw.png            mobile04-writing-q1-picture.png
+mobile-sw-speaking.png             mobile-sw-writing.png
+extras: desktop32-exam-sw-result.png, desktop33-exam-sw-history-review.png,
+        mobile08-exam-sw-result.png, mobile09-exam-sw-history-review.png
+all screenshots verified non-blank (pixel variance check) and correct viewport size.
+
+====================================================================
+VERDICT
+====================================================================
+Journey PASS (score 400 FINAL, 16/16 MinIO objects persisted, 0 uncaught
+exceptions, 8/8 PUT 200 per viewport, no token in localStorage, no leakage).
+1 REAL bug found and reported: SW anonymous-login intent does not auto-resume
+(missing tab=sw in ExamModeDialog returnUrl) — flagged FAIL on both viewports.

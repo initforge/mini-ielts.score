@@ -1,0 +1,36 @@
+R2-S2-BE rate-limit receipts
+Date: 2026-08-01T01:35:30Z
+BE running: node dist/server.js, PID 1817569, log /tmp/opencode/r2-be.log
+
+Limiters (all keyGenerator = clientIp(): cf-connecting-ip validated via net.isIP, else req.ip; trust proxy only when TRUST_PROXY=true):
+- /api/auth ................ 20 req / 15 min (pre-existing, now IP-aware)
+- /api/toeic-exams/:id/attempts ......... 30 / 15 min
+- /api/toeic-attempts/:id/responses ..... 120 / 15 min
+- /api/toeic-attempts/:id/media/presign . 60 / 15 min
+- /api/toeic-attempts/:id/submit ........ 30 / 15 min
+- /api/toeic-attempts/:id/grading-status 120 / 15 min
+
+Verified headers from live server:
+
+1) auth limiter
+cmd: curl -s -X POST http://127.0.0.1:7000/api/auth/login -H 'Content-Type: application/json' -d '{"email":"seed.owner@example.com","password":"seed-password-123"}' -D - -o /dev/null | rg -i ratelimit
+RateLimit-Policy: 20;w=900
+RateLimit-Limit: 20
+RateLimit-Remaining: 19
+RateLimit-Reset: 900
+
+2) grading-status limiter (120/15min)
+cmd: curl -s -b /tmp/opencode/cj.txt -D - -o /dev/null http://127.0.0.1:7000/api/toeic-attempts/166/grading-status | rg -i ratelimit
+RateLimit-Policy: 120;w=900
+RateLimit-Limit: 120
+RateLimit-Remaining: 119
+RateLimit-Reset: 900
+
+3) attempts-create limiter (30/15min)
+cmd: curl -s -b /tmp/opencode/cj.txt -X POST -D - -o /dev/null http://127.0.0.1:7000/api/toeic-exams/1/attempts -H 'Content-Type: application/json' -d '{"mode":"EXAM"}' | rg -i ratelimit
+RateLimit-Policy: 30;w=900
+RateLimit-Limit: 30
+RateLimit-Remaining: 29
+RateLimit-Reset: 900
+
+Exit codes: all 0 (curl). File: anish-toeic-web-services/src/server.ts.

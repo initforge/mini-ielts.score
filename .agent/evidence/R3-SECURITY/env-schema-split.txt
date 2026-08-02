@@ -1,0 +1,54 @@
+R3-SECURITY env schema split (src/config/env.ts)
+================================================
+
+- serverEnvSchema: NODE_ENV, PORT, DB_*, JWT_SECRET, JWT_EXPIRES_IN,
+  CORS_ORIGIN, REDIS_URL, CLOUDFLARE_AI_*, AI_GRADING_TEST_MODE,
+  TRUST_PROXY, S3 vars (optional), CLOUDFLARE_AI_TIMEOUT_MS.
+- workerEnvSchema: NODE_ENV, DB_*, REDIS_URL, JWT_SECRET,
+  CLOUDFLARE_AI_*, AI_GRADING_TEST_MODE, CLOUDFLARE_AI_TIMEOUT_MS.
+- validateServerEnv() / validateWorkerEnv() entry points (validateEnv kept
+  as an alias for the old name).
+- CORS_ORIGIN=* rejected by refine; JWT_SECRET rejects the REPLACE_WITH
+  placeholder (fail closed).
+
+Schema & validator key lines:
+
+8: * the minimal set the worker touches (DB, Redis, AI adapter, JWT_SECRET to
+11: * JWT_SECRET fails closed on the documented placeholder string — PM2 ships
+16:const JWT_SECRET_MIN = 32;
+21:  .min(JWT_SECRET_MIN, 'JWT_SECRET is required and must be at least 32 characters')
+24:      "JWT_SECRET must not be a placeholder (contains 'REPLACE_WITH') — PM2/VPS must supply a real secret",
+27:    message: 'JWT_SECRET must not be the documented placeholder',
+49:export const serverEnvSchema = z.object({
+53:  JWT_SECRET: jwtSecretSchema,
+55:  CORS_ORIGIN: z
+63:        "CORS_ORIGIN='*' is forbidden: server.ts always sets credentials:true, and browsers reject '*' with credentials — use an explicit origin list",
+65:  REDIS_URL: z.string().default('redis://localhost:6379'),
+67:  TRUST_PROXY: z.enum(['true', 'false']).default('false'),
+68:  // S3 — OPTIONAL. MinIO local uses S3_ENDPOINT/S3_REGION/S3_ACCESS_KEY/
+69:  // S3_SECRET_KEY; production AWS uses the same names (media.adapter.ts falls
+71:  S3_ENDPOINT: z.string().optional(),
+72:  S3_REGION: z.string().optional(),
+73:  S3_BUCKET: z.string().optional(),
+74:  S3_ACCESS_KEY: z.string().optional(),
+75:  S3_SECRET_KEY: z.string().optional(),
+82:export const workerEnvSchema = z.object({
+85:  REDIS_URL: z.string().default('redis://localhost:6379'),
+86:  // The worker never verifies JWTs (no auth), but keeping JWT_SECRET here
+89:  JWT_SECRET: jwtSecretSchema,
+93:export type ServerEnvConfig = z.infer<typeof serverEnvSchema>;
+94:export type WorkerEnvConfig = z.infer<typeof workerEnvSchema>;
+131:    JWT_SECRET: source.JWT_SECRET ?? '',
+132:    REDIS_URL: source.REDIS_URL ?? 'redis://localhost:6379',
+140:export function validateServerEnv(customEnv?: Record<string, string | undefined>): ServerEnvConfig {
+146:    CORS_ORIGIN: source.CORS_ORIGIN ?? 'http://localhost:5173',
+147:    TRUST_PROXY: source.TRUST_PROXY ?? 'false',
+148:    S3_ENDPOINT: source.S3_ENDPOINT ?? '',
+149:    S3_REGION: source.S3_REGION ?? '',
+150:    S3_BUCKET: source.S3_BUCKET ?? '',
+151:    S3_ACCESS_KEY: source.S3_ACCESS_KEY ?? '',
+152:    S3_SECRET_KEY: source.S3_SECRET_KEY ?? '',
+158:  const parsed = parseOrThrow(serverEnvSchema, { ...defaults, ...source }, 'server');
+163:export function validateWorkerEnv(customEnv?: Record<string, string | undefined>): WorkerEnvConfig {
+165:  const parsed = parseOrThrow(workerEnvSchema, { ...baseDefaults(source), ...source }, 'worker');
+171:export const validateEnv = validateServerEnv;

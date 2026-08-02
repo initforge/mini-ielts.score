@@ -1,0 +1,12 @@
+=== STATE 6a: PATCH invalid option id (nonexistent) ===
+{"error":"Selected option does not belong to this question"}
+status:409
+=== STATE 6b: PATCH non-numeric option id (zod 400) ===
+{"error":[{"code":"invalid_type","expected":"number","received":"string","path":["selectedOptionId"],"message":"Expected number, received string"}]}
+status:400
+=== STATE 6c: presign >25MB ===
+{"error":[{"code":"too_big","maximum":26214400,"type":"number","inclusive":true,"exact":false,"message":"fileSize must not exceed 26214400 bytes","path":["fileSize"]}]}
+status:400
+=== STATE 6d: presign base64 payload ===
+{"error":[{"code":"custom","message":"base64 audio content must not be sent in request body — use presigned S3 upload","path":["content"]}]}
+status:400

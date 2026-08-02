@@ -1,0 +1,25 @@
+R2-S2-BE env validation receipts
+Date: 2026-08-01T01:35:30Z
+
+1) typecheck after env.ts change
+cmd: npm run typecheck  (cwd anish-toeic-web-services)
+exit: 0
+
+2) prod guard — AI_GRADING_TEST_MODE must throw in production
+cmd: NODE_ENV=production AI_GRADING_TEST_MODE=true JWT_SECRET=test-only-secret-that-is-long-enough-32chars DB_HOST=localhost DB_USER=root DB_NAME=x node -e "require('./dist/config/env.js').validateEnv();" > /tmp/opencode/guard.log 2>&1; echo "node-exit=$?"
+exit: 1
+log: /tmp/opencode/guard.log
+guard message: "Environment validation failed: AI_GRADING_TEST_MODE=true is forbidden in production"
+(note: requiring dist/config/env.js alone does NOT run validation — guard lives inside validateEnv(), called by server.ts and grading.worker.ts)
+
+3) defaults present when vars omitted (prod, test mode off)
+cmd: NODE_ENV=production TRUST_PROXY=false AI_GRADING_TEST_MODE=false JWT_SECRET=test-only-secret-that-is-long-enough-32chars DB_HOST=localhost DB_USER=root DB_NAME=x node -e "const e=require('./dist/config/env.js').validateEnv(); console.log('TRUST_PROXY='+e.TRUST_PROXY, 'REDIS_URL='+e.REDIS_URL, 'AI_TEST='+e.AI_GRADING_TEST_MODE);"
+output: TRUST_PROXY=false REDIS_URL=redis://localhost:6379 AI_TEST=false
+exit: 0
+
+4) existing negative invariant still holds (covered by server.test.ts)
+expect validateEnv({ DB_HOST: '' }) throws /Environment validation failed/ — PASS (134/134 suite includes server.test.ts)
+
+Files:
+- anish-toeic-web-services/src/config/env.ts (schema lines 19-27, defaults, prod guard)
+- anish-toeic-web-services/src/workers/grading.worker.ts (validateEnv() at :21-23)

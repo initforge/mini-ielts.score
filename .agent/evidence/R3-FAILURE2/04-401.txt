@@ -1,0 +1,19 @@
+R3-FAILURE2 state 04 — 401 unauthenticated (no cookie, forged cookie)
+TARGET: GET /api/toeic-attempts (requireAuth)
+
+--- [1] no cookie ---
+COMMAND: curl -s -w "HTTP %{http_code}" http://localhost:7000/api/toeic-attempts
+BODY: {"error":"Unauthorized: Missing token"}
+STATUS: 401
+
+--- [2] forged cookie token=abc ---
+COMMAND: curl -s -w "HTTP %{http_code}" -H "Cookie: token=abc" http://localhost:7000/api/toeic-attempts
+BODY: {"error":"Unauthorized: Invalid or expired token"}
+STATUS: 401
+
+--- [3] forged HS256 JWT signed with wrong secret, sub=1/jti=forged ---
+COMMAND: curl -s -w "HTTP %{http_code}" -H "Cookie: token=<jwt wrong secret>" http://localhost:7000/api/toeic-attempts
+BODY: {"error":"Unauthorized: Invalid or expired token"}
+STATUS: 401
+
+VERDICT: PASS

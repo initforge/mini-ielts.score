@@ -1,0 +1,10 @@
+R3-FAILURE2 state 12 — autosave retry (PATCH fails once → retried → saved)
+ATTEMPT: 275 (SW PRACTICE, owner). Writing q30 pre-seeded (resume lands on writing view).
+SIMULATION: first PATCH responses/30 intercepted → 500; later autosaves continue.
+
+UI PROOF: 12-autosave-retry.png
+NETWORK LOG: PATCH#1 ->500 FAIL ; PATCH#2 ->OK ; PATCH#3 ->OK
+DOM TIMELINE: dirty>dirty>dirty>saved>saved>saved>...>dirty>dirty>dirty>saved (failed autosave leaves draft dirty; retry succeeds → 'Đã lưu')
+API PROOF: GET /api/toeic-attempts/275 → q30 text saved, client_revision=4 (bumped per successful retry)
+
+VERDICT: PASS

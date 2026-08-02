@@ -1,0 +1,41 @@
+R2-S2-BE auth-cookie receipts (live curl, BE :7000)
+Date: 2026-08-01T01:35:30Z
+Seed creds from anish-toeic-web-services/src/migrations/seed.ts:
+  email: seed.owner@example.com  /  password: seed-password-123
+
+1) LOGIN — no token in JSON body, Set-Cookie present
+cmd: curl -s -X POST http://127.0.0.1:7000/api/auth/login -H 'Content-Type: application/json' -d '{"email":"seed.owner@example.com","password":"seed-password-123"}' -D - -o /tmp/opencode/login-body.json
+exit: 0
+HTTP status: 200 OK
+Set-Cookie:
+  token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; Max-Age=604800; Path=/; Expires=Sat, 08 Aug 2026 ...; HttpOnly; SameSite=Lax
+  (cookie-name: token; httpOnly; SameSite=Lax; secure would appear in production NODE_ENV)
+BODY (artifacts): /tmp/opencode/login-body.json
+  {"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+  => NO token field. PASS.
+
+2) COOKIE ROUNDTRIP — httpOnly cookie authenticates protected route
+cmd: curl -s -c /tmp/opencode/cj.txt -X POST http://127.0.0.1:7000/api/auth/login -H 'Content-Type: application/json' -d '{"email":"seed.owner@example.com","password":"seed-password-123"}' -o /dev/null
+cmd: curl -s -b /tmp/opencode/cj.txt http://127.0.0.1:7000/api/toeic-attempts -D - -o /tmp/opencode/history-body.json
+exit: 0
+HTTP status: 200 OK  (cookie jar file: /tmp/opencode/cj.txt; body: /tmp/opencode/history-body.json)
+=> cookie-based auth works end to end.
+
+3) REGISTER — same contract (verified in jest: security.test.ts :85 register asserts body.token undefined + HttpOnly cookie)
+covered by: npm test (see test-results.txt)
+
+4) REGISTER (live) — no token in JSON body, cookie set
+cmd: curl -s -X POST http://127.0.0.1:7000/api/auth/register -H 'Content-Type: application/json' -d '{"email":"r2verify4@example.com","password":"verify12345","displayName":"R2 Verify"}' -D /tmp/opencode/reg-headers.txt
+exit: 0
+HTTP status: 201 Created
+Set-Cookie: token=...; Max-Age=604800; Path=/; HttpOnly; SameSite=Lax
+BODY: {"user":{"id":"5","email":"r2verify4@example.com","displayName":"R2 Verify"}}  => NO token. PASS.
+(verification user deleted afterwards from dev DB: DELETE FROM toeic.users WHERE email LIKE 'r2verify%' → 0 remaining)
+
+5) BEARER still accepted (defensive compat) — verified by suite: api.test.ts / integration.test.ts / toeicMedia.test.ts all green using Authorization: Bearer.
+
+FE changes (no curl possible for localStorage flow):
+- api.ts: withCredentials: true, no interceptor, no localStorage reads.
+- LoginPage.tsx: navigates on data.user; no localStorage.setItem('token').
+- grep for remaining auth-token localStorage usage: none in api.ts/LoginPage.tsx
+  (attemptStorage.ts localStorage usage is IndexedDB fallback for exam drafts, unrelated to auth).

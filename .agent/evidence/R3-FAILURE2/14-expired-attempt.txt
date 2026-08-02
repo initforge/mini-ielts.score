@@ -1,0 +1,8 @@
+R3-FAILURE2 state 14 — expired attempt → runner auto-submit
+ATTEMPT: 277 (LR EXAM). PRE: UPDATE toeic_attempts SET started_at = DATE_SUB(NOW(), INTERVAL 2 HOUR) WHERE id=277 (deadline 120min already passed).
+
+UI PROOF: 14-expired-autosubmit.png
+NAVIGATION: runner loaded at deadline=0 → auto-submit fired → URL became /thi-thu/ket-qua/277 (result page)
+API/DB PROOF: toeic_attempts id=277 status='COMPLETED', completed_at=2026-08-01 08:30:38 (auto-submitted without any click)
+
+VERDICT: PASS

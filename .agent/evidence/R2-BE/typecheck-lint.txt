@@ -1,0 +1,15 @@
+R2-S2-BE typecheck + lint receipts
+Date: 2026-08-01T01:35:30Z
+
+BACKEND (anish-toeic-web-services)
+cmd: npm run typecheck  ->  exit 0
+cmd: npm run lint       ->  exit 0
+cmd: npm run build      ->  exit 0  (dist/server.js + dist/migrations/seed.js present)
+
+FULL STACK (workspace root, for awareness)
+cmd: npm run typecheck --workspaces  ->  FAILS ONLY on pre-existing FE errors in
+  anish-toeic-web-app/src/pages/user/ResultPage.tsx (TS7009/TS2345/TS2558, lines 166-169)
+  — file OUT of R2-S2-BE scope, untouched, errors pre-date this change.
+  R2-BE FE files clean: api.ts, pages/user/LoginPage.tsx — zero errors reported for either.
+
+Artifacts: /tmp/opencode/r2-be-diff.txt (backend diff vs HEAD for the 5 owned BE files)

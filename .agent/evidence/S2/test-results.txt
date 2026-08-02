@@ -1,0 +1,44 @@
+Work ID: anish-thi-thu-xoamutoeic-20260730 — Slice S2
+Evidence: typecheck + lint + full Jest suite against REAL MySQL (127.0.0.1:13306).
+Date: 2026-07-31
+Workspace: anish-toeic-web-services
+
+────────────────────────────────────────────────────────────────────────────
+1) Env for test run (exported via shell; no dotenv):
+   NODE_ENV=test DB_HOST=127.0.0.1 DB_PORT=13306 DB_USER=toeic
+   DB_PASSWORD=toeic_dev_pw DB_NAME=toeic
+   JWT_SECRET='test-only-secret-that-is-long-enough-32chars'
+   CORS_ORIGIN=http://localhost:5173 REDIS_URL=redis://127.0.0.1:16379
+
+2) npm run typecheck   -> exit 0
+3) npm run lint        -> exit 0
+4) npm run build       -> exit 0 (tsc + SQL copy to dist/migrations)
+5) npm test (jest, real MySQL) -> exit 0 (run 1)
+   Test Suites: 11 passed, 11 total
+   Tests:       134 passed, 134 total
+   Time:        17.21 s
+
+   Confirmation run after all changes and DB restore (run 2): exit 0,
+   11/11 suites, 134/134 tests.
+
+   migrations.test.ts runs against the real MySQL: wipes every table in the
+   connected schema (FK-safe), applies up, verifies all 14 tables, verifies
+   schema_migrations contains exactly 001_schema.up.sql, verifies FK
+   user_id->users.id and exam_id->toeic_exams.id, re-runs up (idempotent),
+   then down and verifies zero tables remain. Assertions unweakened.
+
+6) Tests fixed for the real-MySQL environment (assertions strengthened, not
+   weakened):
+   - src/tests/migrations.test.ts: clean-slate now drops every table in the
+     connected schema (previously only schema_migrations, which broke against
+     an already-seeded DB).
+   - src/tests/server.test.ts: login route regression guard no longer assumes
+     a non-existent DB. Against real MySQL an unknown user legitimately gets
+     401; the swallowed-route failure mode is the middleware 401 "Missing
+     token" error, which is what the guard still rejects. 404 is also
+     rejected, so the route mount is still proven.
+
+7) No Math.random in src (task 9):
+   grep -r "Math.random" anish-toeic-web-services/src  -> 0 matches.
+
+8) UNAVAILABLE: none — real MySQL and Redis were reachable; all suites ran.

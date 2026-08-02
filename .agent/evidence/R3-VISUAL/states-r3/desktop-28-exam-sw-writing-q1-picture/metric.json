@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/28-exam-sw-writing-q1-picture.png",
+  "actual": ".agent/evidence/R3-SW/desktop28-writing-q1-picture.png",
+  "rmse": 194.203747,
+  "diffPixelsPct": 97.7688,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-28-exam-sw-writing-q1-picture/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-28-exam-sw-writing-q1-picture/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-28-exam-sw-writing-q1-picture/metric.json"
+  }
+}

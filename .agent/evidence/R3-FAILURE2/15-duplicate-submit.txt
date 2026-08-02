@@ -1,0 +1,20 @@
+R3-FAILURE2 state 15 — duplicate submit (idempotent; UNIQUE attempt_id keeps 1 grading_job)
+Fresh SW attempt 271 (exam_id=2) for owner.
+
+--- [1] 1st POST /api/toeic-attempts/271/submit ---
+COMMAND: curl -b owner.jar -X POST http://localhost:7000/api/toeic-attempts/271/submit
+BODY: {"success":true}   STATUS: 200
+
+--- [2] 2nd POST /api/toeic-attempts/271/submit ---
+COMMAND: curl -b owner.jar -X POST http://localhost:7000/api/toeic-attempts/271/submit
+BODY: {"success":true,"alreadySubmitted":true}   STATUS: 200
+
+--- [3] 3rd POST /api/toeic-attempts/271/submit ---
+COMMAND: curl -b owner.jar -X POST http://localhost:7000/api/toeic-attempts/271/submit
+BODY: {"success":true,"alreadySubmitted":true}   STATUS: 200
+
+--- [4] DB invariant: toeic_grading_jobs.attempt_id is UNIQUE; SELECT showed exactly 1 row ---
+COMMAND: mysql -utoeic -ptoeic_dev_pw toeic -e "SELECT id,attempt_id,status,retry_count FROM toeic_grading_jobs WHERE attempt_id=271;"
+ROW:    (62, 271, QUEUED, 0)   → 1 grading_job only
+
+VERDICT: PASS

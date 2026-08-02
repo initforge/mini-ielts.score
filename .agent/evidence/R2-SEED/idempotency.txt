@@ -1,0 +1,17 @@
+# idempotency.txt — R2-S5-SEED
+# ts: 2026-08-01T01:39:36Z
+# method: full-fingerprint md5 (questions/options/review/sections/exams/collections/users, ordered) before vs after a 3rd seed run on live 'toeic' DB
+# seed cmd (workdir anish-toeic-web-services): node $ROOT/node_modules/ts-node/dist/bin.js src/migrations/seed.ts
+
+seed re-run exit code: 0
+fingerprint BEFORE 3rd run: 4ab33bdcd36c3fbf438737f4ea5f1a54  -
+fingerprint AFTER  3rd run: 4ab33bdcd36c3fbf438737f4ea5f1a54  -
+RESULT: IDENTICAL — re-seeding over existing data changes nothing (no duplicates, stable rows)
+
+row counts after re-run:
+q
+37
+o
+84
+e
+2

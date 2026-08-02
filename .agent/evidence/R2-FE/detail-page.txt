@@ -1,0 +1,39 @@
+R2-FE / INJ-003 — Task 2: EXAM DETAIL PAGE
+============================================
+Date: 2026-08-01
+
+New file: anish-toeic-web-app/src/pages/user/ExamDetailPage.tsx
+Route:    /thi-thu/:examSlug  (wired in App.tsx, existing routes untouched)
+
+Layout (Anish tokens, matches reference desktop/04, 20, 27):
+  - AnishHeader / AnishFooter shell (same as CatalogPage)
+  - Back link -> /thi-thu
+  - Skill-type chip (Listening & Reading | Speaking & Writing)
+  - Exam title, duration (phút), question count, part count
+  - "Bắt đầu" (Start test) -> opens ExamModeDialog with the exam
+    (mode dialog then starts the attempt; 401 -> login redirect w/ intent)
+  - "Xem kết quả lần trước"/"Tiếp tục bài làm" link when a previous attempt
+    exists for the exam (GET /toeic-attempts, cookie session)
+  - "Bạn hãy đăng nhập..." note when attempts query is denied (401)
+  - Instructions panel: ordered list of sections (title + instructions)
+  - Loading / error / not-found (404) / forbidden (403) states
+
+Data: GET /api/toeic-exams/:slug (backend endpoint already exists)
+
+curl against live backend + vite proxy:
+  $ curl -s http://127.0.0.1:7000/api/toeic-exams/anish-full-lr-001 | head -c 200
+  {"id":1,"collection_id":1,"slug":"anish-full-lr-001","title":"Anish Full
+   Practice 1 — Listening & Reading","duration_minutes":120,"question_count":21,
+   "skill_type":"LR", ... "sections":[{...order_index:1...},...7 sections]}
+  404 for unknown slug: curl -o /dev/null -w "%{http_code}"
+    /api/toeic-exams/nonexistent-slug  -> 404
+
+Browser verification (playwright, .agent/evidence/R2-FE/verify.js):
+  title="Anish Full Practice 1 — Listening & Reading"
+  body shows chip, 120 phút, 21 câu hỏi, 7 phần thi, "Bắt đầu" button,
+  instructions panel with 7 sections
+  -> detail-page.png  PASS
+
+Catalog flow preserved: ExamCard still has its "Thi thử"/"Luyện tập" buttons
+opening ExamModeDialog directly; the card title is now also a Link to the
+detail page.  Anonymous-login intent (?exam=&mode=) flow in CatalogPage kept.

@@ -1,0 +1,55 @@
+R2-S2-FIX — API verification
+====================================================
+All commands from anish-toeic-web-services/. BE restarted from fresh build.
+
+BE restart:
+  pkill -f 'node dist/server.js'          (no match ignored)
+  set -a; source .env; set +a; nohup node dist/server.js > /tmp/opencode/r2-fix-be.log 2>&1 &
+  Server log tail: "Server running on port 7000"
+
+== 1. HEALTH ==
+$ curl -s http://localhost:7000/api/health
+{"status":"ok","service":"anish-toeic-web-services"}
+
+== 2. LOGIN (cookie jar; no token in JSON body, HttpOnly cookie) ==
+$ curl -s -c /tmp/opencode/r2-fix-cookies.txt -X POST http://localhost:7000/api/auth/login \
+    -H 'Content-Type: application/json' \
+    -d '{"email":"seed.owner@example.com","password":"seed-password-123"}'
+{"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+
+== 3. FIND SW EXAM ==
+$ curl -s -b /tmp/opencode/r2-fix-cookies.txt 'http://localhost:7000/api/toeic-exams?skillType=SW'
+{"items":[{"id":2,"collection_id":1,"slug":"anish-full-sw-001","title":"Anish Full Practice 1 — Speaking & Writing","duration_minutes":60,"question_count":16,"skill_type":"SW","created_at":"2026-07-31T18:35:27.000Z","updated_at":"2026-07-31T18:35:27.000Z"}],"total":1,"page":1,"pageSize":20,"totalPages":1}
+
+== 4. CREATE ATTEMPT (SW exam id=2) ==
+$ curl -s -b /tmp/opencode/r2-fix-cookies.txt -X POST http://localhost:7000/api/toeic-exams/2/attempts \
+    -H 'Content-Type: application/json' -d '{"mode":"EXAM"}'
+{"attemptId":175,"status":"IN_PROGRESS","mode":"EXAM"}
+
+== 5. GET ATTEMPT /api/toeic-attempts/175 ==
+Response: attempt id=175, exam_id=2, status=IN_PROGRESS, mode=EXAM
+session.questions: 16 questions — NONE have all three fields NULL.
+
+RESULT: prep_time_seconds / record_time_seconds / min_words present with
+non-null seed values where applicable (SPEAKING has prep+record, WRITING has
+min_words). Previously all were absent (FE fell back to defaults 45/45/undefined).
+
+Full question summary:
+  q.id=22  SPEAKING prep=30  rec=45   min_words=None
+  q.id=23  SPEAKING prep=30  rec=45   min_words=None
+  q.id=24  SPEAKING prep=30  rec=45   min_words=None
+  q.id=25  SPEAKING prep=30  rec=60   min_words=None
+  q.id=26  SPEAKING prep=30  rec=60   min_words=None
+  q.id=27  SPEAKING prep=30  rec=60   min_words=None
+  q.id=28  SPEAKING prep=30  rec=60   min_words=None
+  q.id=29  SPEAKING prep=30  rec=60   min_words=None
+  q.id=30  WRITING  prep=None rec=None min_words=25
+  q.id=31  WRITING  prep=None rec=None min_words=25
+  q.id=32  WRITING  prep=None rec=None min_words=25
+  q.id=33  WRITING  prep=None rec=None min_words=25
+  q.id=34  WRITING  prep=None rec=None min_words=25
+  q.id=35  WRITING  prep=None rec=None min_words=60
+  q.id=36  WRITING  prep=None rec=None min_words=60
+  q.id=37  WRITING  prep=None rec=None min_words=200
+
+(NULL for non-applicable type is by seed design.)

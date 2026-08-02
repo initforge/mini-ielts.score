@@ -1,0 +1,44 @@
+# migration-empty.txt — R2-S5-SEED
+# ts: 2026-08-01T01:40:07Z
+# fresh DB flow: CREATE DATABASE anish_toeic_seedtest -> runMigrations up -> seed x2 -> counts
+# runner discovery: runner.ts listMigrationFiles() glob = /^\d+.*\.(up|down)\.sql$/ .sort()  -> 002_media_columns picked up automatically
+
+== run migrations up (fresh, empty DB):
+Running migrations: up
+Applied: 001_schema.up.sql
+Applied: 002_media_columns.up.sql
+Migrations completed successfully.
+migration exit: 0
+
+== second migration run (runner idempotency via schema_migrations):
+Running migrations: up
+Skipping already-applied migration: 001_schema.up.sql
+Skipping already-applied migration: 002_media_columns.up.sql
+Migrations completed successfully.
+re-run exit: 0
+
+== seed run 1 (empty DB):
+Seed completed.
+seed exit: 0
+== seed run 2 (idempotency check):
+Seed completed.
+seed2 exit: 0
+
+== counts on fresh DB after seed x2:
+t	c
+exams	2
+sections	9
+questions	37
+options	84
+users	2
+part	img	aud
+1	3	0
+2	0	3
+3	0	3
+4	0	3
+5	0	0
+6	0	0
+7	0	0
+sec	n
+SW speaking	8
+SW writing	8

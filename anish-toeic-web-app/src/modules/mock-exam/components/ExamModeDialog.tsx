@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { X, FileText, ListChecks, Play, Clock } from 'lucide-react';
 import { useCreateAttempt } from '../catalogApi';
 import { Exam, ExamMode } from '../../../types/exam';
@@ -34,13 +34,6 @@ const ExamModeDialog = ({ isOpen, onClose, exam, defaultMode = 'exam' }: ExamMod
   if (!isOpen || !exam) return null;
 
   const handleStart = async () => {
-    if (!localStorage.getItem('token')) {
-      // Anonymous: redirect to login, preserving the selected exam and mode so
-      // the user returns with intent intact (AC9).
-      const returnUrl = encodeURIComponent(`/thi-thu?exam=${exam.id}&mode=${mode}`);
-      navigate(`/dang-nhap?returnUrl=${returnUrl}`);
-      return;
-    }
     try {
       const { attemptId } = await createAttempt.mutateAsync({ examId: exam.id, mode });
       if (exam.skill_type === 'SW') {
@@ -49,6 +42,18 @@ const ExamModeDialog = ({ isOpen, onClose, exam, defaultMode = 'exam' }: ExamMod
         navigate(`/thi-thu/${exam.slug}/lam-bai/${attemptId}`);
       }
     } catch (error) {
+      // INJ-003: session is cookie-based; a 401 means the visitor isn't signed
+      // in — redirect to login preserving the exam/mode intent (AC9).
+      const status =
+        typeof error === 'object' && error !== null
+          ? (error as { response?: { status?: number } }).response?.status
+          : undefined;
+      if (status === 401) {
+        const tabParam = exam.skill_type === 'SW' ? '&tab=sw' : '';
+        const returnUrl = encodeURIComponent(`/thi-thu?exam=${exam.id}&mode=${mode}${tabParam}`);
+        navigate(`/dang-nhap?returnUrl=${returnUrl}`);
+        return;
+      }
       console.error('Failed to create attempt:', error);
       alert('Có lỗi xảy ra khi bắt đầu bài thi. Vui lòng thử lại!');
     }

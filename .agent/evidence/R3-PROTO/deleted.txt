@@ -1,0 +1,70 @@
+R3-P0-PROTO: deleted files (assigned scope)
+===========================================
+rm -rf src/ index.html vite.config.ts
+
+Files deleted (this task, tracked by git — shown as unstaged ' D' in index
+because task forbids commit/add/stash/reset):
+
+  index.html
+  vite.config.ts
+  src/                       (entire directory, 48 tracked files)
+    src/App.tsx
+    src/components/shared/GeminiKeyInput.tsx
+    src/components/shared/Header.tsx
+    src/components/shared/ProgressBar.tsx
+    src/components/shared/QuestionSelector.tsx
+    src/components/shared/ResultCard.tsx
+    src/components/shared/RubricCard.tsx
+    src/components/shared/StorageCleanup.tsx
+    src/components/shared/ThemeToggle.tsx
+    src/components/shared/Timer.tsx
+    src/components/speaking/AudioRecorder.tsx
+    src/components/speaking/CollapsibleImageUpload.tsx
+    src/components/speaking/MicrophoneTest.tsx
+    src/components/speaking/QuestionStepper.tsx
+    src/components/speaking/SpeakingAudioPlayer.tsx
+    src/components/speaking/SpeakingInstructionModal.tsx
+    src/components/speaking/SpeakingResults.tsx
+    src/components/speaking/SpeakingResultsLoading.tsx
+    src/components/speaking/SpeakingTab.tsx
+    src/components/ui/button.tsx
+    src/components/ui/card.tsx
+    src/components/ui/modal.tsx
+    src/components/ui/tabs.tsx
+    src/components/writing/ImageUpload.tsx
+    src/components/writing/InstructionModal.tsx
+    src/components/writing/QuestionInput.tsx
+    src/components/writing/QuestionNavigator.tsx
+    src/components/writing/WordCountEditor.tsx
+    src/components/writing/WritingResults.tsx
+    src/components/writing/WritingTab.tsx
+    src/contexts/SpeakingContext.tsx
+    src/contexts/ThemeContext.tsx
+    src/contexts/WritingContext.tsx
+    src/hooks/useAutosave.ts
+    src/hooks/useMicrophonePermission.ts
+    src/index.css
+    src/lib/animations.ts
+    src/lib/audioStorage.ts
+    src/lib/gemini.ts
+    src/lib/mockData.ts
+    src/lib/sanitize.ts
+    src/lib/speakingAudio.ts
+    src/lib/types.ts
+    src/lib/utils.ts
+    src/main.tsx
+    src/vite-env.d.ts
+
+GEMINI_API_KEY localStorage surface removed: src/App.tsx (lines 46,376),
+src/components/shared/Header.tsx (lines 14,67) — whole src/ gone.
+
+Verification (git status --porcelain, unstaged deletions for this task):
+  D index.html
+  D vite.config.ts
+  D src/App.tsx
+  D src/components/shared/Header.tsx
+  D src/lib/gemini.ts
+  ... (48 src/ paths total)
+
+ls check after rm: src/ does not exist; index.html, vite.config.ts absent
+from root listing.

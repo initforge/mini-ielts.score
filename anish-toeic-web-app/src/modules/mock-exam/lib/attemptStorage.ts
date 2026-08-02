@@ -9,6 +9,7 @@
  * mode / old WebViews) so the runner degrades gracefully instead of dropping
  * acknowledged answers.
  */
+import type { Exam } from '../../../types/exam';
 
 export interface PendingResponse {
   key: string;
@@ -22,6 +23,36 @@ export interface AttemptSnapshot {
   attemptId: number;
   savedAt: number;
   data: Record<string, unknown>;
+}
+
+/**
+ * Offline catalog cache (P3): last successful catalog response persisted to
+ * localStorage so the catalog page renders cached data on an offline reload
+ * (react-query's in-memory cache does not survive a page reload).
+ */
+export interface CatalogCacheEntry {
+  savedAt: number;
+  items: Exam[];
+}
+
+const CATALOG_CACHE_PREFIX = 'anish-toeic-catalog:';
+
+export function saveCatalogCache(key: string, items: Exam[]): void {
+  try {
+    const entry: CatalogCacheEntry = { savedAt: Date.now(), items };
+    localStorage.setItem(CATALOG_CACHE_PREFIX + key, JSON.stringify(entry));
+  } catch {
+    // quota / privacy mode: ignore, best effort only
+  }
+}
+
+export function loadCatalogCache(key: string): CatalogCacheEntry | null {
+  try {
+    const raw = localStorage.getItem(CATALOG_CACHE_PREFIX + key);
+    return raw ? (JSON.parse(raw) as CatalogCacheEntry) : null;
+  } catch {
+    return null;
+  }
 }
 
 const DB_NAME = 'anish-toeic-attempt';

@@ -1,0 +1,90 @@
+S7 | AC20 | PM2 ecosystem validation
+timestamp: 2026-08-01T05:00:00Z (approx — see git status timestamps)
+slice: S7, dimension: pm2
+file: ecosystem.config.cjs (unchanged — validated only)
+
+================================================================================
+1. METHOD
+================================================================================
+`pm2` CLI is NOT installed on this dev box (VPS-only). `pm2 start ecosystem.config.cjs
+--dry-run` is not supported by PM2 in any version, so structural validation was done
+via `node require()` of ecosystem.config.cjs + on-disk target checks
+(/tmp/opencode/validate-pm2.mjs). Runtime env wiring of the ACTUAL live processes
+was cross-checked from /proc/<pid>/environ of the running grading worker and the
+:7000 Express server.
+
+================================================================================
+2. VALIDATOR OUTPUT (node /tmp/opencode/validate-pm2.mjs)
+================================================================================
+apps: anish-toeic-web-services -> anish-toeic-web-services/dist/server.js | toeic-grading-worker -> anish-toeic-web-services/dist/workers/grading.worker.js
+PASS apps array with exactly 2 apps :: got 2
+PASS app[0].name = anish-toeic-web-services
+PASS app[0] script=node args=dist/server.js
+PASS app[0] fork, 1 instance
+PASS dist/server.js exists on disk
+PASS app[1].name = toeic-grading-worker
+PASS app[1] args = dist/workers/grading.worker.js
+PASS dist/workers/grading.worker.js exists on disk
+PASS app[0] env.NODE_ENV declared :: production
+PASS app[0] env.PORT declared :: 7000
+PASS app[0] env.DB_HOST declared :: (empty=deploy-time fill)
+PASS app[0] env.DB_PORT declared :: 3306
+PASS app[0] env.DB_USER declared :: (empty=deploy-time fill)
+PASS app[0] env.DB_PASSWORD declared :: (empty=deploy-time fill)
+PASS app[0] env.DB_NAME declared :: (empty=deploy-time fill)
+PASS app[0] env.JWT_SECRET declared :: (empty=deploy-time fill)
+PASS app[0] env.CORS_ORIGIN declared :: https://webinprogress.click
+PASS app[0] env.CLOUDFLARE_AI_WORKER_URL declared :: (empty=deploy-time fill)
+PASS app[0] env.CLOUDFLARE_AI_WORKER_TOKEN declared :: (empty=deploy-time fill)
+PASS app[0] env.CLOUDFLARE_AI_TIMEOUT_MS declared :: 60000
+PASS app[0] PORT=7000
+PASS app[0] NODE_ENV=production
+PASS app[0] has no REDIS_URL (server does not need it)
+PASS app[1] env.NODE_ENV declared :: production
+PASS app[1] env.DB_HOST declared :: (empty=deploy-time fill)
+PASS app[1] env.DB_PORT declared :: 3306
+PASS app[1] env.DB_USER declared :: (empty=deploy-time fill)
+PASS app[1] env.DB_PASSWORD declared :: (empty=deploy-time fill)
+PASS app[1] env.DB_NAME declared :: (empty=deploy-time fill)
+PASS app[1] env.REDIS_URL declared :: (empty=deploy-time fill)
+PASS app[1] env.CLOUDFLARE_AI_WORKER_URL declared :: (empty=deploy-time fill)
+PASS app[1] env.CLOUDFLARE_AI_WORKER_TOKEN declared :: (empty=deploy-time fill)
+PASS app[1] env.CLOUDFLARE_AI_TIMEOUT_MS declared :: 60000
+PASS app[1] REDIS_URL declared (worker needs Redis)
+PASS no dev/test secrets in ecosystem.config.cjs
+PASS no AWS access key material
+RESULT: ALL PASS
+
+================================================================================
+3. LIVE ENV WIRING CROSS-CHECK (running processes)
+================================================================================
+grading.worker (PID from pgrep 'dist/workers/grading.worker.js'):
+  DB_HOST=127.0.0.1  DB_PORT=13306  DB_USER=toeic  DB_NAME=toeic
+  REDIS_URL=redis://127.0.0.1:16379  AI_GRADING_TEST_MODE=true
+  JWT_SECRET=local-dev-secret-...  (values redacted for PASSWORD)
+Express :7000 (PID on port 7000):
+  PORT=7000  DB_NAME=toeic  DB_PORT=13306  REDIS_URL=redis://127.0.0.1:16379
+
+Observed difference vs ecosystem.config.cjs defaults:
+  - Live dev uses DB_PORT=13306 (dockerized MySQL) and AI_GRADING_TEST_MODE=true
+    (deterministic grading). ecosystem.config.cjs ships DB_PORT=3306 and no
+    AI_GRADING_TEST_MODE (production: REAL Cloudflare AI worker; test mode is
+    dev/test only and MUST never be true in production).
+
+================================================================================
+4. ENV WIRING MAP (who reads what)
+================================================================================
+app[0] anish-toeic-web-services (dist/server.js):
+  NODE_ENV, PORT, DB_*, JWT_SECRET/JWT_EXPIRES_IN, CORS_ORIGIN,
+  CLOUDFLARE_AI_WORKER_URL/TOKEN/TIMEOUT_MS, AWS_* + S3_BUCKET (media presign).
+app[1] toeic-grading-worker (dist/workers/grading.worker.js):
+  NODE_ENV, DB_*, REDIS_URL, CLOUDFLARE_AI_WORKER_URL/TOKEN/TIMEOUT_MS.
+
+Empty env values (CLOUDFLARE_AI_*, DB_*, JWT_SECRET, AWS_*) are deploy-time fill
+(F-16 finding: config-only, no secret material present — confirmed again here).
+
+================================================================================
+5. VERDICT
+================================================================================
+pm2 dimension: PASS — structure, dist targets, env wiring all valid; no secrets
+in config; NOT started here (would collide with live dev processes).

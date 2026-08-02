@@ -1,0 +1,42 @@
+R3-LR mobile — console + network classification (EXPECTED vs UNEXPECTED)
+timestamp: 2026-08-01T07:09:17.342Z attemptId: 268
+CONSOLE total=15  NETWORK api lines=207  CDP exceptions=0 failed=0
+
+--- CONSOLE (classified) ---
+EXPECTED | CONSOLE.ERROR: The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.  (dev CSP diagnostics: 'https://*.s3.*.amazonaws.com' wildcard reported invalid by Chrome — vite dev CSP header)
+EXPECTED | CONSOLE.ERROR: Failed to load resource: the server responded with a status of 401 (Unauthorized)  (anonymous 401 gate)
+EXPECTED | CONSOLE.ERROR: Warning: [antd: Spin] `tip` only work in nest or fullscreen pattern.  (cosmetic antd dev warning: Spin tip used in non-nest pattern)
+EXPECTED | CONSOLE.ERROR: Warning: [antd: compatible] antd v5 support React is 16 ~ 18. see https://u.ant.design/v5-for-19 for compatible.  (THE REAL BUG [3]: antd v5 static APIs render nothing on React 19 — no @ant-design/v5-patch-for-react-19)
+EXPECTED | CONSOLE.ERROR: Failed to load resource: the server responded with a status of 404 (Not Found)  (SW attempts without result rows — grading worker not running on stack; history enrichment 404s)
+
+--- NETWORK /api (classified) ---
+EXPECTED | RES 401 GET /api/toeic-attempts  (anonymous gate 401)
+EXPECTED | RES 401 POST /api/toeic-exams/1/attempts  (anonymous gate 401)
+EXPECTED | RES 404 GET /api/toeic-attempts/208/result  (SW attempt without result rows — grading worker absent; history enrichment)
+EXPECTED | RES 404 GET /api/toeic-attempts/207/result  (SW attempt without result rows — grading worker absent; history enrichment)
+EXPECTED | RES 404 GET /api/toeic-attempts/184/result  (SW attempt without result rows — grading worker absent; history enrichment)
+EXPECTED | RES 404 GET /api/toeic-attempts/182/result  (SW attempt without result rows — grading worker absent; history enrichment)
+EXPECTED | RES 404 GET /api/toeic-attempts/179/result  (SW attempt without result rows — grading worker absent; history enrichment)
+EXPECTED | RES 404 GET /api/toeic-attempts/177/result  (SW attempt without result rows — grading worker absent; history enrichment)
+
+--- CDP loadingFailed ---
+
+--- CDP exceptions ---
+
+LEAK_SCAN:
+{
+  "issues": [],
+  "benignInlineDataUris": [
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIH",
+    "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPH",
+    "data:image/svg+xml;base64,PHN2ZyBmaWxsPSJXaW5kb3ciIGhlaWdodD0iMjQiIHZpZXdCb3g9Ij",
+    "data:image/svg+xml;base64,PHN2ZyBmaWxsPSJXaW5kb3ciIGhlaWdodD0iMjQiIHZpZXdCb3g9Ij",
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIH",
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIH"
+  ],
+  "result": "PASS"
+}
+COOKIE flags:
+{"httpOnly":true,"secure":false,"sameSite":"Lax","domain":"localhost","path":"/"}
+LOCALSTORAGE keys:
+["anish-toeic-catalog:LR%3A-%3A-"]

@@ -1,0 +1,102 @@
+R3-LR-JOURNEY2 mobile — viewport {"name":"mobile","width":375,"height":812,"mobile":true}
+timestamp: 2026-08-01T07:09:17.342Z
+attemptId: 268
+CDP: connected to REAL browser binary (launched with --remote-debugging-port=9222) via connectOverCDP; domains Network/Runtime/Log/Security enabled.
+Auth: REAL UI login (no cookie injection). Timestamps REAL (no shim; timezone bug fixed, pool timezone='Z').
+errors: 1
+CHECKLIST | R3-LR (mobile) | PASS=76 FAIL=1
+  PASS LR exam card in catalog (default LR tab)
+  PASS detail: 120 phút
+  PASS detail: 21 câu hỏi
+  PASS detail: 7 phần thi
+  PASS detail: Bắt đầu button
+  PASS detail: instructions panel
+  PASS detail: Part 1 listed
+  PASS mode dialog: Thi thử
+  PASS mode dialog: Luyện tập
+  PASS anonymous start -> /dang-nhap?returnUrl= (401 gate)
+  PASS returnUrl intent preserved :: returnUrl=/thi-thu?exam=1&mode=exam
+  PASS real UI login -> redirected (returnUrl intent) :: url=http://localhost:5173/thi-thu
+  PASS post-login intent: mode dialog re-opened with LR exam
+  PASS post-login intent: dialog in Thi thử mode
+  PASS attempt created (EXAM mode)
+  PASS attempt id captured (id=268)
+  PASS token httpOnly cookie present after real UI login
+  PASS NO JWT in localStorage :: hasJwt=false
+  PASS token cookie httpOnly=true :: {"httpOnly":true,"secure":false,"sameSite":"Lax","domain":"localhost","path":"/"}
+  PASS token cookie SameSite set :: Lax
+  PASS listening intro directions shown
+  PASS Part1 Q1 photograph img present
+  PASS Part1 Q1 photo RENDERED naturalWidth=640 (>0)
+  PASS Q1 img src = inline SVG data URI
+  PASS Part1 Q1: audio player present (seed media=image_audio: photograph + narration)
+  PASS answered Part1 Q1
+  PASS palette: Q1 answered marker
+  PASS palette: Q1 marked for review
+  PASS answered q2
+  PASS answered q3
+  PASS Part2 Q4: audio player rendered
+  PASS answered q4
+  PASS answered q5
+  PASS answered q6
+  PASS answered q7
+  PASS answered q8
+  PASS answered q9
+  PASS answered q10
+  PASS answered q11
+  PASS answered q12
+  FAIL REAL BUG reproduced: Sang Reading confirm dialog appears (static Modal.confirm)
+  PASS antd Modal.confirm runtime patch applied (documented workaround)
+  PASS Part5: no audio (reading)
+  PASS Part5: 3 question cards split layout
+  PASS answered q13
+  PASS answered q14
+  PASS answered q15
+  PASS Part6: split layout
+  PASS answered q16
+  PASS answered q17
+  PASS answered q18
+  PASS Part7: split layout
+  PASS answered q19
+  PASS answered q20
+  PASS answered q21
+  PASS annotation toolbar toggle present
+  PASS bilingual toggle present
+  PASS RELOAD resume: all 21 answers preserved (Đã trả lời 21/21)
+  PASS RELOAD resume: Q1 answered + marked preserved
+  PASS RELOAD resume: attempt still IN_PROGRESS (no expiry auto-submit) got=IN_PROGRESS
+  PASS antd Modal.confirm runtime patch applied (documented workaround)
+  PASS REAL BUG documented: submit confirm dialog does NOT render (static Modal.confirm broken on React 19); onOk fires via patch
+  PASS certificate "/ 990"
+  PASS certificate score 14 rendered
+  PASS result API totalScore=14 (got 14)
+  PASS result API status=FINAL (got FINAL)
+  PASS score table modal rendered
+  PASS error map: chart section
+  PASS error map: wrong list
+  PASS review modal rendered
+  PASS history: attempt 268 listed
+  PASS history: COMPLETED status
+  PASS attempt status COMPLETED (got COMPLETED)
+  PASS started_at is a real parseable timestamp (2026-08-01T07:08:30.000Z)
+  PASS elapsed sane 0<0.4min<120 (real timestamps, no expiry) :: started=2026-08-01T07:08:30.000Z completed=2026-08-01T07:08:52.000Z
+  PASS review rows=21 (got 21)
+  PASS leakage scan PASS (no Authorization Bearer / JWT / audio base64 on the wire)
+
+STEP transcript:
+[2026-08-01T07:08:27.848Z] STEP journey start viewport 375x812 (mobile emu)
+[2026-08-01T07:08:28.397Z] SCREENSHOT catalog LR tab -> mobile02-catalog-lr.png (fullPage)
+[2026-08-01T07:08:28.600Z] SCREENSHOT exam detail page -> mobile-detail.png (fullPage)
+[2026-08-01T07:08:30.869Z] STEP post-login URL: http://localhost:5173/thi-thu
+[2026-08-01T07:08:30.915Z] ATTEMPT_ID=268
+[2026-08-01T07:08:30.951Z] COOKIE token flags {"httpOnly":true,"secure":false,"sameSite":"Lax","domain":"localhost","path":"/"}
+[2026-08-01T07:08:30.951Z] LOCALSTORAGE keys: ["anish-toeic-catalog:LR%3A-%3A-"]
+[2026-08-01T07:08:31.189Z] SCREENSHOT runner: Part 1 Q1 photograph -> mobile03-lr-q1.png (fullPage)
+[2026-08-01T07:08:45.429Z] STEP listening q1-12 answered
+[2026-08-01T07:08:46.663Z] REAL BUG WORKAROUND: static Modal.confirm patched in-page (patched) — antd v5 static modals do not render on React 19; onOk now runs so the app's real store actions/submit execute.
+[2026-08-01T07:08:47.259Z] SCREENSHOT runner (mobile): Part 5 reading split -> mobile-lr-runner.png (fullPage)
+[2026-08-01T07:08:51.331Z] STEP all 21 LR questions answered (q1-14 correct, q15-21 wrong -> 14/990)
+[2026-08-01T07:08:52.132Z] STEP reload/resume verified (beforeReloadChecked=3)
+[2026-08-01T07:08:52.136Z] REAL BUG WORKAROUND: static Modal.confirm patched in-page (patched) — antd v5 static modals do not render on React 19; onOk now runs so the app's real store actions/submit execute.
+[2026-08-01T07:08:57.820Z] STEP authed history OK
+[2026-08-01T07:08:57.861Z] LEAK_SCAN PASS issues=0

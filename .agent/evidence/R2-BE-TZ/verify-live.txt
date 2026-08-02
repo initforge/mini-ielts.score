@@ -1,0 +1,58 @@
+===== BUG 1 — fresh LR attempt not expired =====
+[date -u now]: 2026-08-01T03:00:26Z
+$ curl -s -c jar.txt -X POST .../api/auth/login (seed.owner@example.com / seed-password-123)
+{"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}} [HTTP 200]
+
+$ curl -s -b jar.txt -X POST http://127.0.0.1:7000/api/toeic-exams/1/attempts -d '{"mode":"EXAM"}'
+{"attemptId":231,"status":"IN_PROGRESS","mode":"EXAM"} [HTTP 201]
+
+>>> fresh LR attempt id = 231; GET it back:
+  status: IN_PROGRESS
+  mode: EXAM
+  started_at: 2026-08-01T03:00:26.000Z
+  age seconds: 0  (<60 => fresh; 7h in past would be ~25200 and runner auto-submits)
+
+--- wait 8s; runner must NOT auto-submit (status stays IN_PROGRESS) ---
+  status after ~8s: IN_PROGRESS
+
+id	status	started_at	completed_at
+231	IN_PROGRESS	2026-08-01 03:00:26	NULL
+
+===== BUG 2 — SW attempt with NO responses → result row exists =====
+$ curl -s -b jar.txt -X POST http://127.0.0.1:7000/api/toeic-exams/2/attempts -d '{"mode":"EXAM"}'
+{"attemptId":232,"status":"IN_PROGRESS","mode":"EXAM"}>>> fresh SW attempt id = 232 (no responses added)
+
+$ curl -s -b jar.txt -X POST http://127.0.0.1:7000/api/toeic-attempts/232/submit
+{"success":true} [HTTP 200]
+
+--- poll grading-status (expect COMPLETED) ---
+{"id":58,"attempt_id":232,"status":"COMPLETED","retry_count":0,"error_message":null,"created_at":"2026-08-01T03:00:34.000Z","updated_at":"2026-08-01T03:00:36.000Z"} [HTTP 200]
+
+{"id":58,"attempt_id":232,"status":"COMPLETED","retry_count":0,"error_message":null,"created_at":"2026-08-01T03:00:34.000Z","updated_at":"2026-08-01T03:00:36.000Z"} [HTTP 200]
+
+{"id":58,"attempt_id":232,"status":"COMPLETED","retry_count":0,"error_message":null,"created_at":"2026-08-01T03:00:34.000Z","updated_at":"2026-08-01T03:00:36.000Z"} [HTTP 200]
+
+{"id":58,"attempt_id":232,"status":"COMPLETED","retry_count":0,"error_message":null,"created_at":"2026-08-01T03:00:34.000Z","updated_at":"2026-08-01T03:00:36.000Z"} [HTTP 200]
+
+{"id":58,"attempt_id":232,"status":"COMPLETED","retry_count":0,"error_message":null,"created_at":"2026-08-01T03:00:34.000Z","updated_at":"2026-08-01T03:00:36.000Z"} [HTTP 200]
+
+{"id":58,"attempt_id":232,"status":"COMPLETED","retry_count":0,"error_message":null,"created_at":"2026-08-01T03:00:34.000Z","updated_at":"2026-08-01T03:00:36.000Z"} [HTTP 200]
+
+
+$ curl -s -b jar.txt http://127.0.0.1:7000/api/toeic-attempts/232/result
+{"listeningScore":0,"readingScore":0,"totalScore":0,"status":"FINAL"} [HTTP 200]
+
+$ docker exec ... SELECT * FROM toeic_attempt_results WHERE attempt_id=232;
+id	attempt_id	listening_score	reading_score	total_score	status	metrics
+110	232	0	0	0	FINAL	{"writing_score": 0, "speaking_score": 0}
+
+--- attempt + grading job status ---
+id	status	completed_at
+232	COMPLETED	2026-08-01 03:00:36
+attempt_id	status	retry_count	error_message
+232	COMPLETED	0	NULL
+
+===== worker log tail =====
+[Grading Worker] Started
+[Grading Worker] Processing job 57
+[Grading Worker] Processing job 58

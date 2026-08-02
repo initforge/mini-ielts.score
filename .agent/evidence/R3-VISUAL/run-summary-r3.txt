@@ -1,0 +1,74 @@
+R3-VISUAL — visual parity diff evidence (Assignment R3-VISUAL-CONTACT)
+date: 2026-08-01  repo HEAD: 620c111686534899fb980dfb481c9927cb2596bd (worktree dirty — untouched)
+tool: .agent/tools/visual-diff.mjs   states: references/xoamutoeic/manifests/manifest.json (35)
+actuals: .agent/evidence/R3-LR/screenshots/*.png (19 states) + .agent/evidence/R3-SW/*.png (13 states) + .agent/evidence/R3-FE-FIX/history-gate.png (1) + R3-LR mobile (2)
+
+METHOD / LIMITATION: host has no vision (owner rule P5) — NO visual PASS is claimed. Outputs are
+contact sheets for human-owner review: .agent/evidence/R3-VISUAL/contact/index.html (reference|actual|
+overlay|diff + metric + notes per state) + 35 per-state PNG montages (magick montage, 2x2 tiles).
+Metrics: rmse = per-channel RMS over overlap; diffPixels% = % of union bbox where max channel diff > 0
+(out-of-bounds pixels count as differing). DIMS MISMATCH IS EXPECTED: references are full-page scrolls
+(e.g. 1280x2130, 431x6001) or 1280x720 viewports; actuals are viewport shots (1280x800 / 375x812).
+diff% is inflated by dims-mismatch + Anish dark design tokens (REQ-001 allowance). Quantitative-only;
+journey state assertions already PASSed: R3-LR desktop PASS=78 mobile PASS=76; R3-SW PASS=71 per viewport.
+
+PER-STATE METRIC TABLE (reference_id | actual_screenshot | rmse / diffPixels% / dimsEq):
+--- | --- | ---
+desktop/01-exams-sw-list-full | .agent/evidence/R3-LR/screenshots/desktop01-catalog-sw.png | rmse=201.2 / 99.99% / false
+desktop/02-exams-lr-list-full | .agent/evidence/R3-LR/screenshots/desktop02-catalog-lr.png | rmse=201.7 / 99.99% / false
+desktop/03-exam-start-mode-modal | .agent/evidence/R3-LR/screenshots/desktop03-mode-dialog.png | rmse=66.1 / 99.93% / false
+desktop/04-exam-lr-detail-start | .agent/evidence/R3-LR/screenshots/desktop04-exam-detail.png | rmse=211.7 / 99.99% / false
+desktop/05-exam-lr-active-part1 | .agent/evidence/R3-LR/screenshots/desktop05-listening-directions.png | rmse=204.2 / 98.08% / false
+desktop/06-exam-lr-part1-directions | .agent/evidence/R3-LR/screenshots/desktop06-part1-directions.png | rmse=196.7 / 98.08% / false
+desktop/07-exam-lr-part1-question1 | .agent/evidence/R3-LR/screenshots/desktop07-part1-q1.png | rmse=184.7 / 98.24% / false
+desktop/08-exam-lr-question-palette | .agent/evidence/R3-LR/screenshots/desktop08-palette.png | rmse=115.7 / 100.00% / false
+desktop/09-exam-lr-reading-part5-question101 | .agent/evidence/R3-LR/screenshots/desktop09-part5-q101.png | rmse=212.7 / 98.13% / false
+desktop/10-exam-lr-reading-bilingual-marked | .agent/evidence/R3-LR/screenshots/desktop10-bilingual-on.png | rmse=212.7 / 98.15% / false
+desktop/11-exam-lr-annotation-tools | .agent/evidence/R3-LR/screenshots/desktop11-annotation.png | rmse=212.3 / 98.14% / false
+desktop/12-exam-lr-reading-part6-question131 | .agent/evidence/R3-LR/screenshots/desktop12-part6-q131.png | rmse=211.4 / 98.13% / false
+desktop/13-exam-lr-reading-part7-question147 | .agent/evidence/R3-LR/screenshots/desktop13-part7-q147.png | rmse=211.1 / 98.13% / false
+desktop/14-exam-lr-submit-confirm | .agent/evidence/R3-LR/screenshots/desktop14-submit-confirm.png | rmse=203.2 / 99.97% / false
+desktop/15-exam-lr-result-certificate | .agent/evidence/R3-LR/screenshots/desktop15-result-certificate.png | rmse=203.3 / 99.97% / false
+desktop/16-exam-lr-result-table | .agent/evidence/R3-LR/screenshots/desktop16-score-table-modal.png | rmse=183.0 / 100.00% / false
+desktop/17-exam-lr-error-map | .agent/evidence/R3-LR/screenshots/desktop17-error-map.png | rmse=192.1 / 100.00% / false
+desktop/18-exam-lr-review-detail | .agent/evidence/R3-LR/screenshots/desktop18-review-detail.png | rmse=208.7 / 100.00% / false
+desktop/19-history-auth-gate | .agent/evidence/R3-FE-FIX/history-gate.png | rmse=68.6 / 90.48% / false
+desktop/20-exam-sw-detail-start | .agent/evidence/R3-SW/desktop20-exam-sw-detail.png | rmse=212.0 / 99.99% / false
+desktop/21-exam-sw-speaking-part1-intro | .agent/evidence/R3-SW/desktop21-mic-test.png | rmse=214.4 / 99.98% / false
+desktop/22-exam-sw-speaking-directions | .agent/evidence/R3-SW/desktop22-speaking-directions.png | rmse=207.6 / 97.38% / false
+desktop/23-exam-sw-speaking-q1-preparation | .agent/evidence/R3-SW/desktop23-q1-prep.png | rmse=214.1 / 97.72% / false
+desktop/24-exam-sw-speaking-q3-describe-picture | .agent/evidence/R3-SW/desktop24-q3-picture.png | rmse=189.4 / 97.74% / false
+desktop/25-exam-sw-speaking-q5-respond | .agent/evidence/R3-SW/desktop25-q5-respond.png | rmse=214.7 / 97.72% / false
+desktop/26-exam-sw-speaking-q8-information | .agent/evidence/R3-SW/desktop26-q8-information.png | rmse=210.3 / 97.74% / false
+desktop/27-exam-sw-writing-start | .agent/evidence/R3-SW/desktop27-WRITING-DIRECTIONS.png | rmse=204.1 / 99.95% / false
+desktop/28-exam-sw-writing-q1-picture | .agent/evidence/R3-SW/desktop28-writing-q1-picture.png | rmse=194.2 / 97.77% / false
+desktop/29-exam-sw-writing-q6-email | .agent/evidence/R3-SW/desktop29-writing-q6-email.png | rmse=212.2 / 97.77% / false
+desktop/30-exam-sw-writing-q8-essay | .agent/evidence/R3-SW/desktop30-writing-q8-essay.png | rmse=212.7 / 97.76% / false
+desktop/31-exam-sw-ai-processing | .agent/evidence/R3-SW/desktop31-processing.png | rmse=224.2 / 100.00% / false
+mobile/01-exams-sw-list-full | .agent/evidence/R3-SW/mobile01-catalog-sw.png | rmse=203.8 / 100.00% / false
+mobile/02-exams-lr-list-full | .agent/evidence/R3-LR/screenshots/mobile02-catalog-lr.png | rmse=208.8 / 99.97% / false
+mobile/03-exam-lr-q1 | .agent/evidence/R3-LR/screenshots/mobile03-lr-q1.png | rmse=165.0 / 99.39% / false
+mobile/04-exam-sw-writing-q1 | .agent/evidence/R3-SW/mobile04-writing-q1-picture.png | rmse=175.0 / 99.48% / false
+
+MAPPING CORRECTIONS vs R2-VISUAL/matrix.csv (actual_screenshot R2 -> R3):
+  desktop/08: desktop08-palette-answered.png (R2-LR) -> R3-LR/screenshots/desktop08-palette.png (R3 re-capture)
+  desktop/09: desktop09-part5.png -> R3-LR/screenshots/desktop09-part5-q101.png
+  desktop/12: desktop12-part6.png -> R3-LR/screenshots/desktop12-part6-q131.png
+  desktop/13: desktop13-part7.png -> R3-LR/screenshots/desktop13-part7-q147.png
+  desktop/15: desktop15-result.png -> R3-LR/screenshots/desktop15-result-certificate.png (OWNER-FLAG: certificate, viewport)
+  desktop/18: desktop18-review-detail.png (R2-LR) -> R3-LR/screenshots/desktop18-review-detail.png (R3 re-capture)
+  desktop/19: desktop19-history.png -> R3-FE-FIX/history-gate.png (OWNER-FLAG: anonymous /lich-su auth gate)
+  desktop/27: desktop27-exam-sw-writing-start.png (R2-SW) -> R3-SW/desktop27-WRITING-DIRECTIONS.png (OWNER-FLAG: writing directions)
+  desktop/31: desktop31-exam-sw-processing.png (R2-SW) -> R3-SW/desktop31-processing.png (OWNER-FLAG: processing queued state)
+  mobile/03: mobile07-part1-q1.png -> R3-LR/screenshots/mobile03-lr-q1.png
+  desktop/01-07,10,11,14,16,17,20-26,28-30, mobile/01,02,04: same semantic file re-captured in R3 (R3-LR/R3-SW newest evidence); R2-LR/R2-SW copies superseded.
+
+COUNTS: NEEDS-HUMAN=32 EXCEPTION=3 no-actual=NONE=0 (of 35)
+  NEEDS-HUMAN 32: desktop/01-09,12-13,15-31, mobile/01-04 (visual_status=NEEDS-HUMAN, reviewer=human-owner-pending, final_verdict=pending)
+  EXCEPTION 3: desktop/10 (live-drift bilingual — Song ngữ empty dialog on production), desktop/11 (live-drift annotation — Công cụ empty dialog), desktop/14 (historical-exception — submit-confirm never existed; direct-result canonical)
+  NO ACTUAL: none — all 35 reference states mapped to an R3 capture.
+
+ARTIFACTS: matrix-r3.csv (35 rows), states-r3/<refid>/{overlay,diff}.png + metric.json (35),
+  contact/index.html (embed contact sheet), contact/<refid>.png (magick montage 2x2 x35), contact/README.md.
+TOOL PROBLEMS: none — 35/35 diffs exit 0, metrics match metric.json; magick montage OK (ImageMagick present).
+RESULT: evidence complete; 35/35 contact sheets for human owner; NO visual PASS claimed (P5).

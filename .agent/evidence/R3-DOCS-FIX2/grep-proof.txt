@@ -1,0 +1,57 @@
+R3-DOCS-FIX2 — stale legacy-stack term scan
+Date: 2026-08-01
+Scope: docs/02-exam-workflows.md only (+ this evidence dir)
+
+NOTE on the literal verify command: this repo's ripgrep is v15.2.0, where
+`-r` is the `--replace` flag, not "recursive" (rg recurses by default).
+`rg -ri '<pattern>' docs/` therefore consumes the pattern as the
+replacement text and searches for the literal path as the regex — it
+reports "no matches" regardless of file contents. The meaningful
+case-insensitive scan is `rg -i '<pattern>'`. Both forms are shown below.
+
+=== 1. IN-SCOPE: docs/02-exam-workflows.md (must be 0 hits) ===
+
+$ rg -i 'gemini|generative|vercel|GEMINI_API_KEY' docs/02-exam-workflows.md
+(no output)
+exit code: 1 (no matches)  => PASS
+
+$ rg -ri 'gemini|generative|vercel|GEMINI_API_KEY' docs/02-exam-workflows.md
+(no output)
+exit code: 1  [literal assignment command — note: -r = --replace here,
+ so this form does not actually scan contents; first form is authoritative]
+
+=== 2. FULL docs/ tree (informational, NOT modified — out of scope) ===
+
+$ rg -i 'gemini|generative|vercel|GEMINI_API_KEY' docs/
+docs/thi-thu-integration-contract.md:16:- Background Worker: Redis backing for idempotent S&W grading via Gemini.
+docs/03-operations-and-risks.md:3:> Updated: 2026-08-01 (R3-DOCS-FIX — legacy Gemini/Vercel prototype references removed)
+docs/01-technical-specification.md:3:> Updated: 2026-08-01 (R3-DOCS-FIX — legacy Gemini/Vercel prototype references removed)
+docs/01-technical-specification.md:166:Single deployment: nginx + PM2 on a VPS behind the Cloudflare edge (DNS/CDN/TLS, full-strict origin HTTPS). There is no Vercel/serverless path.
+exit code: 0 (4 matches)
+
+These 4 hits are pre-existing and reside OUTSIDE the R3-DOCS-FIX2 scope
+(ONLY docs/02-exam-workflows.md). None are live architecture references:
+- 2 are changelog headers noting the prior R3-DOCS-FIX removal of the
+  legacy stack ("legacy Gemini/Vercel prototype references removed").
+- 1 is a negation stating the legacy path no longer exists
+  ("There is no Vercel/serverless path").
+- 1 is in docs/thi-thu-integration-contract.md, a stale integration
+  contract doc untouched by R3-DOCS-FIX or R3-DOCS-FIX2.
+
+Achieving 0 hits across the entire docs/ tree requires editing those
+out-of-scope files; recommended as a separate R4 cleanup.
+
+=== 3. IN-SCOPE: deleted-prototype symbol scan (docs/02) ===
+
+$ rg -n 'AudioRecorder|speakingAudio|grade-speaking|grade-writing|GeminiKeyInput|GEMINI_API_KEY' docs/02-exam-workflows.md
+(no output)
+exit code: 1 (no matches)  => PASS
+
+Remaining `localStorage` mentions in docs/02 are negations describing its
+absence ("never stored in `localStorage`"), not legacy usage.
+
+=== 4. Final file check ===
+
+docs/02-exam-workflows.md: 174 lines, rewritten integration/deployment/auth
+details only; exam-workflow narrative (selection, timers, recording,
+navigation, part weights) unchanged.

@@ -1,0 +1,22 @@
+[STATE 10 UI] SW runner mic denied (attempt 175, getUserMedia NotAllowedError)
+--- visible text ---
+Danh sách đề
+Speaking & Writing
+SPEAKING
+Question 1 of 16
+NỘP BÀI
+Microphone Setup
+Before starting the Speaking test, we need to check your microphone. Please ensure your microphone is connected and working.
+Allow Microphone Access
+Microphone access denied
+Please go to your browser settings → Privacy & Security → Microphone and allow access for this site.
+Câu trước
+1/16
+Câu tiếp
+--- console ---
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+--- network ---
+200 /api/toeic-attempts/175
+200 /api/toeic-attempts/175

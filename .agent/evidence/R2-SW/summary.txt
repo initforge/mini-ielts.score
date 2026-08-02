@@ -1,0 +1,76 @@
+R2-SW JOURNEY SUMMARY — fresh full SW journey, desktop + mobile
+date: 2026-08-01 02:44Z (UTC+7 09:44)
+repo HEAD: 620c111686534899fb980dfb481c9927cb2596bd (worktree dirty — untouched)
+scope: only .agent/evidence/R2-SW written; no source modified, no commits
+
+VERDICT: PASS
+  desktop 1280x800  -> 56 PASS / 0 FAIL   attempt 215   totalScore 400 (FINAL)
+  mobile  375x812   -> 56 PASS / 0 FAIL   attempt 219   totalScore 400 (FINAL)
+
+STATES CAPTURED (30 screenshots, see screenshot-manifest.txt):
+  catalog SW -> exam detail -> mode dialog -> mic test (fake media) ->
+  directions -> speaking Q1 read-aloud (prep) / Q3 describe-picture (SVG) /
+  Q5 respond-to-questions / Q8 respond-using-information (recorded each) ->
+  writing Q1 picture / Q6 email / Q8 essay (typed + word count + autosave) ->
+  submit -> processing (QUEUED->COMPLETED) -> result 400 FINAL.
+  Mobile: same journey at 375px incl. required mobile01 + mobile04 (writing Q1)
+  and mobile speaking screen (mobile24 q3 SVG image).
+
+PAYLOAD REALITY (pre-verified via curl cookie jar):
+  login (HttpOnly cookie 'token', no token in JSON) -> POST /toeic-exams/2/attempts
+  -> GET /toeic-attempts/:id: 16 questions = 8 SPEAKING + 8 WRITING;
+  speaking q3 (order 3) and writing q1..q5 carry image_url =
+  data:image/svg+xml;base64; speaking rows carry prep_time_seconds (30) and
+  record_time_seconds (45/60); writing rows carry min_words (25/60/200).
+  Attempt 177 pre-submitted via curl -> grading QUEUED->COMPLETED (worker).
+
+KEY ASSERTIONS (all PASS on both viewports):
+  - "q3 image src data:image/svg+xml;base64" + naturalWidth>0 (SVG rendered)
+  - writing q1 picture: same SVG image check, typed text, word count rendered,
+    "Đã lưu" autosave indicator
+  - recording: MediaRecorder produced real webm blob (playback UI); presign
+    POST issued per question; blob upload attempted (see findings on CSP)
+  - grading job status COMPLETED; attempt status COMPLETED
+  - 8 writing responses persisted server-side (verified via GET attempt)
+  - result: AI GRADING RESULT, TOTAL SCORE 400, /400, FINAL, Speaking+Writing
+
+FINDINGS (console/network — all explained):
+  1. Audio upload does NOT reach the network: the page CSP (connect-src 'self',
+     helmet default on BE + vite) blocks the cross-origin PUT to the mock
+     presigned URL (test-bucket.s3.test.amazonaws.com) at the browser layer.
+     Result: browser console logs CSP-block errors; UI surfaces "Upload failed"
+     with Retry; retry re-issues presign (3 presigns per question observed).
+     Impact: recording blob is captured+playable but never persisted to S3 —
+     S7/CURRENT dev-mode mock has no S3; PRODUCTION requires the S3 bucket in
+     connect-src (and real S3 creds). Grading unaffected (test-mode adapter).
+     This is the ONLY console error class in the run.
+  2. One benign 409 on writing Q8 (qid 37) during post-submit flush — swStore
+     conflict-reconciliation path handled it (console WARNING, self-healing;
+     final text persisted, 8/8 responses present). Not a user-visible failure.
+  3. No page errors, no failed API requests, no 429s in the final run.
+  4. SW result certificate maps Speaking/Writing section pills to the
+     listening_score/reading_score columns which stay 0 for SW; total score
+     400 is correct. Cosmetic ResultPage mapping for SW, not a journey blocker.
+  5. Environment: grading worker was NOT running at start (job stuck QUEUED);
+     started standalone `node dist/workers/grading.worker.js` with
+     AI_GRADING_TEST_MODE=true (runtime only, no source change) — after that
+     queued->processing->completed worked (jobs 38..50 processed).
+  6. BE rate-limiters (auth 20/15min, responses 120/15min, in-memory per IP)
+     were exhausted by earlier sessions + re-runs; a mid-run 429 dropped 2
+     writing PATCHes once (attempt 202). Waited for sliding-window decay,
+     final run clean. Re-running the journey multiple times quickly may hit
+     these limits again.
+
+REPLAY:
+  cd /home/linhnx/Projects/mini-toeic.score
+  node .agent/evidence/R2-SW/journey-r2sw.mjs
+  (requires `playwright` resolvable — repo node_modules symlinks to
+   ~/.npm/_npx/e41f203b7505f1fb/node_modules/playwright, browsers in
+   ~/.cache/ms-playwright chromium-1234; script overwrites all evidence files)
+
+FINAL:
+  desktop attempt 215 -> totalScore 400 (FINAL, COMPLETED)
+  mobile  attempt 219 -> totalScore 400 (FINAL, COMPLETED)
+  evidence dir: /home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/
+    journey-desktop.txt, journey-mobile.txt, console-network-desktop.txt,
+    console-network-mobile.txt, screenshot-manifest.txt, 30 screenshots

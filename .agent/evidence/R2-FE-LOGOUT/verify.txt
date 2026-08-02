@@ -1,0 +1,80 @@
+R2-FE-LOGOUT verification
+Repo: /home/linhnx/Projects/mini-toeic.score
+HEAD: 620c111686534899fb980dfb481c9927cb2596bd (worktree dirty — no commit made)
+Date: 2026-08-01
+
+=====================================================================
+1) Static checks (cd anish-toeic-web-app)
+=====================================================================
+$ npm run typecheck
+> anish-toeic-web-app@0.1.0 typecheck
+> tsc --noEmit
+exit code: 0
+
+$ npm run build
+> anish-toeic-web-app@0.1.0 build
+> tsc && vite build
+vite v5.4.21 building for production...
+transforming...
+✓ 4462 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                     0.64 kB │ gzip:   0.43 kB
+dist/assets/index-apOzhuxB.css     78.04 kB │ gzip:  13.41 kB
+dist/assets/index-CWNjpp5a.js   1,845.50 kB │ gzip: 567.33 kB
+✓ built in 5.67s
+(!) chunk-size warning only — pre-existing, not an error
+exit code: 0
+
+=====================================================================
+2) Change made (only file touched: src/pages/user/HistoryPage.tsx)
+=====================================================================
+- import { Link } from 'react-router-dom'  ->  + useNavigate, LogOut icon
+- useNavigate() added; handleLogout() -> api.post('/auth/logout') then navigate('/thi-thu')
+- Header: "Về danh sách đề thi" button wrapped in flex div; new antd
+  Button danger size="large" icon={<LogOut/>} "Đăng xuất" next to it.
+- api default export reused (src/api.ts: export default api, withCredentials: true).
+Full before/after in diff.txt.
+
+=====================================================================
+3) Browser behavior (Playwright, headless chromium via localhost:5173)
+=====================================================================
+Backend (127.0.0.1:7000) and vite dev (localhost:5173) both up.
+
+Steps:
+a. login seed.owner@example.com / seed-password-123 on /dang-nhap
+   -> 200 POST /api/auth/login, cookie set (token=eyJhbGci...)
+b. navigate to /thi-thu/lich-su (history)
+   -> 200 GET /api/toeic-attempts (page renders table)
+c. button DOM: text="Đăng xuất",
+   classes=ant-btn ant-btn-dangerous ant-btn-lg (antd danger large, matches
+   header styling; sibling "Về danh sách đề thi" button unchanged)
+d. click "Đăng xuất"
+   -> 200 POST /api/auth/logout
+   -> redirected to /thi-thu (waitForURL **/thi-thu*)
+e. protected call after logout in same browser context:
+   GET /api/toeic-attempts -> 401  (cookie cleared server-side)
+f. logged-out catalog page /thi-thu still renders (public)
+
+API trace:
+  200 POST /api/auth/login
+  200 GET  /api/toeic-attempts   (history, authenticated)
+  ... 200 GET /api/toeic-attempts/{id}/result xN
+  200 POST /api/auth/logout
+  200 GET  /api/toeic-exams      (catalog after redirect, public)
+  [after logout] GET /api/toeic-attempts -> 401
+
+=====================================================================
+4) Evidence files
+=====================================================================
+diff.txt          — before/after snippet (diff -u, only HistoryPage.tsx)
+logout-button.png — antd "Đăng xuất" button screenshot
+post-logout.png   — /thi-thu after logout (1280x720)
+(Note: PNGs generated; model cannot render images for visual confirmation.)
+
+RESULT: PASS
+- typecheck: exit 0
+- build: exit 0
+- logout button renders in history header
+- POST /api/auth/logout 200, redirect to /thi-thu
+- cookie cleared: /api/toeic-attempts returns 401 post-logout

@@ -1,0 +1,24 @@
+[STATE 7 UI] LR runner attempt 176 — goes offline while mounted
+--- visible text ---
+Danh sách đề
+Anish TOEIC
+LISTENING
+Question 1 of 21
+Luyện tập
+Song ngữ
+PART 1 — Listening Part 1 — Photographs
+For each question, choose the statement that best describes the photograph.
+NEXT
+Toàn màn hình
+Mark items for review
+Review
+Câu trước
+Câu tiếp
+--- console ---
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+console:error Warning: [antd: Spin] `tip` only work in nest or fullscreen pattern.
+--- network ---
+200 /api/toeic-attempts/176
+200 /api/toeic-attempts/176

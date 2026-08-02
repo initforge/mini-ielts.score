@@ -17,6 +17,26 @@ import toeicRoutes from '../routes/toeic.routes';
 import authRoutes from '../routes/auth.routes';
 import { pool } from '../services/db.service';
 
+// R3-SECURITY: stub ioredis — register/login persist their jti key in-memory.
+jest.mock('ioredis', () => {
+  const store = new Map<string, number>();
+  const instance = {
+    setex: jest.fn((key: string, ttl: number) => {
+      store.set(key, Date.now() + ttl * 1000);
+      return Promise.resolve('OK');
+    }),
+    exists: jest.fn((key: string) => Promise.resolve(store.has(key) ? 1 : 0)),
+    del: jest.fn((key: string) => {
+      store.delete(key);
+      return Promise.resolve(1);
+    }),
+    set: jest.fn(),
+    get: jest.fn(),
+    quit: jest.fn(),
+  };
+  return { Redis: jest.fn(() => instance) };
+});
+
 jest.mock('../services/db.service', () => ({
   pool: {
     query: jest.fn(),
@@ -42,8 +62,8 @@ app.use('/api', toeicRoutes);
 // ---------------------------------------------------------------------------
 
 const SECRET = process.env.JWT_SECRET as string;
-const ownerToken = jwt.sign({ sub: 'user-1' }, SECRET);
-const otherToken = jwt.sign({ sub: 'user-2' }, SECRET);
+const ownerToken = jwt.sign({ sub: '1' }, SECRET);
+const otherToken = jwt.sign({ sub: '2' }, SECRET);
 
 /** Quick auth header */
 function auth(token: string) {
@@ -117,7 +137,9 @@ describe('S7 Synthetic Journey — /thi-thu full lifecycle', () => {
       .send({ email: 'journey@test.com', password: 'journey123' });
     expect(regRes.status).toBe(201);
     expect(regRes.body.user.id).toBe('99');
-    expect(regRes.body.token).toBeTruthy();
+    // INJ-003: token must NOT leak in the JSON body — session is httpOnly cookie.
+    expect(regRes.body.token).toBeUndefined();
+    expect(regRes.headers['set-cookie']?.[0]).toContain('HttpOnly');
 
     // login
     jest.clearAllMocks();
@@ -141,9 +163,14 @@ describe('S7 Synthetic Journey — /thi-thu full lifecycle', () => {
 
   // ── Step 4: Create attempt (authenticated) ─────────────────────────────
   it('S7-J4 create attempt returns 201 with attemptId', async () => {
-    q()
-      .mockResolvedValueOnce([[{ id: 1 }]]) // exam exists
-      .mockResolvedValueOnce([{ insertId: 50 }]); // insert attempt
+    const mockGetConnection = pool.getConnection as jest.Mock;
+    const conn = mockConn();
+
+    // Exam is PUBLISHED
+    conn.query
+      .mockResolvedValueOnce([[{ id: 1, status: 'PUBLISHED', version: 1, published_version: 1 }]])
+      .mockResolvedValueOnce([{ insertId: 50, affectedRows: 1 }]);
+    mockGetConnection.mockResolvedValue(conn);
 
     const res = await request(app)
       .post('/api/toeic-exams/1/attempts')
@@ -157,21 +184,21 @@ describe('S7 Synthetic Journey — /thi-thu full lifecycle', () => {
   // ── Step 5: Get attempt session (no review leak) ──────────────────────
   it('S7-J5 get attempt returns session without review fields', async () => {
     q()
-      .mockResolvedValueOnce([[{ id: 1, user_id: 'user-1', exam_id: 10, status: 'IN_PROGRESS' }]])
-      .mockResolvedValueOnce([[]]) // responses
-      .mockResolvedValueOnce([[{ id: 1, title: 'Section 1' }]]) // sections
-      .mockResolvedValueOnce([[{ id: 101, section_id: 1, content: 'Q1' }]]) // questions
-      .mockResolvedValueOnce([[{ id: 1001, question_id: 101, label: 'A' }]]); // options
+       .mockResolvedValueOnce([[{ id: 1, user_id: '1', exam_id: 10, status: 'IN_PROGRESS' }]])
+       .mockResolvedValueOnce([[]]) // responses
+       .mockResolvedValueOnce([[{ id: 1, title: 'Section 1' }]]) // sections
+       .mockResolvedValueOnce([[{ id: 101, section_id: 1, content: 'Q1' }]]) // questions
+       .mockResolvedValueOnce([[{ id: 1001, question_id: 101, label: 'A' }]]); // options
 
-    const res = await request(app)
-      .get('/api/toeic-attempts/1')
-      .set(auth(ownerToken));
-    expect(res.status).toBe(200);
-    expect(res.body.session.questions[0].content).toBe('Q1');
-    expect(res.body.session.questions[0].explanation).toBeUndefined();
-    expect(res.body.session.questions[0].correct_option_id).toBeUndefined();
-    expect(res.body.session.options[0].is_correct).toBeUndefined();
-  });
+     const res = await request(app)
+       .get('/api/toeic-attempts/1')
+       .set(auth(ownerToken));
+     expect(res.status).toBe(200);
+     expect(res.body.session.questions[0].content).toBe('Q1');
+     expect(res.body.session.questions[0].explanation).toBeUndefined();
+     expect(res.body.session.questions[0].correct_option_id).toBeUndefined();
+     expect(res.body.session.options[0].is_correct).toBeUndefined();
+   });
 
   // ── Step 6: Update response (optimistic concurrency) ──────────────────
   it('S7-J6 update response with valid clientRevision', async () => {
@@ -269,7 +296,7 @@ describe('S7 Synthetic Journey — /thi-thu full lifecycle', () => {
 
   // ── Step 10: Review (authorized, only COMPLETED) ─────────────────────
   it('S7-J10 review 403 when attempt not COMPLETED', async () => {
-    q().mockResolvedValueOnce([[{ id: 1, status: 'IN_PROGRESS', exam_id: 10, user_id: 'user-1' }]]);
+    q().mockResolvedValueOnce([[{ id: 1, status: 'IN_PROGRESS', exam_id: 10, user_id: '1' }]]);
 
     const res = await request(app)
       .get('/api/toeic-attempts/1/review')
@@ -280,7 +307,7 @@ describe('S7 Synthetic Journey — /thi-thu full lifecycle', () => {
 
   it('S7-J10b review 200 when attempt COMPLETED', async () => {
     q()
-      .mockResolvedValueOnce([[{ id: 1, status: 'COMPLETED', exam_id: 10, user_id: 'user-1' }]])
+      .mockResolvedValueOnce([[{ id: 1, status: 'COMPLETED', exam_id: 10, user_id: '1' }]])
       .mockResolvedValueOnce([
         [{ question_id: 101, correct_option_id: 1001, explanation: 'Because it is' }],
       ]);
@@ -296,8 +323,8 @@ describe('S7 Synthetic Journey — /thi-thu full lifecycle', () => {
   it('S7-J11 attempt history returns owned attempts only', async () => {
     q().mockResolvedValueOnce([
       [
-        { id: 1, user_id: 'user-1', exam_id: 10, status: 'COMPLETED' },
-        { id: 2, user_id: 'user-1', exam_id: 11, status: 'IN_PROGRESS' },
+        { id: 1, user_id: '1', exam_id: 10, status: 'COMPLETED' },
+        { id: 2, user_id: '1', exam_id: 11, status: 'IN_PROGRESS' },
       ],
     ]);
 
@@ -306,7 +333,7 @@ describe('S7 Synthetic Journey — /thi-thu full lifecycle', () => {
       .set(auth(ownerToken));
     expect(res.status).toBe(200);
     expect(res.body).toHaveLength(2);
-    expect(res.body[0].user_id).toBe('user-1');
+    expect(res.body[0].user_id).toBe('1');
   });
 
   // ── Negative: Presign requires auth & ownership ──────────────────────
@@ -319,7 +346,7 @@ describe('S7 Synthetic Journey — /thi-thu full lifecycle', () => {
 
   it('S7-J13 presignMedia rejects base64 in body', async () => {
     q()
-      .mockResolvedValueOnce([[{ id: 1, status: 'IN_PROGRESS', exam_id: 10, user_id: 'user-1' }]])
+      .mockResolvedValueOnce([[{ id: 1, status: 'IN_PROGRESS', exam_id: 10, user_id: '1' }]])
       .mockResolvedValueOnce([[{ id: 101 }]]); // question membership
 
     const res = await request(app)

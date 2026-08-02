@@ -1,0 +1,21 @@
+R2-CSP-SEED2 — API verification: Part 1 questions carry image_url AND audio_url
+Date: 2026-08-01T02:53:23Z
+API base: http://127.0.0.1:7000/api
+Login: POST /auth/login  seed.owner@example.com / seed-password-123 (cookie jar)
+Exam: POST /toeic-exams/1/attempts {"mode":"PRACTICE"} -> attempt 224
+GET /toeic-attempts/224 (session.questions filtered to section 'Listening Part 1 — Photographs', id=1)
+
+===== Part 1 questions: image_url / audio_url =====
+Q1  image_url: present (838 chars, data:image/svg+xml;...):   audio_url: present (882 chars, data:audio/wav;bas...): 
+Q2  image_url: present (842 chars, data:image/svg+xml;...):   audio_url: present (882 chars, data:audio/wav;bas...): 
+Q3  image_url: present (838 chars, data:image/svg+xml;...):   audio_url: present (882 chars, data:audio/wav;bas...): 
+
+PASS: all Part 1 questions have non-empty image_url AND audio_url
+
+===== Determinism (attempt 224 vs 225 after 3rd seed run) =====
+image_url bytes identical across reseed: true
+audio_url bytes identical across reseed: true
+audio_url distinct per question: true (3 unique wav URIs for Q1-Q3; verified in terminal run)
+Parts 2-4 untouched: 9 questions, all audio-only (image_url null)
+
+PASS: Part 1 audio_url added deterministically; Parts 2-4 unchanged; idempotency holds.

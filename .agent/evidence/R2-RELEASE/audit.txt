@@ -1,0 +1,10 @@
+=== web-app audit ===
+metadata.vulnerabilities: {"info":0,"low":1,"moderate":0,"high":2,"critical":0,"total":3}
+quill low true range =2.0.3 fixAvailable: true
+react-router high false range 7.12.0 - 8.2.0 fixAvailable: {"name":"react-router-dom","version":"7.11.0","isSemVerMajor":true}
+react-router-dom high true range >=7.12.0-pre.0 fixAvailable: {"name":"react-router-dom","version":"7.11.0","isSemVerMajor":true}
+=== services audit ===
+metadata.vulnerabilities: {"info":0,"low":0,"moderate":0,"high":0,"critical":0,"total":0}
+quill -> Quill is vulnerable to XSS via HTML export feature
+react-router -> React Router: RSC Mode CSRF Bypass Allows Action Execution Before 400 Response
+react-router-dom -> react-router

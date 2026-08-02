@@ -1,0 +1,13 @@
+R3-FAILURE2 state 10 — media failure/retry (presign success + PUT fail → retry UI)
+ATTEMPT: 274 (SW PRACTICE, owner). Full UI flow: mic check → directions → prep → record (fake device) → presign POST (real, 200 mock URL) → PUT aborted.
+
+--- PUT #1 aborted (route.abort connectionfailed) ---
+UI PROOF: 10-media-fail.png
+DOM PROBE: 'Upload failed: <msg>' visible=1 ; 'Retry' button visible=1
+
+--- PUT #2 (Retry click) fulfilled 200 ---
+UI PROOF: 10-media-retry-ok.png
+DOM PROBE: 'Uploaded' visible=1
+NETWORK: PUT attempts intercepted=2 (fail then success) — presign never carried audio bytes.
+
+VERDICT: PASS

@@ -1,0 +1,4 @@
+pre-login URL: http://localhost:5173/dang-nhap?returnUrl=%2Fthi-thu%3Fexam%3D2%26mode%3Dpractice%26tab%3Dsw
+returnUrl param: /thi-thu?exam=2&mode=practice&tab=sw
+after-login URL: http://localhost:5173/thi-thu?exam=2&mode=practice&tab=sw
+dialog text: Anish Full Practice 1 — Speaking & Writing Thi thử Luyện tập Luyện tập từng phần Luyện tập không áp lực thời gian, có thể xem đáp án Bắt đầu Thời gian: 60 phút Tổng: 5 câu

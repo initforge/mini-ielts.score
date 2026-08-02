@@ -1,0 +1,30 @@
+R3-FAILURE2 state 03 — validation errors (PATCH bad optionId, presign >25MB, presign base64 content)
+STACK: FE http://localhost:5173, BE http://localhost:7000, MySQL anish-toeic-mysql:13306, Redis :16379
+AUTH: curl cookie jar (owner=seed.owner@example.com), attempt 270 fresh IN_PROGRESS (exam_id=1 LR)
+
+--- [1] PATCH /api/toeic-attempts/270/responses/1 — selectedOptionId type violation (non-numeric) ---
+COMMAND: curl -b owner.jar -X PATCH http://localhost:7000/api/toeic-attempts/270/responses/1 -H "Content-Type: application/json" -d "{\"selectedOptionId\":\"abc\"}"
+BODY: {"error":[{"code":"invalid_type","expected":"number","received":"string","path":["selectedOptionId"],"message":"Expected number, received string"}]}
+STATUS: 400
+
+--- [2] PATCH /api/toeic-attempts/270/responses/1 — optionId that belongs to no question of this exam (cross-exam option 9) ---
+COMMAND: curl -b owner.jar -X PATCH http://localhost:7000/api/toeic-attempts/270/responses/1 -H "Content-Type: application/json" -d "{\"selectedOptionId\":9}"
+BODY: {"error":"Selected option does not belong to this question"}
+STATUS: 409 (rejected — bad optionId never saved; 400 on type/schema level, 409 on semantics)
+
+--- [3] POST /api/toeic-attempts/270/media/presign — fileSize 26MB > 25MB cap ---
+COMMAND: curl -b owner.jar -X POST http://localhost:7000/api/toeic-attempts/270/media/presign -H "Content-Type: application/json" -d "{\"questionId\":22,\"fileName\":\"rec.webm\",\"fileType\":\"audio/webm\",\"fileSize\":27262976}"
+BODY: {"error":[{"code":"too_big","maximum":26214400,"type":"number","inclusive":true,"exact":false,"message":"fileSize must not exceed 26214400 bytes","path":["fileSize"]}]}
+STATUS: 400
+
+--- [4] POST /api/toeic-attempts/270/media/presign — base64 content in body ---
+COMMAND: curl -b owner.jar -X POST .../media/presign -d "{\"questionId\":22,\"fileName\":\"rec.webm\",\"fileType\":\"audio/webm\",\"fileSize\":1000,\"content\":\"<200 base64 chars>\"}"
+BODY: {"error":[{"code":"custom","message":"base64 audio content must not be sent in request body — use presigned S3 upload","path":["content"]}]}
+STATUS: 400
+
+--- [5] control: valid presign (LR q1, 2KB) accepted ---
+COMMAND: curl -b owner.jar -X POST .../media/presign -d "{\"questionId\":1,\"fileName\":\"q1.webm\",\"fileType\":\"audio/webm\",\"fileSize\":2048}"
+BODY: {"uploadUrl":"https://test-bucket.s3.test.amazonaws.com/uploads%2Fattempts%2F270%2Fq1%2Fq1.webm?X-Amz-Test-Signature=mock","s3Key":"uploads/attempts/270/q1/q1.webm","expiresAt":"2026-08-01T08:22:11.784Z"}
+STATUS: 200
+
+VERDICT: PASS

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router';
 import { Typography, Progress, Button, Alert, Space } from 'antd';
 import { Loader2, AlertTriangle, RefreshCw, CheckCircle2, XCircle, ArrowLeft } from 'lucide-react';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -34,6 +34,30 @@ const RETRYABLE_ERRORS: GradingJobStatus[] = ['FAILED', 'RETRY', 'PARTIAL'];
 
 function pollInterval(attempt: number): number {
   return Math.min(BASE_POLL_MS * 2 ** attempt, MAX_POLL_MS);
+}
+
+/**
+ * Defensive error text sanitizer (AC19). Backend already stores sanitized
+ * error_message codes; this strips anything that slipped through — bearer
+ * tokens, `key=`/`password=`/`token=` fragments — and caps length.
+ */
+function sanitizeErrorText(s: string | null | undefined): string {
+  if (!s) return '';
+  return s
+    .replace(/Bearer\s+[A-Za-z0-9\-._~+/]+/gi, '[redacted]')
+    .replace(/(token|secret|password|api[_-]?key)\s*[=:]\s*[^\s,;]+/gi, '$1=[redacted]')
+    .replace(/^Error:\s*/i, '')
+    .slice(0, 200);
+}
+
+/** Friendlier message for transport-level failures (no raw details). */
+function networkErrorTitle(err: unknown): string | null {
+  if (typeof err !== 'object' || err === null) return 'Không thể kết nối đến máy chủ.';
+  const status = (err as { response?: { status?: number } }).response?.status;
+  if (status === 404) return 'Không tìm thấy bài thi này.';
+  if (status === 403) return 'Bạn không có quyền truy cập bài thi này.';
+  if (status === 401) return 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.';
+  return 'Không thể kết nối đến máy chủ.';
 }
 
 // ---------------------------------------------------------------------------
@@ -92,16 +116,31 @@ const ProcessingPage: React.FC = () => {
       setPollCount(0);
       refetch();
     },
-    onError: (err: unknown) => {
-      const msg = err instanceof Error ? err.message : 'Không thể thử lại';
-      setLastErrorMessage(msg);
+    onError: () => {
+      setLastErrorMessage('Không thể thử lại. Vui lòng thử lại sau.');
     },
   });
 
   // ── Polling with backoff ───────────────────────────────────────────────
 
   useEffect(() => {
-    if (!data) return;
+    // No job row yet (or job endpoint temporarily unreachable) — keep polling.
+    if (!data) {
+      if (!isError) {
+        const interval = pollInterval(pollCount);
+        pollTimerRef.current = setTimeout(() => {
+          setPollCount((c) => c + 1);
+          refetch();
+        }, interval);
+        return () => {
+          if (pollTimerRef.current) {
+            clearTimeout(pollTimerRef.current);
+            pollTimerRef.current = null;
+          }
+        };
+      }
+      return;
+    }
 
     const status = data.status;
 
@@ -174,7 +213,8 @@ const ProcessingPage: React.FC = () => {
   })();
 
   const task = getTaskForProgress(progressPct);
-  const activeError = data?.error_message || (error instanceof Error ? error.message : null) || lastErrorMessage;
+  const activeError = sanitizeErrorText(data?.error_message) || lastErrorMessage;
+  const transportError = isError && !data ? networkErrorTitle(error) : null;
 
   // ── Render helpers ────────────────────────────────────────────────────
 
@@ -205,6 +245,57 @@ const ProcessingPage: React.FC = () => {
     if (isQueued) return 'Bài của bạn đang trong hàng đợi. Sẽ được chấm trong giây lát.';
     return task.detail;
   };
+
+  // ── Transport-level failure (job endpoint unreachable / ownership) ─────
+
+  if (transportError) {
+    return (
+      <div className="min-h-screen bg-[#f8fafc] flex flex-col">
+        <div className="bg-white border-b px-4 py-3 flex items-center gap-4 shadow-sm">
+          <Link
+            to="/thi-thu/lich-su"
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" /> Lịch sử luyện tập
+          </Link>
+          <div className="flex-1" />
+          <Text type="secondary" className="text-xs">
+            ID: {attemptId}
+          </Text>
+        </div>
+        <div className="flex-1 flex items-center justify-center p-4">
+          <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center">
+            <AlertTriangle className="w-16 h-16 text-red-500 mb-6" />
+            <Title level={3} className="!mb-2">
+              Không thể kiểm tra trạng thái
+            </Title>
+            <Text type="secondary" className="block mb-6">
+              {transportError}
+            </Text>
+            <Space direction="vertical" size="middle" className="w-full">
+              <Button
+                type="primary"
+                icon={<RefreshCw size={16} />}
+                size="large"
+                onClick={() => {
+                  setPollCount(0);
+                  refetch();
+                }}
+                block
+              >
+                Thử lại
+              </Button>
+              <Link to="/thi-thu/lich-su">
+                <Button size="large" block>
+                  Quay lại lịch sử
+                </Button>
+              </Link>
+            </Space>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ── Render ─────────────────────────────────────────────────────────────
 

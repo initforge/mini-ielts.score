@@ -1,0 +1,27 @@
+# R3-P1-MINIO docker-compose: config validation + running services
+# 2026-08-01T04:41:00Z
+
+== docker compose -f scripts/integration/docker-compose.yml config -q ==
+OK: config valid
+
+== docker compose ps ==
+NAME                IMAGE                COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+anish-toeic-minio   minio/minio:latest   "/usr/bin/docker-ent…"   minio     18 minutes ago   Up 18 minutes (healthy)   127.0.0.1:19000->9000/tcp, 127.0.0.1:19001->9001/tcp
+anish-toeic-mysql   mysql:8.4            "docker-entrypoint.s…"   mysql     16 hours ago     Up 14 hours (healthy)     33060/tcp, 127.0.0.1:13306->3306/tcp
+anish-toeic-redis   redis:7-alpine       "docker-entrypoint.s…"   redis     16 hours ago     Up 14 hours (healthy)     127.0.0.1:16379->6379/tcp
+
+== mc-init (one-shot) — bucket bootstrap ==
+$ docker logs anish-toeic-mc-init
+Added `local` successfully.
+Bucket created successfully `local/toeic-media`.
+
+$ docker exec (fresh mc on anish-toeic-net) mc ls local/
+[2026-08-01 04:19:16 UTC]     0B toeic-media/
+
+== docker ps (minio/mc + mysql/redis intact) ==
+anish-toeic-minio        Up (healthy)
+anish-toeic-redis        Up (healthy)
+anish-toeic-mysql        Up (healthy)
+
+== MinIO healthcheck ==
+curl -f http://localhost:9000/minio/health/live -> healthy (container STATUS shows healthy)

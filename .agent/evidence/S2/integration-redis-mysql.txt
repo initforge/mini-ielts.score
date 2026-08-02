@@ -1,0 +1,39 @@
+Work ID: anish-thi-thu-xoamutoeic-20260730 — Slice S2
+Evidence: real Redis (16379) + MySQL (13306) integration checks for the
+grading pipeline, and REDIS_URL env validation.
+Date: 2026-07-31
+
+────────────────────────────────────────────────────────────────────────────
+1) REDIS_URL validation (src/config/env.ts, zod):
+   - default when absent  -> redis://127.0.0.1:6379
+   - custom value honored -> redis://127.0.0.1:16379
+   - invalid value        -> throws "Environment validation failed:
+     REDIS_URL: REDIS_URL must be a valid URL (...)" (fail-fast preserved;
+     JWT_SECRET/DB_HOST fail-fast rules untouched).
+
+2) REDIS_URL documented in:
+   - anish-toeic-web-services/.env.example (created)
+   - root env.example
+   - root env.production.example
+   - ecosystem.config.cjs env block (both apps)
+
+3) Real Redis roundtrip (ioredis -> redis://127.0.0.1:16379):
+   set key with NX+EX: OK
+   get: 1
+   del: key gone (get after del == null)
+   => the grading worker's lock primitive works against the real Redis.
+
+4) Durable grading job in real MySQL from a live SW submit (re-created after
+   the final test run restored the schema+seed):
+   SELECT id, attempt_id, status, retry_count FROM toeic_grading_jobs;
+   id  attempt_id  status  retry_count
+   1   1           QUEUED  0
+   Attempt: id 1, user 1 (seed.owner), exam 2 (SW), status SUBMITTED with a
+   QUEUED grading job waiting for the worker. LR attempts were COMPLETED with
+   deterministic scores (12/9/21; see integration-ac7.txt).
+
+5) Grading worker is NOT started here (config only). PM2 app
+   'toeic-grading-worker' added to ecosystem.config.cjs running
+   anish-toeic-web-services/dist/workers/grading.worker.js; it polls
+   toeic_grading_jobs for QUEUED/RETRY and recovers stale PROCESSING jobs,
+   guarded by the Redis NX lock verified above.

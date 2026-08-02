@@ -1,0 +1,39 @@
+R2-FE / INJ-003 — Task 5: CONTENT-SECURITY-POLICY
+===================================================
+Date: 2026-08-01
+
+1) nginx/nginx.conf — HTTPS server block (server level so /api, /assets, /health
+   inherit it), added after Strict-Transport-Security:
+
+   add_header Content-Security-Policy "default-src 'self'; script-src 'self';
+     style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:;
+     media-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:;
+     object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'" always;
+
+   (nginx diff, +1 line)
+
+2) vite.config.ts — matching headers:
+   - preview.headers.Content-Security-Policy = strict CSP (production-like)
+   - server.headers.Content-Security-Policy  = dev CSP, script-src relaxed to
+     "'self' 'unsafe-inline'" because @vitejs/plugin-react-swc injects an
+     INLINE react-refresh preamble in dev mode, which strict script-src 'self'
+     blocks (blank page). Production bundles are external scripts, so
+     preview/nginx keep strict script-src 'self'.
+
+3) index.html — removed the Google Fonts <link>/<preconnect> tags: the mandated
+   CSP (font-src 'self' data:) blocks fonts.googleapis.com/gstatic.com anyway,
+   so they were dead network requests + style-src violations. Font stack in
+   index.css falls back to Helvetica Neue/Arial.
+
+curl -I against vite preview (built assets, strict CSP):
+  HTTP/1.1 200 OK
+  Content-Security-Policy: default-src 'self'; script-src 'self';
+    style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:;
+    media-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:;
+    object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'
+
+Browser check of the BUILT app under that strict CSP (playwright, catalog page):
+  scripts=[...assets/index-*.js] (external only), CSP_VIOLATIONS: none  PASS
+Dev-mode full smoke (detail/runner/result pages) also clean apart from an
+expected 401 from GET /toeic-attempts (cookie session, headless context has
+no cookie).

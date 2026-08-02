@@ -1,0 +1,50 @@
+S6-FE AC18 SW success journey — viewport {"width":1440,"height":900}
+timestamp: 2026-07-31T22:02:30.365Z
+attemptId: 151
+errors: 0
+
+CHECKLIST | AC18 (desktop) | PASS=24 FAIL=0
+  PASS SW attempt created via catalog (id=151)
+  PASS speaking q22: record → stop → playback done
+  PASS speaking q23: record → stop → playback done
+  PASS speaking q24: record → stop → playback done
+  PASS writing q25 word count rendered :: Từ: 44
+  PASS ProcessingPage progress UI rendered
+  PASS processing page URL reached
+  PASS SW certificate header rendered
+  PASS certificate TOTAL SCORE section
+  PASS totalScore 400 shown
+  PASS status FINAL tag shown
+  PASS per-section Speaking + Writing shown
+  PASS review detail per-question blocks
+  PASS SPEAKING/WRITING tags present
+  PASS writing textResponse shown in review
+  PASS all 5 questions listed
+  PASS attempt 151 in history
+  PASS COMPLETED status chip (Hoàn thành)
+  PASS Xem kết quả link present
+  PASS grading-status COMPLETED (got COMPLETED)
+  PASS result totalScore=400 (got 400)
+  PASS result status FINAL
+  PASS attempt status COMPLETED
+  PASS review rows=5 (got 5)
+
+STEP transcript:
+STEP logged in as seed.owner
+STEP mic granted
+STEP directions → prep → recording ready
+STEP upload Retry surfaced (mock S3, expected in dev)
+STEP upload Retry surfaced (mock S3, expected in dev)
+STEP upload Retry surfaced (mock S3, expected in dev)
+STEP all three speaking questions recorded
+STEP writing q25 typed, word count: Từ: 44
+STEP writing q25-26 answered
+STEP submitted → processing page
+SCREENSHOT processing page → processing-desktop.png
+SCREENSHOT result certificate → result-desktop.png
+STEP result certificate verified
+SCREENSHOT review detail → review-desktop.png
+STEP review detail verified
+SCREENSHOT history page → history-desktop.png
+STEP history page verified
+STEP API checks done (grading=COMPLETED, totalScore=400)

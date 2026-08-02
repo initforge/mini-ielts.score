@@ -1,0 +1,5 @@
+R3-FAILURE2 state 01 — loading (catalog skeleton)
+METHOD: Playwright route.delay on /api/toeic-exams 3000ms, screenshot 1.2s after DOM load.
+UI PROOF: 01-loading.png
+DOM PROBE: skeleton blocks (.animate-pulse) visible=6 ; aria-busy loading region present=true
+VERDICT: PASS

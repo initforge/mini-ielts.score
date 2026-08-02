@@ -1,0 +1,9 @@
+S5-FE mic denied path (AC14)
+timestamp: 2026-07-31T15:36:47.583Z
+errors: 0
+PASS attempt created (id=59)
+PASS mic denied banner shown
+PASS no Continue when mic denied
+PASS retry allowed (not stranded)
+
+STEP mic denied path verified (UI correct, not stranded)

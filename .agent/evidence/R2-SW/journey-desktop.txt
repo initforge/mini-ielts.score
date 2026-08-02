@@ -1,0 +1,101 @@
+R2-SW journey (desktop 1280x800) — viewport {"width":1280,"height":800}
+timestamp: 2026-08-01T02:44:48.375Z
+attemptId: 215
+finalScore: 400
+errors: 0
+CHECKLIST | R2-SW (desktop) | PASS=56 FAIL=0
+  PASS session HttpOnly cookie in jar
+  PASS SW exam card visible on SW tab
+  PASS SW attempt created (id=215)
+  PASS mic test "Allow Microphone Access" shown
+  PASS mic granted via fake media device
+  PASS speaking q1 prep timer active
+  PASS q1 read-aloud text prompt shown
+  PASS speaking q1 blob captured + playback ready
+  PASS speaking q2 blob captured + playback ready
+  PASS q3 describe-picture SVG image (src data:image/svg+xml;base64) :: {"src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NDAiIGhlaWdodD0iNDIwIiB2aWV3Qm94PSIwIDAgNjQwIDQyMCI+PHJlY3Qgd2lkdGg9IjY0MCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNlNmEyM2MiLz48cmVjdCB5PSIzMDAiIHdpZHRoPSI2NDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjNWI4ZGVmIi8+PGNpcmNsZSBjeD0iOTQiIGN5PSIxMTAiIHI9IjQ4IiBmaWxsPSIjNjdjMjNhIi8+PHJlY3QgeD0iMjcyIiB5PSIxODAiIHdpZHRoPSIxMzAiIGhlaWdodD0iMTIwIiBmaWxsPSIjOWI1OWI2Ii8+PHJlY3QgeD0iMjg3IiB5PSIyMTAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2U2YTIzYyIvPjxyZWN0IHg9IjM2NyIgeT0iMjEwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNlNmEyM2MiLz48cG9seWdvbiBwb2ludHM9IjM2OCwxMDAgMzEzLDIzMCA0MjMsMjMwIiBmaWxsPSIjZTY3ZTIyIi8+PHJlY3QgeD0iMzU4IiB5PSIyMzAiIHdpZHRoPSIyMCIgaGVpZ2h0PSI3MCIgZmlsbD0iIzFhYmM5YyIvPjxyZWN0IHg9IjQwIiB5PSIzMDAiIHdpZHRoPSIxNDAiIGhlaWdodD0iMjYiIGZpbGw9IiMxNmEwODUiLz48L3N2Zz4=","w":640,"h":420}
+  PASS q3 image rendered (naturalWidth>0) :: {"src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NDAiIGhlaWdodD0iNDIwIiB2aWV3Qm94PSIwIDAgNjQwIDQyMCI+PHJlY3Qgd2lkdGg9IjY0MCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNlNmEyM2MiLz48cmVjdCB5PSIzMDAiIHdpZHRoPSI2NDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjNWI4ZGVmIi8+PGNpcmNsZSBjeD0iOTQiIGN5PSIxMTAiIHI9IjQ4IiBmaWxsPSIjNjdjMjNhIi8+PHJlY3QgeD0iMjcyIiB5PSIxODAiIHdpZHRoPSIxMzAiIGhlaWdodD0iMTIwIiBmaWxsPSIjOWI1OWI2Ii8+PHJlY3QgeD0iMjg3IiB5PSIyMTAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2U2YTIzYyIvPjxyZWN0IHg9IjM2NyIgeT0iMjEwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNlNmEyM2MiLz48cG9seWdvbiBwb2ludHM9IjM2OCwxMDAgMzEzLDIzMCA0MjMsMjMwIiBmaWxsPSIjZTY3ZTIyIi8+PHJlY3QgeD0iMzU4IiB5PSIyMzAiIHdpZHRoPSIyMCIgaGVpZ2h0PSI3MCIgZmlsbD0iIzFhYmM5YyIvPjxyZWN0IHg9IjQwIiB5PSIzMDAiIHdpZHRoPSIxNDAiIGhlaWdodD0iMjYiIGZpbGw9IiMxNmEwODUiLz48L3N2Zz4=","w":640,"h":420}
+  PASS speaking q3 blob captured + playback ready
+  PASS speaking q4 blob captured + playback ready
+  PASS q5 respond-to-questions prompt shown
+  PASS speaking q5 blob captured + playback ready
+  PASS speaking q6 blob captured + playback ready
+  PASS speaking q7 blob captured + playback ready
+  PASS q8 information prompt (plans table) shown
+  PASS speaking q8 blob captured + playback ready
+  PASS writing q1 picture SVG image (src data:image/svg+xml;base64) :: {"src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NDAiIGhlaWdodD0iNDIwIiB2aWV3Qm94PSIwIDAgNjQwIDQyMCI+PHJlY3Qgd2lkdGg9IjY0MCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxNmEwODUiLz48cmVjdCB5PSIzMDAiIHdpZHRoPSI2NDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjYzAzOTJiIi8+PGNpcmNsZSBjeD0iMTAwIiBjeT0iMTEwIiByPSIxMTAiIGZpbGw9IiNlNmEyM2MiLz48cmVjdCB4PSIzNjAiIHk9IjE4MCIgd2lkdGg9IjEzMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiM1YjhkZWYiLz48cmVjdCB4PSIzNzUiIHk9IjIxMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMTZhMDg1Ii8+PHJlY3QgeD0iNDU1IiB5PSIyMTAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iIzE2YTA4NSIvPjxwb2x5Z29uIHBvaW50cz0iMzkwLDEwMCAzMzUsMjMwIDQ0NSwyMzAiIGZpbGw9IiM2N2MyM2EiLz48cmVjdCB4PSIzODAiIHk9IjIzMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjcwIiBmaWxsPSIjOWI1OWI2Ii8+PHJlY3QgeD0iNDAiIHk9IjMwMCIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIyNiIgZmlsbD0iI2U2N2UyMiIvPjwvc3ZnPg==","w":640,"h":420}
+  PASS writing q1 image rendered (naturalWidth>0)
+  PASS q1 word-count label visible :: Từ: 0
+  PASS q1 word count rendered (19) :: Từ: 19
+  PASS q1 autosaved (Đã lưu)
+  PASS q2 word-count label visible :: Từ: 0
+  PASS q2 word count rendered (15) :: Từ: 15
+  PASS q2 autosaved (Đã lưu)
+  PASS q3 word-count label visible :: Từ: 0
+  PASS q3 word count rendered (17) :: Từ: 17
+  PASS q3 autosaved (Đã lưu)
+  PASS q4 word-count label visible :: Từ: 0
+  PASS q4 word count rendered (16) :: Từ: 16
+  PASS q4 autosaved (Đã lưu)
+  PASS q5 word-count label visible :: Từ: 0
+  PASS q5 word count rendered (17) :: Từ: 17
+  PASS q5 autosaved (Đã lưu)
+  PASS q6 word-count label visible :: Từ: 0
+  PASS q6 word count rendered (56) :: Từ: 56
+  PASS q6 autosaved (Đã lưu)
+  PASS q7 word-count label visible :: Từ: 0
+  PASS q7 word count rendered (32) :: Từ: 32
+  PASS q7 autosaved (Đã lưu)
+  PASS q8 word-count label visible :: Từ: 0
+  PASS q8 word count rendered (70) :: Từ: 70
+  PASS q8 autosaved (Đã lưu)
+  PASS processing page progress UI rendered
+  PASS result certificate header
+  PASS TOTAL SCORE section
+  PASS total score 400 displayed
+  PASS status FINAL tag
+  PASS Speaking + Writing sections
+  PASS grading job COMPLETED (got COMPLETED)
+  PASS attempt status COMPLETED (got COMPLETED)
+  PASS 8 writing responses persisted server-side (got 8)
+  PASS API totalScore=400 (got 400)
+  PASS API result status FINAL (got FINAL)
+
+STEP transcript:
+[2026-08-01T02:42:09.960Z] STEP logged in as seed.owner (cookie session)
+[2026-08-01T02:42:10.239Z] SCREENSHOT catalog SW tab -> desktop01-catalog-sw.png
+[2026-08-01T02:42:10.344Z] SCREENSHOT exam detail -> desktop20-exam-sw-detail.png
+[2026-08-01T02:42:10.344Z] STEP exam detail rendered
+[2026-08-01T02:42:10.512Z] SCREENSHOT mic test screen -> desktop21-exam-sw-mic-setup.png
+[2026-08-01T02:42:12.869Z] SCREENSHOT mic test passed (ready) -> desktop21b-exam-sw-mic-ready.png
+[2026-08-01T02:42:12.953Z] SCREENSHOT speaking directions -> desktop22-exam-sw-speaking-directions.png
+[2026-08-01T02:42:13.062Z] SCREENSHOT speaking q1 prep state -> desktop23-exam-sw-speaking-q1-prep.png
+[2026-08-01T02:42:16.490Z] STEP speaking q1: recorded ~2s, blob URL ready, upload enqueued
+[2026-08-01T02:42:19.968Z] STEP speaking q2: recorded ~2s, blob URL ready, upload enqueued
+[2026-08-01T02:42:20.090Z] SCREENSHOT speaking q3 describe-picture (SVG image) -> desktop24-exam-sw-speaking-q3-image.png
+[2026-08-01T02:42:23.505Z] STEP speaking q3: recorded ~2s, blob URL ready, upload enqueued
+[2026-08-01T02:42:27.005Z] STEP speaking q4: recorded ~2s, blob URL ready, upload enqueued
+[2026-08-01T02:42:27.153Z] SCREENSHOT speaking q5 respond-to-questions -> desktop25-exam-sw-speaking-q5.png
+[2026-08-01T02:42:30.568Z] STEP speaking q5: recorded ~2s, blob URL ready, upload enqueued
+[2026-08-01T02:42:34.036Z] STEP speaking q6: recorded ~2s, blob URL ready, upload enqueued
+[2026-08-01T02:42:37.520Z] STEP speaking q7: recorded ~2s, blob URL ready, upload enqueued
+[2026-08-01T02:42:37.646Z] SCREENSHOT speaking q8 respond-using-information -> desktop26-exam-sw-speaking-q8.png
+[2026-08-01T02:42:41.052Z] STEP speaking q8: recorded ~2s, blob URL ready, upload enqueued
+[2026-08-01T02:42:41.052Z] STEP all 8 speaking questions recorded
+[2026-08-01T02:42:41.164Z] SCREENSHOT writing start (q1 picture) -> desktop27-exam-sw-writing-start.png
+[2026-08-01T02:42:45.551Z] SCREENSHOT writing q1 typed + word count -> desktop28-exam-sw-writing-q1.png
+[2026-08-01T02:42:45.551Z] STEP writing q1: typed, word count 19, autosaved
+[2026-08-01T02:42:49.895Z] STEP writing q2: typed, word count 15, autosaved
+[2026-08-01T02:42:54.183Z] STEP writing q3: typed, word count 17, autosaved
+[2026-08-01T02:42:58.362Z] STEP writing q4: typed, word count 16, autosaved
+[2026-08-01T02:43:02.673Z] STEP writing q5: typed, word count 17, autosaved
+[2026-08-01T02:43:09.475Z] SCREENSHOT writing q6 typed + word count -> desktop29-exam-sw-writing-q6-email.png
+[2026-08-01T02:43:09.475Z] STEP writing q6: typed, word count 56, autosaved
+[2026-08-01T02:43:14.683Z] STEP writing q7: typed, word count 32, autosaved
+[2026-08-01T02:43:22.734Z] SCREENSHOT writing q8 typed + word count -> desktop30-exam-sw-writing-q8-essay.png
+[2026-08-01T02:43:22.734Z] STEP writing q8: typed, word count 70, autosaved
+[2026-08-01T02:43:22.734Z] STEP writing q1/q6/q8 answered (all 8 writing questions done)
+[2026-08-01T02:43:23.714Z] SCREENSHOT processing (queued/processing) -> desktop31-exam-sw-processing.png
+[2026-08-01T02:43:23.714Z] STEP submitted -> processing page (attempt 215)
+[2026-08-01T02:43:30.995Z] SCREENSHOT SW result certificate -> desktop32-exam-sw-result.png
+[2026-08-01T02:43:30.995Z] STEP result verified: status=FINAL totalScore=400

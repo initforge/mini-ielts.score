@@ -1,0 +1,27 @@
+R2-FE / INJ-003 — Task 3: SCORE-TABLE MODAL ("Bảng kết quả")
+===============================================================
+Date: 2026-08-01
+
+File: anish-toeic-web-app/src/pages/user/ResultPage.tsx
+
+Trigger: new "Bảng kết quả" primary button in the result action row
+(shown when per-question rows can be built, i.e. attempt + review data ready).
+
+Modal (antd Modal, width 720):
+  - Summary chips: Đúng N / Sai N / Chưa trả lời N
+  - Table per question with columns:
+      Câu (display number), Part, Đáp án của bạn (A/B/C/D letter or "—"),
+      Đáp án đúng (letter or "—"), Kết quả (✓ green / ✗ red / ? grey)
+  - pagination 20/row, scroll y 420
+
+Data built locally from:
+  attemptQuery.data  (/toeic-attempts/:id -> session.sections/.questions/.options + responses)
+  reviewQuery.data   (/toeic-attempts/:id/review -> correct_option_id per question)
+Uses existing sortSessionQuestions() helper (import from attemptStore).
+Answer letters resolved via option.label; correct answer via correct_option_id.
+Matches reference desktop/16 ("Your Answers"/"Correct Answers" grid) semantics.
+
+Browser verification (verify.js, attempt/review/result routes stubbed with a
+4-question FINAL attempt):
+  SCORE_MODAL: rows=4, headers=[Câu, Part, Đáp án của bạn, Đáp án đúng, Kết quả]
+  -> score-table-modal.png  PASS

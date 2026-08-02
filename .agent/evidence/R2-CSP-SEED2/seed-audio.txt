@@ -1,0 +1,15 @@
+R2-CSP-SEED2 — seed.ts Part 1 audio + idempotency
+Date: 2026-08-01T02:53:23Z
+Env: anish-toeic-web-services, npm run build (tsc) then node dist/migrations/seed.js (NODE_ENV from .env, non-production)
+
+===== seed run 1 =====
+$ node dist/migrations/seed.js  ->  Seed completed.
+===== seed run 2 (idempotency) =====
+$ node dist/migrations/seed.js  ->  Seed completed.  (no duplicate rows, no errors)
+===== seed run 3 (after API attempt 225 was created) =====
+$ node dist/migrations/seed.js  ->  Seed completed.
+
+Change: Part 1 (Listening Part 1 — Photographs) questions now use media: 'image_audio'
+  -> seed writes BOTH image_url (svgDataUri(questionId)) and audio_url (wavDataUri(questionId))
+  -> deterministic: derived from stable question id; no Math.random
+  -> UPDATE path re-runs on every seed, writing identical bytes (verified via API attempt 224 vs 225)

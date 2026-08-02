@@ -1,0 +1,6 @@
+COMPOSE_RC=0
+redis:7-alpine
+mysql:8.4
+---ports---
+mysql [{'mode': 'ingress', 'host_ip': '127.0.0.1', 'target': 3306, 'published': '13306', 'protocol': 'tcp'}] mysql:8.4
+redis [{'mode': 'ingress', 'host_ip': '127.0.0.1', 'target': 6379, 'published': '16379', 'protocol': 'tcp'}] redis:7-alpine

@@ -1,0 +1,44 @@
+[STATE 9 UI] review 180
+--- dialogs (must be empty) ---
+--- visible text ---
+Kết quả
+Lịch sử luyện tập
+Xem lại bài thi — Speaking & Writing
+Câu hỏi, bài làm của bạn và đáp án mẫu
+Speaking 0
+Writing 0
+Tổng 400 / 400
+FINAL
+Câu 1
+SPEAKING
+CÂU HỎI
+Welcome to our company’s annual health fair. Please visit the information desk to pick up a schedule of events and a map of the venue.
+BÀI LÀM CỦA BẠN
+Bản ghi âm đã được nộp. Không có URL phát lại trong môi trường dev.
+ĐÁP ÁN MẪU
+Welcome to our company’s annual health fair. Please visit the information desk to pick up a schedule of events and a map of the venue.
+Câu 2
+SPEAKING
+CÂU HỎI
+Due to unexpected maintenance, the elevator on the west side of the building will be closed until Friday morning. We apologize for the inconvenience.
+BÀI LÀM CỦA BẠN
+Bản ghi âm đã được nộp. Không có URL phát lại trong môi trường dev.
+ĐÁP ÁN MẪU
+Due to unexpected maintenance, the elevator on the west side of the building will be closed until Friday morning. We apologize for the inconvenience.
+Câu 3
+SPEAKING
+CÂU HỎI
+Look at the picture. Describe what you see in as much detail as possible.
+BÀI LÀM CỦA BẠN
+Bản ghi âm đã được nộp. Không có URL phát lại trong môi trường dev.
+ĐÁP ÁN MẪU
+The picture shows a bright outdoor scene with a tall build
+--- console ---
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+--- network ---
+200 /api/toeic-exams?page=1&pageSize=100
+200 /api/toeic-attempts/180
+200 /api/toeic-attempts/180/result
+200 /api/toeic-attempts/180/review

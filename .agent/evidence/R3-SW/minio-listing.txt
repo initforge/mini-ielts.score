@@ -1,0 +1,54 @@
+R3-SW-JOURNEY2 — MinIO object persistence listing (bucket toeic-media)
+timestamp (listing run): 2026-08-01T06:15:00Z approx — object LastModified is authoritative (real UTC)
+
+== mc ls -r local/toeic-media (R3-SW attempts 246 desktop + 247 mobile) ==
+[2026-08-01 06:05:36 UTC]  36KiB STANDARD q22/q22.webm   (attempt 246)
+[2026-08-01 06:05:40 UTC]  36KiB STANDARD q23/q23.webm   (attempt 246)
+[2026-08-01 06:05:44 UTC]  36KiB STANDARD q24/q24.webm   (attempt 246)
+[2026-08-01 06:05:48 UTC]  36KiB STANDARD q25/q25.webm   (attempt 246)
+[2026-08-01 06:05:52 UTC]  36KiB STANDARD q26/q26.webm   (attempt 246)
+[2026-08-01 06:05:56 UTC]  36KiB STANDARD q27/q27.webm   (attempt 246)
+[2026-08-01 06:05:59 UTC]  36KiB STANDARD q28/q28.webm   (attempt 246)
+[2026-08-01 06:06:03 UTC]  36KiB STANDARD q29/q29.webm   (attempt 246)
+[2026-08-01 06:07:17 UTC]  36KiB STANDARD q22/q22.webm   (attempt 247)
+[2026-08-01 06:07:21 UTC]  36KiB STANDARD q23/q23.webm   (attempt 247)
+[2026-08-01 06:07:25 UTC]  36KiB STANDARD q24/q24.webm   (attempt 247)
+[2026-08-01 06:07:28 UTC]  36KiB STANDARD q25/q25.webm   (attempt 247)
+[2026-08-01 06:07:32 UTC]  36KiB STANDARD q26/q26.webm   (attempt 247)
+[2026-08-01 06:07:36 UTC]  36KiB STANDARD q27/q27.webm   (attempt 247)
+[2026-08-01 06:07:40 UTC]  36KiB STANDARD q28/q28.webm   (attempt 247)
+[2026-08-01 06:07:44 UTC]  36KiB STANDARD q29/q29.webm   (attempt 247)
+
+== object metadata (mc stat) ==
+Content-Type: audio/webm;codecs=opus
+Size: 37004 bytes (36 KiB) for every object
+ETag example: 246/q22 5da1f92a4e6165e38d9abb36de221085, 247/q22 7146bae886b174db97fe3ef38ff07382
+
+== sha256 (mc cat | sha256sum) ==
+attempt 246 (desktop):
+  q22 0035828684ad801f312ebfd75d6e3c53599dd90eb5fe8a88f764798261b9a361
+  q23 560f6b6f0a7fc713dfc93cb4c49fb30a29269df798ecf732ca18919c2b4d27ab
+  q24 b7862365f9434cdc9a577849862a4c3c1fe0e3b5f905696010bf834f5eb1bbc5
+  q25 5e1978477edb57a408a0adea2b55f79d1418ddbd3603d5746626f753502fa6b9
+  q26 c74ef5df377948f3a23c9f2af84b583091a15d7be3cc8a70be23a685cb940e62
+  q27 56ae11acd81fb7b202351b51a1e8193b41d4436cc846def231c68e6e48a496f0
+  q28 254647a9e390da7acd7268a5697948f96d8fc299cd872cabf1fcb4f21f03a7ab
+  q29 4932c0568a07a2797c73744a763d067795cae8c457d4fb2dc025ff2257141459
+attempt 247 (mobile):
+  q22 f02fd44dc12c3b8908a5bc9ebdb880bafcee7415f0e204923008fb7f095db0b0
+  q23 c1627ae1a52996a0491b250030d66a2d420fd78e541465d1f8f04cd22f16e2e1
+  q24 5f7da3e7cc3e7c818ec19ef718db0a26fd816c489882c1764e75131182a1fbf1
+  q25 b9181eadf3ecf1d5afac8016f19ef0b597d5b70ecac40d57089b807509a59dc1
+  q26 f63477efcc09d24de2fa7d68c55c451df3d82cacfaa3f2ed1d4fecd6d6b17b45
+  q27 598efd107c65b03d834f76dbffa9c97c5db047307b366181abbd31f20b5bb31c
+  q28 08ffe40fc9fd64dd1717ffa93e2f3e5055c11c2af03624eee0cacd0609668dec
+  q29 2343e44b96dbf874e0716f6c8aef94c1cf0fa96e95ce0ade91144583662c4b32
+
+== upload transport (from CDP evidence) ==
+per viewport: 8x PUT http://127.0.0.1:19000/toeic-media/uploads/attempts/{id}/q{22..29}/q{22..29}.webm -> HTTP 200
+plus 8x OPTIONS preflight -> 204 (normal CORS preflight)
+Size proof: MinIO object size 37004 bytes = ~2s MediaRecorder webm blob, persisted byte-for-byte.
+
+== listing method ==
+docker run --rm --network anish-toeic-net --entrypoint /bin/sh minio/mc:latest \
+  -c 'mc alias set local http://minio:9000 minioadmin minioadmin && mc ls -r local/toeic-media/uploads/attempts/246 local/toeic-media/uploads/attempts/247'

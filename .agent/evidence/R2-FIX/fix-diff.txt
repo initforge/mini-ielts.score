@@ -1,0 +1,19 @@
+R2-S2-FIX — toeic.service.ts getAttempt SELECT column fix
+HEAD: 620c111686534899fb980dfb481c9927cb2596bd
+File: anish-toeic-web-services/src/services/toeic.service.ts (getAttempt, ~line 110)
+
+BEFORE:
+      `SELECT q.id, q.section_id, q.type, q.order_index, q.content, q.audio_url, q.image_url
+       FROM toeic_questions q
+       JOIN toeic_exam_sections s ON q.section_id = s.id
+       WHERE s.exam_id = ? ORDER BY q.order_index`,
+
+AFTER:
+      `SELECT q.id, q.section_id, q.type, q.order_index, q.content, q.audio_url, q.image_url, q.prep_time_seconds, q.record_time_seconds, q.min_words
+       FROM toeic_questions q
+       JOIN toeic_exam_sections s ON q.section_id = s.id
+       WHERE s.exam_id = ? ORDER BY q.order_index`,
+
+Note: response mapping at line 126 `return { ...attempt, responses, session: { sections, questions, options } }`
+passes question rows through unchanged — no separate projection/remap to update.
+No other payload builder (getExamSession) exists; getAttempt is the only session builder.

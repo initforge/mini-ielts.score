@@ -1,0 +1,14 @@
+REAL CDP PROOF — browser binary launched with debugging port (NOT playwright.launch):
+
+Launch command:
+  /opt/coccoc/browser/browser --headless=new --remote-debugging-port=9222 \
+    --user-data-dir=/tmp/opencode/r3-cdp-lr --no-sandbox --disable-dev-shm-usage --disable-gpu
+
+Browser product: CocCoc 147.0.7727.150 (Chrome/151 core, CDP protocol 1.3, V8 15.1)
+CDP endpoint: http://127.0.0.1:9222 (verified /json/version)
+Connect method: playwright.chromium.connectOverCDP('http://127.0.0.1:9222')
+Enabled domains per page: Network.enable, Runtime.enable, Log.enable, Security.enable,
+  Security.setIgnoreCertificateErrors({ignore:true}), Emulation (mobile viewport override).
+Events collected: Runtime.exceptionThrown, Log.entryAdded, Network.requestWillBeSent(+ExtraInfo),
+  Network.responseReceived(+ExtraInfo), Network.loadingFailed, Security.securityStateChanged/certificateError,
+  Network.getCookies, Runtime localStorage dump.

@@ -1,0 +1,19 @@
+S6-BE | AC17 — Redis lock lifecycle (grading_job_lock:9)
+Work package: anish-thi-thu-xoamutoeic-20260730 | slice S6-BE
+Generated: 2026-07-31T15:34:18Z | live proof, Redis 127.0.0.1:16379, attempt 49, job 9
+Lock: redis SET grading_job_lock:<jobId> 1 EX 180 NX in GradingService.processJob; DEL in finally.
+============================================================
+PRE  lock grading_job_lock:9 = null (expect null)
+DURING lock observed = 1 while processJob running
+RESULT_1: success=true message="Grading completed"
+RESULT_2: success=true message="Lock not acquired — another worker is processing"
+POST  lock grading_job_lock:9 = null (expect null — released in finally)
+LOCK EVIDENCE: observedDuring=yes; exactlyOneWinner=true; losers=1
+
+-- MySQL result rows for attempt 49 (expect exactly 1):
+result_rows
+1
+attempt_id	total_score	status
+49	400	FINAL
+id	attempt_id	status
+9	49	COMPLETED

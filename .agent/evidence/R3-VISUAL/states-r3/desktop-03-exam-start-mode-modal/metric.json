@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/03-exam-start-mode-modal.png",
+  "actual": ".agent/evidence/R3-LR/screenshots/desktop03-mode-dialog.png",
+  "rmse": 66.062427,
+  "diffPixelsPct": 99.9319,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-03-exam-start-mode-modal/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-03-exam-start-mode-modal/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-03-exam-start-mode-modal/metric.json"
+  }
+}

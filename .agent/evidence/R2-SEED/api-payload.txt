@@ -1,0 +1,25 @@
+# api-payload.txt — R2-S5-SEED
+# ts: 2026-08-01T01:41:00Z
+# BE: node dist/server.js :7000 (rebuilt 2026-08-01, dist/migrations includes 002)
+# login: POST /api/auth/login {seed.owner@example.com} (httpOnly cookie jar)
+# LR attempt: POST /api/toeic-exams/1/attempts {mode:EXAM} -> attemptId 171
+# SW attempt: POST /api/toeic-exams/2/attempts {mode:EXAM} -> attemptId 172
+# GET /api/toeic-attempts/:id -> session.questions[*].image_url / .audio_url
+
+== LR attempt 171: Part 1 image_url + Part 2 audio_url present ==
+session.questions count: 21
+Part1 count: 3 | every image_url SVG: true | min len 838 max 842
+Part2 count: 3 | every audio_url WAV: true | len 882
+sample image_url[..60]: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My
+sample audio_url[..60]: data:audio/wav;base64,UklGRnwCAABXQVZFZm10IBAAAAABAAEAoA8AAK
+Part3/4 audio: true
+
+== SW attempt 172: speaking kinds + writing kinds ==
+session.questions count: 16 (8 speaking + 8 writing)
+q3 describe-picture  image_url SVG: true | content: Look at the picture. Describe what you see in as much detail as possible.
+q5 respond-questions  text situation prompt: A colleague asks: “Do you think we should move the weekly meeting to Friday morn
+q8 respond-information text info prompt   : The chart lists the monthly subscription plans. A customer wants video streaming
+w1 picture image_url SVG: true | content: Write a sentence about the picture.
+w6 email text: Your company’s training coordinator has asked employees to suggest a topic for n
+w8 essay text: Some companies allow employees to work from home several days a week. Do you thi
+swStore mapping: type==="SPEAKING" -> skill speaking; imageUrl from image_url; minWords from min_words; prep/record from *_seconds (service currently does NOT SELECT these; FE defaults 45/45).

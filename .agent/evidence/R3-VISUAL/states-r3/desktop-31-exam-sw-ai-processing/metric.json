@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/31-exam-sw-ai-processing.png",
+  "actual": ".agent/evidence/R3-SW/desktop31-processing.png",
+  "rmse": 224.150412,
+  "diffPixelsPct": 100,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-31-exam-sw-ai-processing/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-31-exam-sw-ai-processing/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-31-exam-sw-ai-processing/metric.json"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/26-exam-sw-speaking-q8-information.png",
+  "actual": ".agent/evidence/R3-SW/desktop26-q8-information.png",
+  "rmse": 210.348816,
+  "diffPixelsPct": 97.7376,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-26-exam-sw-speaking-q8-information/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-26-exam-sw-speaking-q8-information/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-26-exam-sw-speaking-q8-information/metric.json"
+  }
+}

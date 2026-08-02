@@ -1,0 +1,64 @@
+S7 | AC22 | runbook & merge documents — created/updated + diff summary
+timestamp: 2026-08-01T05:xx:00Z (approximate)
+slice: S7, dimension: runbook / merge-contract / clean-checkout
+
+================================================================================
+1. DOCS CREATED
+================================================================================
+docs/05-runbook.md        (NEW)
+  - Clean-checkout reproduce: git clone -> npm ci -> docker compose up infra ->
+    .env setup -> migrate + seed -> build -> run servers -> tests -> VPS/pm2/nginx
+    notes -> evidence replay layout + ledger pointer.
+  - Commands VERIFIED live during S7 (exit 0):
+      node dist/migrations/runner.js up            (after npm run build)
+      npx ts-node src/migrations/seed.ts           -> "Seed completed."
+  - Documents DB_NAME=anish_toeic_test requirement for full jest suite (F-15).
+
+docs/06-merge-handoff.md  (NEW)
+  - Merge contract: base commit 620c111686534899fb980dfb481c9927cb2596bd,
+    per-slice change table S0-S7, dirty/untracked path inventory with commit/
+    no-commit guidance (incl. the 4 untracked source files the build depends on:
+    examCatalog.ts, ErrorMapPage.tsx, WritingView.tsx, seed.ts), F-RECON-20260731
+    summary, UNAVAILABLE externals (Cloudflare AI worker, S3 presign, CF edge),
+    F-11..F-16 resolution table, git verification commands, explicit NO commit/
+    push/deploy statement.
+
+================================================================================
+2. DOCS UPDATED
+================================================================================
+docs/04-infra-nginx-pm2-validation.md  (v2.0.0 -> v3.0.0)
+  - Architecture map now shows Cloudflare edge in front of Nginx (DEC-002).
+  - New §2 verified nginx config: S7 fixes table (security headers at server
+    level, connection-upgrade map, server_tokens off, /api bare redirect,
+    gzip_types, audio fragment shadowing fix).
+  - §3 verified PM2 2-app table; §4 build matrix (exit 0); §5 env var table
+    marking AI/Cloudflare/S3 UNAVAILABLE-optional; §6 docker-compose dev infra.
+
+references/audit/findings.md  (updated)
+  - Appended slice-review findings F-11..F-16 (verbatim summary from ledger,
+    with resolution + F-RECON-20260731 CLOSED status) and a namespace warning
+    (audit F-01..F-13 vs ledger slice-review F-11..F-16).
+
+================================================================================
+3. DIFF SUMMARY (docs/ + references/) — git diff stat
+================================================================================
+docs/04-infra-nginx-pm2-validation.md   ~230 lines (rewrite/refresh)
+docs/05-runbook.md                      NEW ~120 lines
+docs/06-merge-handoff.md                NEW ~140 lines
+references/audit/findings.md            +~70 lines (appendix)
+(other tracked diffs: nginx/*.conf, env.example, env.production.example,
+ anish-toeic-web-services/.env.example — see docs/06 §3 for the full inventory)
+
+================================================================================
+4. VERIFIER NOTES
+================================================================================
+- All doc commands cross-referenced against the ledger and live verification.
+- Nothing fabricated: base commit, receipts, findings and statuses read from
+  .agent/work/anish-thi-thu-xoamutoeic-20260730/ledger.json (read-only).
+- No commit/push/deploy performed (explicit in docs/06 §6).
+
+================================================================================
+5. VERDICT
+================================================================================
+runbook / merge-contract / clean-checkout dimensions: PASS (docs consistent
+with ledger + verified commands; reproduction paths explicit and executable).

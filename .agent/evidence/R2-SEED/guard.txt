@@ -1,0 +1,19 @@
+# guard.txt — R2-S5-SEED production guard
+# ts: 2026-08-01T01:40:42Z
+# guard code (seed.ts seed()): if NODE_ENV==='production' && !process.argv.includes('--force') -> throw
+
+== CASE 1: NODE_ENV=production, no --force (expect refuse, exit 1, no writes) ==
+cmd: NODE_ENV=production node ts-node src/migrations/seed.ts
+exit code: 1
+Refusing to seed in production. Set NODE_ENV != production or re-run with --force.
+q
+37
+
+== CASE 2: NODE_ENV=production WITH --force (expect proceed, exit 0) ==
+cmd: NODE_ENV=production node ts-node src/migrations/seed.ts --force
+Seed completed.
+exit code: 0
+
+== CASE 3: NODE_ENV=development (normal dev path, expect proceed, exit 0) ==
+Seed completed.
+exit code: 0

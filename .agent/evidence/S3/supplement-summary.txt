@@ -1,0 +1,20 @@
+[desktop] PASS Desktop: sidebar 990/Dự đoán card visible
+[desktop] PASS H1 "Thư viện đề thi" :: Thư viện đề thi
+[desktop] PASS LR search placeholder "ETS 2024" :: ETS 2024
+[desktop] PASS Back link "Trang chủ" present
+[desktop] PASS History link present
+[desktop] PASS LR returnUrl exactly /thi-thu?exam=1&mode=exam :: /thi-thu?exam=1&mode=exam
+[desktop] PASS Post-login lands back on /thi-thu :: http://localhost:5173/thi-thu
+[desktop] PASS LR dialog reopens in exam mode 21 câu :: Anish Full Practice 1 — Listening & Reading Thi thử Luyện tập Đề thi đầy đủ 21 câu Mô phỏng bài thi hoàn chỉnh trong 120
+[desktop] PASS LR exam mode description correct
+[desktop] PASS exam/mode params cleared after intent consumed :: http://localhost:5173/thi-thu
+[mobile] PASS Mobile: sidebar 990/Dự đoán card hidden (lg only)
+[mobile] PASS H1 "Thư viện đề thi" :: Thư viện đề thi
+[mobile] PASS LR search placeholder "ETS 2024" :: ETS 2024
+[mobile] PASS Back link "Trang chủ" present
+[mobile] PASS History link present
+[mobile] PASS LR returnUrl exactly /thi-thu?exam=1&mode=exam :: /thi-thu?exam=1&mode=exam
+[mobile] PASS Post-login lands back on /thi-thu :: http://localhost:5173/thi-thu
+[mobile] PASS LR dialog reopens in exam mode 21 câu :: Anish Full Practice 1 — Listening & Reading Thi thử Luyện tập Đề thi đầy đủ 21 câu Mô phỏng bài thi hoàn chỉnh trong 120
+[mobile] PASS LR exam mode description correct
+[mobile] PASS exam/mode params cleared after intent consumed :: http://localhost:5173/thi-thu

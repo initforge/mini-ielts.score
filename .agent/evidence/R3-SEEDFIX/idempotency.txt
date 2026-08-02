@@ -1,0 +1,26 @@
+Idempotency check — NODE_ENV=development, run seed twice, fingerprint seed tables before/after.
+
+Tables fingerprinted as: COUNT(*) | SUM(id) | MD5(GROUP_CONCAT(id ORDER BY id))
+
+BEFORE any rerun:
+users                         6 |   27 | 89f512281be7cb30f4e6ce27ce752395
+toeic_exam_collections        1 |    1 | c4ca4238a0b923820dcc509a6f75849b
+toeic_exams                   2 |    3 | 05cf281c050be3da4eecf3bc6e8aac1b
+toeic_exam_sections           9 |   45 | 4465827426a5fff877ca7c2b8cc1aab5
+toeic_questions              37 |  703 | bf578b2866f344e95a67ac7ed5db7ca3
+toeic_question_options       84 | 3570 | e620990a9594d345a660b164d2508d06
+toeic_question_review_content 37|  703 | bf578b2866f344e95a67ac7ed5db7ca3
+
+run #1: NODE_ENV=development node dist/migrations/seed.js  → exit=0 (Seed completed.)
+run #2: NODE_ENV=development node dist/migrations/seed.js  → exit=0 (Seed completed.)
+
+AFTER both reruns:
+users                         6 |   27 | 89f512281be7cb30f4e6ce27ce752395
+toeic_exam_collections        1 |    1 | c4ca4238a0b923820dcc509a6f75849b
+toeic_exams                   2 |    3 | 05cf281c050be3da4eecf3bc6e8aac1b
+toeic_exam_sections           9 |   45 | 4465827426a5fff877ca7c2b8cc1aab5
+toeic_questions              37 |  703 | bf578b2866f344e95a67ac7ed5db7ca3
+toeic_question_options       84 | 3570 | e620990a9594d345a660b164d2508d06
+toeic_question_review_content 37|  703 | bf578b2866f344e95a67ac7ed5db7ca3
+
+RESULT: identical fingerprints → no duplicates, stable IDs. Idempotent rerun confirmed.

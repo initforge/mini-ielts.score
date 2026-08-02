@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/30-exam-sw-writing-q8-essay.png",
+  "actual": ".agent/evidence/R3-SW/desktop30-writing-q8-essay.png",
+  "rmse": 212.656922,
+  "diffPixelsPct": 97.7623,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-30-exam-sw-writing-q8-essay/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-30-exam-sw-writing-q8-essay/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-30-exam-sw-writing-q8-essay/metric.json"
+  }
+}

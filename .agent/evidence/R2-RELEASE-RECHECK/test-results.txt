@@ -1,0 +1,123 @@
+R2-RELEASE-RECHECK — Backend tests (clean snapshot, real MySQL)
+===============================================================
+Env: DB_HOST=127.0.0.1 DB_PORT=13306 DB_USER=toeic DB_PASSWORD=toeic_dev_pw DB_NAME=anish_toeic_test
+Note: container anish-toeic-mysql maps 127.0.0.1:13306 -> 3306.
+Migrations bootstrapped by tests: migrations.test.ts runMigrations('up') then rollback ('down').
+WARNING 'worker process failed to exit gracefully' is pre-existing (present in R2-SEC-FIX evidence too), non-fatal.
+
+npm notice run anish-toeic-monorepo@1.0.0 npx
+npm notice run 'jest' --verbose
+  console.log
+    Running migrations: up
+
+      at runMigrations (src/migrations/runner.ts:32:11)
+
+  console.error
+    ❌ Environment validation failed: DB_HOST: DB_HOST is required, JWT_SECRET: JWT_SECRET is required and must be at least 32 characters
+
+      65 |     const issues = parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join(', ');
+      66 |     const errorMsg = `Environment validation failed: ${issues}`;
+    > 67 |     console.error('❌ ' + errorMsg);
+         |             ^
+      68 |     throw new Error(errorMsg);
+      69 |   }
+      70 |
+
+      at validateEnv (src/config/env.ts:67:13)
+      at src/tests/server.test.ts:76:18
+      at Object.<anonymous> (../node_modules/expect/build/index.js:1824:9)
+      at Object.throwingMatcher [as toThrow] (../node_modules/expect/build/index.js:2235:93)
+      at Object.<anonymous> (src/tests/server.test.ts:77:8)
+
+  console.error
+    [toeic] request failed: Error: DB died
+        at Object.<anonymous> (/tmp/opencode/anish-snapshot-tddxVT/anish-toeic-web-services/src/tests/security.test.ts:386:40)
+        at Promise.finally.completed (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/jestAdapterInit.js:1561:28)
+        at new Promise (<anonymous>)
+        at callAsyncCircusFn (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/jestAdapterInit.js:1501:10)
+        at _callCircusTest (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/jestAdapterInit.js:1011:40)
+        at processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at _runTest (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/jestAdapterInit.js:951:3)
+        at /tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/jestAdapterInit.js:853:7
+        at _runTestsForDescribeBlock (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/jestAdapterInit.js:866:11)
+        at _runTestsForDescribeBlock (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/jestAdapterInit.js:861:11)
+        at _runTestsForDescribeBlock (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/jestAdapterInit.js:861:11)
+        at run (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/jestAdapterInit.js:765:3)
+        at runAndTransformResultsToJestFormat (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/jestAdapterInit.js:1993:21)
+        at jestAdapter (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-circus/build/runner.js:111:19)
+        at runTestInternal (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-runner/build/testWorker.js:276:16)
+        at runTest (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-runner/build/testWorker.js:344:7)
+        at Object.worker (/tmp/opencode/anish-snapshot-tddxVT/node_modules/jest-runner/build/testWorker.js:498:12)
+
+      24 |     return res.status(400).json({ error: (err as any).errors });
+      25 |   }
+    > 26 |   console.error('[toeic] request failed:', err);
+         |           ^
+      27 |   return res.status(500).json({ error: 'Internal server error' });
+      28 | }
+      29 |
+
+      at sendError (src/controllers/toeic.controller.ts:26:11)
+      at submitAttempt (src/controllers/toeic.controller.ts:129:7)
+
+  console.log
+    Applied: 001_schema.up.sql
+
+      at runMigrations (src/migrations/runner.ts:65:13)
+
+  console.log
+    Applied: 002_media_columns.up.sql
+
+      at runMigrations (src/migrations/runner.ts:65:13)
+
+  console.log
+    Migrations completed successfully.
+
+      at runMigrations (src/migrations/runner.ts:73:11)
+
+  console.log
+    Running migrations: up
+
+      at runMigrations (src/migrations/runner.ts:32:11)
+
+  console.log
+    Skipping already-applied migration: 001_schema.up.sql
+
+      at runMigrations (src/migrations/runner.ts:40:15)
+
+  console.log
+    Skipping already-applied migration: 002_media_columns.up.sql
+
+      at runMigrations (src/migrations/runner.ts:40:15)
+
+  console.log
+    Migrations completed successfully.
+
+      at runMigrations (src/migrations/runner.ts:73:11)
+
+  console.log
+    Running migrations: down
+
+      at runMigrations (src/migrations/runner.ts:32:11)
+
+  console.log
+    Reverted: 002_media_columns.down.sql
+
+      at runMigrations (src/migrations/runner.ts:65:13)
+
+  console.log
+    Reverted: 001_schema.down.sql
+
+      at runMigrations (src/migrations/runner.ts:65:13)
+
+  console.log
+    Migrations completed successfully.
+
+      at runMigrations (src/migrations/runner.ts:73:11)
+
+A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.
+Test Suites: 11 passed, 11 total
+Tests:       135 passed, 135 total
+Snapshots:   0 total
+Time:        8.389 s
+Ran all test suites.

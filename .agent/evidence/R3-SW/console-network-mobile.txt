@@ -1,0 +1,1977 @@
+R3-SW CDP network/console report (mobile 375x812) — real browser CDP
+timestamp: 2026-08-01T06:08:34.717Z
+
+=== RUNTIME EXCEPTIONS ===
+(none)
+
+=== CONSOLE ERROR/WARNING ===
+[
+ {
+  "ts": "2026-08-01T06:08:25.334Z",
+  "t": "runtime.consoleAPICalled",
+  "type": "warning",
+  "args": [
+   "[SWStore] conflict on autosave q",
+   "37",
+   "— reconciling revision"
+  ]
+ },
+ {
+  "ts": "2026-08-01T06:08:25.374Z",
+  "t": "runtime.consoleAPICalled",
+  "type": "warning",
+  "args": [
+   "[SWStore] conflict on autosave q",
+   "37",
+   "— reconciling revision"
+  ]
+ },
+ {
+  "ts": "2026-08-01T06:08:34.564Z",
+  "t": "runtime.consoleAPICalled",
+  "type": "error",
+  "args": [
+   "Warning: [antd: compatible] antd v5 support React is 16 ~ 18. see https://u.ant.design/v5-for-19 for compatible."
+  ]
+ }
+]
+
+=== LOG.entryAdded ===
+[
+ {
+  "ts": "2026-08-01T06:06:52.802Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "security",
+  "text": "The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.",
+  "url": "http://localhost:5173/thi-thu"
+ },
+ {
+  "ts": "2026-08-01T06:06:53.510Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "security",
+  "text": "The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.",
+  "url": "http://localhost:5173/thi-thu"
+ },
+ {
+  "ts": "2026-08-01T06:06:54.744Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "network",
+  "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+  "url": "http://localhost:5173/api/toeic-attempts"
+ },
+ {
+  "ts": "2026-08-01T06:06:54.939Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "network",
+  "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+  "url": "http://localhost:5173/api/toeic-exams/2/attempts"
+ },
+ {
+  "ts": "2026-08-01T06:07:11.064Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "security",
+  "text": "The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.",
+  "url": "http://localhost:5173/thi-thu/anish-full-sw-001"
+ },
+ {
+  "ts": "2026-08-01T06:08:25.333Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "network",
+  "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/37"
+ },
+ {
+  "ts": "2026-08-01T06:08:25.373Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "network",
+  "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/37"
+ },
+ {
+  "ts": "2026-08-01T06:08:33.634Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "security",
+  "text": "The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.",
+  "url": "http://localhost:5173/thi-thu/lich-su"
+ },
+ {
+  "ts": "2026-08-01T06:08:34.392Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "network",
+  "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "url": "http://localhost:5173/api/toeic-attempts/208/result"
+ },
+ {
+  "ts": "2026-08-01T06:08:34.393Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "network",
+  "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "url": "http://localhost:5173/api/toeic-attempts/207/result"
+ },
+ {
+  "ts": "2026-08-01T06:08:34.396Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "network",
+  "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "url": "http://localhost:5173/api/toeic-attempts/184/result"
+ },
+ {
+  "ts": "2026-08-01T06:08:34.397Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "network",
+  "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "url": "http://localhost:5173/api/toeic-attempts/182/result"
+ },
+ {
+  "ts": "2026-08-01T06:08:34.397Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "network",
+  "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "url": "http://localhost:5173/api/toeic-attempts/179/result"
+ },
+ {
+  "ts": "2026-08-01T06:08:34.397Z",
+  "t": "log.entryAdded",
+  "level": "error",
+  "source": "network",
+  "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "url": "http://localhost:5173/api/toeic-attempts/177/result"
+ }
+]
+
+=== API RESPONSES ===
+[
+ {
+  "ts": "2026-08-01T06:06:54.417Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.62",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-exams?skillType=LR&page=1&pageSize=100",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "311",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"137-rZlKoI1X90giv4qbMQbxgYG5MLc\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:06:54.587Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.71",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-exams?skillType=SW&page=1&pageSize=100",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "309",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"135-KmdjlF5Hdq7E57GwZTdWGM7CGsQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:06:54.718Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.72",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-exams/anish-full-sw-001",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "543",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"21f-0nP5tLHa/E7Tw5cVYbEHHck6guQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:06:54.744Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.73",
+  "status": 401,
+  "url": "http://localhost:5173/api/toeic-attempts",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "39",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"27-I0NpV7rr04w46ZQJak/Bceg9PVU\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:06:54.939Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.75",
+  "status": 401,
+  "url": "http://localhost:5173/api/toeic-exams/2/attempts",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "39",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"27-I0NpV7rr04w46ZQJak/Bceg9PVU\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:05.047Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.76",
+  "status": 200,
+  "url": "http://localhost:5173/api/auth/login",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "79",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"4f-KE1itX3fy0vxBDplNKE+N9MWvng\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:05.083Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.77",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-exams?skillType=LR&page=1&pageSize=100",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "311",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"137-rZlKoI1X90giv4qbMQbxgYG5MLc\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:11.303Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.139",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-exams/anish-full-sw-001",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "543",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"21f-0nP5tLHa/E7Tw5cVYbEHHck6guQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:11.322Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.140",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "17405",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"43fd-52UwnunhudUwIvowf68A1LWmGpc\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:11.461Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.149",
+  "status": 201,
+  "url": "http://localhost:5173/api/toeic-exams/2/attempts",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "54",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"36-26XqBNjvH6jTov0YKatyhTWz4Ow\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:11.489Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.150",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "11240",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"2be8-iWNo/MEM9aWEY3gk2ZM17sldT84\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:11.494Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.151",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "11240",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"2be8-iWNo/MEM9aWEY3gk2ZM17sldT84\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:17.408Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.153",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/media/presign",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "562",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"232-yVnA+bjvsllgHrhapqV/E1OEMrk\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:21.249Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.156",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/media/presign",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "562",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"232-lVa4nvgslPWA1Iq5kOoDZUYHsCc\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:25.067Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.160",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/media/presign",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "562",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"232-1qksgNk4stdnZUSDHGUSkBxf7/M\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:28.897Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.163",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/media/presign",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "562",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"232-hcclFUaWQxKe7yo+LqLMeJGMeBU\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:32.726Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.166",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/media/presign",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "562",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"232-U4Slnew6hw31pTFx/IoW9PP9uR0\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:36.536Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.169",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/media/presign",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "562",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"232-2gc8dSCVYopefOQQVKg5i8Vo/+s\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:40.372Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.172",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/media/presign",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "562",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"232-COGOcLnmuUsaMJCXUQZ9wbgLhMU\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:44.197Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.175",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/media/presign",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "562",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"232-E5zcajW264npJmk6c8mpOs+rb+U\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:44.536Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.178",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/30",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:46.630Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.180",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/30",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:49.112Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.181",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/30",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:49.114Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.182",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/31",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:51.121Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.184",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/31",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:53.458Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.185",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/31",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:53.465Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.186",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/32",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:55.387Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.188",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/32",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:57.723Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.189",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/32",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:57.730Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.190",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/33",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:59.550Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.192",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/33",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:01.896Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.193",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/33",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:01.901Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.194",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/34",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:03.736Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.196",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/34",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:06.082Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.197",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/34",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:06.086Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.198",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/35",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:10.367Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.199",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/35",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:12.707Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.201",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/36",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:12.708Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.200",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/35",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:15.383Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.202",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/36",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:17.707Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.204",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/37",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:17.709Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.203",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/36",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:22.974Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.205",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/37",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:25.327Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.206",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/submit",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "16",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:25.332Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.207",
+  "status": 409,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/37",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "38",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"26-1QC0QK0Dg6b/aEiDX8Uk01efmqw\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:25.353Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.208",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "13579",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"350b-2NhzwySBoHvKDEmzHPF17JUv7iA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:25.373Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.209",
+  "status": 409,
+  "url": "http://localhost:5173/api/toeic-attempts/247/responses/37",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "38",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"26-1QC0QK0Dg6b/aEiDX8Uk01efmqw\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:25.383Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.210",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "13579",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"350b-2NhzwySBoHvKDEmzHPF17JUv7iA\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:25.384Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.211",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/grading-status",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "161",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"a1-gdFAKXsi39iw7SZ+tfE3FGHOpfk\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:27.424Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.212",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/grading-status",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "161",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"a1-gdFAKXsi39iw7SZ+tfE3FGHOpfk\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:31.446Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.213",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/grading-status",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "164",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"a4-QoOmBIimLimQ+Cv1YkE40a5pI1g\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:32.303Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.214",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:32.337Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.216",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-exams?page=1&pageSize=100",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "560",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"230-QZyCNJfn4fi43k6a5Iw1NU7rXjQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:32.338Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.215",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "13579",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"350b-KwRIIB+3qKRsqHEWsHeY/HGkD00\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:32.362Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.217",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/review",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "5839",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"16cf-z8x+GJ8gGGBk5cVYvn2Qx1v4zbc\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.138Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.280",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "17849",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45b9-mQdR9oeaS2IdSF61j9VGumB5OdM\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.139Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.279",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-exams?page=1&pageSize=100",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "560",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"230-QZyCNJfn4fi43k6a5Iw1NU7rXjQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.389Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.281",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.390Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.282",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/246/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.390Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.283",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/241/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.390Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.284",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/237/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.390Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.285",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/232/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.391Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.286",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/228/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.391Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.287",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/223/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.392Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.288",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/222/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.392Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.289",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/221/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.392Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.290",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/219/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.392Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.291",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/215/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.392Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.296",
+  "status": 404,
+  "url": "http://localhost:5173/api/toeic-attempts/208/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "28",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"1c-tAgfibtmE/QVjK1AJlg796AIJj0\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.393Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.297",
+  "status": 404,
+  "url": "http://localhost:5173/api/toeic-attempts/207/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "28",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"1c-tAgfibtmE/QVjK1AJlg796AIJj0\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.394Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.292",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/212/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-tFLX73YS/0fUf/0bx8MExq5BASM\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.394Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.293",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/211/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-tFLX73YS/0fUf/0bx8MExq5BASM\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.394Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.294",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/210/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.395Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.295",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/209/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.395Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.298",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/206/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.395Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.299",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/205/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.396Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.300",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/204/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.396Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.301",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/203/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-tFLX73YS/0fUf/0bx8MExq5BASM\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.396Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.314",
+  "status": 404,
+  "url": "http://localhost:5173/api/toeic-attempts/184/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "28",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"1c-tAgfibtmE/QVjK1AJlg796AIJj0\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.397Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.316",
+  "status": 404,
+  "url": "http://localhost:5173/api/toeic-attempts/182/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "28",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"1c-tAgfibtmE/QVjK1AJlg796AIJj0\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.397Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.302",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/202/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.397Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.319",
+  "status": 404,
+  "url": "http://localhost:5173/api/toeic-attempts/179/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "28",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"1c-tAgfibtmE/QVjK1AJlg796AIJj0\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.397Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.320",
+  "status": 404,
+  "url": "http://localhost:5173/api/toeic-attempts/177/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "28",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"1c-tAgfibtmE/QVjK1AJlg796AIJj0\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.398Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.303",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/201/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-tFLX73YS/0fUf/0bx8MExq5BASM\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.398Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.305",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/199/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-tFLX73YS/0fUf/0bx8MExq5BASM\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.398Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.304",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/200/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.398Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.306",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/198/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.398Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.307",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/195/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.399Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.308",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/192/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.399Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.309",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/190/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.399Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.310",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/188/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.400Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.311",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/187/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.400Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.312",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/186/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.400Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.313",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/185/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.400Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.315",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/183/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.401Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.317",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/181/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "69",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"45-ACnZWKPg/0JxyCTlhB7zU6L0kXQ\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.401Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.318",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/180/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.588Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.329",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/result",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "71",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"47-ROLz9X3uds+c78qN98GDHDHYIxs\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.608Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.330",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "13579",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"350b-KwRIIB+3qKRsqHEWsHeY/HGkD00\""
+  }
+ },
+ {
+  "ts": "2026-08-01T06:08:34.622Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.331",
+  "status": 200,
+  "url": "http://localhost:5173/api/toeic-attempts/247/review",
+  "mimeType": "application/json",
+  "headers": {
+   "content-length": "5839",
+   "content-type": "application/json; charset=utf-8",
+   "server": null,
+   "etag": "W/\"16cf-z8x+GJ8gGGBk5cVYvn2Qx1v4zbc\""
+  }
+ }
+]
+
+=== MEDIA PUT (MinIO) responses ===
+[
+ {
+  "ts": "2026-08-01T06:07:17.411Z",
+  "t": "network.responseReceived",
+  "requestId": "BFA55D5EB329FE991DD0178B50432B38",
+  "status": 204,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q22/q22.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060717Z&X-Amz-Expires=300&X-Amz-Signature=4ed8533d4813a997910daba4f614ca6373ee21d19ccfeba1d9482e53ec4ba868&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:17.426Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.155",
+  "status": 200,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q22/q22.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060717Z&X-Amz-Expires=300&X-Amz-Signature=4ed8533d4813a997910daba4f614ca6373ee21d19ccfeba1d9482e53ec4ba868&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:21.251Z",
+  "t": "network.responseReceived",
+  "requestId": "4D5CCE5C493016A8D4050D9B02414091",
+  "status": 204,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q23/q23.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060721Z&X-Amz-Expires=300&X-Amz-Signature=b6e3c0f0801f613f080e1e8447841f6923881a739989384670185837ea284c2c&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:21.259Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.158",
+  "status": 200,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q23/q23.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060721Z&X-Amz-Expires=300&X-Amz-Signature=b6e3c0f0801f613f080e1e8447841f6923881a739989384670185837ea284c2c&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:25.069Z",
+  "t": "network.responseReceived",
+  "requestId": "A4289C758DE7DBB58C22F3D2DB6D23D7",
+  "status": 204,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q24/q24.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060725Z&X-Amz-Expires=300&X-Amz-Signature=c9da60d9591d942d1e2da0c5e8a654c6200f1a7ee6fc076f740cb9f6ab08e290&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:25.082Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.162",
+  "status": 200,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q24/q24.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060725Z&X-Amz-Expires=300&X-Amz-Signature=c9da60d9591d942d1e2da0c5e8a654c6200f1a7ee6fc076f740cb9f6ab08e290&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:28.899Z",
+  "t": "network.responseReceived",
+  "requestId": "A0621E0ED7E18168374D35D93D39D5A3",
+  "status": 204,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q25/q25.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060728Z&X-Amz-Expires=300&X-Amz-Signature=f09099c30a8fee6f3f90c986281ac1efe1fe628395391eb9fdcc3bb487f65e70&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:28.907Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.165",
+  "status": 200,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q25/q25.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060728Z&X-Amz-Expires=300&X-Amz-Signature=f09099c30a8fee6f3f90c986281ac1efe1fe628395391eb9fdcc3bb487f65e70&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:32.731Z",
+  "t": "network.responseReceived",
+  "requestId": "AFCC0B16FECE25A5067CF4D9CC58A867",
+  "status": 204,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q26/q26.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060732Z&X-Amz-Expires=300&X-Amz-Signature=bf175d2a38b97773f87862fcb14d662e51a3d70ba82134b0ee68e1d15ad0f8f3&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:32.743Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.168",
+  "status": 200,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q26/q26.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060732Z&X-Amz-Expires=300&X-Amz-Signature=bf175d2a38b97773f87862fcb14d662e51a3d70ba82134b0ee68e1d15ad0f8f3&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:36.539Z",
+  "t": "network.responseReceived",
+  "requestId": "1CF39EA82A17C15D1493E56102DD7F69",
+  "status": 204,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q27/q27.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060736Z&X-Amz-Expires=300&X-Amz-Signature=adf2c058d917e121abe42f92d0ed8c0f02e428dcbc32435a67a2d22b86a6ce44&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:36.548Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.171",
+  "status": 200,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q27/q27.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060736Z&X-Amz-Expires=300&X-Amz-Signature=adf2c058d917e121abe42f92d0ed8c0f02e428dcbc32435a67a2d22b86a6ce44&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:40.383Z",
+  "t": "network.responseReceived",
+  "requestId": "4666A64BD170CA3AA3FF76B94B03E9CF",
+  "status": 204,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q28/q28.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060740Z&X-Amz-Expires=300&X-Amz-Signature=6134c6c0f4c80c6dd2bfddcc335e14e49634da8aad269061b9e5f5f948aed914&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:40.386Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.174",
+  "status": 200,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q28/q28.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060740Z&X-Amz-Expires=300&X-Amz-Signature=6134c6c0f4c80c6dd2bfddcc335e14e49634da8aad269061b9e5f5f948aed914&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:44.199Z",
+  "t": "network.responseReceived",
+  "requestId": "76FF2F9CD3B3CAE2B87609E7B9FD4B09",
+  "status": 204,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q29/q29.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060744Z&X-Amz-Expires=300&X-Amz-Signature=6c2f57aaf8a7c5fa6e7a391b4292b6c1bde48f3d2c83f7211f4abb1f77b732fb&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ },
+ {
+  "ts": "2026-08-01T06:07:44.206Z",
+  "t": "network.responseReceived",
+  "requestId": "3080370.177",
+  "status": 200,
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q29/q29.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060744Z&X-Amz-Expires=300&X-Amz-Signature=6c2f57aaf8a7c5fa6e7a391b4292b6c1bde48f3d2c83f7211f4abb1f77b732fb&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "mimeType": "",
+  "headers": {
+   "content-length": null,
+   "content-type": null,
+   "server": null,
+   "etag": null
+  }
+ }
+]
+
+=== MEDIA PUT requests ===
+[
+ {
+  "ts": "2026-08-01T06:07:17.408Z",
+  "t": "network.requestWillBeSent",
+  "requestId": "3080370.155",
+  "method": "PUT",
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q22/q22.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060717Z&X-Amz-Expires=300&X-Amz-Signature=4ed8533d4813a997910daba4f614ca6373ee21d19ccfeba1d9482e53ec4ba868&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "type": "Fetch",
+  "headers": {
+   "content-type": "audio/webm;codecs=opus",
+   "content-length": null,
+   "cookie": null,
+   "authorization": null
+  },
+  "hasBody": true
+ },
+ {
+  "ts": "2026-08-01T06:07:21.249Z",
+  "t": "network.requestWillBeSent",
+  "requestId": "3080370.158",
+  "method": "PUT",
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q23/q23.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060721Z&X-Amz-Expires=300&X-Amz-Signature=b6e3c0f0801f613f080e1e8447841f6923881a739989384670185837ea284c2c&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "type": "Fetch",
+  "headers": {
+   "content-type": "audio/webm;codecs=opus",
+   "content-length": null,
+   "cookie": null,
+   "authorization": null
+  },
+  "hasBody": true
+ },
+ {
+  "ts": "2026-08-01T06:07:25.067Z",
+  "t": "network.requestWillBeSent",
+  "requestId": "3080370.162",
+  "method": "PUT",
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q24/q24.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060725Z&X-Amz-Expires=300&X-Amz-Signature=c9da60d9591d942d1e2da0c5e8a654c6200f1a7ee6fc076f740cb9f6ab08e290&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "type": "Fetch",
+  "headers": {
+   "content-type": "audio/webm;codecs=opus",
+   "content-length": null,
+   "cookie": null,
+   "authorization": null
+  },
+  "hasBody": true
+ },
+ {
+  "ts": "2026-08-01T06:07:28.897Z",
+  "t": "network.requestWillBeSent",
+  "requestId": "3080370.165",
+  "method": "PUT",
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q25/q25.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060728Z&X-Amz-Expires=300&X-Amz-Signature=f09099c30a8fee6f3f90c986281ac1efe1fe628395391eb9fdcc3bb487f65e70&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "type": "Fetch",
+  "headers": {
+   "content-type": "audio/webm;codecs=opus",
+   "content-length": null,
+   "cookie": null,
+   "authorization": null
+  },
+  "hasBody": true
+ },
+ {
+  "ts": "2026-08-01T06:07:32.727Z",
+  "t": "network.requestWillBeSent",
+  "requestId": "3080370.168",
+  "method": "PUT",
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q26/q26.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060732Z&X-Amz-Expires=300&X-Amz-Signature=bf175d2a38b97773f87862fcb14d662e51a3d70ba82134b0ee68e1d15ad0f8f3&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "type": "Fetch",
+  "headers": {
+   "content-type": "audio/webm;codecs=opus",
+   "content-length": null,
+   "cookie": null,
+   "authorization": null
+  },
+  "hasBody": true
+ },
+ {
+  "ts": "2026-08-01T06:07:36.536Z",
+  "t": "network.requestWillBeSent",
+  "requestId": "3080370.171",
+  "method": "PUT",
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q27/q27.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060736Z&X-Amz-Expires=300&X-Amz-Signature=adf2c058d917e121abe42f92d0ed8c0f02e428dcbc32435a67a2d22b86a6ce44&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "type": "Fetch",
+  "headers": {
+   "content-type": "audio/webm;codecs=opus",
+   "content-length": null,
+   "cookie": null,
+   "authorization": null
+  },
+  "hasBody": true
+ },
+ {
+  "ts": "2026-08-01T06:07:40.373Z",
+  "t": "network.requestWillBeSent",
+  "requestId": "3080370.174",
+  "method": "PUT",
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q28/q28.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060740Z&X-Amz-Expires=300&X-Amz-Signature=6134c6c0f4c80c6dd2bfddcc335e14e49634da8aad269061b9e5f5f948aed914&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "type": "Fetch",
+  "headers": {
+   "content-type": "audio/webm;codecs=opus",
+   "content-length": null,
+   "cookie": null,
+   "authorization": null
+  },
+  "hasBody": true
+ },
+ {
+  "ts": "2026-08-01T06:07:44.197Z",
+  "t": "network.requestWillBeSent",
+  "requestId": "3080370.177",
+  "method": "PUT",
+  "url": "http://127.0.0.1:19000/toeic-media/uploads/attempts/247/q29/q29.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=minioadmin%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T060744Z&X-Amz-Expires=300&X-Amz-Signature=6c2f57aaf8a7c5fa6e7a391b4292b6c1bde48f3d2c83f7211f4abb1f77b732fb&X-Amz-SignedHeaders=content-length%3Bhost&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-id=PutObject",
+  "type": "Fetch",
+  "headers": {
+   "content-type": "audio/webm;codecs=opus",
+   "content-length": null,
+   "cookie": null,
+   "authorization": null
+  },
+  "hasBody": true
+ }
+]
+
+=== NETWORK FAILURES (loadingFailed) ===
+[
+ {
+  "ts": "2026-08-01T06:07:17.427Z",
+  "t": "network.loadingFailed",
+  "requestId": "3080370.155",
+  "errorText": "net::ERR_ABORTED",
+  "canceled": true,
+  "blockedReason": null
+ },
+ {
+  "ts": "2026-08-01T06:07:21.259Z",
+  "t": "network.loadingFailed",
+  "requestId": "3080370.158",
+  "errorText": "net::ERR_ABORTED",
+  "canceled": true,
+  "blockedReason": null
+ },
+ {
+  "ts": "2026-08-01T06:07:25.083Z",
+  "t": "network.loadingFailed",
+  "requestId": "3080370.162",
+  "errorText": "net::ERR_ABORTED",
+  "canceled": true,
+  "blockedReason": null
+ },
+ {
+  "ts": "2026-08-01T06:07:28.908Z",
+  "t": "network.loadingFailed",
+  "requestId": "3080370.165",
+  "errorText": "net::ERR_ABORTED",
+  "canceled": true,
+  "blockedReason": null
+ },
+ {
+  "ts": "2026-08-01T06:07:32.743Z",
+  "t": "network.loadingFailed",
+  "requestId": "3080370.168",
+  "errorText": "net::ERR_ABORTED",
+  "canceled": true,
+  "blockedReason": null
+ },
+ {
+  "ts": "2026-08-01T06:07:36.549Z",
+  "t": "network.loadingFailed",
+  "requestId": "3080370.171",
+  "errorText": "net::ERR_ABORTED",
+  "canceled": true,
+  "blockedReason": null
+ },
+ {
+  "ts": "2026-08-01T06:07:40.386Z",
+  "t": "network.loadingFailed",
+  "requestId": "3080370.174",
+  "errorText": "net::ERR_ABORTED",
+  "canceled": true,
+  "blockedReason": null
+ },
+ {
+  "ts": "2026-08-01T06:07:44.207Z",
+  "t": "network.loadingFailed",
+  "requestId": "3080370.177",
+  "errorText": "net::ERR_ABORTED",
+  "canceled": true,
+  "blockedReason": null
+ }
+]

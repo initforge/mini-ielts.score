@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/27-exam-sw-writing-start.png",
+  "actual": ".agent/evidence/R3-SW/desktop27-WRITING-DIRECTIONS.png",
+  "rmse": 204.134651,
+  "diffPixelsPct": 99.9484,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-27-exam-sw-writing-start/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-27-exam-sw-writing-start/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-27-exam-sw-writing-start/metric.json"
+  }
+}

@@ -1,0 +1,9 @@
+npm notice run anish-toeic-web-services@0.1.0 typecheck
+npm notice run tsc --noEmit
+TYPE_RC=0
+npm notice run anish-toeic-web-services@0.1.0 lint
+npm notice run eslint . --ext ts
+LINT_RC=0
+npm notice run anish-toeic-web-services@0.1.0 build
+npm notice run tsc && node -e "const fs=require('fs'),p=require('path');for(const f of fs.readdirSync('src/migrations'))if(f.endsWith('.sql'))fs.copyFileSync(p.join('src/migrations',f),p.join('dist/migrations',f));"
+BUILD_RC=0

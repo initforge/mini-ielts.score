@@ -1,0 +1,14 @@
+PASS Mobile: sidebar 990/Dự đoán card hidden (lg only)
+PASS H1 "Thư viện đề thi" :: Thư viện đề thi
+PASS LR search placeholder "ETS 2024" :: ETS 2024
+PASS Back link "Trang chủ" present
+PASS History link present
+PASS LR returnUrl exactly /thi-thu?exam=1&mode=exam :: /thi-thu?exam=1&mode=exam
+PASS Post-login lands back on /thi-thu :: http://localhost:5173/thi-thu
+PASS LR dialog reopens in exam mode 21 câu :: Anish Full Practice 1 — Listening & Reading Thi thử Luyện tập Đề thi đầy đủ 21 câu Mô phỏng bài thi hoàn chỉnh trong 120
+PASS LR exam mode description correct
+PASS exam/mode params cleared after intent consumed :: http://localhost:5173/thi-thu
+
+pre-login: http://localhost:5173/dang-nhap?returnUrl=%2Fthi-thu%3Fexam%3D1%26mode%3Dexam
+returnUrl: /thi-thu?exam=1&mode=exam
+after-close: http://localhost:5173/thi-thu

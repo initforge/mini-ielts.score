@@ -1,0 +1,17 @@
+# R3-P1-MINIO MinIO bucket listing (mc ls local/toeic-media)
+# 2026-08-01T04:39:51Z
+
+== bucket ==
+[2026-08-01 04:19:16 UTC]     0B toeic-media/
+
+== recursive listing local/toeic-media ==
+[2026-08-01 04:30:44 UTC]  31KiB STANDARD uploads/attempts/233/q22/test.webm
+[2026-08-01 04:35:47 UTC]  36KiB STANDARD uploads/attempts/234/q22/q22.webm
+[2026-08-01 04:36:35 UTC]  36KiB STANDARD uploads/attempts/235/q22/q22.webm
+[2026-08-01 04:39:21 UTC]  36KiB STANDARD uploads/attempts/236/q22/q22.webm
+
+== object metadata (attempt 233 curl E2E) ==
+{"status":"success","name":"test.webm","lastModified":"2026-08-01T04:30:44Z","size":32044,"etag":"969ad612cc292e5925f8f0f0cbc25432","type":"file","metadata":{"Content-Type":"audio/webm"}}
+
+== object metadata (attempt 236 browser SW journey) ==
+{"status":"success","name":"q22.webm","lastModified":"2026-08-01T04:39:21Z","size":37004,"etag":"b965efc5b3022779fbfbede73cf3a096","type":"file","metadata":{"Content-Type":"audio/webm;codecs=opus"}}

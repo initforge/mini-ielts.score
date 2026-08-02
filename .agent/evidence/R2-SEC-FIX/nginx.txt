@@ -1,0 +1,37 @@
+# R2-SEC-FIX — nginx structural check (N2)
+
+- `nginx` binary: NOT present on this machine (`which nginx` → empty). VPS-only live check required.
+- Method: careful structural review of nginx/nginx.conf against nginx `add_header` inheritance rules.
+
+## Finding (N2) and fix
+Nested `location = /index.html { add_header Cache-Control ...; }` suppressed ALL inherited
+server-level security headers (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, X-XSS-Protection,
+Referrer-Policy) on the main document (served via `try_files ... /index.html`).
+
+Fix applied (nginx/nginx.conf):
+1. Removed the nested `location = /index.html { ... }` block (previously lines ~119-121).
+2. Declared `add_header Cache-Control "no-cache, no-store, must-revalidate";` at server level
+   (line 78), immediately after the security headers (lines 62-71), with explanatory comment (72-77).
+3. `location /assets/` unchanged — it has its own `add_header Cache-Control "public, immutable"`
+   (line 109), which per nginx semantics still wins for /assets.
+
+## Inheritance analysis after the fix
+- `location /` (root SPA, try_files → /index.html): no own add_header → inherits ALL server-level
+  headers: X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy, HSTS,
+  Content-Security-Policy, Cache-Control (no-cache). index.html now carries full security set. ✓
+- `location /assets/`: own add_header → gets only `public, immutable` (by design; hashed+immutable,
+  not a security-document boundary). Security headers intentionally omitted for cache efficiency.
+- `location /api/`, `location = /health`, `location = /api`: no own add_header → inherit all
+  server-level headers incl. security headers. ✓
+- HTTP->HTTPS redirect server block: unaffected.
+
+## Syntax sanity (structural)
+- Braces: server blocks, location blocks balanced (verified visually).
+- `location = /api { return 308 /api/; }`, `location = /health { rewrite ...; proxy_pass ...; }`
+  unchanged and valid.
+- No nested location remains inside `location /`.
+
+## Status
+PASS (structural). VPS-only live check: after deploy, run:
+  nginx -t && curl -sI https://webinprogress.click/ | grep -iE "content-security|strict-transport|x-frame"
+Expected on /: CSP + HSTS + X-Frame-Options + nosniff + Cache-Control: no-cache, no-store, must-revalidate.

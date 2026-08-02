@@ -1,0 +1,16 @@
+(a) online: exam cards rendered=1, catalog cache keys in localStorage=1
+(a) offline reload: banner visible=true, cached exam cards=1
+(a) PASS
+(b) offline fresh: error card visible=true, body text length=616
+(b) PASS
+
+CONSOLE/PAGE ERRORS:
+The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.
+The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.
+Failed to load resource: net::ERR_INTERNET_DISCONNECTED
+Failed to load resource: net::ERR_INTERNET_DISCONNECTED
+Failed to load resource: net::ERR_INTERNET_DISCONNECTED
+The source list for the Content Security Policy directive 'connect-src' contains an invalid source: 'https://*.s3.*.amazonaws.com'. It will be ignored.
+Failed to load resource: net::ERR_INTERNET_DISCONNECTED
+Failed to load resource: net::ERR_INTERNET_DISCONNECTED
+Failed to load resource: net::ERR_INTERNET_DISCONNECTED

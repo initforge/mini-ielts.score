@@ -1,0 +1,12 @@
+R2-S2-FIX — typecheck + build
+====================================================
+$ cd anish-toeic-web-services
+$ npm run typecheck
+> tsc --noEmit
+(exit 0)
+
+$ npm run build
+> tsc && node -e "for(const f of fs.readdirSync('src/migrations'))if(f.endsWith('.sql'))fs.copyFileSync(...)"
+(exit 0)
+
+Both exit 0. No errors emitted.

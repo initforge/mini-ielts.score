@@ -1,0 +1,56 @@
+S7 synthetic LR journey (AC21 LR) — viewport {"width":390,"height":844}
+timestamp: 2026-07-31T22:29:36.470Z
+attemptId: 163
+errors: 0
+CHECKLIST | AC21 (lr, mobile) | PASS=35 FAIL=0
+  PASS LR attempt created from catalog (id=163)
+  PASS answered q1 (option idx 0)
+  PASS answered q2 (option idx 2)
+  PASS answered q3 (option idx 3)
+  PASS answered q4 (option idx 0)
+  PASS answered q5 (option idx 3)
+  PASS answered q6 (option idx 1)
+  PASS answered q7 (option idx 1)
+  PASS answered q8 (option idx 0)
+  PASS answered q9 (option idx 2)
+  PASS answered q10 (option idx 1)
+  PASS answered q11 (option idx 1)
+  PASS answered q12 (option idx 0)
+  PASS answered q13 (option idx 0)
+  PASS answered q14 (option idx 0)
+  PASS answered q15 (option idx 2)
+  PASS answered q16 (option idx 1)
+  PASS answered q17 (option idx 2)
+  PASS answered q18 (option idx 2)
+  PASS answered q19 (option idx 1)
+  PASS answered q20 (option idx 1)
+  PASS answered q21 (option idx 2)
+  PASS palette drawer closed
+  PASS certificate "/ 990" header
+  PASS score rendered (14 expected)
+  PASS LR totalScore=14 (got 14)
+  PASS LR result status FINAL
+  PASS error map chart section
+  PASS error map wrong-question list
+  PASS review modal table rendered
+  PASS attempt 163 listed in history
+  PASS COMPLETED status chip (Hoàn thành)
+  PASS Xem kết quả link present
+  PASS attempt status COMPLETED
+  PASS review rows=21 (got 21)
+
+STEP transcript:
+STEP logged in as seed.owner
+SCREENSHOT LR catalog -> catalog-mobile.png
+STEP LR attempt created via catalog: 163
+SCREENSHOT LR runner part 1 (first question answered) -> runner-part1-mobile.png
+STEP answered all 21 LR questions (q1-14 correct, q15-21 wrong -> 14/990)
+SCREENSHOT LR answer palette -> palette-mobile.png
+SCREENSHOT LR submit confirm -> submit-mobile.png
+SCREENSHOT LR result certificate -> result-mobile.png
+STEP LR certificate: totalScore=14 status=FINAL
+SCREENSHOT LR error map -> errormap-mobile.png
+SCREENSHOT LR review modal -> review-mobile.png
+STEP error map + review modal verified
+SCREENSHOT LR history -> history-mobile.png
+STEP history + API checks done (attempt=COMPLETED)

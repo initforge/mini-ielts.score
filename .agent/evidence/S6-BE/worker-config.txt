@@ -1,0 +1,27 @@
+S6-BE | AC17/AC20 — Grading worker PM2 + build configuration
+Work package: anish-thi-thu-xoamutoeic-20260730 | slice S6-BE
+Generated: 2026-07-31T15:40:00Z | config-only, no deploy
+============================================================
+[1] PM2 ecosystem.config.cjs — app "toeic-grading-worker" ADDED (was missing)
+    - args: anish-toeic-web-services/dist/workers/grading.worker.js
+    - fork mode, 1 instance, autorestart, separate worker logs
+    - env: CLOUDFLARE_AI_WORKER_URL/TOKEN/TIMEOUT, DB_*, REDIS_URL
+    - worker does NOT pre-acquire lock: lock ownership lives in
+      GradingService.processJob (Redis NX + MySQL FOR UPDATE).
+44:      name: 'toeic-grading-worker',
+-- config loads:
+anish-toeic-web-services -> anish-toeic-web-services/dist/server.js
+toeic-grading-worker -> anish-toeic-web-services/dist/workers/grading.worker.js
+
+[2] BUILD
+-- npm run build --workspace anish-toeic-web-services
+EXIT=0
+total 4
+drwxr-xr-x 1 linhnx linhnx   34 19:40 31 Thg 7  .
+drwxr-xr-x 1 linhnx linhnx  180 19:40 31 Thg 7  ..
+-rw-r--r-- 1 linhnx linhnx 3687 22:17 31 Thg 7  grading.worker.js
+grading.worker.js size: 3687 bytes, sha256: 13780771c9b4196e7aa4124d5fe24e9dabee7e67500a5b17ddd2baa2849f3477
+[3] WORKER RUN PATHS (live runs)
+- deterministic double: AI_GRADING_TEST_MODE=true (getAiGradingAdapter -> createTestAiGradingAdapter)
+- production: CLOUDFLARE_AI_WORKER_URL/TOKEN set -> CloudflareAiGradingAdapter
+- missing both -> AI_PROVIDER_NOT_CONFIGURED (see retry-stale.txt live FAILED)

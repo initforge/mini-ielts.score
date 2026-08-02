@@ -1,0 +1,6 @@
+=== STATE 12: idempotency DB proof (attempt 179) ===
+mysql: [Warning] Using a password on the command line interface can be insecure.
+job_count	job_ids
+1	39
+id	attempt_id	status	retry_count
+39	179	COMPLETED	0

@@ -1,0 +1,31 @@
+# R2-SEC-FIX — ecosystem.config.cjs (PM2 env) check
+
+## Changes (web-services app env block)
+- Lines 23-27: comment added above JWT_SECRET/JWT_EXPIRES_IN documenting stateless JWT
+  revocation strategy (N3): 7d short TTL bounds stolen-cookie validity; logout clears the
+  httpOnly cookie client-side; full revocation = future token-version/jti table.
+- Lines 28-30: added `AI_GRADING_TEST_MODE: 'false'` and `TRUST_PROXY: 'false'` so PM2 env
+  matches the zod schema defaults (env.ts:24-25). CLOUDFLARE_AI_TIMEOUT_MS was already present.
+
+## Resulting web-services app env block
+```
+NODE_ENV: production
+PORT: 7000
+CLOUDFLARE_AI_WORKER_URL: ''
+CLOUDFLARE_AI_WORKER_TOKEN: ''
+CLOUDFLARE_AI_TIMEOUT_MS: '60000'
+DB_HOST: '' DB_PORT: '3306' DB_USER: '' DB_PASSWORD: '' DB_NAME: ''
+JWT_SECRET: ''
+JWT_EXPIRES_IN: '7d'
+AI_GRADING_TEST_MODE: 'false'   (NEW)
+TRUST_PROXY: 'false'            (NEW)
+AWS_REGION/AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY/S3_BUCKET: ''
+CORS_ORIGIN: https://webinprogress.click
+```
+
+## NOTE (owner decision, flagged)
+Assignment specified TRUST_PROXY=false; env.production.example declares TRUST_PROXY=true
+("MUST be true in prod (behind nginx)"). If production deploys behind Cloudflare/nginx,
+deploy env.production.example with TRUST_PROXY=true — otherwise rate-limit identity
+resolves to the proxy IP (all clients share one bucket) and cf-connecting-ip stays untrusted
+(per the N1 gate in server.ts:34). Kept as requested in this assignment.

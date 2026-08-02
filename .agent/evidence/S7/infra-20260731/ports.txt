@@ -1,0 +1,18 @@
+### Host port binding (loopback only)
+Captured: 2026-07-31T19:29:46+07:00
+3306/tcp -> 127.0.0.1:13306
+6379/tcp -> 127.0.0.1:16379
+
+### In-container connection checks
+mysql ping: mysqld is alive
+redis ping: PONG
+
+### Pre-existing containers untouched (reference)
+NAMES             STATUS
+pos_ops_s3_pg     Up About a minute
+pos_ops_s6_pg     Up 3 minutes
+pos_ops_s2_pg     Up 7 minutes
+pos_ops_s1_db     Up 7 minutes
+pos_ops_backend   Restarting (1) 57 seconds ago
+NAMES     STATUS
+dockge    Up 2 hours (healthy)

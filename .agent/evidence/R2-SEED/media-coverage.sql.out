@@ -1,0 +1,25 @@
+# media-coverage.sql.out — R2-S5-SEED
+# ts: 2026-08-01T01:38:58Z
+
+== (1) EVERY LR Part 1 question has image_url (expect count=0 gaps) ==
+part1_total	with_image	without_image
+3	3	0
+== (2) EVERY LR Part 2/3/4 question has audio_url (expect without_audio=0) ==
+part	total	with_audio	without_audio
+2	3	3	0
+3	3	3	0
+4	3	3	0
+== (3) Speaking has the 3 prompt kinds (picture / situation / info) ==
+kind	n	with_image
+describe_picture(Q3)	1	1
+respond_to_questions(Q4-5)	2	0
+respond_using_information(Q6-8)	3	0
+== (4) Writing has picture(Q1-5) + email(Q6-7) + essay(Q8) ==
+kind	n	with_image	min_w
+picture(Q1-5)	5	5	25
+email(Q6-7)	2	0	60
+essay(Q8)	1	0	200
+== (5) media URI sanity: all data URIs match expected prefix + fit VARCHAR(1024) ==
+kind	n	ok_prefix	ok_len
+image	9	9	9
+audio	9	9	9

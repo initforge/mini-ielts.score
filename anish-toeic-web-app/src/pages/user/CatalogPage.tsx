@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { ArrowLeft, Headphones, History, Mic, Search } from 'lucide-react';
 import { useExamsQuery } from '../../modules/mock-exam/catalogApi';
 import { getCollections } from '../../modules/mock-exam/collections';
@@ -10,7 +10,15 @@ import {
   CatalogError,
   CatalogLoading,
   CatalogNoResult,
+  CatalogOffline,
+  CatalogOfflineBanner,
 } from '../../modules/mock-exam/components/CatalogStates';
+import {
+  catalogCacheKey,
+  isNetworkOffline,
+  useOnlineStatus,
+} from '../../modules/mock-exam/lib/examCatalog';
+import { loadCatalogCache, saveCatalogCache } from '../../modules/mock-exam/lib/attemptStorage';
 import { AnishFooter, AnishHeader } from '../../components/AnishShell';
 import { Exam, ExamMode } from '../../types/exam';
 
@@ -31,7 +39,10 @@ const CatalogPage = () => {
   const [dialogMode, setDialogMode] = useState<ExamMode>('exam');
   const [isModeDialogOpen, setIsModeDialogOpen] = useState(false);
 
-  const { data, isLoading, isError, refetch } = useExamsQuery({
+  const isOnline = useOnlineStatus();
+  const cacheKey = catalogCacheKey(skillType, collectionId, search);
+
+  const { data, isLoading, isError, error, refetch } = useExamsQuery({
     skillType,
     collectionId: collectionId || undefined,
     search: search || undefined,
@@ -41,6 +52,23 @@ const CatalogPage = () => {
   const hasFilters = collectionId !== '' || search !== '';
   const isNoResult = !isLoading && !isError && data?.total === 0 && hasFilters;
   const isEmpty = !isLoading && !isError && data?.total === 0 && !hasFilters;
+
+  // lastCachedData: react-query cache (same tab) + localStorage mirror (reload).
+  // P3: reload-offline must render cached cards, never a blank screen.
+  const [cachedItems, setCachedItems] = useState<Exam[] | null>(() => loadCatalogCache(cacheKey)?.items ?? null);
+
+  useEffect(() => {
+    setCachedItems(loadCatalogCache(cacheKey)?.items ?? null);
+  }, [cacheKey]);
+
+  useEffect(() => {
+    if (!data) return;
+    setCachedItems(data.items);
+    saveCatalogCache(cacheKey, data.items);
+  }, [data, cacheKey]);
+
+  const isOffline = !isOnline || isNetworkOffline(error);
+  const renderCached = isOffline && cachedItems !== null;
 
   // Preserve anonymous-login intent: /dang-nhap?returnUrl=/thi-thu?exam=<id>&mode=<mode>
   useEffect(() => {
@@ -172,7 +200,18 @@ const CatalogPage = () => {
 
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
               <div>
-                {isLoading ? (
+                {renderCached ? (
+                  <>
+                    <CatalogOfflineBanner />
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {cachedItems.map((exam) => (
+                        <ExamCard key={exam.id} exam={exam} onOpenModeDialog={openModeDialog} />
+                      ))}
+                    </div>
+                  </>
+                ) : isOffline ? (
+                  <CatalogOffline onRetry={() => void refetch()} />
+                ) : isLoading ? (
                   <CatalogLoading />
                 ) : isError ? (
                   <CatalogError onRetry={() => void refetch()} />

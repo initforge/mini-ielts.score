@@ -1,0 +1,11 @@
+npm audit --omit=dev — both workspaces (snapshot, after npm ci)
+
+anish-toeic-web-app:
+  found 0 vulnerabilities
+  EXIT=0
+
+anish-toeic-web-services:
+  found 0 vulnerabilities
+  EXIT=0
+
+AUDIT RESULT: 0/0 PASS

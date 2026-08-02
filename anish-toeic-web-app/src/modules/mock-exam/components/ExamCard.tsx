@@ -1,5 +1,5 @@
 import { Clock, GraduationCap, Pencil, Trophy } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { Exam, ExamMode } from '../../../types/exam';
 
 interface ExamCardProps {
@@ -15,7 +15,9 @@ const ExamCard = ({ exam, onOpenModeDialog }: ExamCardProps) => {
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex flex-col hover:shadow-lg transition-shadow">
       <div className="flex items-center gap-1.5 text-green-600 font-bold text-sm mb-2">
         <Trophy className="w-4 h-4 shrink-0" />
-        <span className="truncate">{exam.title}</span>
+        <Link to={`/thi-thu/${exam.slug}`} className="truncate hover:text-green-700 hover:underline underline-offset-2">
+          {exam.title}
+        </Link>
       </div>
       <div className="space-y-1 text-xs text-muted-foreground mb-2">
         <span className="flex items-center gap-1">

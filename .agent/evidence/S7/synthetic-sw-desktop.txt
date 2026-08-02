@@ -1,0 +1,47 @@
+S7 synthetic SW journey (AC21 SW) — viewport {"width":1440,"height":900}
+timestamp: 2026-07-31T22:31:16.560Z
+attemptId: 164
+errors: 0
+CHECKLIST | AC21 (sw, desktop) | PASS=19 FAIL=0
+  PASS SW attempt created from catalog (id=164)
+  PASS writing q25 word count >= 40 :: Từ: 44
+  PASS ProcessingPage progress UI rendered
+  PASS SW certificate header
+  PASS certificate TOTAL SCORE section
+  PASS totalScore 400 shown
+  PASS status FINAL shown
+  PASS Speaking + Writing sections
+  PASS SW totalScore=400 (got 400)
+  PASS SW result status FINAL
+  PASS review per-question blocks
+  PASS SPEAKING/WRITING tags
+  PASS writing textResponse shown
+  PASS all 5 questions listed
+  PASS review rows=5 (got 5)
+  PASS attempt 164 in history
+  PASS COMPLETED status chip (Hoàn thành)
+  PASS Xem kết quả link present
+  PASS attempt status COMPLETED
+
+STEP transcript:
+STEP logged in as seed.owner
+SCREENSHOT SW catalog -> sw-catalog-desktop.png
+STEP SW attempt created via catalog: 164
+SCREENSHOT SW microphone setup -> sw-mic-desktop.png
+STEP mic granted
+SCREENSHOT SW speaking question (recording ready) -> sw-speaking-desktop.png
+STEP speaking q22: record -> stop -> playback done
+STEP speaking q23: record -> stop -> playback done
+STEP speaking q24: record -> stop -> playback done
+STEP all 3 speaking questions (q22-24) recorded
+SCREENSHOT SW writing q25 (word count) -> sw-writing-desktop.png
+STEP writing q25 typed, word count: Từ: 44
+STEP writing q25-26 answered
+SCREENSHOT SW processing page -> sw-processing-desktop.png
+STEP submitted -> ProcessingPage
+SCREENSHOT SW result certificate -> sw-result-desktop.png
+STEP SW result verified (totalScore=400, status=FINAL)
+SCREENSHOT SW review detail -> sw-review-desktop.png
+STEP review detail verified (5 rows)
+SCREENSHOT SW history -> sw-history-desktop.png
+STEP history verified (attempt 164 COMPLETED)

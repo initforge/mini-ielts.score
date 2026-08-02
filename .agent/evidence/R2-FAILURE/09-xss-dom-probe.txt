@@ -1,0 +1,23 @@
+[STATE 9 UI] XSS sanitization probe — review detail page 180 (q30 img onerror, q31 script)
+dialogs fired: 0
+--- DOM probe ---
+[
+  {
+    "text": " harmless text",
+    "parentTag": "DIV",
+    "parentHTML": "<div class=\"text-sm text-slate-700\"><img src=\"x\"> harmless text</div>",
+    "imgCount": 1,
+    "scriptCount": 0,
+    "hasOnError": false
+  },
+  {
+    "text": "script tag test",
+    "parentTag": "DIV",
+    "parentHTML": "<div class=\"text-sm text-slate-700\">script tag test</div>",
+    "imgCount": 0,
+    "scriptCount": 0,
+    "hasOnError": false
+  }
+]
+--- note ---
+Expected: text preserved, imgCount=0, scriptCount=0, hasOnError=false (DOMPurify stripped tags)

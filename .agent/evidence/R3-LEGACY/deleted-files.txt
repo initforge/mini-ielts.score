@@ -1,0 +1,26 @@
+R3-P0-LEGACY: deleted files (assigned scope)
+============================================
+vercel.json
+server/index.ts
+server/dev-server.ts
+api/grade-speaking.ts
+api/grade-writing.ts
+api/lib/gemini.ts
+api/lib/types.ts
+src/lib/gemini.ts
+src/components/shared/GeminiKeyInput.tsx
+
+Verification (git diff-index --name-status HEAD):
+  D	api/grade-speaking.ts
+  D	api/grade-writing.ts
+  D	api/lib/gemini.ts
+  D	api/lib/types.ts
+  D	server/dev-server.ts
+  D	server/index.ts
+  D	src/components/shared/GeminiKeyInput.tsx
+  D	src/lib/gemini.ts
+  D	vercel.json
+
+Directories server/ and api/ fully removed.
+Note: files were `rm`'d (worktree-level deletion); index NOT updated
+because task forbids commit/add/stash/reset.

@@ -1,0 +1,53 @@
+# R3-P1-MINIO presign E2E — curl cookie-jar chain (upload to local MinIO)
+# 2026-08-01T04:37:40Z
+# BE: node dist/server.js, NODE_ENV=development + S3_ENDPOINT=http://127.0.0.1:19000,
+#     S3_ACCESS_KEY/S3_SECRET_KEY=minioadmin, S3_BUCKET=toeic-media, S3_REGION=us-east-1
+
+== 1. login (seed.owner@example.com / seed-password-123) ==
+$ curl -c jar -X POST http://127.0.0.1:7000/api/auth/login -H 'Content-Type: application/json' \
+  -d '{"email":"seed.owner@example.com","password":"seed-password-123"}'
+HTTP 200
+{"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+cookie jar: token present
+
+== 2. list exams, pick SW exam ==
+$ curl -b jar 'http://127.0.0.1:7000/api/toeic-exams?page=1&pageSize=50'
+HTTP 200
+SW exams:
+  2 anish-full-sw-001
+
+== 3. create SW attempt (mode PRACTICE) ==
+$ curl -b jar -X POST http://127.0.0.1:7000/api/toeic-exams/2/attempts -H 'Content-Type: application/json' -d '{"mode":"PRACTICE"}'
+HTTP 201
+{"attemptId":233,"status":"IN_PROGRESS","mode":"PRACTICE"}
+
+== 4. get attempt -> questionId ==
+$ curl -b jar http://127.0.0.1:7000/api/toeic-attempts/233
+HTTP 200
+status: IN_PROGRESS, questions: SPEAKING 8 / WRITING 8
+first SPEAKING questionId = 22
+
+== 5. POST /api/toeic-attempts/233/media/presign ==
+$ curl -b jar -X POST http://127.0.0.1:7000/api/toeic-attempts/233/media/presign -H 'Content-Type: application/json' \
+  -d '{"questionId":22,"fileName":"test.webm","fileType":"audio/webm","fileSize":32044}'
+HTTP 200
+{
+  "s3Key": "uploads/attempts/233/q22/test.webm",
+  "expiresAt": "2026-08-01T04:35:38.945Z",
+  "uploadUrl": "http://127.0.0.1:19000/toeic-media/uploads/attempts/233/q22/test.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin/..."
+}
+host check: 127.0.0.1:19000 present (MinIO path-style) => PASS
+ownership path check: key contains attemptId 233 + questionId q22 => PASS
+
+== 6. PUT file to presigned URL ==
+$ curl -X PUT -H 'Content-Type: audio/webm' --data-binary @/tmp/opencode/r3-test.wav "<uploadUrl>"
+HTTP 200
+
+== 7. verify object in MinIO (mc cat + sha256) ==
+$ mc cat local/toeic-media/uploads/attempts/233/q22/test.webm | sha256sum
+d1d1c3698159db665f6d1237a54fb167a8e2e9784c99b009bc107af875cd0f9a  -
+$ sha256sum /tmp/opencode/r3-test.wav
+d1d1c3698159db665f6d1237a54fb167a8e2e9784c99b009bc107af875cd0f9a  /tmp/opencode/r3-test.wav
+=> bytes MATCH
+$ mc stat local/toeic-media/uploads/attempts/233/q22/test.webm
+size 32044, Content-Type audio/webm => PASS

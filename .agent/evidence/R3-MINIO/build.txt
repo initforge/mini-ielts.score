@@ -1,0 +1,8 @@
+# R3-P1-MINIO BE build (media.adapter.ts changed)
+# 2026-08-01T04:37:11Z
+
+== npm run build ==
+exit: 0 (tsc ok)
+
+dist media.adapter.js contains S3_ENDPOINT support:
+4

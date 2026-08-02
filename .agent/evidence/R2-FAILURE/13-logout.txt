@@ -1,0 +1,9 @@
+=== STATE 13: login fresh ===
+{"user":{"id":"1","email":"seed.owner@example.com","displayName":"Seed Owner"}}
+status:200
+=== logout (jar updated with cleared cookie) ===
+{"success":true}
+status:200
+=== GET after logout (jar now has expired cookie -> expect 401) ===
+{"error":"Unauthorized: Missing token"}
+status:401

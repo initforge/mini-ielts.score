@@ -14,8 +14,8 @@ const app = express();
 app.use(express.json());
 app.use('/api', toeicRoutes);
 
-const mockUserToken = jwt.sign({ sub: 'mock-user-id' }, process.env.JWT_SECRET as string);
-const wrongUserToken = jwt.sign({ sub: 'wrong-user-id' }, process.env.JWT_SECRET as string);
+const mockUserToken = jwt.sign({ sub: '1' }, process.env.JWT_SECRET as string);
+const wrongUserToken = jwt.sign({ sub: '2' }, process.env.JWT_SECRET as string);
 
 describe('Integration AC7: Auth, ownership, revision, idempotency', () => {
   beforeEach(() => {

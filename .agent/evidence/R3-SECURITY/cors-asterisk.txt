@@ -1,0 +1,29 @@
+R3-SECURITY CORS_ORIGIN=* rejection evidence
+=============================================
+
+Requirement: env.ts zod refine — CORS_ORIGIN='*' must be rejected because
+server.ts always sets cors({ credentials: true }) and the CORS spec forbids
+'*' together with credentials (browsers drop such responses).
+
+Implementation (src/config/env.ts, serverEnvSchema):
+  CORS_ORIGIN: z.string().default('http://localhost:5173')
+    .refine((v) => v !== '*', {
+      message: "CORS_ORIGIN='*' is forbidden: server.ts always sets
+               credentials:true, and browsers reject '*' with credentials
+               — use an explicit origin list",
+    })
+
+Worker schema has no CORS_ORIGIN (worker performs no HTTP/CORS), so the
+worker is unaffected.
+
+Verification 1 — jest (server.test.ts "R3: rejects CORS_ORIGIN=*"):
+  validateServerEnv({ ..., CORS_ORIGIN: '*' }) throws /CORS_ORIGIN/  → PASS
+
+Verification 2 — smoke (worker-smoke.txt):
+  validateServerEnv({ ..., CORS_ORIGIN: '*' })
+  → THREW: Environment validation failed (server): CORS_ORIGIN:
+    CORS_ORIGIN='*' is forbidden: server.ts always sets credentials:true,
+    and browsers reject '*' with credentials — use an explicit origin list
+
+Also documented in env.production.example ("'*' is FORBIDDEN ...") and
+ecosystem.config.cjs server app env block.

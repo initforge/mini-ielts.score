@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/mobile/04-exam-sw-writing-q1.png",
+  "actual": ".agent/evidence/R3-SW/mobile04-writing-q1-picture.png",
+  "rmse": 175.015141,
+  "diffPixelsPct": 99.4783,
+  "dims": {
+    "equal": false,
+    "reference": "390x986",
+    "actual": "375x812"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/mobile-04-exam-sw-writing-q1/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/mobile-04-exam-sw-writing-q1/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/mobile-04-exam-sw-writing-q1/metric.json"
+  }
+}

@@ -1,0 +1,37 @@
+R2-SW screenshot manifest — refid -> file (fresh full SW journey, viewport 1280x800 / 375x812)
+timestamp: 2026-08-01T02:44:48Z (final clean run; attempts 215 desktop / 219 mobile)
+
+refid                     file                                          captured state
+desktop/01                desktop01-catalog-sw.png                      catalog SW tab (Speaking & Writing), Anish Full Practice 1 — Speaking & Writing card
+desktop/20                desktop20-exam-sw-detail.png                  exam detail /thi-thu/anish-full-sw-001
+desktop/21                desktop21-exam-sw-mic-setup.png               mic test screen "Microphone Setup" + Allow Microphone Access
+desktop/21b               desktop21b-exam-sw-mic-ready.png              mic test passed ("Microphone is ready" + Continue to Test) — fake media device granted
+desktop/22                desktop22-exam-sw-speaking-directions.png     Speaking directions screen (DIRECTIONS + BẮT ĐẦU)
+desktop/23                desktop23-exam-sw-speaking-q1-prep.png        Speaking Q1 read-aloud — preparation timer state
+desktop/24                desktop24-exam-sw-speaking-q3-image.png       Speaking Q3 describe-picture — SVG prompt image rendered (data:image/svg+xml;base64)
+desktop/25                desktop25-exam-sw-speaking-q5.png             Speaking Q5 respond-to-questions prompt
+desktop/26                desktop26-exam-sw-speaking-q8.png             Speaking Q8 respond-using-information (subscription plans table)
+desktop/27                desktop27-exam-sw-writing-start.png           Writing start — Q1 picture + Quill editor + word count
+desktop/28                desktop28-exam-sw-writing-q1.png              Writing Q1 picture — text typed, word count 19, Đã lưu
+desktop/29                desktop29-exam-sw-writing-q6-email.png        Writing Q6 email — typed, word count 56, Đã lưu
+desktop/30                desktop30-exam-sw-writing-q8-essay.png        Writing Q8 essay — typed, word count 70, Đã lưu
+desktop/31                desktop31-exam-sw-processing.png              Processing page (queued/processing progress UI)
+desktop/32                desktop32-exam-sw-result.png                  Result certificate: AI GRADING RESULT, TOTAL SCORE 400, FINAL
+
+mobile/01                 mobile01-catalog-sw.png                        catalog SW tab at 375px
+mobile/20                 mobile20-exam-sw-detail.png                    exam detail at 375px
+mobile/21                 mobile21-exam-sw-mic-setup.png                  mic test screen at 375px
+mobile/21b                mobile21b-exam-sw-mic-ready.png                 mic ready at 375px
+mobile/22                 mobile22-exam-sw-speaking-directions.png        directions at 375px
+mobile/23                 mobile23-exam-sw-speaking-q1-prep.png           Q1 prep timer at 375px
+mobile/24                 mobile24-exam-sw-speaking-q3-image.png          mobile speaking screen — Q3 SVG picture at 375px
+mobile/25                 mobile25-exam-sw-speaking-q5.png                Q5 at 375px
+mobile/26                 mobile26-exam-sw-speaking-q8.png                Q8 at 375px
+mobile/03                 mobile03-exam-sw-writing-start.png              writing start at 375px
+mobile/04                 mobile04-exam-sw-writing-q1.png                 Writing Q1 picture at 375px — typed, word count 19
+mobile/05                 mobile05-exam-sw-writing-q6-email.png           Q6 email at 375px
+mobile/06                 mobile06-exam-sw-writing-q8-essay.png           Q8 essay at 375px
+mobile/07                 mobile07-exam-sw-processing.png                 processing at 375px
+mobile/08                 mobile08-exam-sw-result.png                     result certificate 400 FINAL at 375px
+
+All 30 PNGs non-blank (34–127 KB). Screenshots regenerated (overwritten) on every script re-run.

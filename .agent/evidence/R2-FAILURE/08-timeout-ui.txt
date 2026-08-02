@@ -1,0 +1,12 @@
+[STATE 8 UI] ProcessingPage 179 mid-delay (10s route delay)
+--- visible mid-delay ---
+Lịch sử luyện tập
+ID: 179
+Đang xử lý...
+Bài của bạn đang được xếp vào hàng đợi chấm điểm.
+Vui lòng không đóng trang. Quá trình này có thể mất vài giây đến vài phút.
+--- console ---
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+--- network ---

@@ -1,0 +1,544 @@
+diff --git a/docs/01-technical-specification.md b/docs/01-technical-specification.md
+index 89a4ef9..37d3d50 100644
+--- a/docs/01-technical-specification.md
++++ b/docs/01-technical-specification.md
+@@ -1,7 +1,7 @@
+ # Technical Specification — TOEIC Speaking/Writing AI Lab
+ 
+-> Updated: 2026-05-26
+-> Source basis: `src/App.tsx`, `src/contexts/*`, `src/components/*`, `api/*`, `server/*`, `nginx/*`, `scripts/*`
++> Updated: 2026-08-01 (R3-DOCS-FIX — legacy third-party grading surface removed)
++> Source basis: `anish-toeic-web-app/src/*`, `anish-toeic-web-services/src/*`, `nginx/*`, `ecosystem.config.cjs`
+ 
+ This document explains the current implementation, including historical naming drift. The repository is named `mini-ielts.score`, but the current source operates as an **ANISH TOEIC Speaking & Writing Lab**.
+ 
+@@ -14,113 +14,81 @@ The app is a single-page TOEIC practice tool with two exam modes:
+ | Speaking | 11 | 5 | Microphone audio, prompt text, optional prompt image | Transcription + structured scoring |
+ | Writing | 8 | 3 | Written answer, prompt text, optional prompt image | Multimodal grading + error spans |
+ 
+-The app does not persist users, sessions, submissions, or scores in a database. It is intentionally browser-first:
++The app keeps the exam workflow browser-first:
+ 
+-- question selection is local state;
+-- writing answers are React state/session storage;
+-- speaking audio uses IndexedDB;
+-- Gemini key can be user-provided through the UI;
+-- backend routes are stateless grading boundaries.
++- the exam catalog and questions are served from the backend (seeded MySQL) via `GET /api/toeic-exams`;
++- speaking audio uses IndexedDB until uploaded to S3-compatible storage via presigned URLs;
++- answers are React state, then persisted server-side as attempts once submitted;
++- auth is session-based: JWT in an HttpOnly cookie with `jti` revocation in Redis — no token in `localStorage` or request bodies;
++- grading is asynchronous: attempts enqueue a `grading_jobs` row, and a worker calls the AI provider over HTTP.
+ 
+ ## 2. Architecture
+ 
+ ```mermaid
+ flowchart TB
+-  Browser["React SPA\nsrc/App.tsx"] --> Contexts["SpeakingContext\nWritingContext"]
+-  Contexts --> LocalState["React state\nsessionStorage"]
+-  Contexts --> IndexedDB["IndexedDB\nsrc/lib/audioStorage.ts"]
+-  Browser --> Key["GeminiKeyInput\nlocalStorage.GEMINI_API_KEY"]
+-
+-  Browser --> SpeakingAPI["POST /api/grade-speaking"]
+-  Browser --> WritingAPI["POST /api/grade-writing"]
+-
+-  SpeakingAPI --> GeminiLib["api/lib/gemini.ts"]
+-  WritingAPI --> GeminiLib
+-  GeminiLib --> Models["Gemini model chain\ntext + media"]
+-
+-  subgraph "Deploy Option A"
+-    Vercel["Vercel Functions\napi/*.ts"]
+-  end
+-
+-  subgraph "Deploy Option B"
+-    Express["server/index.ts\nExpress wrapper"]
+-    Nginx["nginx/nginx.conf\n/audio/speaking"]
+-  end
+-
+-  SpeakingAPI -. runs as .-> Vercel
+-  WritingAPI -. runs as .-> Vercel
+-  Express -. wraps .-> SpeakingAPI
+-  Express -. wraps .-> WritingAPI
+-  Nginx -. serves .-> Audio["public/audio/speaking/* on VPS"]
++  Browser["React SPA\nanish-toeic-web-app/src/App.tsx"] --> Edge["Cloudflare edge\nDNS/CDN/TLS"]
++  Edge --> Nginx["Nginx :443\nnginx/nginx.conf"]
++  Nginx --> API["Express API :7000\nanish-toeic-web-services/src/server.ts"]
++  API --> DB[(MySQL\nexams, users, attempts)]
++  API --> Redis[(Redis\ngrading_jobs queue + jti sessions)]
++  Redis --> Worker["Grading worker\nsrc/workers/grading.worker.ts"]
++  Worker --> Adapter["adapters/ai-grading.adapter.ts"]
++  Adapter --> CFWorker["Cloudflare AI Worker\nHTTP POST /api/grade"]
++  CFWorker --> Adapter
++  Worker --> API
++  Browser --> IDB["IndexedDB\nspeaking audio"]
++  Browser --> Presign["POST /api/toeic-attempts/:id/media/presign"]
++  Presign --> S3["S3-compatible object storage\n(MinIO local / AWS S3 prod)"]
++  Browser --> Auth["POST /api/auth/login\nHttpOnly cookie (JWT + jti)"]
+ ```
+ 
+ ### Why the backend is thin
+ 
+-The backend does not own an exam lifecycle. It receives a completed or partially completed submission, calls Gemini, normalizes the response, and returns a result. This keeps deployment simple, but it also means the frontend must guard user work against reloads, media permission failures, and browser storage cleanup.
++The backend owns auth, attempts, media presigning, and the grading queue, but not the exam lifecycle. A submission becomes a `grading_jobs` row; the worker polls `QUEUED`/`RETRY` jobs every 5s, calls the AI provider through the adapter, and finalizes the attempt with a results row. The adapter is provider-neutral — the only coupling is the HTTP contract `CLOUDFLARE_AI_WORKER_URL`/`TOKEN` (`POST /api/grade`), and `AI_GRADING_TEST_MODE=true` substitutes a deterministic double with no network access and no randomness.
+ 
+ ### Why IndexedDB is used for Speaking
+ 
+-Recorded audio is too large for reliable `localStorage`/`sessionStorage`. `src/lib/audioStorage.ts` stores blobs as `ArrayBuffer` in IndexedDB under the `toeic-audio-storage` database and `audio-recordings` object store. Each entry is keyed by `questionId`.
++Recorded audio is too large for reliable `localStorage`/`sessionStorage`. `anish-toeic-web-app/src/modules/mock-exam/lib/attemptStorage.ts` stores pending attempts and audio snapshots as blobs in IndexedDB, so recordings survive tab reloads and question switches. Media is uploaded to S3-compatible storage via presigned URLs when the attempt is submitted.
+ 
+-This design solves the practical problem of switching questions without losing recorded answers, but it is still local to the browser. There is no cross-device restore.
++This design solves the practical problem of switching questions without losing recorded answers. Storage is local to the browser until the attempt is submitted; there is no cross-device restore.
+ 
+ ## 3. Source Map
+ 
+ | Area | Files | Responsibility |
+ |---|---|---|
+-| App shell | `src/App.tsx`, `src/components/shared/Header.tsx` | Tab switching, Gemini key modal, provider wiring, grading actions. |
+-| Speaking state | `src/contexts/SpeakingContext.tsx` | Selected questions, current question, answer list, prompt overrides, image data, audio URLs. |
+-| Writing state | `src/contexts/WritingContext.tsx` | Selected questions, timers, active part lock, answers, prompt/image overrides. |
+-| Question bank | `src/lib/mockData.ts` | Static TOEIC Speaking/Writing question metadata and sample prompts. |
+-| Audio recording | `src/components/speaking/AudioRecorder.tsx` | `getUserMedia`, `MediaRecorder`, codec selection, hard stop, playback, IndexedDB restore. |
+-| Audio URLs | `src/lib/speakingAudio.ts` | `VITE_AUDIO_BASE_URL` mapping for beep/instruction audio. |
+-| Gemini client | `api/lib/gemini.ts` | Model chain, transcription, multimodal request, JSON cleanup, Gemini error mapping. |
+-| Speaking grading | `api/grade-speaking.ts` | Batch transcription, quota partial result, TOEIC Speaking scoring normalization. |
+-| Writing grading | `api/grade-writing.ts` | Writing rubric prompt, image-aware grading, part score normalization. |
+-| VPS server | `server/index.ts` | Express static server and API handler shim. |
+-| Dev API server | `server/dev-server.ts` | Local API server on port `4000` for Vite proxy. |
+-| Nginx | `nginx/nginx.conf`, `nginx/audio-config.conf` | HTTPS reverse proxy, `/audio/speaking/` static serving, long API timeouts. |
+-
+-## 4. Gemini Model Strategy
+-
+-`api/lib/gemini.ts` supports model fallback rather than a single hardcoded model.
+-
+-Text generation chain:
+-
+-```text
+-GEMINI_MODEL_CHAIN
+-GEMINI_MODEL
+-gemini-3.0-pro
+-gemini-2.5-flash
+-gemini-2.0-flash-exp
+-gemini-1.5-flash
+-gemini-1.5-pro
+-gemini-1.5-flash-8b
+-gemini-1.0-pro
+-```
++| App shell | `anish-toeic-web-app/src/App.tsx`, `pages/user/*` | Routing, provider wiring, login, catalog, runner, history, result pages. |
++| Exam runner | `anish-toeic-web-app/src/modules/mock-exam/runner/{lr,sw}/*` | TOEIC Listening/Reading and Speaking/Writing timed flows. |
++| Attempt storage | `anish-toeic-web-app/src/modules/mock-exam/lib/attemptStorage.ts` | IndexedDB persistence for pending attempts and audio before submit. |
++| API client | `anish-toeic-web-app/src/api.ts` | Axios client, `withCredentials`, no token in body/localStorage. |
++| Auth | `anish-toeic-web-services/src/routes/auth.routes.ts`, `src/middlewares/auth.middleware.ts` | Login/register/logout, HttpOnly cookie JWT, `jti` session revocation in Redis. |
++| Attempts & media | `anish-toeic-web-services/src/routes/toeic.routes.ts`, `src/services/{toeic,media}.service.ts` | Attempt lifecycle, `POST /api/toeic-attempts/:id/media/presign` (S3-compatible presigned URLs). |
++| Grading queue | `anish-toeic-web-services/src/services/grading.service.ts` | `grading_jobs` state machine (QUEUED → PROCESSING → COMPLETED/PARTIAL/FAILED → RETRY), idempotency, sanitized errors. |
++| AI adapter | `anish-toeic-web-services/src/services/adapters/ai-grading.adapter.ts` | Provider-neutral HTTP adapter (`CLOUDFLARE_AI_WORKER_URL`/`TOKEN`) + deterministic test double (`AI_GRADING_TEST_MODE`). |
++| Scorer | `anish-toeic-web-services/src/services/scorer.service.ts` | Score normalization and aggregation. |
++| Grading worker | `anish-toeic-web-services/src/workers/grading.worker.ts` | Polls `QUEUED`/`RETRY` jobs every 5s, calls the adapter, finalizes attempts. |
++| API server | `anish-toeic-web-services/src/server.ts` | Express entry point on port `7000`; `TRUST_PROXY` gate, rate limits, CSP-safe headers. |
++| Nginx | `nginx/nginx.conf`, `nginx/audio-config.conf` | HTTPS reverse proxy `/api/` → `:7000`, SPA + `/assets/` static, 300s API timeouts, security headers. |
++| PM2 | `ecosystem.config.cjs` | Two apps: web service and grading worker. |
+ 
+-Transcription chain:
++## 4. AI Grading: Cloudflare AI Worker Adapter
+ 
+-```text
+-GEMINI_TRANSCRIBE_MODEL_CHAIN
+-GEMINI_TRANSCRIBE_MODEL
+-then the text model chain
+-```
++Grading never calls a model provider directly from Express. The worker talks to a Cloudflare AI Worker over HTTP through a provider-neutral adapter (`anish-toeic-web-services/src/services/adapters/ai-grading.adapter.ts`):
+ 
+-The request key precedence is:
++- **Production**: `CLOUDFLARE_AI_WORKER_URL` + `CLOUDFLARE_AI_WORKER_TOKEN` — the adapter POSTs the submission to `${CLOUDFLARE_AI_WORKER_URL}/api/grade` with the token in an authorization header, bounded by `CLOUDFLARE_AI_TIMEOUT_MS`.
++- **Test/dev**: `AI_GRADING_TEST_MODE=true` — `createTestAiGradingAdapter` returns a deterministic double (fixed rubric scores, no network, no `Math.random`). Never set in production; the zod env schema fails fast if `NODE_ENV=production` and `AI_GRADING_TEST_MODE=true`.
++- **Fail-closed**: with no worker URL/token and test mode off, `getAiGradingAdapter` throws `AiProviderNotConfiguredError`; jobs fail with `AI_PROVIDER_NOT_CONFIGURED` and are not retried.
+ 
+-1. API key sent by the frontend request.
+-2. `process.env.GEMINI_API_KEY`.
++Error mapping:
+ 
+-Important behavior:
++- retryable provider errors (`AiProviderRetryableError`, `AiProviderTimeoutError`) mark the job `RETRY`;
++- non-retryable errors (invalid request, auth, 4xx contract violations) mark the job `FAILED` immediately;
++- errors are sanitized before any response leaves the service.
+ 
+-- 404/503 can fall through to the next model candidate.
+-- 400 invalid key, 403 permission, and 429 quota/rate limit are mapped to explicit codes.
+-- Gemini response text is cleaned before JSON parsing because model output may include Markdown fences.
++The model choice and prompt construction live on the Cloudflare Worker side; the Express service only consumes the contract (`{ scores, criteria, ... }` JSON) and normalizes it.
+ 
+ ## 5. Speaking Scoring
+ 
+-Source: `api/grade-speaking.ts`
++Source: `anish-toeic-web-services/src/services/grading.service.ts` + `src/services/scorer.service.ts`
+ 
+ ### Question structure
+ 
+@@ -142,40 +110,25 @@ Source: `api/grade-speaking.ts`
+ | Part 4 | 60 |
+ | Part 5 | 30 |
+ 
+-The overall score is normalized to a 200-point scale. The API asks Gemini for per-question scoring and criteria feedback, then clamps and normalizes output before returning it.
+-
+-### Transcription batching
++The overall score is normalized to a 200-point scale. The grading worker asks the AI provider (via the adapter) for per-question scoring and criteria feedback, then clamps and normalizes the output before persisting a results row.
+ 
+-Constants in source:
++### Queue-based grading
+ 
+-```text
+-BATCH_SIZE = 6
+-BATCH_DELAY_MS = 60000
+-RATE_LIMIT_RETRY_DELAY_MS = 5000
+-RATE_LIMIT_MAX_RETRIES = 2
+-```
+-
+-Why this exists:
++Speaking and Writing share the same pipeline; there is no synchronous, per-request AI call:
+ 
+-- Speaking answers may contain 11 audio blobs.
+-- Sending all audio at once risks quota/rate-limit failures.
+-- The API can return partial progress instead of losing all transcription work.
++- submissions create a `grading_jobs` row (`QUEUED`);
++- the worker polls `QUEUED`/`RETRY` jobs every 5s (`grading.worker.ts`);
++- per-question scores are persisted iteratively, so partial progress survives a mid-job failure (`PARTIAL`);
++- retryable provider errors (timeout, 5xx) re-enqueue with a retry counter; non-retryable errors mark the job `FAILED`;
++- idempotency keys prevent duplicate scoring on retry.
+ 
+-Partial quota response fields:
++### Partial persistence
+ 
+-```text
+-incomplete
+-code = QUOTA_EXCEEDED
+-partialTranscripts
+-failedQuestionIds
+-transcriptsCompleted
+-```
+-
+-This is one of the stronger engineering decisions in the repo: the failure mode is explicit and recoverable.
++A job that fails partway keeps already-saved question scores and records status `PARTIAL`, so the learner's completed answers are not lost. On finalization, `finalizeCompleted` always writes a results row — including an all-zero row when the attempt had no responses — so a `COMPLETED` job never 404s the result endpoint.
+ 
+ ## 6. Writing Scoring
+ 
+-Source: `api/grade-writing.ts`
++Source: `anish-toeic-web-services/src/services/grading.service.ts` + `src/services/scorer.service.ts`
+ 
+ ### Question structure
+ 
+@@ -185,67 +138,67 @@ Source: `api/grade-writing.ts`
+ | 2 | Q6-Q7 | Respond to an email | 60 |
+ | 3 | Q8 | Opinion essay | 100 |
+ 
+-The frontend no longer enforces minimum word count as a hard blocker; `WritingTab.tsx` treats word count as informational. The backend still sends the answer and prompt context to Gemini for grading.
++The frontend no longer enforces minimum word count as a hard blocker; the Writing runner treats word count as informational. The grading worker still sends the answer and prompt context to the AI provider for scoring.
+ 
+ ### Image handling
+ 
+-Writing supports images through:
++Writing supports images through the runner's answer state:
+ 
+-- `setQuestionImage(questionId, imageData)` for Part 1;
+-- `setPartImage(2, imageData)` for Part 2 shared email prompt image.
++- Part 1 image (`q1` picture);
++- Part 2 shared email prompt image.
+ 
+-The backend uses `generateContentWithMedia` for image-aware grading. This matters because TOEIC Writing Part 1/2 often depends on visual or email prompt context.
++Images (and speaking audio) are uploaded to S3-compatible storage via presigned URLs (`POST /api/toeic-attempts/:id/media/presign`) before submission; the worker passes the stored media references to the AI provider. This matters because TOEIC Writing Part 1/2 often depends on visual or email prompt context.
+ 
+ ## 7. Storage & Privacy Boundaries
+ 
+ | Data | Location | Lifetime |
+ |---|---|---|
+-| Gemini API key | `localStorage.GEMINI_API_KEY` | Until user removes it or clears browser data. |
+-| Writing exam state | `sessionStorage.toeic-writing-exam-state` | Current browser session; reset on fresh provider load. |
+-| Instruction flags | `sessionStorage.toeic-writing-shown-instructions` | Current browser session; reset on fresh provider load. |
+-| Speaking audio | IndexedDB `toeic-audio-storage` | Cleared on fresh Speaking provider load and reset. |
+-| Grading result | React state | Current runtime only. |
++| Session | HttpOnly `auth_token` cookie (JWT with `jti`) | Cookie lifetime = `JWT_EXPIRES_IN`; `jti:<id>` in Redis, deleted on logout (instant revocation). |
++| User accounts | MySQL (`users`) | Server-side; password hashed, no plaintext. |
++| Attempts & results | MySQL (`toeic_attempts`, `toeic_attempt_results`, `grading_jobs`) | Server-side; owned by `user_id`, queryable from history. |
++| Pending exam state | IndexedDB (`attemptStorage.ts`) | Local until submitted; cleared on submission/reset. |
++| Audio & prompt images | S3-compatible storage via presigned URLs | Media objects in MinIO/S3; URLs expire after upload. |
+ 
+-The repo does not include server-side encryption, user auth, or submission history. If this becomes a real multi-user product, those need to be added deliberately rather than assumed.
++Auth never touches `localStorage` or JSON bodies: the frontend sends credentials with every request (`withCredentials`), the cookie is `HttpOnly` + `SameSite=Lax` (+ `Secure` in production), and logout revokes the `jti` server-side. Rate-limit identity uses `cf-connecting-ip` only when `TRUST_PROXY=true` (i.e. behind nginx/Cloudflare), validated via `net.isIP`.
+ 
+-## 8. Deployment Modes
++## 8. Deployment
+ 
+-### Vercel
++Single deployment: nginx + PM2 on a VPS behind the Cloudflare edge (DNS/CDN/TLS, full-strict origin HTTPS). Serverless edge deployment is not used.
+ 
+-`vercel.json`:
++### Topology
+ 
+-```json
+-{
+-  "buildCommand": "npm run build",
+-  "outputDirectory": "dist",
+-  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/$1" }]
+-}
++```
++Browser (HTTPS)
++  -> Cloudflare edge (DNS/CDN/TLS)
++  -> Nginx :443 (nginx/nginx.conf)
++       /api/      -> proxy_pass http://node_backend (127.0.0.1:7000)
++       /assets/*  -> alias anish-toeic-web-app/dist/assets (immutable, 1y)
++       /*         -> SPA fallback dist/index.html (no-cache)
++PM2 (ecosystem.config.cjs)
++  - anish-toeic-web-services -> node dist/server.js :7000
++  - toeic-grading-worker     -> node dist/workers/grading.worker.js
+ ```
+ 
+-This is the cleaner path for the current architecture because the API handlers already match Vercel's request/response shape.
+-
+-### VPS / Express
+-
+-`server/index.ts` serves `dist` and exposes:
+-
+-- `GET /health`
+-- `POST /api/grade-speaking`
+-- `POST /api/grade-writing`
++### Why nginx + PM2 on VPS
+ 
+-The Express wrapper adapts Vercel handlers into an Express-like response object. Nginx then handles HTTPS, reverse proxy, static assets, and audio files.
++- browser microphone requires HTTPS outside localhost (Cloudflare edge + origin cert);
++- `/api/` reverse proxy to Express `:7000` with 300s read/send timeouts (grading and submission can exceed 2 minutes);
++- static `/assets/` caching for the Vite build;
++- security headers (CSP, HSTS, XFO, nosniff) at server level;
++- PM2 keeps the API and the grading worker alive with `autorestart` and `max_memory_restart`.
+ 
+-Why this path exists:
++### External dependencies
+ 
+-- browser microphone requires HTTPS outside localhost;
+-- static instruction audio must be served with correct MIME;
+-- Gemini calls can run long, so Nginx timeout is raised to 300 seconds.
++- **Cloudflare AI Worker** (`CLOUDFLARE_AI_WORKER_URL`/`TOKEN`) for grading — optional at boot; absent + test mode off ⇒ jobs fail closed with `AI_PROVIDER_NOT_CONFIGURED`.
++- **S3-compatible storage** (`S3_ENDPOINT`/`S3_BUCKET`/`S3_ACCESS_KEY`/`S3_SECRET_KEY`, or AWS vars) for media presigning — absent ⇒ presign endpoint returns 503.
++- **MySQL + Redis** are required (attempts/results and the grading queue + `jti` sessions).
+ 
+ ## 9. Current Quality Gaps
+ 
+ | Gap | Evidence | Impact |
+ |---|---|---|
+-| Lockfile drift | `npm ci` fails because `package-lock.json` lacks current Express/CORS deps | CI or clean deploy can fail until lockfile is repaired. |
+ | Encoding corruption in source | Many Vietnamese strings appear as mojibake in TS/MD/scripts | UI text and operator docs can look unprofessional. |
+ | Product naming drift | Repo/old README says IELTS; source says TOEIC | Docs, deployment, and users may describe the wrong product. |
+-| Static audio deployment split | `public/audio` is empty locally; `audio-temp` + scripts upload files to VPS | Vercel/local static audio may be incomplete unless audio files are provisioned. |
+-| No persisted backend submissions | No database layer | Good for practice lab; insufficient for real learner history/admin analytics. |
++| FE bundle size | Main bundle ≈ 1.8 MB (Vite chunk-size warning) | Non-blocking; code-splitting pass recommended. |
++| External deps not live-proven | Cloudflare AI Worker and AWS S3 were never exercised against a live account (dev runs on `AI_GRADING_TEST_MODE` + MinIO) | Deployment must verify the real adapter + presign paths once credentials exist. |
++| Media/audio provisioning | Prompt images and instruction audio must be present in MinIO/S3 | Missing objects fail media loads after deploy until provisioned. |
+diff --git a/docs/03-operations-and-risks.md b/docs/03-operations-and-risks.md
+index d4fe788..1233177 100644
+--- a/docs/03-operations-and-risks.md
++++ b/docs/03-operations-and-risks.md
+@@ -1,7 +1,7 @@
+ # Operations & Risk Register
+ 
+-> Updated: 2026-05-26
+-> Scope: local setup, deployment choices, audio serving, verification, and current risks.
++> Updated: 2026-08-01 (R3-DOCS-FIX — legacy third-party grading surface removed)
++> Scope: local setup, deployment, AI grading adapter, media, verification, and current risks.
+ 
+ ## 1. Local Development
+ 
+@@ -35,126 +35,107 @@ Vite proxies `/api` to `http://localhost:4000` through `vite.config.ts`, so `npm
+ 
+ | Variable | Used by | Purpose |
+ |---|---|---|
+-| `GEMINI_API_KEY` | `api/lib/gemini.ts` | Server-side fallback Gemini key. |
+-| `GEMINI_MODEL_CHAIN` | `api/lib/gemini.ts` | Ordered text grading model candidates. |
+-| `GEMINI_MODEL` | `api/lib/gemini.ts` | Single preferred text model candidate. |
+-| `GEMINI_TRANSCRIBE_MODEL_CHAIN` | `api/lib/gemini.ts` | Ordered transcription model candidates. |
+-| `GEMINI_TRANSCRIBE_MODEL` | `api/lib/gemini.ts` | Single preferred transcription model candidate. |
+-| `VITE_AUDIO_BASE_URL` | `src/lib/speakingAudio.ts` | Base URL for speaking instruction audio. |
+-| `PORT` | `server/index.ts` | Express production port; defaults to `3000`. |
++| `NODE_ENV`, `PORT` | `config/env.ts` (server boot) | Runtime mode; Express port (`7000` in prod, defaults enforced by zod). |
++| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` | server + grading worker | MySQL — exams, users, attempts, results, grading jobs. |
++| `JWT_SECRET` | server | ≥32 chars, placeholder rejected at boot (fail closed). |
++| `JWT_EXPIRES_IN` | server | Session TTL; also the `jti` TTL in Redis. |
++| `REDIS_URL` | grading worker | Grading queue, job locks, and `jti` session store. |
++| `CLOUDFLARE_AI_WORKER_URL` | grading worker (`adapters/ai-grading.adapter.ts`) | Cloudflare AI Worker endpoint (optional; absent ⇒ `AI_PROVIDER_NOT_CONFIGURED`). |
++| `CLOUDFLARE_AI_WORKER_TOKEN` | grading worker | Bearer token for the worker endpoint. |
++| `CLOUDFLARE_AI_TIMEOUT_MS` | grading worker | Request timeout to the AI worker; default `60000`. |
++| `AI_GRADING_TEST_MODE` | grading worker | `true` ⇒ deterministic test double, no network AI. Dev/test ONLY; `NODE_ENV=production` fails fast. |
++| `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY`, `S3_SECRET_KEY` | server (`media.adapter.ts`) | S3-compatible presigned media uploads (MinIO dev / AWS prod). Absent ⇒ presign 503. |
++| `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | server | AWS S3 fallback when `S3_*` are empty. |
++| `CORS_ORIGIN` | server | Explicit origin list; `*` rejected because credentials are always sent. |
++| `TRUST_PROXY` | server | `true` only behind nginx/Cloudflare so rate-limit identity resolves to the real client IP. |
+ 
+-The frontend key modal writes `localStorage.GEMINI_API_KEY`. That key is user-controlled and sent with grading requests.
++Auth is cookie-based: the session token lives in an HttpOnly cookie (JWT with `jti`), `jti` is stored in Redis, and logout revokes it. No API key or token is stored in `localStorage` or sent in JSON bodies.
+ 
+-## 3. Vercel Deployment
++## 3. AI Grading (Cloudflare AI Worker)
+ 
+-`vercel.json` expects:
++Grading is asynchronous and never calls an AI model directly from Express. The grading worker (`dist/workers/grading.worker.js`) polls `grading_jobs` (`QUEUED`/`RETRY`) and POSTs submissions to a Cloudflare AI Worker over HTTP via the provider-neutral adapter:
+ 
+-```text
+-buildCommand: npm run build
+-outputDirectory: dist
+-rewrite /api/(.*) -> /api/$1
+-```
++- **Production**: `CLOUDFLARE_AI_WORKER_URL` + `CLOUDFLARE_AI_WORKER_TOKEN` (endpoint contract `POST /api/grade`), bounded by `CLOUDFLARE_AI_TIMEOUT_MS`.
++- **Dev/test**: `AI_GRADING_TEST_MODE=true` substitutes a deterministic test double — fixed rubric scores, no network, no randomness. Forbidden in production (zod guard fails fast).
++- **Missing config**: absent URL/token + test mode off ⇒ `AiProviderNotConfiguredError` ⇒ job fails with `AI_PROVIDER_NOT_CONFIGURED`.
+ 
+-This route is aligned with the current API handler shape. The main risk is function runtime duration for Speaking, especially when many audio answers require transcription. `api/grade-speaking.ts` sets `maxDuration = 300`, but the actual platform limit depends on the Vercel plan.
++Because grading is queued, long-running AI calls do not block API request handlers; Nginx API timeouts are set to 300s for submission and grading-related traffic.
+ 
+ ## 4. VPS Deployment
+ 
+-The VPS path exists in:
++The VPS path lives in:
+ 
+-- `server/index.ts`
+-- `server/dev-server.ts`
+-- `ecosystem.config.cjs`
+-- `nginx/nginx.conf`
+-- `nginx/audio-config.conf`
+-- `scripts/*.sh`
++- `anish-toeic-web-services` (`dist/server.js`, `dist/workers/grading.worker.js`)
++- `ecosystem.config.cjs` (PM2: API + grading worker)
++- `nginx/nginx.conf`, `nginx/audio-config.conf`
++- `anish-toeic-web-app/dist` (Vite build served as SPA)
+ 
+ The Express server serves:
+ 
+ ```text
+-GET  /health
+-POST /api/grade-speaking
+-POST /api/grade-writing
+-GET  /* -> dist/index.html
++GET    /api/health
++POST   /api/auth/login | register | logout
++GET    /api/toeic-exams | /api/toeic-exams/:slug
++POST   /api/toeic-exams/:id/attempts
++GET    /api/toeic-attempts | /api/toeic-attempts/:id
++PATCH  /api/toeic-attempts/:id/responses/:questionId
++POST   /api/toeic-attempts/:id/media/presign
++POST   /api/toeic-attempts/:id/submit
++GET    /api/toeic-attempts/:id/grading-status | /result
++GET    /* -> SPA fallback (dist/index.html)
+ ```
+ 
+ Nginx is configured for:
+ 
+-- HTTPS termination through Certbot paths;
+-- `/api/` proxy to `127.0.0.1:3000`;
+-- `/assets/` static alias to `dist/assets`;
+-- `/audio/speaking/` static alias to `public/audio/speaking`;
+-- long API read/send timeouts of 300 seconds for Gemini calls.
+-
+-## 5. Audio Serving
+-
+-The app expects audio under:
+-
+-```text
+-/audio/speaking/system/beep.mp3
+-/audio/speaking/system/begin-preparing.mp3
+-/audio/speaking/system/begin-speaking.mp3
+-/audio/speaking/directions/part1.mp3
+-/audio/speaking/directions/part2.mp3
+-/audio/speaking/directions/part3.mp3
+-/audio/speaking/directions/part4.mp3
+-/audio/speaking/directions/part5.mp3
+-```
++- HTTPS termination (Cloudflare edge + origin certs);
++- `/api/` proxy to `127.0.0.1:7000`;
++- `/assets/` static alias to `anish-toeic-web-app/dist/assets`;
++- server-level security headers (CSP, HSTS, XFO, nosniff) and `server_tokens off`;
++- long API read/send timeouts of 300 seconds (submission and grading traffic).
+ 
+-The source repo currently stores source MP3s in `audio-temp/`, while `public/audio` only contains `.gitkeep`. The VPS script `scripts/setup-audio-vps.sh` uploads and renames files into the structure expected by `src/lib/speakingAudio.ts`.
++## 5. Media Serving
+ 
+-This is why the old `docs/HTTPS_AUDIO_FIX.md` existed. Its content is now folded here because the old file had encoding corruption and stale references.
++Learner media (speaking audio, prompt images) is not proxied through Nginx. It lives in S3-compatible storage and is uploaded directly via presigned URLs (`POST /api/toeic-attempts/:id/media/presign`). Local dev uses MinIO (`127.0.0.1:19000`, from `scripts/integration/docker-compose.yml`); production uses MinIO-on-VPS or AWS S3 (`S3_ENDPOINT`/`S3_*` or AWS vars).
+ 
+-Manual Nginx block:
+-
+-```nginx
+-location /audio/speaking/ {
+-    alias /var/www/mini-ielts-score/public/audio/speaking/;
+-    add_header Cache-Control "public, max-age=31536000";
+-    add_header Access-Control-Allow-Origin "*";
+-    add_header Access-Control-Allow-Methods "GET, OPTIONS";
+-    types { audio/mpeg mp3; }
+-    default_type audio/mpeg;
+-    try_files $uri $uri/ =404;
+-}
+-```
++The old static `/audio/speaking/` Nginx fragment (`nginx/audio-config.conf`) and `scripts/setup-audio-vps.sh` are **legacy**: the current app has no `VITE_AUDIO_BASE_URL` or `src/lib/speakingAudio.ts` references. Kept for reference only — not part of the media path.
+ 
+ Verification:
+ 
+ ```bash
+-curl -I https://your-domain.com/audio/speaking/system/beep.mp3
+-curl -I https://your-domain.com/health
++curl -I https://your-domain.com/api/health
+ ```
+ 
+ Expected:
+ 
+-- audio returns `200` and `audio/mpeg`;
+ - health returns JSON from Express;
++- presign returns `200` with a PUT URL when S3/MinIO is configured (503 otherwise);
+ - microphone works only on `https://` or `localhost`.
+ 
+ ## 6. Verification Status
+ 
+-During this docs pass:
++Refreshed at R3 (source basis: R3-RELEASE2 clean-snapshot, R3-SECURITY, R3-SW evidence):
+ 
+ | Check | Result |
+ |---|---|
+-| Source audit | Passed: frontend, contexts, API handlers, Gemini wrapper, server, Nginx, scripts were read. |
+-| Screenshot capture | Passed: Playwright captured homepage, Speaking selector, Writing selector. |
+-| `npm ci` | Failed: lockfile is out of sync with `package.json`. |
+-| `npm install --package-lock=false` | Passed for local inspection only; lockfile was not intentionally updated. |
+-| `npm run build` | Passed; Vite warns that `audioStorage.ts` and `utils.ts` are both dynamically and statically imported, so those dynamic imports do not form separate chunks. |
+-| `npm run lint` | Blocked by missing ESLint config; the script exists, but ESLint cannot find a configuration file. |
++| Source audit | Passed: FE runner/state, BE auth, attempt/media routes, grading worker + adapter, nginx, PM2 config were read. |
++| `npm ci` (root, workspaces) | Passed from a clean snapshot. |
++| `npm run build` (FE + BE) | Passed; Vite warns main bundle ≈ 1.8 MB (non-blocking). |
++| `npm run typecheck`, `npm run lint` | Passed (both workspaces). |
++| BE test suite | Passed against real MySQL (`DB_NAME=anish_toeic_test`). |
++| `npm audit --omit=dev` | 0/0 findings (both workspaces). |
+ 
+ ## 7. Risk Register
+ 
+ | Risk | Severity | Evidence | Recommended fix |
+ |---|---|---|---|
+-| Lockfile drift | High | `npm ci` fails with missing Express/CORS transitive dependencies | Run a dependency maintenance commit that updates `package-lock.json`, then verify `npm ci`. |
++| External AI/S3 not live-proven | Medium | Cloudflare AI Worker and AWS S3 never exercised against live accounts; dev uses `AI_GRADING_TEST_MODE` + MinIO | First prod deploy must smoke-test the real adapter and presign path. |
++| Media provisioning | Medium | Prompt images and instruction audio must exist in MinIO/S3 | Provision bucket objects at deploy; verify presigned GET/PUT E2E. |
+ | Source encoding corruption | Medium | Vietnamese text in TS/MD/scripts contains mojibake | Separate UI text cleanup pass; verify screenshots after changing strings. |
+-| Audio deployment split | Medium | `public/audio` is empty; scripts depend on `audio-temp` | Either commit normalized audio under `public/audio/speaking` or document `audio-temp` as deployment input with checksum. |
+-| User API key in localStorage | Medium | `GeminiKeyInput.tsx` saves raw key | Acceptable for a personal tool; for shared deployment, move key ownership server-side. |
+-| Long Speaking request duration | Medium | Batch delay can be 60s plus model latency | Keep Vercel max duration in mind; VPS path may be more predictable. |
+-| No submission persistence | Low/Medium | No DB or auth layer | Fine for practice lab; insufficient for learner history or admin review. |
++| FE bundle size | Low/Medium | Main bundle ≈ 1.8 MB (Vite chunk warning) | Code-splitting pass post-merge. |
+ | Product naming drift | Low | Repo name says IELTS, source says TOEIC | README now clarifies; rename repo only if public branding matters. |
++| `TRUST_PROXY` misconfiguration | Medium | If false in prod, rate-limit identity collapses to 127.0.0.1 | Keep `TRUST_PROXY=true` behind nginx/Cloudflare; never enable when origin is directly reachable. |
++
++Resolved in prior passes: localStorage API key (replaced by HttpOnly cookie + `jti` revocation), lockfile drift (`npm ci` passes), static audio split (legacy), no submission persistence (MySQL attempts/results).
+ 
+ ## 8. Cleanup Decisions
+ 
+diff --git a/docs/thi-thu-integration-contract.md b/docs/thi-thu-integration-contract.md
+index 2620b73..aeec02a 100644
+--- a/docs/thi-thu-integration-contract.md
++++ b/docs/thi-thu-integration-contract.md
+@@ -13,7 +13,7 @@ The repository is split into two independent npm workspaces:
+ 
+ ## 3. Deployment and Infrastructure
+ - Database: MySQL (empty initial seed, test fixtures only).
+-- Background Worker: Redis backing for idempotent S&W grading via Gemini.
++- Background Worker: Redis backing for idempotent S&W grading; the worker calls a Cloudflare AI Worker over HTTP through a provider-neutral adapter, with `AI_GRADING_TEST_MODE=true` substituting a deterministic test double (no network, no randomness) for dev/test.
+ - Media: AWS S3 or Cloudinary with presigned bounded upload URLs.
+ - App Runtime: PM2 for Express, Nginx for static frontend and `/api` proxy.
+ 

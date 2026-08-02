@@ -1,0 +1,209 @@
+S4-FE console (errors/warnings) + network proof
+timestamp: 2026-07-31T16:29:56.474Z
+
+=== DESKTOP console ===
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+ERROR: Warning: [antd: Spin] `tip` only work in nest or fullscreen pattern.
+ERROR: Warning: [antd: Spin] `tip` only work in nest or fullscreen pattern.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+=== MOBILE console ===
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+ERROR: Warning: [antd: Spin] `tip` only work in nest or fullscreen pattern.
+ERROR: Warning: [antd: Spin] `tip` only work in nest or fullscreen pattern.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+=== CONFLICT console ===
+ERROR: Warning: [antd: Spin] `tip` only work in nest or fullscreen pattern.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+ERROR: Failed to load resource: the server responded with a status of 409 (Conflict)
+
+=== AUDIO console ===
+ERROR: Warning: [antd: Spin] `tip` only work in nest or fullscreen pattern.
+WARNING: ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+WARNING: ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+=== DESKTOP network (api) ===
+REQ POST /api/auth/login body={"email":"seed.owner@example.com","password":"seed-password-123"}
+RES 200 POST /api/auth/login
+REQ GET /api/toeic-exams?skillType=LR&page=1&pageSize=100 body=
+RES 200 GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ POST /api/toeic-exams/1/attempts body={"mode":"EXAM"}
+RES 201 POST /api/toeic-exams/1/attempts
+REQ GET /api/toeic-attempts/97 body=
+REQ GET /api/toeic-attempts/97 body=
+RES 200 GET /api/toeic-attempts/97
+RES 200 GET /api/toeic-attempts/97
+REQ PATCH /api/toeic-attempts/97/responses/1 body={"selectedOptionId":1,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/1
+REQ PATCH /api/toeic-attempts/97/responses/2 body={"selectedOptionId":6,"markedForReview":true,"note":null,"clientRevision":2}
+RES 200 PATCH /api/toeic-attempts/97/responses/2
+REQ PATCH /api/toeic-attempts/97/responses/3 body={"selectedOptionId":11,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/3
+REQ PATCH /api/toeic-attempts/97/responses/4 body={"selectedOptionId":16,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/4
+REQ PATCH /api/toeic-attempts/97/responses/5 body={"selectedOptionId":17,"markedForReview":true,"note":null,"clientRevision":2}
+RES 200 PATCH /api/toeic-attempts/97/responses/5
+REQ PATCH /api/toeic-attempts/97/responses/6 body={"selectedOptionId":22,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/6
+REQ PATCH /api/toeic-attempts/97/responses/7 body={"selectedOptionId":27,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/7
+REQ PATCH /api/toeic-attempts/97/responses/8 body={"selectedOptionId":32,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/8
+REQ PATCH /api/toeic-attempts/97/responses/9 body={"selectedOptionId":33,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/9
+REQ PATCH /api/toeic-attempts/97/responses/10 body={"selectedOptionId":38,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/10
+REQ PATCH /api/toeic-attempts/97/responses/11 body={"selectedOptionId":43,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/11
+REQ PATCH /api/toeic-attempts/97/responses/12 body={"selectedOptionId":48,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/12
+REQ PATCH /api/toeic-attempts/97/responses/13 body={"selectedOptionId":49,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/13
+REQ PATCH /api/toeic-attempts/97/responses/14 body={"selectedOptionId":54,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/14
+REQ PATCH /api/toeic-attempts/97/responses/15 body={"selectedOptionId":59,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/15
+REQ PATCH /api/toeic-attempts/97/responses/16 body={"selectedOptionId":64,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/16
+REQ PATCH /api/toeic-attempts/97/responses/17 body={"selectedOptionId":65,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/17
+REQ PATCH /api/toeic-attempts/97/responses/18 body={"selectedOptionId":70,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/18
+REQ PATCH /api/toeic-attempts/97/responses/19 body={"selectedOptionId":75,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/19
+REQ PATCH /api/toeic-attempts/97/responses/20 body={"selectedOptionId":80,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/20
+REQ PATCH /api/toeic-attempts/97/responses/21 body={"selectedOptionId":81,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/97/responses/21
+REQ GET /api/toeic-attempts/97 body=
+REQ GET /api/toeic-attempts/97 body=
+RES 200 GET /api/toeic-attempts/97
+RES 200 GET /api/toeic-attempts/97
+REQ PATCH /api/toeic-attempts/97/responses/20 body={"selectedOptionId":80,"markedForReview":false,"note":null,"clientRevision":2}
+REQ PATCH /api/toeic-attempts/97/responses/21 body={"selectedOptionId":81,"markedForReview":false,"note":null,"clientRevision":2}
+RES 200 PATCH /api/toeic-attempts/97/responses/20
+RES 200 PATCH /api/toeic-attempts/97/responses/21
+REQ POST /api/toeic-attempts/97/submit body=
+RES 200 POST /api/toeic-attempts/97/submit
+REQ GET /api/toeic-attempts/97/result body=
+REQ GET /api/toeic-attempts/97 body=
+RES 200 GET /api/toeic-attempts/97/result
+REQ GET /api/toeic-attempts/97/review body=
+RES 200 GET /api/toeic-attempts/97
+RES 200 GET /api/toeic-attempts/97/review
+REQ GET /api/toeic-attempts/97 body=
+REQ GET /api/toeic-attempts/97/review body=
+REQ GET /api/toeic-attempts/97/result body=
+RES 200 GET /api/toeic-attempts/97/result
+RES 200 GET /api/toeic-attempts/97/review
+RES 200 GET /api/toeic-attempts/97
+REQ GET /api/toeic-attempts body=
+RES 200 GET /api/toeic-attempts
+REQ GET /api/toeic-attempts/97/result body=
+REQ GET /api/toeic-attempts/97 body=
+RES 200 GET /api/toeic-attempts/97/result
+REQ GET /api/toeic-attempts/97/review body=
+RES 200 GET /api/toeic-attempts/97
+RES 200 GET /api/toeic-attempts/97/review
+REQ GET /api/toeic-attempts/97 body=
+RES 200 GET /api/toeic-attempts/97
+
+=== MOBILE network (api) ===
+REQ POST /api/auth/login body={"email":"seed.owner@example.com","password":"seed-password-123"}
+RES 200 POST /api/auth/login
+REQ GET /api/toeic-exams?skillType=LR&page=1&pageSize=100 body=
+RES 200 GET /api/toeic-exams?skillType=LR&page=1&pageSize=100
+REQ POST /api/toeic-exams/1/attempts body={"mode":"EXAM"}
+RES 201 POST /api/toeic-exams/1/attempts
+REQ GET /api/toeic-attempts/98 body=
+REQ GET /api/toeic-attempts/98 body=
+RES 200 GET /api/toeic-attempts/98
+RES 200 GET /api/toeic-attempts/98
+REQ PATCH /api/toeic-attempts/98/responses/1 body={"selectedOptionId":1,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/1
+REQ PATCH /api/toeic-attempts/98/responses/2 body={"selectedOptionId":6,"markedForReview":true,"note":null,"clientRevision":2}
+RES 200 PATCH /api/toeic-attempts/98/responses/2
+REQ PATCH /api/toeic-attempts/98/responses/3 body={"selectedOptionId":11,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/3
+REQ PATCH /api/toeic-attempts/98/responses/4 body={"selectedOptionId":16,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/4
+REQ PATCH /api/toeic-attempts/98/responses/5 body={"selectedOptionId":17,"markedForReview":true,"note":null,"clientRevision":2}
+RES 200 PATCH /api/toeic-attempts/98/responses/5
+REQ PATCH /api/toeic-attempts/98/responses/6 body={"selectedOptionId":22,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/6
+REQ PATCH /api/toeic-attempts/98/responses/7 body={"selectedOptionId":27,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/7
+REQ PATCH /api/toeic-attempts/98/responses/8 body={"selectedOptionId":32,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/8
+REQ PATCH /api/toeic-attempts/98/responses/9 body={"selectedOptionId":33,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/9
+REQ PATCH /api/toeic-attempts/98/responses/10 body={"selectedOptionId":38,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/10
+REQ PATCH /api/toeic-attempts/98/responses/11 body={"selectedOptionId":43,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/11
+REQ PATCH /api/toeic-attempts/98/responses/12 body={"selectedOptionId":48,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/12
+REQ PATCH /api/toeic-attempts/98/responses/13 body={"selectedOptionId":49,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/13
+REQ PATCH /api/toeic-attempts/98/responses/14 body={"selectedOptionId":54,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/14
+REQ PATCH /api/toeic-attempts/98/responses/15 body={"selectedOptionId":59,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/15
+REQ PATCH /api/toeic-attempts/98/responses/16 body={"selectedOptionId":64,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/16
+REQ PATCH /api/toeic-attempts/98/responses/17 body={"selectedOptionId":65,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/17
+REQ PATCH /api/toeic-attempts/98/responses/18 body={"selectedOptionId":70,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/18
+REQ PATCH /api/toeic-attempts/98/responses/19 body={"selectedOptionId":75,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/19
+REQ PATCH /api/toeic-attempts/98/responses/20 body={"selectedOptionId":80,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/20
+REQ PATCH /api/toeic-attempts/98/responses/21 body={"selectedOptionId":81,"markedForReview":false,"note":null,"clientRevision":1}
+RES 200 PATCH /api/toeic-attempts/98/responses/21
+REQ GET /api/toeic-attempts/98 body=
+RES 200 GET /api/toeic-attempts/98
+REQ GET /api/toeic-attempts/98 body=
+RES 200 GET /api/toeic-attempts/98
+REQ PATCH /api/toeic-attempts/98/responses/20 body={"selectedOptionId":80,"markedForReview":false,"note":null,"clientRevision":2}
+REQ PATCH /api/toeic-attempts/98/responses/21 body={"selectedOptionId":81,"markedForReview":false,"note":null,"clientRevision":2}
+RES 200 PATCH /api/toeic-attempts/98/responses/20
+RES 200 PATCH /api/toeic-attempts/98/responses/21
+REQ POST /api/toeic-attempts/98/submit body=
+RES 200 POST /api/toeic-attempts/98/submit
+REQ GET /api/toeic-attempts/98/result body=
+REQ GET /api/toeic-attempts/98 body=
+RES 200 GET /api/toeic-attempts/98/result
+RES 200 GET /api/toeic-attempts/98
+REQ GET /api/toeic-attempts/98/review body=
+RES 200 GET /api/toeic-attempts/98/review
+REQ GET /api/toeic-attempts/98 body=
+REQ GET /api/toeic-attempts/98/review body=
+REQ GET /api/toeic-attempts/98/result body=
+RES 200 GET /api/toeic-attempts/98/result
+RES 200 GET /api/toeic-attempts/98/review
+RES 200 GET /api/toeic-attempts/98
+REQ GET /api/toeic-attempts body=
+RES 200 GET /api/toeic-attempts
+REQ GET /api/toeic-attempts/98/result body=
+REQ GET /api/toeic-attempts/98 body=
+RES 200 GET /api/toeic-attempts/98/result
+REQ GET /api/toeic-attempts/98/review body=
+RES 200 GET /api/toeic-attempts/98
+RES 200 GET /api/toeic-attempts/98/review
+REQ GET /api/toeic-attempts/98 body=
+RES 200 GET /api/toeic-attempts/98

@@ -1,0 +1,36 @@
+S4-FE ownership (AC13)
+timestamp: 2026-07-31T16:29:56.474Z
+attemptId: 97
+
+PASS other user GET / → 404 (403/404) :: {"error":"Attempt not found"}
+PASS no data leak via / :: {"error":"Attempt not found"}
+PASS other user GET /result → 404 (403/404) :: {"error":"Result not found"}
+PASS no data leak via /result :: {"error":"Result not found"}
+PASS other user GET /review → 404 (403/404) :: {"error":"Review not found"}
+PASS no data leak via /review :: {"error":"Review not found"}
+PASS error map page does not render for other user
+PASS result page does not render certificate for other user
+
+STEP logged in as seed.other
+GET /toeic-attempts/97/ → 404, leak=false
+GET /toeic-attempts/97/result → 404, leak=false
+GET /toeic-attempts/97/review → 404, leak=false
+STEP other user blocked from error map page
+STEP other user blocked from result page
+
+REQ GET /api/toeic-attempts/97 body=
+RES 404 GET /api/toeic-attempts/97
+REQ GET /api/toeic-attempts/97/result body=
+RES 404 GET /api/toeic-attempts/97/result
+REQ GET /api/toeic-attempts/97/review body=
+RES 404 GET /api/toeic-attempts/97/review
+REQ GET /api/toeic-attempts/97 body=
+RES 404 GET /api/toeic-attempts/97
+REQ GET /api/toeic-attempts/97/result body=
+REQ GET /api/toeic-attempts/97 body=
+RES 404 GET /api/toeic-attempts/97/result
+RES 404 GET /api/toeic-attempts/97
+REQ GET /api/toeic-attempts/97 body=
+REQ GET /api/toeic-attempts/97/result body=
+RES 404 GET /api/toeic-attempts/97
+RES 404 GET /api/toeic-attempts/97/result

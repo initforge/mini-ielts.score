@@ -1,0 +1,22 @@
+NGINX STRUCTURAL CHECK (nginx binary absent on dev host — VPS-only `nginx -t`)
+File: nginx/nginx.conf (137 lines)
+
+Blocks confirmed:
+- server { listen 443 ssl http2 }  -> webinprogress.click + www + IP   [line 34-127]
+- server { listen 80 }             -> 301 redirect to https            [line 130-136]
+- location = /api     -> 308 /api/  (prevents SPA fallback swallow)    [line 82]
+- location /api/      -> proxy_pass http://node_backend (127.0.0.1:7000, keepalive 64, rate-limit api_limit 10r/s) [line 85]
+- location /assets/   -> alias dist/assets, immutable 1y               [line 105]
+- location = /health  -> rewrite ^ /api/health break; proxy_pass       [line 114]
+- location /          -> SPA root + try_files $uri $uri/ /index.html   [line 121]
+
+CSP header present at SERVER level (line 72) — inherited by ALL locations including
+index.html (location / serves it via try_files). R3-P1-MINIO: connect-src includes
+http://127.0.0.1:19000. No add_header override inside location / (per R2-SEC-FIX N2
+comment), so index.html inherits CSP/HSTS/X-Frame-Options/nosniff + Cache-Control
+no-cache no-store must-revalidate.
+
+Other: server_tokens off; gzip incl. image/svg+xml + application/wasm; WebSocket
+upgrade map; security headers all at server level.
+
+RESULT: PASS (structural). NOTE: `nginx -t` must run on VPS at deploy.

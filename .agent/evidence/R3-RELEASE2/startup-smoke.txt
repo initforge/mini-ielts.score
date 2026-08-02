@@ -1,0 +1,25 @@
+STARTUP SMOKE — snapshot /tmp/opencode/anish-snap3-1zmxDR (services workspace, dist/ built via step 4)
+Env: DB_HOST=127.0.0.1 DB_PORT=13306 DB_USER=toeic DB_PASSWORD=toeic_dev_pw DB_NAME=anish_toeic_snap3
+     REDIS_URL=redis://127.0.0.1:16379 CORS_ORIGIN=http://localhost:5173
+     S3_ENDPOINT=http://127.0.0.1:19000 S3_ACCESS_KEY=minioadmin S3_SECRET_KEY=minioadmin S3_BUCKET=toeic-media
+     AI_GRADING_TEST_MODE=true CLOUDFLARE_AI_WORKER_URL= CLOUDFLARE_AI_WORKER_TOKEN= TRUST_PROXY=false
+     JWT_SECRET (positive) = jk40x9kz8Qm2Vp7TnLw5YrBcHdFsGaWeRtYuIoPq  [40 chars, non-placeholder]
+
+[POSITIVE] node dist/server.js
+  GET /api/health -> HTTP 200            PASS
+  process killed after check.
+
+[POSITIVE] node dist/workers/grading.worker.js
+  stdout: "[Grading Worker] Started"     PASS
+  (source: src/workers/grading.worker.ts:89 console.log('[Grading Worker] Started'))
+  process killed after marker.
+
+[NEGATIVE] JWT_SECRET=''        -> exit 1
+  msg: Environment validation failed (server): JWT_SECRET: JWT_SECRET is required and must be at least 32 characters
+[NEGATIVE] JWT_SECRET='short'   -> exit 1
+  msg: Environment validation failed (server): JWT_SECRET: JWT_SECRET is required and must be at least 32 characters
+[NEGATIVE] JWT_SECRET='REPLACE_WITH_STRONG_SECRET_32+chars' -> exit 1
+  msg: Environment validation failed (server): JWT_SECRET: JWT_SECRET must not be a placeholder (contains 'REPLACE_WITH') — PM2/VPS must supply a real secret
+  (fail-closed on placeholder confirmed, env.ts:16-28 PLACEHOLDER_RE + refine)
+
+STARTUP SMOKE RESULT: PASS

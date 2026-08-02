@@ -1,0 +1,90 @@
+Assignment R2-BE-TZ — Root-cause diagnosis (INJ-003)
+Repo: /home/linhnx/Projects/mini-toeic.score (HEAD 620c111)
+Scope touched: anish-toeic-web-services/src/services/db.service.ts,
+                anish-toeic-web-services/src/services/grading.service.ts,
+                anish-toeic-web-services/src/tests/grading.test.ts,
+                .agent/evidence/R2-BE-TZ/
+
+========================================================================
+BUG 1 — Clock skew / expired attempts
+========================================================================
+
+Observed: a freshly created exam-mode attempt was reported with
+started_at ~7 hours in the past, so the runner's client-side expiry
+(attemptStore.ts:301-303 + RunnerPage.tsx:46-64:
+deadline = new Date(attempt.started_at).getTime() + durationMinutes*60000,
+auto-submit when deadline <= Date.now()) saw deadline already passed and
+auto-submitted on mount.
+
+Investigation:
+- MySQL server (docker container `anish-toeic-mysql`): @@session.time_zone
+  = SYSTEM = UTC; @@system_time_zone = UTC. All TIMESTAMP/DATETIME values
+  are therefore stored AND served to clients as UTC wall-clock time.
+  (toeic_attempts.started_at is `TIMESTAMP DEFAULT CURRENT_TIMESTAMP`;
+  the app never passes started_at on INSERT in ToeicService.createAttempt,
+  so MySQL itself writes UTC wall-clock.)
+- Node host timezone: Asia/Ho_Chi_Minh (UTC+7).
+- mysql2 default `timezone` option is `'local'`; its parser does
+  `new Date("YYYY-MM-DD HH:mm:ss")` (lib/packets/packet.js parseDateTime),
+  i.e. it interprets the server-provided UTC wall-clock string as LOCAL
+  time (+07). Result: a real instant of 2026-08-01T02:51:40Z comes back
+  as 2026-07-31T19:51:40Z — exactly 7 hours in the past. Confirmed
+  empirically with a probe (default vs timezone:'Z' vs '+07:00').
+- Same skew also affects every other date read over this pool:
+  completed_at, updated_at, job timestamps read by grading.worker
+  (recoverStaleProcessingJobs compares `updated_at < ?` with a JS Date
+  param — with default 'local' both directions are wrong for a UTC server).
+
+Fix chosen: add `timezone: 'Z'` to the pool config.
+- Reads: parser does `new Date(str + 'Z')` → correct UTC instant.
+- Writes: sql-escaper serializes JS Date params using getUTC* components →
+  UTC wall-clock string, matching the server's UTC session convention.
+- Round-trip verified: INSERT started_at=2026-08-01T05:00:00Z reads back
+  exactly 2026-08-01T05:00:00Z.
+- Alternative `'+07:00'` was rejected: it appends +07:00 to the UTC
+  wall-clock string the server already sends, producing the same 7h
+  backward shift (verified empirically) — the server is UTC, not +07.
+- Convention documented in a comment next to the option.
+
+========================================================================
+BUG 2 — COMPLETED job with no toeic_attempt_results row
+========================================================================
+
+Observed: submitting an SW attempt with zero/empty responses made the
+grading job reach COMPLETED, but no toeic_attempt_results row was created
+→ GET /api/toeic-attempts/:id/result returned 404 forever
+(ToeicService.getResult does `WHERE a.id = ? AND a.user_id = ? LIMIT 1`,
+returns null → controller 404).
+
+Trace in grading.service.ts GradingService.processJob:
+- Line ~211: `if (gradingRequest.responses.length === 0)` takes an early
+  return that called ONLY finalizeCompleted(jobId, attemptId, zeroScores, [])
+  and skipped the AI adapter AND skip'd persistAttemptResult (which is the
+  sole writer of toeic_attempt_results for SW attempts).
+- result.status was never 'COMPLETED'/'PARTIAL' there, so the
+  persistAttemptResult(...) at line ~227 was bypassed entirely.
+- LR attempts were unaffected (ScorerService.scoreLR always upserts a
+  results row), so the gap was SW-only and empty-response-only.
+
+Fix: in the empty-responses branch, call
+persistAttemptResult(attemptId, {speakingScore:0, writingScore:0,
+totalScore:0}, 'COMPLETED') BEFORE finalizeCompleted. persistAttemptResult
+already normalizes undefined scores to 0 and maps status COMPLETED → FINAL,
+and stores metrics {"speaking_score":0,"writing_score":0}. Result: COMPLETED
+always implies an existing results row (FINAL, zero scores). No change
+needed in scorer.service.ts (LR path already upserts).
+
+========================================================================
+Verification summary
+========================================================================
+- typecheck: PASS (tsc --noEmit exit 0)
+- lint: PASS (eslint . --ext ts exit 0)
+- test: 11 suites / 134 tests PASS (DB_NAME=anish_toeic_test)
+- build: PASS (npm run build exit 0)
+- Live BUG 1: fresh LR attempt #231 started_at=2026-08-01T03:00:26Z,
+  age 0s, still IN_PROGRESS after 8s (no auto-submit).
+- Live BUG 2: fresh SW attempt #232, zero responses, submit → job #58
+  COMPLETED → GET result HTTP 200
+  {"listeningScore":0,"readingScore":0,"totalScore":0,"status":"FINAL"}
+  → toeic_attempt_results row id=110 exists (FINAL, metrics zeroed);
+  toeic_attempts.status=COMPLETED.

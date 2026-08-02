@@ -1,0 +1,49 @@
+### cmd: rg -ri 'generative|gemini|vercel' anish-toeic-web-app/src anish-toeic-web-services/src
+exit=1
+
+### cmd: rg -i 'generative|gemini' package.json anish-toeic-web-app/package.json anish-toeic-web-services/package.json
+exit=1
+
+### cmd: rg -i 'GEMINI_API_KEY|first30|last30|base64' server/ api/ src/
+rg: server/: No such file or directory (os error 2)
+rg: api/: No such file or directory (os error 2)
+src/lib/sanitize.ts: * Validate and clean image base64 data
+src/lib/sanitize.ts:  // Must contain base64 payload
+src/lib/sanitize.ts:  if (!input.includes(";base64,")) return null;
+src/lib/sanitize.ts:  // Max 10MB base64 (~13.6M chars in base64)
+src/lib/utils.ts:export function blobToBase64(blob: Blob): Promise<string> {
+src/lib/utils.ts:      const base64String = reader.result as string;
+src/lib/utils.ts:      const base64 = base64String.includes(",") 
+src/lib/utils.ts:        ? base64String.split(",")[1] 
+src/lib/utils.ts:        : base64String;
+src/lib/utils.ts:      resolve(base64);
+src/App.tsx:      const apiKey = typeof window !== "undefined" ? localStorage.getItem("GEMINI_API_KEY") : null;
+src/App.tsx:      // Load audioBase64 từ IndexedDB cho những answer không có audioBase64
+src/App.tsx:      const { blobToBase64 } = await import("@/lib/utils");
+src/App.tsx:          // Nếu đã có audioBase64, giữ nguyên
+src/App.tsx:          if (answer.audioBase64) {
+src/App.tsx:          // Nếu không có audioBase64 nhưng có audioBlob, convert
+src/App.tsx:            const audioBase64 = await blobToBase64(audioBlob);
+src/App.tsx:            return { ...answerWithoutBlob, audioBase64 };
+src/App.tsx:            const audioBase64 = await blobToBase64(audioBlobFromDB);
+src/App.tsx:            return { ...answerWithoutBlob, audioBase64 };
+src/App.tsx:      const apiKey = typeof window !== "undefined" ? localStorage.getItem("GEMINI_API_KEY") : null;
+src/lib/types.ts:  audioBase64?: string;
+src/lib/types.ts:  images?: Record<string, string>; // questionId -> imageData (base64)
+src/lib/types.ts:  images?: Record<string | number, string>; // questionId/part -> imageData (base64)
+src/components/writing/ImageUpload.tsx:  value?: string; // base64 or URL
+src/components/writing/ImageUpload.tsx:      const base64String = reader.result as string;
+src/components/writing/ImageUpload.tsx:      const clean = sanitizeImageData(base64String);
+src/components/shared/Header.tsx:      const key = localStorage.getItem("GEMINI_API_KEY");
+src/components/shared/Header.tsx:                const key = localStorage.getItem("GEMINI_API_KEY");
+src/components/speaking/CollapsibleImageUpload.tsx:  value?: string; // base64 or URL
+src/components/speaking/SpeakingTab.tsx:  const handleRecordingComplete = async (audioBlob: Blob, audioBase64: string) => {
+src/components/speaking/SpeakingTab.tsx:      audioBase64,
+src/components/speaking/AudioRecorder.tsx:import { cn, formatTime, blobToBase64 } from "@/lib/utils";
+src/components/speaking/AudioRecorder.tsx:  onRecordingComplete: (audioBlob: Blob, audioBase64: string) => void;
+src/components/speaking/AudioRecorder.tsx:        const base64 = await blobToBase64(blob);
+src/components/speaking/AudioRecorder.tsx:        onRecordingComplete(blob, base64);
+exit=2
+
+### cmd: rg -ri 'vercel' scripts/  (report-only check)
+exit=1

@@ -1,0 +1,36 @@
+R3-DOCS-FIX — stale legacy-stack term scan
+Command: rg -ri 'gemini|generative|vercel|GEMINI_API_KEY' <in-scope files>
+Date: 2026-08-01
+
+=== IN-SCOPE (must be 0 hits) ===
+$ rg -ri 'gemini|generative|vercel|GEMINI_API_KEY' README.md README-vi.md docs/01-technical-specification.md docs/03-operations-and-risks.md .nvmrc
+(no output)
+exit code: 1 (no matches)  => PASS
+
+Also scanned for deleted-prototype file refs:
+$ rg -n 'grade-speaking|grade-writing|api/lib/gemini|server/index.ts|dev-server' README.md README-vi.md docs/01-technical-specification.md docs/03-operations-and-risks.md
+(no output)
+exit code: 1 (no matches)  => PASS
+
+=== OUT-OF-SCOPE (report only, NOT modified) ===
+docs/02-exam-workflows.md (16 hits) — still describes legacy prototype:
+  line 12:  participant Key as GeminiKeyInput
+  line 16:  App->>Store: Read GEMINI_API_KEY
+  line 19:  User->>Key: Optional: paste Gemini key
+  line 20:  Key->>Store: Save GEMINI_API_KEY
+  line 23:  ... If the user wants to grade without server-side `GEMINI_API_KEY`, the UI modal is the only key entry path.
+  line 70:  participant Gemini as Gemini
+  line 74:  API->>Gemini: transcribe missing audio in batches
+  line 75:  Gemini-->>API: transcript per question
+  line 76:  API->>Gemini: grade all valid answers as strict JSON
+  line 77:  Gemini-->>API: raw JSON-like text
+  (+6 more)
+
+docs/04-infra-nginx-pm2-validation.md  => 0 hits (PASS)
+docs/05-runbook.md                     => 0 hits (PASS)
+docs/06-merge-handoff.md               => 0 hits (PASS)
+
+NOTE: docs/02 was NOT in the assignment's report scope (04/05/06 were).
+It is flagged here as an FYI: same staleness class (legacy Gemini/localStorage/
+api/grade-* narrative). Recommend a follow-up R4 task if the reviewer wants
+the whole docs/ tree consistent.

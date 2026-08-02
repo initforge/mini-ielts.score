@@ -1,0 +1,154 @@
+diff --git a/docs/02-exam-workflows.md b/docs/02-exam-workflows.md
+index 95e4419..c0d000d 100644
+--- a/docs/02-exam-workflows.md
++++ b/docs/02-exam-workflows.md
+@@ -1,6 +1,6 @@
+ # Exam Workflows
+ 
+-> Updated: 2026-05-26
++> Updated: 2026-08-01 (R3-DOCS-FIX2 — legacy AI-provider/localStorage/serverless references removed)
+ > Goal: describe the real learner and grading flows as implemented, not as a generic product plan.
+ 
+ ## 1. Entry Flow
+@@ -9,24 +9,24 @@
+ sequenceDiagram
+   participant User as Learner
+   participant App as React App
+-  participant Key as GeminiKeyInput
+-  participant Store as localStorage
++  participant API as Express API
+ 
+   User->>App: Open app
+-  App->>Store: Read GEMINI_API_KEY
+-  App-->>User: Show ANISH TOEIC shell
+-  User->>App: Choose Speaking or Writing
+-  User->>Key: Optional: paste Gemini key
+-  Key->>Store: Save GEMINI_API_KEY
++  App->>API: GET /api/toeic-exams (session cookie)
++  API-->>App: Exam catalog (LR and SW)
++  App-->>User: Show ANISH TOEIC catalog
++  User->>API: Login via POST /api/auth/login
++  API-->>App: HttpOnly session cookie (JWT + jti)
++  User->>App: Choose an exam, then questions
+ ```
+ 
+-The first screen is intentionally a selector, not a marketing page. The user must choose Speaking or Writing before seeing the question selector. If the user wants to grade without server-side `GEMINI_API_KEY`, the UI modal is the only key entry path.
++The first screen is intentionally a catalog/selector, not a marketing page. The user must log in before practicing and choose an exam (Speaking/Writing) before seeing the question selector. Grading needs no client-side key: sessions ride an HttpOnly cookie (JWT with `jti` revocation in Redis), so no API key or token is ever stored in `localStorage` or sent in request bodies.
+ 
+ ## 2. Speaking Flow
+ 
+ ### 2.1 Selection
+ 
+-Source: `src/components/shared/QuestionSelector.tsx`, `src/contexts/SpeakingContext.tsx`
++Source: `anish-toeic-web-app/src/modules/mock-exam/runner/sw/swStore.ts`, `.../runner/sw/SpeakingView.tsx`
+ 
+ The user starts with all Speaking questions selected:
+ 
+@@ -55,10 +55,10 @@ flowchart TD
+ 
+ Important implementation details:
+ 
+-- `AudioRecorder.tsx` requests microphone access through `navigator.mediaDevices.getUserMedia`.
++- `runner/sw/MicrophoneSetup.tsx` + `SpeakingView.tsx` request microphone access through `navigator.mediaDevices.getUserMedia`.
+ - It tries codecs in order: `audio/webm;codecs=opus`, `audio/webm`, `audio/mp4`, `audio/ogg;codecs=opus`.
+ - It uses a hard timeout equal to the TOEIC response duration.
+-- It plays static beep/instruction audio through URLs from `src/lib/speakingAudio.ts`.
++- It plays instruction/beep audio sourced from the exam catalog (`section.instructions`).
+ - It restores previously recorded audio from IndexedDB when the user switches back to a question.
+ 
+ ### 2.3 Speaking grading
+@@ -66,26 +66,30 @@ Important implementation details:
+ ```mermaid
+ sequenceDiagram
+   participant App as React App
+-  participant API as /api/grade-speaking
+-  participant Gemini as Gemini
+-
+-  App->>API: answers + question text + audioBase64 + optional transcripts
+-  API->>API: filter valid answers
+-  API->>Gemini: transcribe missing audio in batches
+-  Gemini-->>API: transcript per question
+-  API->>Gemini: grade all valid answers as strict JSON
+-  Gemini-->>API: raw JSON-like text
+-  API->>API: clean JSON, clamp scores, normalize part scores
++  participant API as Express API
++  participant Queue as Redis grading_jobs
++  participant Worker as Grading worker
++  participant AI as Cloudflare AI Worker / test double
++
++  App->>API: Submit attempt (audio already uploaded to S3 via presign)
++  API->>Queue: enqueue grading_jobs (QUEUED)
++  Worker->>Queue: poll QUEUED/RETRY
++  Worker->>AI: POST /api/grade — metadata + s3Key refs (Bearer token, X-Idempotency-Key)
++  AI-->>Worker: strict JSON scores
++  Worker->>API: normalize, persist per-question scores
++  App->>API: GET grading-status / result
+   API-->>App: SpeakingGradingResponse
+ ```
+ 
+-The recoverable failure path is quota-aware. If transcription hits quota after some questions are done, the API can return partial transcript data and tell the frontend which questions failed. That is better than returning a generic 500 after consuming the user's recorded work.
++Grading is asynchronous and queued. The worker calls the AI provider over HTTP through `anish-toeic-web-services/src/services/adapters/ai-grading.adapter.ts` — production POSTs to the Cloudflare AI Worker (`CLOUDFLARE_AI_WORKER_URL`/`TOKEN`, endpoint `/api/grade`); `AI_GRADING_TEST_MODE=true` substitutes a deterministic test double (no network, no randomness). The adapter never carries audio or prompt images; it forwards only metadata and S3 keys for the Worker to fetch media itself.
++
++The recoverable failure path is queue-aware. Retryable provider errors (timeout, 408/429/502/503/504) re-enqueue the job as `RETRY`, and per-question scores are persisted as they are produced, so a mid-job failure keeps the learner's completed work (`PARTIAL`) instead of returning a generic 500 after consuming the recorded answers.
+ 
+ ## 3. Writing Flow
+ 
+ ### 3.1 Selection
+ 
+-Source: `src/components/shared/QuestionSelector.tsx`, `src/contexts/WritingContext.tsx`
++Source: `anish-toeic-web-app/src/modules/mock-exam/runner/sw/swStore.ts`, `.../runner/sw/WritingView.tsx`
+ 
+ Writing has 8 questions:
+ 
+@@ -125,14 +129,18 @@ Navigation is intentionally flexible before a part starts. Once the user clicks
+ ```mermaid
+ sequenceDiagram
+   participant App as React App
+-  participant API as /api/grade-writing
+-  participant Gemini as Gemini
+-
+-  App->>API: answers + question prompts + optional imageData
+-  API->>API: validate non-empty answers
+-  API->>Gemini: multimodal grading prompt
+-  Gemini-->>API: JSON-like grading result
+-  API->>API: clean JSON, normalize question and part scores
++  participant API as Express API
++  participant Queue as Redis grading_jobs
++  participant Worker as Grading worker
++  participant AI as Cloudflare AI Worker / test double
++
++  App->>API: Submit attempt (text + uploaded prompt images)
++  API->>Queue: enqueue grading_jobs (QUEUED)
++  Worker->>Queue: poll QUEUED/RETRY
++  Worker->>AI: POST /api/grade — grading prompt + S3 media refs
++  AI-->>Worker: JSON-like grading result
++  Worker->>API: clean JSON, normalize question and part scores
++  App->>API: GET grading-status / result
+   API-->>App: WritingGradingResponse
+ ```
+ 
+@@ -150,17 +158,17 @@ The backend returns:
+ 
+ | Case | Current behavior |
+ |---|---|
+-| Missing Gemini key | API uses request key first, then env key; without either, Gemini call fails. |
+-| Invalid Gemini key | Mapped to `API_KEY_INVALID`. |
+-| Gemini quota/rate limit | Mapped to `RATE_LIMIT`; Speaking transcription can return partial progress. |
+-| Model not found | Model chain can fall back on 404/503; terminal 404 maps to `MODEL_NOT_FOUND`. |
+-| HTTP microphone access | `AudioRecorder` warns that microphone access requires HTTPS or localhost. |
++| Missing AI provider config | No `CLOUDFLARE_AI_WORKER_URL`/`TOKEN` and `AI_GRADING_TEST_MODE` off ⇒ `AiProviderNotConfiguredError` ⇒ job fails `AI_PROVIDER_NOT_CONFIGURED` (not retried). |
++| Provider 4xx (auth, invalid request, model not found) | Non-retryable ⇒ job `FAILED` immediately. |
++| Provider 429 / 5xx (quota, rate limit) | Retryable ⇒ job `RETRY`; per-question scores already persisted are kept (`PARTIAL`). |
++| Provider timeout / network failure | Retryable ⇒ job `RETRY`; idempotency key prevents duplicate scoring. |
++| HTTP microphone access | `MicrophoneSetup` warns that microphone access requires HTTPS or localhost. |
+ | Empty Speaking answers | UI blocks finishing with no recorded answers. |
+ | Empty Writing answers | UI blocks finishing with no written answers. |
+ | Image prompt missing | App still allows flow; grading quality depends on prompt text and uploaded image. |
+ 
+ ## 5. Why the Flow Feels Different from a Classic LMS
+ 
+-There is no login, course tree, database submission history, or admin panel. The app behaves more like a local exam cockpit backed by AI grading. That is a valid shape for a lightweight practice lab, but it should not be documented as a full learning management system.
++Auth, attempts, and results are server-owned (MySQL + Redis), but there is no course tree or admin panel. Login is a session via HttpOnly cookie with `jti` revocation; the app behaves more like an exam cockpit backed by queued AI grading. That is a valid shape for a lightweight practice lab, but it should not be documented as a full learning management system.
+ 
+-If this becomes a production learning product, the next architectural step is not "more docs"; it is adding explicit backend ownership for users, attempts, rubric versions, AI model versions, and score history.
++If this becomes a production learning product, the next architectural step is not "more docs"; it is adding explicit backend ownership for rubric versions, AI model version pinning, and admin review of attempts and score history.

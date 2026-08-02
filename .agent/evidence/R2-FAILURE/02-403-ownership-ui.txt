@@ -1,0 +1,29 @@
+[STATE 2 UI] non-owner /thi-thu/ket-qua/177
+--- visible text ---
+Chưa có kết quả
+Kết quả chưa sẵn sàng hoặc bài thi không tồn tại.
+Thử lại
+Quay lại lịch sử
+--- network ---
+404 /api/toeic-attempts/177/result
+404 /api/toeic-attempts/177
+200 /api/toeic-exams?page=1&pageSize=100
+404 /api/toeic-attempts/177/result
+404 /api/toeic-attempts/177
+404 /api/toeic-attempts/177/result
+404 /api/toeic-attempts/177
+404 /api/toeic-attempts/177/result
+404 /api/toeic-attempts/177
+--- console ---
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+console:error Failed to load resource: the server responded with a status of 404 (Not Found)
+console:error Failed to load resource: the server responded with a status of 404 (Not Found)
+console:error Failed to load resource: the server responded with a status of 404 (Not Found)
+console:error Failed to load resource: the server responded with a status of 404 (Not Found)
+console:error Failed to load resource: the server responded with a status of 404 (Not Found)
+console:error Failed to load resource: the server responded with a status of 404 (Not Found)
+console:error Failed to load resource: the server responded with a status of 404 (Not Found)
+console:error Failed to load resource: the server responded with a status of 404 (Not Found)
+--- dialogs ---

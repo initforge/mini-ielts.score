@@ -1,0 +1,17 @@
+[STATE 11 UI] ProcessingPage 182 FAILED
+--- visible text ---
+Lịch sử luyện tập
+ID: 182
+Không thể hoàn tất chấm bài
+Đã thử chấm nhiều lần nhưng không thành công. Vui lòng thử lại sau.
+Chấm điểm thất bại
+forced
+Đã thử 3 lần. Vui lòng thử làm lại bài thi hoặc liên hệ hỗ trợ.
+Thử chấm lại lần cuối
+Quay lại lịch sử
+--- console ---
+console:debug [vite] connecting...
+console:debug [vite] connected.
+console:info %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+--- network ---
+200 /api/toeic-attempts/182/grading-status

@@ -1,0 +1,65 @@
+# R2-SEC-FIX — Security & release fixes (N1, N2, N3, env schema, PM2, tests)
+# Implemented per assignment R2-SEC-FIX. Reviewer findings: R2-SEC-REVIEW N1/N2/N3 + G1 release env findings.
+# Scope: server.ts, config/env.ts, migrations/runner.ts, tests/{migrations,server}.test.ts, nginx/nginx.conf, ecosystem.config.cjs, env.production.example.
+
+## 1. N1 MEDIUM — rate-limit identity spoof (cf-connecting-ip gated)
+- File: anish-toeic-web-services/src/server.ts:33-41 (function clientIp)
+- Before: read req.headers['cf-connecting-ip'] UNCONDITIONALLY; only net.isIP validated; used regardless of TRUST_PROXY.
+- After:
+  ```ts
+  function clientIp(req: express.Request): string {
+    if (env.TRUST_PROXY === 'true') {           // gate: trusted reverse proxy only
+      const cfIp = req.headers['cf-connecting-ip'];
+      if (typeof cfIp === 'string' && net.isIP(cfIp) > 0) return cfIp;  // still validate literal
+    }
+    return req.ip || 'unknown';
+  }
+  ```
+- Live proof (see health.txt): 3 login attempts with different spoofed `cf-connecting-ip` (1.2.3.4 / 5.6.7.8 / 9.9.9.9) under TRUST_PROXY=false → RateLimit-Remaining decremented 18→17→16 (single shared bucket) — spoofed header ignored.
+
+## 2. N2 MEDIUM — nginx header inheritance dropped security headers on index.html
+- File: nginx/nginx.conf
+- Before: nested `location = /index.html { add_header Cache-Control "no-cache, no-store, must-revalidate"; }` (was lines ~119-121). Any add_header in a location suppresses inherited server-level add_headers → index.html served with Cache-Control ONLY, no CSP/HSTS/X-Frame-Options/nosniff.
+- After:
+  - Removed the nested `location = /index.html` block entirely.
+  - Declared `add_header Cache-Control "no-cache, no-store, must-revalidate";` at server level (nginx/nginx.conf:78) right after the security headers (62-71). index.html now inherits security headers + no-cache.
+  - `/assets/` keeps its own add_header "public, immutable" (line 109) — unchanged; locations with their own add_header still win.
+- Validation: `nginx` binary not present on this machine → structural review only. See nginx.txt. VPS-only live check: run `nginx -t` after deploy.
+
+## 3. N3 LOW — document stateless JWT revocation strategy
+- env.production.example:32-34 — comment added above JWT_EXPIRES_IN (line 35):
+  "stateless JWT — no server-side revocation table. 7d short TTL bounds stolen-cookie validity; logout clears the httpOnly cookie client-side. Full revocation (token-version/jti deny-list) is a future enhancement."
+- ecosystem.config.cjs:23-27 — same note above JWT_EXPIRES_IN: '7d'.
+
+## 4. Env schema — CLOUDFLARE_AI_TIMEOUT_MS added to zod
+- File: anish-toeic-web-services/src/config/env.ts
+- Before: key absent from schema and defaults; env.production.example had CLOUDFLARE_AI_TIMEOUT_MS=60000 uncovered by zod.
+- After: schema line 23 `CLOUDFLARE_AI_TIMEOUT_MS: z.string().regex(/^\d+$/, 'CLOUDFLARE_AI_TIMEOUT_MS must be numeric').default('60000')`; defaults line 52 `?? '60000'`.
+- Default mirrors ai-grading.adapter.ts:160 `timeoutMsRaw ? parseInt(timeoutMsRaw,10) : 60000` (clamp 5000-300000 there).
+- All env.production.example keys now covered by zod (verified key-by-key, see env-schema.txt).
+
+## 5. PM2 env — AI_GRADING_TEST_MODE + TRUST_PROXY
+- File: ecosystem.config.cjs:28-30 (web-services app env block)
+- Before: both keys absent.
+- After: `AI_GRADING_TEST_MODE: 'false'`, `TRUST_PROXY: 'false'`.
+- NOTE: env.production.example declares TRUST_PROXY=true ("MUST be true in prod"). Assignment explicitly requested TRUST_PROXY=false (schema default). VPS: set TRUST_PROXY=true in the deployed env.production.example when Cloudflare/nginx terminates in front, or rate-limit identity collapses to the proxy IP. Flagged for owner awareness.
+
+## 6. Test fixes (release: 132/134 with DB reachable → now 135/135)
+### migrations.test.ts
+- File: anish-toeic-web-services/src/migrations/runner.ts:19 — exported listMigrationFiles() (was private).
+- File: anish-toeic-web-services/src/tests/migrations.test.ts
+- Before: `expect(applied).toHaveLength(1); expect(applied[0].name).toBe('001_schema.up.sql');` and `expect(Number(appliedAgain[0].count)).toBe(1)` — hardcoded 1, now runner applies 2 files (001 + 002_media_columns).
+- After: count/names asserted against runner's own file discovery (not a tautology):
+  - line 67-70: `const upFiles = listMigrationFiles('up'); expect(applied).toHaveLength(upFiles.length); expect(applied.map(r => r.name)).toEqual(upFiles);`
+  - line 86: `expect(Number(appliedAgain[0].count)).toBe(upFiles.length);`
+### server.test.ts
+- File: anish-toeic-web-services/src/tests/server.test.ts (rewritten login tests)
+- Problem: asserted NOT 401 for unknown-user login; with reachable DB the real response is 401 (or, when a fixture user exists in the test DB, 200 without error field) — DB-dependent.
+- Fix: mocked `../services/db.service` pool (jest.mock) → suite green with AND without live MySQL. Asserts in isolation:
+  - unknown email → 401 `Invalid email or password` (auth handler reached, NOT requireAuth "Unauthorized: Missing token" → proves auth router mounted before TOEIC guard).
+  - known fixture user (real scrypt hash of password123) → 200 + user body + `Set-Cookie: token=`.
+- Other tests (health, CORS, mount, env negative) unchanged.
+
+## Test totals
+- Before: 132/134 PASS (DB reachable; 2 FAIL: migrations count + server login).
+- After: 135/135 PASS (11 suites). Count grew by 1 because the rewritten server.test.ts adds a fixture-login-success test.

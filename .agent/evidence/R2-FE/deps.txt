@@ -1,0 +1,46 @@
+R2-FE / INJ-003 — Task 6: DEPS (react-router-dom 7.x) + quill note
+===================================================================
+Date: 2026-08-01
+
+Upgrade performed: npm i react-router-dom@latest
+  6.30.4 -> 7.18.2   (package.json now "react-router-dom": "^7.18.2")
+
+npm ls react-router-dom:
+  anish-toeic-web-app@0.1.0
+    └── react-router-dom@7.18.2
+        └── react-router@7.18.2
+
+TARGET ADVISORIES (the reason for the bump) — all CLEARED by 7.18.2:
+  GHSA-jjmj-jmhj-qwj2  (CVE-2026-53668, moderate 6.9, open redirect -> XSS)
+      affected react-router-dom >=6.30.2, <=6.30.4 (our old version) and
+      react-router >=7.9.6, <=7.12.0; patched in 7.13.0. GONE from audit.
+  GHSA-wrjc-x8rr-h8h6 / GHSA-337j-9hxr-rhxg — no longer reported. GONE.
+  `npm audit` output for react-router/react-router-dom no longer lists them.
+
+REMAINING router advisory (documented, accepted):
+  GHSA-qwww-vcr4-c8h2 (high 7.1) — React Router RSC-Mode CSRF bypass,
+  affected react-router >=7.12.0, <8.3.0 (incl. our 7.18.2), patched only in
+  the 8.3.0 MAJOR. Advisory text: "This only affects your application if you
+  are using the unstable RSC APIs."
+  This SPA does NOT use RSC: BrowserRouter client-only, no loaders/actions/
+  Form, no SSR redirects, no framework mode. Exploitability: none/low in this
+  codebase. Fix requires a major upgrade to v8 (owner decision required) —
+  not done here; documented instead. Downgrade to 7.11.0 (npm's suggested
+  fix) would REINTRODUCE GHSA-jjmj-jmhj-qwj2 (7.9.6-7.12.0 range) — rejected.
+
+QUILL (GHSA-v3m3-f69x-jf25, low, XSS via HTML export; quill 2.0.3 = latest,
+NOT upgraded per instruction):
+  Mitigation verified: WritingView persists ONLY plain text —
+  WritingView.tsx line 60-65: `const text = quill.getText().replace(/\s+$/, '');`
+  then `useSWStore.getState().setWritingText(question.id, text)` on user
+  source. getText() returns plain text; Quill clipboard strips executable
+  content; no HTML is ever persisted to the grading path.
+  Remaining audit counts (18 total, all PRE-EXISTING dev/build deps):
+  15 high + 2 moderate + 1 low. High items are transitive devDependencies:
+  minimatch, picomatch, brace-expansion, flatted, js-yaml, postcss, rollup
+  (build toolchain / eslint) and vite/esbuild (dev-server SSRF advisory,
+  dev-only). No runtime prod-dep advisories besides quill(low) + the RSC CSRF
+  above.
+
+ROUTER UPGRADE OUTCOME: KEPT 7.18.2. No revert, no accepted-finding.md needed
+(typecheck/build/tests pass; see typecheck-build.txt).

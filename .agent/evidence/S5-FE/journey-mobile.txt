@@ -1,0 +1,15 @@
+S5-FE journey — mobile (viewport 1440x900 desktop / 390x844 mobile)
+timestamp: 2026-07-31T14:07:56.227Z
+attemptId: 29
+errors: 1
+PASS attempt created (id=29)
+FAIL journey unhandled error: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('button:has-text("Bắt đầu chuẩn bị")')[22m
+
+
+STEP logged in
+STEP SW attempt created: 29
+STEP mic-check rendered
+STEP directions rendered
+STEP mic granted + test passed

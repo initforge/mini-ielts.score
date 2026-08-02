@@ -8,6 +8,7 @@ import { ToeicService } from '../services/toeic.service';
 jest.mock('../services/db.service', () => ({
   pool: {
     query: jest.fn(),
+    getConnection: jest.fn(),
   },
 }));
 
@@ -15,7 +16,7 @@ const app = express();
 app.use(express.json());
 app.use('/api', toeicRoutes);
 
-const mockToken = jwt.sign({ sub: 'mock-user-id' }, process.env.JWT_SECRET as string);
+const mockToken = jwt.sign({ sub: '1' }, process.env.JWT_SECRET as string);
 
 describe('API Security & Data Separation AC6', () => {
   beforeEach(() => {
@@ -30,7 +31,7 @@ describe('API Security & Data Separation AC6', () => {
     const mockQuery = pool.query as jest.Mock;
 
     // 1st query: attempt
-    mockQuery.mockResolvedValueOnce([[{ id: 1, user_id: 'mock-user-id', exam_id: 10, status: 'IN_PROGRESS' }]]);
+    mockQuery.mockResolvedValueOnce([[{ id: 1, user_id: '1', exam_id: 10, status: 'IN_PROGRESS' }]]);
     // 2nd query: responses
     mockQuery.mockResolvedValueOnce([[]]);
     // 3rd query: sections
@@ -62,7 +63,7 @@ describe('API Security & Data Separation AC6', () => {
     const mockQuery = pool.query as jest.Mock;
 
     // 1st query: attempt check returns IN_PROGRESS
-    mockQuery.mockResolvedValueOnce([[{ id: 1, status: 'IN_PROGRESS', exam_id: 10, user_id: 'mock-user-id' }]]);
+    mockQuery.mockResolvedValueOnce([[{ id: 1, status: 'IN_PROGRESS', exam_id: 10, user_id: '1' }]]);
 
     const res = await request(app)
       .get('/api/toeic-attempts/1/review')
@@ -76,7 +77,7 @@ describe('API Security & Data Separation AC6', () => {
     const mockQuery = pool.query as jest.Mock;
 
     // 1st query: attempt check returns COMPLETED
-    mockQuery.mockResolvedValueOnce([[{ id: 1, status: 'COMPLETED', exam_id: 10, user_id: 'mock-user-id' }]]);
+    mockQuery.mockResolvedValueOnce([[{ id: 1, status: 'COMPLETED', exam_id: 10, user_id: '1' }]]);
     // 2nd query: get review content
     mockQuery.mockResolvedValueOnce([[{ question_id: 101, correct_option_id: 1001, explanation: 'Because it is' }]]);
 
@@ -176,6 +177,175 @@ describe('API Security & Data Separation AC6', () => {
         .set('Authorization', `Bearer ${mockToken}`);
 
       expect(res.status).toBe(404);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // A7 M1: public catalog DTO must never disclose lifecycle internals
+  // ---------------------------------------------------------------------------
+
+  describe('Public catalog DTO — lifecycle field isolation (A7 M1)', () => {
+    it('strips status/version/published_version from anonymous list response', async () => {
+      const mockQuery = pool.query as jest.Mock;
+      mockQuery
+        .mockResolvedValueOnce([[{ total: 1 }]]) // count
+        .mockResolvedValueOnce([[
+          {
+            id: 1,
+            collection_id: 1,
+            slug: 'full-lr',
+            title: 'Full LR',
+            duration_minutes: 120,
+            question_count: 200,
+            skill_type: 'LR',
+            status: 'PUBLISHED',
+            version: 3,
+            published_version: 2,
+            updated_at: '2026-08-02T00:00:00Z',
+          },
+        ]]); // raw row deliberately carries lifecycle columns
+
+      const res = await request(app).get('/api/toeic-exams');
+      expect(res.status).toBe(200);
+
+      const item = res.body.items[0];
+      expect(item.status).toBeUndefined();
+      expect(item.version).toBeUndefined();
+      expect(item.published_version).toBeUndefined();
+      // Public safe fields still present
+      expect(item.slug).toBe('full-lr');
+      expect(item.title).toBe('Full LR');
+      expect(item.skill_type).toBe('LR');
+    });
+
+    it('strips lifecycle fields from anonymous exam detail response', async () => {
+      const mockQuery = pool.query as jest.Mock;
+      mockQuery
+        .mockResolvedValueOnce([[
+          {
+            id: 1,
+            collection_id: 1,
+            slug: 'full-lr',
+            title: 'Full LR',
+            duration_minutes: 120,
+            question_count: 200,
+            skill_type: 'LR',
+            status: 'PUBLISHED',
+            version: 5,
+            published_version: 4,
+          },
+        ]])
+        .mockResolvedValueOnce([[{ id: 10, exam_id: 1, title: 'Listening' }]]);
+
+      const res = await request(app).get('/api/toeic-exams/full-lr');
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBeUndefined();
+      expect(res.body.version).toBeUndefined();
+      expect(res.body.published_version).toBeUndefined();
+      expect(res.body.sections[0].title).toBe('Listening');
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // A7 M1 repair: PUBLISHED-only lifecycle on public learner surfaces
+  // ---------------------------------------------------------------------------
+
+  describe('Public lifecycle enforcement — PUBLISHED only (A7 M1 repair)', () => {
+    it('restricts both count and row queries to status = PUBLISHED', async () => {
+      const mockQuery = pool.query as jest.Mock;
+      mockQuery
+        .mockResolvedValueOnce([[{ total: 0 }]]) // count
+        .mockResolvedValueOnce([[]]); // rows
+
+      const res = await request(app).get('/api/toeic-exams');
+      expect(res.status).toBe(200);
+
+      const countCall = mockQuery.mock.calls[0];
+      const rowsCall = mockQuery.mock.calls[1];
+      expect(countCall[0]).toContain('status = ?');
+      expect(countCall[1][0]).toBe('PUBLISHED');
+      expect(rowsCall[0]).toContain('status = ?');
+      expect(rowsCall[0]).toContain('LIMIT ? OFFSET ?');
+      expect(rowsCall[1][0]).toBe('PUBLISHED');
+    });
+
+    it('returns 404 for a DRAFT/ARCHIVED exam slug (not merely stripped)', async () => {
+      const mockQuery = pool.query as jest.Mock;
+      mockQuery.mockResolvedValueOnce([[]]); // no PUBLISHED row
+
+      const res = await request(app).get('/api/toeic-exams/archived-lr');
+      expect(res.status).toBe(404);
+
+      const sql = mockQuery.mock.calls[0][0] as string;
+      expect(sql).toContain("AND status = 'PUBLISHED'");
+    });
+
+    it('still serves detail for a PUBLISHED exam', async () => {
+      const mockQuery = pool.query as jest.Mock;
+      mockQuery
+        .mockResolvedValueOnce([[
+          { id: 1, collection_id: 1, slug: 'full-lr', title: 'Full LR', duration_minutes: 120, question_count: 200, skill_type: 'LR' },
+        ]])
+        .mockResolvedValueOnce([[{ id: 10, exam_id: 1, title: 'Listening' }]]);
+
+      const res = await request(app).get('/api/toeic-exams/full-lr');
+      expect(res.status).toBe(200);
+      expect(res.body.slug).toBe('full-lr');
+      expect(res.body.sections[0].title).toBe('Listening');
+    });
+
+    it('createAttempt rejects a DRAFT/ARCHIVED exam with 404 (no existence oracle)', async () => {
+      const mockGetConnection = pool.getConnection as jest.Mock;
+
+      const mockConn = {
+        beginTransaction: jest.fn().mockResolvedValue(undefined),
+        query: jest.fn(),
+        commit: jest.fn().mockResolvedValue(undefined),
+        rollback: jest.fn().mockResolvedValue(undefined),
+        release: jest.fn(),
+      };
+
+      // Exam not found → 404
+      mockConn.query.mockResolvedValueOnce([[]]);
+      mockGetConnection.mockResolvedValue(mockConn);
+
+      const res = await request(app)
+        .post('/api/toeic-exams/5/attempts')
+        .set('Authorization', `Bearer ${mockToken}`)
+        .send({ mode: 'EXAM' });
+
+      expect(res.status).toBe(404);
+      expect(mockConn.rollback).toHaveBeenCalled();
+      expect(mockConn.release).toHaveBeenCalled();
+    });
+
+    it('createAttempt atomically gates on PUBLISHED inside the insert and allows PUBLISHED', async () => {
+      const mockGetConnection = pool.getConnection as jest.Mock;
+
+      const mockConn = {
+        beginTransaction: jest.fn().mockResolvedValue(undefined),
+        query: jest.fn(),
+        commit: jest.fn().mockResolvedValue(undefined),
+        rollback: jest.fn().mockResolvedValue(undefined),
+        release: jest.fn(),
+      };
+
+      // Exam is PUBLISHED
+      mockConn.query
+        .mockResolvedValueOnce([[{ id: 3, status: 'PUBLISHED', version: 1, published_version: 1 }]])
+        .mockResolvedValueOnce([{ insertId: 77, affectedRows: 1 }]);
+      mockGetConnection.mockResolvedValue(mockConn);
+
+      const res = await request(app)
+        .post('/api/toeic-exams/3/attempts')
+        .set('Authorization', `Bearer ${mockToken}`)
+        .send({ mode: 'EXAM' });
+
+      expect(res.status).toBe(201);
+      expect(res.body.attemptId).toBe(77);
+      expect(res.body.status).toBe('IN_PROGRESS');
+      expect(mockConn.commit).toHaveBeenCalled();
+      expect(mockConn.release).toHaveBeenCalled();
     });
   });
 });

@@ -1,0 +1,74 @@
+S4-FE journey — desktop (viewport 1440x900 desktop / 390x844 mobile)
+timestamp: 2026-07-31T16:29:56.470Z
+attemptId: 97
+errors: 0
+PASS attempt created (id=97)
+PASS answered q1 (part 1)
+PASS answered q2 (part 1)
+PASS answered q3 (part 1)
+PASS answered q4 (part 2)
+PASS answered q5 (part 2)
+PASS answered q6 (part 2)
+PASS answered q7 (part 3)
+PASS answered q8 (part 3)
+PASS answered q9 (part 3)
+PASS answered q10 (part 4)
+PASS answered q11 (part 4)
+PASS answered q12 (part 4)
+PASS answered q13 (part 5)
+PASS answered q14 (part 5)
+PASS answered q15 (part 5)
+PASS answered q16 (part 6)
+PASS answered q17 (part 6)
+PASS answered q18 (part 6)
+PASS answered q19 (part 7)
+PASS answered q20 (part 7)
+PASS answered q21 (part 7)
+PASS palette shows 21/21 answered :: Đã trả lời 21/21
+PASS review badge ≥ 2 (got 2) :: 2
+PASS bilingual toggle on
+PASS autosave PATCH 200 seen (count=21)
+PASS answers restored after reload (resume) :: Đã trả lời 21/21
+PASS submit navigated to result
+PASS total score / 990 shown
+PASS error map button present
+PASS result GET 200 (count=1)
+PASS submit POST 200 (count=1)
+PASS error map chart section
+PASS wrong-question list section
+PASS review GET 200 (count=2)
+PASS review modal shows table
+PASS attempt 97 in history
+PASS attempt status COMPLETED (Hoàn thành)
+PASS Xem kết quả link present
+PASS attempt status COMPLETED via API :: COMPLETED
+
+STEP logged in as seed.owner
+STEP attempt created: 97
+SCREENSHOT intro DIRECTIONS panel → runner-intro-desktop.png
+STEP intro dismissed
+SCREENSHOT listening part 1 question view → runner-part1-desktop.png
+SCREENSHOT listening part 2 question view → runner-part2-desktop.png
+SCREENSHOT reading part 5 view → runner-part5-desktop.png
+SCREENSHOT reading part 7 passage view → runner-part7-desktop.png
+STEP answered all 21 questions
+SCREENSHOT palette with answered+marked states → runner-palette-marked-desktop.png
+STEP marked q2 & q5 for review, badge checked
+STEP bilingual toggled
+SCREENSHOT reading annotation tools open → runner-annotation-desktop.png
+STEP annotation stroke drawn + saved
+STEP annotation tools closed
+STEP autosave PATCH 200 count=21
+SCREENSHOT palette after reload (answers restored) → runner-resume-desktop.png
+STEP reload → resume verified
+SCREENSHOT submit confirmation modal → runner-submit-confirm-desktop.png
+STEP submitted → result page
+SCREENSHOT result certificate page → result-desktop.png
+STEP result page verified
+SCREENSHOT error map page → errormap-desktop.png
+STEP error map verified
+SCREENSHOT review detail modal → review-desktop.png
+STEP review modal verified
+SCREENSHOT history page → history-desktop.png
+STEP history → Xem kết quả link works
+STEP attempt status=COMPLETED

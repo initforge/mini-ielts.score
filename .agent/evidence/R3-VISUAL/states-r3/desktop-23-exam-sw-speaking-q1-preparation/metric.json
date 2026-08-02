@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/23-exam-sw-speaking-q1-preparation.png",
+  "actual": ".agent/evidence/R3-SW/desktop23-q1-prep.png",
+  "rmse": 214.059766,
+  "diffPixelsPct": 97.7191,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-23-exam-sw-speaking-q1-preparation/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-23-exam-sw-speaking-q1-preparation/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-23-exam-sw-speaking-q1-preparation/metric.json"
+  }
+}

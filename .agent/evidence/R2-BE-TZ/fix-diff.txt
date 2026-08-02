@@ -1,0 +1,78 @@
+diff --git a/anish-toeic-web-services/src/services/db.service.ts b/anish-toeic-web-services/src/services/db.service.ts
+index a32e9a0..fbe97bb 100644
+--- a/anish-toeic-web-services/src/services/db.service.ts
++++ b/anish-toeic-web-services/src/services/db.service.ts
+@@ -6,6 +6,11 @@ export const pool = mysql.createPool({
+   user: process.env.DB_USER || 'root',
+   password: process.env.DB_PASSWORD || '',
+   database: process.env.DB_NAME || 'anish_toeic',
++  // Time convention: every TIMESTAMP/DATETIME is stored and served as UTC.
++  // MySQL server session time_zone = UTC; `timezone: 'Z'` makes mysql2 parse
++  // incoming date strings as UTC and serialize JS Date params as UTC wall-clock,
++  // so API dates are the correct instant (no ±7h offset for host TZ=Asia/Ho_Chi_Minh).
++  timezone: 'Z',
+   waitForConnections: true,
+   connectionLimit: 10,
+   queueLimit: 0,
+diff --git a/anish-toeic-web-services/src/services/grading.service.ts b/anish-toeic-web-services/src/services/grading.service.ts
+index e7b4b29..0fee735 100644
+--- a/anish-toeic-web-services/src/services/grading.service.ts
++++ b/anish-toeic-web-services/src/services/grading.service.ts
+@@ -209,6 +209,13 @@ export class GradingService {
+       };
+ 
+       if (gradingRequest.responses.length === 0) {
++        // Always persist a results row (zero scores, FINAL) so COMPLETED
++        // attempts never leave GET /result missing (INJ-003 BUG 2).
++        await persistAttemptResult(
++          attemptId,
++          { speakingScore: 0, writingScore: 0, totalScore: 0 },
++          'COMPLETED'
++        );
+         await finalizeCompleted(jobId, attemptId, { speakingScore: 0, writingScore: 0, totalScore: 0 }, []);
+         return { success: true, message: 'No responses to grade — completed' };
+       }
+diff --git a/anish-toeic-web-services/src/tests/grading.test.ts b/anish-toeic-web-services/src/tests/grading.test.ts
+index 108be07..e893f33 100644
+--- a/anish-toeic-web-services/src/tests/grading.test.ts
++++ b/anish-toeic-web-services/src/tests/grading.test.ts
+@@ -478,6 +478,8 @@ describe('GradingService — Durable Lifecycle (S6-BE)', () => {
+     // No responses
+     (pool.query as jest.Mock).mockResolvedValueOnce([[]]);
+ 
++    // persistAttemptResult (zero scores, FINAL)
++    (pool.query as jest.Mock).mockResolvedValueOnce([{ affectedRows: 1 }]);
+     // finalizeCompleted
+     (pool.query as jest.Mock).mockResolvedValueOnce([{ affectedRows: 1 }]);
+     (pool.query as jest.Mock).mockResolvedValueOnce([{ affectedRows: 1 }]);
+@@ -488,6 +490,30 @@ describe('GradingService — Durable Lifecycle (S6-BE)', () => {
+     expect(result.message).toContain('No responses');
+     // AI adapter should NOT have been called
+     expect(mockAiGrade).not.toHaveBeenCalled();
++
++    // Regression (INJ-003 BUG 2): a results row must still be inserted so
++    // GET /toeic-attempts/:id/result returns 200, not 404 forever.
++    const resultInsert = (pool.query as jest.Mock).mock.calls.find(
++      (c: unknown[]) =>
++        typeof c[0] === 'string' &&
++        c[0].includes('INSERT INTO toeic_attempt_results') &&
++        c[0].includes('ON DUPLICATE KEY UPDATE')
++    );
++    expect(resultInsert).toBeDefined();
++    const [, params] = resultInsert as [string, unknown[]];
++    expect(params[0]).toBe(10); // attempt_id
++    expect(params[1]).toBe(0); // listening_score
++    expect(params[2]).toBe(0); // reading_score
++    expect(params[3]).toBe(0); // total_score
++    expect(params[4]).toBe('FINAL'); // result status
++
++    // Attempt must end COMPLETED
++    const attemptFinalize = (pool.query as jest.Mock).mock.calls.find(
++      (c: unknown[]) =>
++        typeof c[0] === 'string' &&
++        c[0].includes("toeic_attempts SET status = 'COMPLETED'")
++    );
++    expect(attemptFinalize).toBeDefined();
+   });
+ 
+   // -----------------------------------------------------------------------

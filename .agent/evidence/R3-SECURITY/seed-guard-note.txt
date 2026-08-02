@@ -1,0 +1,35 @@
+R3-SECURITY seed guard assessment
+=================================
+
+Location: anish-toeic-web-services/src/migrations/seed.ts (OUT of scope —
+not modified by R3).
+
+Current guard (lines ~717-721):
+  // Production guard: the seed is a dev fixture — refuse to touch a production
+  // DB unless the operator explicitly passes --force.
+  if (process.env.NODE_ENV === 'production' && !process.argv.includes('--force')) {
+    throw new Error('Refusing to seed in production. Set NODE_ENV != production or re-run with --force.');
+  }
+
+VERIFIED: In production (NODE_ENV=production) without --force, the seed aborts
+with a clear message before touching any table. Good baseline.
+
+GAP — GUARD IS INSUFFICIENT:
+  --force bypasses the guard entirely. Anyone (or any script/CI) can run
+  `node dist/migrations/seed.js --force` with NODE_ENV=production and
+  upsert dev fixture users/exams/questions into the production DB. The flag
+  is the ONLY gate; there is no:
+    - confirmation prompt,
+    - dry-run,
+    - separate "PROD_SEED_ALLOWED" env flag (fails closed when absent),
+    - read-only/readwrite split, or
+    - difference between staging and production handling.
+
+Recommendation for coordinator (dispatch a separate seed fix, per task 5):
+  1. Require an explicit env flag, e.g. ALLOW_PRODUCTION_SEED=1, IN ADDITION
+     to (or instead of) --force — an env the operator sets by hand, not an
+     argv flag that shells/CI can trivially pass.
+  2. Or refuse to seed if the target DB looks like production regardless of
+     --force (e.g. a marker row / specific DB_HOST allowlist).
+  3. Ideally: seed never runs automatically in production; a separate
+     import/backfill job owns production data.

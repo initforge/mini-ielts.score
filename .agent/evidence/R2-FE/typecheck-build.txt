@@ -1,0 +1,28 @@
+R2-FE / INJ-003 — Task 7: TYPE CHECK + BUILD + LINT + TEST
+============================================================
+Date: 2026-08-01, from /home/linhnx/Projects/mini-toeic.score/anish-toeic-web-app
+
+$ npm run typecheck   (tsc --noEmit)
+  exit 0, no diagnostics.
+
+$ npm run build       (tsc && vite build)
+  exit 0.  vite v5.4.21
+  dist/index.html                   0.66 kB
+  dist/assets/index-apOZhuxB.css    78.04 kB
+  dist/assets/index-snGfpl7N.js  1,844.74 kB  (gzip 567 kB; >500k chunk
+  warning only — pre-existing, not in scope)
+
+$ npm run lint        (eslint . --ext ts,tsx --max-warnings 0)
+  exit 0, no warnings.
+
+$ npm test            (script: tsc --noEmit — no jest in this workspace)
+  covered by typecheck above.
+
+Type errors fixed during work (both in ResultPage.tsx):
+  - `new Map(...)` collided with the lucide `Map` icon import (shadows the
+    global Map constructor); aliased to `MapIcon`.
+  - Map entries needed explicit tuple types (TS infers array not tuple from
+    .map(() => [a,b])); added explicit Map<K,V> type args.
+
+Also verified react-router-dom@7.18.2 typechecks across the app (no code
+changes required for the 6 -> 7 major).

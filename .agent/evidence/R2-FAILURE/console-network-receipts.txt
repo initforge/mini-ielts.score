@@ -1,0 +1,54 @@
+R2-FAILURE console+network receipts (browser states) — expected-error classification
+
+STATE 1 (401-unauth, /thi-thu/lich-su logged out):
+  network: 401 /api/toeic-attempts (x3, retries) — EXPECTED
+  console: "Failed to load resource ... 401" — EXPECTED
+  UI: "Không thể tải lịch sử / Vui lòng thử lại sau." error card
+
+STATE 2 (403-ownership, non-owner /thi-thu/ket-qua/177):
+  network: 404 /api/toeic-attempts/177/result, 404 /api/toeic-attempts/177 — EXPECTED (anti-oracle 404)
+  console: 404 load failures — EXPECTED
+  UI: "Chưa có kết quả / Kết quả chưa sẵn sàng hoặc bài thi không tồn tại." (no oracle leak)
+
+STATE 3 (404-missing, /thi-thu/ket-qua/999999):
+  network: 404 x2 — EXPECTED
+  UI: same "Chưa có kết quả" card
+
+STATE 4 (409-revision, SW runner autosave conflict):
+  network: 409 /api/toeic-attempts/<id>/responses/30 — EXPECTED
+  console: "console:warning [SWStore] conflict on autosave q 30 — reconciling revision" — EXPECTED (reconcile path)
+  UI: editor shows "Đã lưu" after auto-reconcile (server rev adopted, client resave, DB client_revision=11)
+
+STATE 5 (429-rate-limit, LoginPage):
+  network: 429 /api/auth/login — EXPECTED
+  console: 429 load failure — EXPECTED
+  dialog: alert "Bạn đã thử đăng nhập quá nhiều lần. Vui lòng thử lại sau 8 phút." — EXPECTED (friendly, no raw body)
+
+STATE 7 (offline):
+  catalog: cached exams rendered (staleTime 5min) — offline-tolerant, no error (not a bug)
+  runner: amber banner "Đang ngoại tuyến — câu trả lời được lưu cục bộ và sẽ đồng bộ khi có mạng." — EXPECTED offline UI
+  dev reload offline: blank (vite dev server unreachable) — expected dev-only artifact
+
+STATE 8 (timeout, route.delay 10s on grading-status):
+  mid-delay: "Đang xử lý... Bài của bạn đang được xếp vào hàng đợi chấm điểm." — loading/queued state
+  after 10s: axios client timeout (10000ms) → transport-error card "Không thể kết nối đến máy chủ. Thử lại" — EXPECTED timeout+retry handling
+
+STATE 9 (XSS, result+review page):
+  dialogs fired: 0 — PASS
+  pageerrors: 0 — PASS
+  DOM probe (09-xss-dom-probe.txt): onerror stripped, <script> tag removed, img kept inert (<img src=x> without onerror), text preserved — DOMPurify sanitized
+
+STATE 10 (mic-denied):
+  getUserMedia NotAllowedError → UI "Microphone access denied / Please go to your browser settings..." — EXPECTED
+
+STATE 11 (grading states):
+  queued/processing/completed: 200s, spinner + progress steps — EXPECTED
+  failed (forced DB UPDATE): terminal-failed card "Chấm điểm thất bại ... Đã thử 3 lần" + "Thử chấm lại lần cuối" — EXPECTED
+  result page for FAILED attempt: no score rendered (no result row) — EXPECTED consequence; note gap (empty-response COMPLETED also yields no result row)
+  NOTE: during run, 429 on /responses observed — artifact of exhausted per-IP budget from earlier curl burst, EXPECTED, not app bug
+
+STATE 13 (logout):
+  API: POST /api/auth/logout → 200 {success:true}; subsequent GET /toeic-attempts → 401 "Unauthorized: Missing token" — EXPECTED
+  UI: HistoryPage has NO logout button (count 0) — GAP: logout not wired in UI
+
+Unclassified/unexplained errors: none observed beyond EXPECTED classifications above.

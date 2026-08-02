@@ -1,0 +1,13 @@
+R3-FAILURE2 state 09 — network retry (offline autosave → reconnect → queue flush)
+ATTEMPT: 273 (LR PRACTICE, owner). Autosave PATCH blocked while offline → queued in IndexedDB 'pending' store → 'online' event triggers flushOfflineQueue.
+
+--- while offline (after answering q1) ---
+UI PROOF: 09-offline-queued.png
+DOM PROBE: blue banner 'Đang chờ đồng bộ 1 thay đổi...' visible=1 ; pending count=1 ; IndexedDB pending queue entries=1
+
+--- after reconnect (dispatch online + unroute) ---
+UI PROOF: 09-online-flushed.png
+DOM PROBE: pending banner visible=0 (flushed)
+API PROOF: GET /api/toeic-attempts/273 → responses=[{q:1,opt:1}] (queued response persisted on server)
+
+VERDICT: PASS

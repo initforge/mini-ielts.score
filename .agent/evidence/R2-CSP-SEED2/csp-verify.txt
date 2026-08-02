@@ -1,0 +1,20 @@
+R2-CSP-SEED2 — CSP runtime verification
+Date: 2026-08-01T02:53:23Z
+
+===== nginx -t =====
+nginx binary NOT installed on this host (`which nginx` empty) — nginx -t not runnable.
+Directive text manually validated against nginx syntax rules:
+  - add_header Content-Security-Policy "..." always;  (single line, balanced quotes, no stray semicolons inside quoted value)
+  - connect-src list: 'self' https://*.amazonaws.com https://*.s3.*.amazonaws.com https://*.cloudinary.com
+  - img-src 'self' data: blob:  -> present, unchanged
+  - media-src 'self' data: blob: -> present, unchanged
+
+===== vite preview header (curl -I) =====
+Command: npx vite preview --port 4176 --host 127.0.0.1; curl -sI http://localhost:4176/
+
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/html
+Cache-Control: no-cache
+Etag: W/"283-1NgKDWJhzP3/w1QSjVvYQj7bHf8"
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://*.amazonaws.com https://*.s3.*.amazonaws.com https://*.cloudinary.com; font-src 'self' data:; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'

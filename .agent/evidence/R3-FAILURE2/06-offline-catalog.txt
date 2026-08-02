@@ -1,0 +1,12 @@
+R3-FAILURE2 state 06 — offline catalog (cached + fresh)
+SIMULATION: backend API aborted via Playwright route + navigator.onLine forced false.
+
+--- (a) cached: visit online → localStorage cache written → offline reload ---
+UI PROOF: 06-offline-cached.png
+DOM PROBE: catalog cache keys in localStorage=1 ; amber banner 'Đang ngoại tuyến — hiển thị dữ liệu đã lưu' visible=1 ; cached exam cards=1
+
+--- (b) fresh: new context offline (no cache) ---
+UI PROOF: 06-offline-fresh.png
+DOM PROBE: error card 'Không có kết nối mạng' visible=1 ; body text length=616 (never blank)
+
+VERDICT: PASS

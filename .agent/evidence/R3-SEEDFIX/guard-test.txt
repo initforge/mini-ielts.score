@@ -1,0 +1,16 @@
+=== (a) NODE_ENV=production, no flags ===
+Seed failed: Refusing to seed in production. Required: ALLOW_PRODUCTION_SEED=1 (env) AND --force (argv).
+exit=1
+
+=== (b) NODE_ENV=production --force only ===
+Seed failed: Refusing to seed in production. Required: ALLOW_PRODUCTION_SEED=1 (env) AND --force (argv).
+exit=1
+
+=== (c) NODE_ENV=production --force ALLOW_PRODUCTION_SEED=1 ===
+Seed completed.
+exit=0
+Owner-confirmed production bootstrap path: `NODE_ENV=production ALLOW_PRODUCTION_SEED=1 node dist/migrations/seed.js --force`. Both gates (env flag AND argv flag) required; a missing one aborts with exit 1.
+
+=== (d) NODE_ENV=development ===
+Seed completed.
+exit=0

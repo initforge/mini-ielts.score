@@ -1,0 +1,772 @@
+[
+  {
+    "refid": "desktop/01-exams-sw-list-full",
+    "actual": "desktop01-catalog-sw.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-01-exams-sw-list-full",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/01-exams-sw-list-full.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop01-catalog-sw.png",
+      "rmse": 101.64422,
+      "diffPixelsPct": 98.8816,
+      "dims": {
+        "equal": false,
+        "reference": "1280x2130",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-01-exams-sw-list-full/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-01-exams-sw-list-full/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-01-exams-sw-list-full/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/02-exams-lr-list-full",
+    "actual": "desktop02-catalog-lr.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-02-exams-lr-list-full",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/02-exams-lr-list-full.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop02-catalog-lr.png",
+      "rmse": 101.11635,
+      "diffPixelsPct": 97.7717,
+      "dims": {
+        "equal": false,
+        "reference": "1280x1088",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-02-exams-lr-list-full/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-02-exams-lr-list-full/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-02-exams-lr-list-full/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/03-exam-start-mode-modal",
+    "actual": "desktop03-mode-dialog.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-03-exam-start-mode-modal",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/03-exam-start-mode-modal.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop03-mode-dialog.png",
+      "rmse": 49.473297,
+      "diffPixelsPct": 85.9173,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-03-exam-start-mode-modal/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-03-exam-start-mode-modal/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-03-exam-start-mode-modal/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/04-exam-lr-detail-start",
+    "actual": "desktop04-exam-detail.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-04-exam-lr-detail-start",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/04-exam-lr-detail-start.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop04-exam-detail.png",
+      "rmse": 60.159078,
+      "diffPixelsPct": 88.2181,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-04-exam-lr-detail-start/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-04-exam-lr-detail-start/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-04-exam-lr-detail-start/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/05-exam-lr-active-part1",
+    "actual": "desktop05-listening-directions.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-05-exam-lr-active-part1",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/05-exam-lr-active-part1.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop05-listening-directions.png",
+      "rmse": 62.041343,
+      "diffPixelsPct": 84.2476,
+      "dims": {
+        "equal": false,
+        "reference": "1280x749",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-05-exam-lr-active-part1/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-05-exam-lr-active-part1/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-05-exam-lr-active-part1/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/06-exam-lr-part1-directions",
+    "actual": "desktop06-part1-directions.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-06-exam-lr-part1-directions",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/06-exam-lr-part1-directions.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop06-part1-directions.png",
+      "rmse": 73.892682,
+      "diffPixelsPct": 77.4035,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-06-exam-lr-part1-directions/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-06-exam-lr-part1-directions/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-06-exam-lr-part1-directions/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/07-exam-lr-part1-question1",
+    "actual": "desktop07-part1-q1.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-07-exam-lr-part1-question1",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/07-exam-lr-part1-question1.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop07-part1-q1.png",
+      "rmse": 66.062377,
+      "diffPixelsPct": 83.7887,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-07-exam-lr-part1-question1/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-07-exam-lr-part1-question1/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-07-exam-lr-part1-question1/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/08-exam-lr-question-palette",
+    "actual": "desktop08-palette-answered.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-08-exam-lr-question-palette",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/08-exam-lr-question-palette.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop08-palette-answered.png",
+      "rmse": 87.53026,
+      "diffPixelsPct": 99.9995,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-08-exam-lr-question-palette/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-08-exam-lr-question-palette/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-08-exam-lr-question-palette/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/09-exam-lr-reading-part5-question101",
+    "actual": "desktop09-part5.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-09-exam-lr-reading-part5-question101",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/09-exam-lr-reading-part5-question101.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop09-part5.png",
+      "rmse": 32.718691,
+      "diffPixelsPct": 81.2419,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-09-exam-lr-reading-part5-question101/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-09-exam-lr-reading-part5-question101/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-09-exam-lr-reading-part5-question101/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/10-exam-lr-reading-bilingual-marked",
+    "actual": "desktop10-bilingual-on.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-10-exam-lr-reading-bilingual-marked",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/10-exam-lr-reading-bilingual-marked.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop10-bilingual-on.png",
+      "rmse": 35.454784,
+      "diffPixelsPct": 77.9905,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-10-exam-lr-reading-bilingual-marked/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-10-exam-lr-reading-bilingual-marked/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-10-exam-lr-reading-bilingual-marked/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/11-exam-lr-annotation-tools",
+    "actual": "desktop11-annotation-toolbar.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-11-exam-lr-annotation-tools",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/11-exam-lr-annotation-tools.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop11-annotation-toolbar.png",
+      "rmse": 36.29754,
+      "diffPixelsPct": 76.6727,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-11-exam-lr-annotation-tools/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-11-exam-lr-annotation-tools/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-11-exam-lr-annotation-tools/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/12-exam-lr-reading-part6-question131",
+    "actual": "desktop12-part6.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-12-exam-lr-reading-part6-question131",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/12-exam-lr-reading-part6-question131.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop12-part6.png",
+      "rmse": 41.78129,
+      "diffPixelsPct": 71.1264,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-12-exam-lr-reading-part6-question131/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-12-exam-lr-reading-part6-question131/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-12-exam-lr-reading-part6-question131/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/13-exam-lr-reading-part7-question147",
+    "actual": "desktop13-part7.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-13-exam-lr-reading-part7-question147",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/13-exam-lr-reading-part7-question147.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop13-part7.png",
+      "rmse": 42.600856,
+      "diffPixelsPct": 69.938,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-13-exam-lr-reading-part7-question147/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-13-exam-lr-reading-part7-question147/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-13-exam-lr-reading-part7-question147/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/14-exam-lr-submit-confirm",
+    "actual": "desktop14-submit-confirm.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-14-exam-lr-submit-confirm",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/14-exam-lr-submit-confirm.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop14-submit-confirm.png",
+      "rmse": 68.092272,
+      "diffPixelsPct": 97.1957,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-14-exam-lr-submit-confirm/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-14-exam-lr-submit-confirm/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-14-exam-lr-submit-confirm/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/15-exam-lr-result-certificate",
+    "actual": "desktop15-result.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-15-exam-lr-result-certificate",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/15-exam-lr-result-certificate.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop15-result.png",
+      "rmse": 54.310118,
+      "diffPixelsPct": 99.6352,
+      "dims": {
+        "equal": false,
+        "reference": "1280x728",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-15-exam-lr-result-certificate/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-15-exam-lr-result-certificate/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-15-exam-lr-result-certificate/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/16-exam-lr-result-table",
+    "actual": "desktop16-score-table-modal.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-16-exam-lr-result-table",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/16-exam-lr-result-table.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop16-score-table-modal.png",
+      "rmse": 97.440757,
+      "diffPixelsPct": 99.9942,
+      "dims": {
+        "equal": false,
+        "reference": "1280x728",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-16-exam-lr-result-table/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-16-exam-lr-result-table/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-16-exam-lr-result-table/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/17-exam-lr-error-map",
+    "actual": "desktop17-error-map.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-17-exam-lr-error-map",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/17-exam-lr-error-map.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop17-error-map.png",
+      "rmse": 79.933522,
+      "diffPixelsPct": 69.638,
+      "dims": {
+        "equal": false,
+        "reference": "1280x728",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-17-exam-lr-error-map/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-17-exam-lr-error-map/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-17-exam-lr-error-map/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/18-exam-lr-review-detail",
+    "actual": "desktop18-review-detail.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-18-exam-lr-review-detail",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/18-exam-lr-review-detail.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop18-review-detail.png",
+      "rmse": 64.489838,
+      "diffPixelsPct": 92.8053,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-18-exam-lr-review-detail/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-18-exam-lr-review-detail/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-18-exam-lr-review-detail/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/19-history-auth-gate",
+    "actual": "desktop19-history.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-19-history-auth-gate",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/19-history-auth-gate.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/desktop19-history.png",
+      "rmse": 105.101061,
+      "diffPixelsPct": 90.085,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-19-history-auth-gate/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-19-history-auth-gate/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-19-history-auth-gate/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/20-exam-sw-detail-start",
+    "actual": "desktop20-exam-sw-detail.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-20-exam-sw-detail-start",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/20-exam-sw-detail-start.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop20-exam-sw-detail.png",
+      "rmse": 87.645486,
+      "diffPixelsPct": 88.2577,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-20-exam-sw-detail-start/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-20-exam-sw-detail-start/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-20-exam-sw-detail-start/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/21-exam-sw-speaking-part1-intro",
+    "actual": "desktop21-exam-sw-mic-setup.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-21-exam-sw-speaking-part1-intro",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/21-exam-sw-speaking-part1-intro.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop21-exam-sw-mic-setup.png",
+      "rmse": 50.930734,
+      "diffPixelsPct": 42.3538,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-21-exam-sw-speaking-part1-intro/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-21-exam-sw-speaking-part1-intro/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-21-exam-sw-speaking-part1-intro/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/22-exam-sw-speaking-directions",
+    "actual": "desktop22-exam-sw-speaking-directions.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-22-exam-sw-speaking-directions",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/22-exam-sw-speaking-directions.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop22-exam-sw-speaking-directions.png",
+      "rmse": 47.38287,
+      "diffPixelsPct": 35.285,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-22-exam-sw-speaking-directions/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-22-exam-sw-speaking-directions/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-22-exam-sw-speaking-directions/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/23-exam-sw-speaking-q1-preparation",
+    "actual": "desktop23-exam-sw-speaking-q1-prep.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-23-exam-sw-speaking-q1-preparation",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/23-exam-sw-speaking-q1-preparation.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop23-exam-sw-speaking-q1-prep.png",
+      "rmse": 40.222996,
+      "diffPixelsPct": 74.7657,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-23-exam-sw-speaking-q1-preparation/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-23-exam-sw-speaking-q1-preparation/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-23-exam-sw-speaking-q1-preparation/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/24-exam-sw-speaking-q3-describe-picture",
+    "actual": "desktop24-exam-sw-speaking-q3-image.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-24-exam-sw-speaking-q3-describe-picture",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/24-exam-sw-speaking-q3-describe-picture.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop24-exam-sw-speaking-q3-image.png",
+      "rmse": 70.004911,
+      "diffPixelsPct": 84.1814,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-24-exam-sw-speaking-q3-describe-picture/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-24-exam-sw-speaking-q3-describe-picture/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-24-exam-sw-speaking-q3-describe-picture/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/25-exam-sw-speaking-q5-respond",
+    "actual": "desktop25-exam-sw-speaking-q5.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-25-exam-sw-speaking-q5-respond",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/25-exam-sw-speaking-q5-respond.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop25-exam-sw-speaking-q5.png",
+      "rmse": 38.411958,
+      "diffPixelsPct": 73.4262,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-25-exam-sw-speaking-q5-respond/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-25-exam-sw-speaking-q5-respond/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-25-exam-sw-speaking-q5-respond/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/26-exam-sw-speaking-q8-information",
+    "actual": "desktop26-exam-sw-speaking-q8.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-26-exam-sw-speaking-q8-information",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/26-exam-sw-speaking-q8-information.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop26-exam-sw-speaking-q8.png",
+      "rmse": 51.305029,
+      "diffPixelsPct": 78.9746,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-26-exam-sw-speaking-q8-information/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-26-exam-sw-speaking-q8-information/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-26-exam-sw-speaking-q8-information/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/27-exam-sw-writing-start",
+    "actual": "desktop27-exam-sw-writing-start.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-27-exam-sw-writing-start",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/27-exam-sw-writing-start.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop27-exam-sw-writing-start.png",
+      "rmse": 73.871897,
+      "diffPixelsPct": 59.1616,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-27-exam-sw-writing-start/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-27-exam-sw-writing-start/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-27-exam-sw-writing-start/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/28-exam-sw-writing-q1-picture",
+    "actual": "desktop28-exam-sw-writing-q1.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-28-exam-sw-writing-q1-picture",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/28-exam-sw-writing-q1-picture.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop28-exam-sw-writing-q1.png",
+      "rmse": 81.775517,
+      "diffPixelsPct": 61.1411,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-28-exam-sw-writing-q1-picture/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-28-exam-sw-writing-q1-picture/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-28-exam-sw-writing-q1-picture/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/29-exam-sw-writing-q6-email",
+    "actual": "desktop29-exam-sw-writing-q6-email.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-29-exam-sw-writing-q6-email",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/29-exam-sw-writing-q6-email.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop29-exam-sw-writing-q6-email.png",
+      "rmse": 42.539104,
+      "diffPixelsPct": 36.3724,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-29-exam-sw-writing-q6-email/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-29-exam-sw-writing-q6-email/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-29-exam-sw-writing-q6-email/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/30-exam-sw-writing-q8-essay",
+    "actual": "desktop30-exam-sw-writing-q8-essay.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-30-exam-sw-writing-q8-essay",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/30-exam-sw-writing-q8-essay.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop30-exam-sw-writing-q8-essay.png",
+      "rmse": 41.478711,
+      "diffPixelsPct": 45.1963,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-30-exam-sw-writing-q8-essay/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-30-exam-sw-writing-q8-essay/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-30-exam-sw-writing-q8-essay/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "desktop/31-exam-sw-ai-processing",
+    "actual": "desktop31-exam-sw-processing.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-31-exam-sw-ai-processing",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/desktop/31-exam-sw-ai-processing.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/desktop31-exam-sw-processing.png",
+      "rmse": 27.976131,
+      "diffPixelsPct": 76.5164,
+      "dims": {
+        "equal": false,
+        "reference": "1280x720",
+        "actual": "1280x800"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-31-exam-sw-ai-processing/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-31-exam-sw-ai-processing/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/desktop-31-exam-sw-ai-processing/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "mobile/01-exams-sw-list-full",
+    "actual": "mobile01-catalog-sw.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-01-exams-sw-list-full",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/mobile/01-exams-sw-list-full.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/mobile01-catalog-sw.png",
+      "rmse": 95.584511,
+      "diffPixelsPct": 98.66,
+      "dims": {
+        "equal": false,
+        "reference": "431x6001",
+        "actual": "375x812"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-01-exams-sw-list-full/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-01-exams-sw-list-full/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-01-exams-sw-list-full/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "mobile/02-exams-lr-list-full",
+    "actual": "mobile02-catalog-lr.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-02-exams-lr-list-full",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/mobile/02-exams-lr-list-full.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/mobile02-catalog-lr.png",
+      "rmse": 99.111573,
+      "diffPixelsPct": 96.5347,
+      "dims": {
+        "equal": false,
+        "reference": "431x2490",
+        "actual": "375x812"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-02-exams-lr-list-full/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-02-exams-lr-list-full/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-02-exams-lr-list-full/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "mobile/03-exam-lr-q1",
+    "actual": "mobile07-part1-q1.png",
+    "src": "LR",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-03-exam-lr-q1",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/mobile/03-exam-lr-q1.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-LR/mobile07-part1-q1.png",
+      "rmse": 97.008599,
+      "diffPixelsPct": 90.7142,
+      "dims": {
+        "equal": false,
+        "reference": "390x844",
+        "actual": "375x812"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-03-exam-lr-q1/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-03-exam-lr-q1/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-03-exam-lr-q1/metric.json"
+      }
+    }
+  },
+  {
+    "refid": "mobile/04-exam-sw-writing-q1",
+    "actual": "mobile04-exam-sw-writing-q1.png",
+    "src": "SW",
+    "outdir": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-04-exam-sw-writing-q1",
+    "metric": {
+      "reference": "/home/linhnx/Projects/mini-toeic.score/references/xoamutoeic/screenshots/mobile/04-exam-sw-writing-q1.png",
+      "actual": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-SW/mobile04-exam-sw-writing-q1.png",
+      "rmse": 107.796529,
+      "diffPixelsPct": 72.9661,
+      "dims": {
+        "equal": false,
+        "reference": "390x986",
+        "actual": "375x812"
+      },
+      "outputs": {
+        "overlay": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-04-exam-sw-writing-q1/overlay.png",
+        "diff": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-04-exam-sw-writing-q1/diff.png",
+        "metric": "/home/linhnx/Projects/mini-toeic.score/.agent/evidence/R2-VISUAL/states/mobile-04-exam-sw-writing-q1/metric.json"
+      }
+    }
+  }
+]

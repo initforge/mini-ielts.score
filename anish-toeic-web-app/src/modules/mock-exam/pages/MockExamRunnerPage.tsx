@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router';
 import { Modal, Spin, message } from 'antd';
 import DOMPurify from 'dompurify';
 import {
@@ -252,12 +252,11 @@ export function MockExamRunnerPage() {
             <ArrowLeft className="w-4 h-4" /> Danh sách đề
           </Link>
           <div className="text-white font-extrabold text-lg tracking-tight truncate ml-4 hidden sm:block">
-            Xoá<span className="text-white">Mù</span>
-            <span className="text-orange-400">TOEIC</span>
+            Anish <span className="text-orange-400">TOEIC</span>
           </div>
         </div>
 
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-3">
+        <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center gap-3 pointer-events-none z-[1]">
           <div className="hidden md:flex flex-col items-center leading-none">
             <span className="text-white font-bold text-[13px]">{currentSkillLabel(currentSection)}</span>
             <span className="text-white/80 text-[10px]">{counterLabel}</span>
@@ -274,7 +273,7 @@ export function MockExamRunnerPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 relative z-[2]">
           {!isReading && !showDirections && !showIntroPanel && (
             <div className="hidden md:flex items-center gap-1.5 text-white/90" title="Âm lượng">
               <span className="text-[10px] uppercase tracking-wide font-semibold">Âm lượng</span>
@@ -380,9 +379,7 @@ export function MockExamRunnerPage() {
                   bilingual={store.bilingualOn}
                   annotationOpen={store.annotationOpen}
                   annotationKey={store.attemptId ? `${store.attemptId}:${currentSection.id}` : `lr:${currentSection.id}`}
-                  onSelect={(qid) =>
-                    store.jumpTo(store.questions.findIndex((q) => q.id === qid))
-                  }
+                  onSelectOption={(qid, oid) => store.selectOption(qid, oid)}
                 />
               ) : isReading && currentQuestion ? (
                 <PartFiveView

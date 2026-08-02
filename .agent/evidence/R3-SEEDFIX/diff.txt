@@ -1,0 +1,24 @@
+File: anish-toeic-web-services/src/migrations/seed.ts
+Note: seed.ts is an untracked working-tree file (not in git index), so no `git diff` output exists.
+      Before/after guard snippet captured from the file itself.
+
+--- BEFORE (HEAD working-tree state, lines 717-721) ---
+  // Production guard: the seed is a dev fixture — refuse to touch a production
+  // DB unless the operator explicitly passes --force.
+  if (process.env.NODE_ENV === 'production' && !process.argv.includes('--force')) {
+    throw new Error('Refusing to seed in production. Set NODE_ENV != production or re-run with --force.');
+  }
+
++++ AFTER (R3-P0-SEEDFIX) +++
+  // Production guard (double gate, fail-closed): the seed is a dev fixture —
+  // refuse to touch a production DB unless BOTH the ALLOW_PRODUCTION_SEED=1 env
+  // gate AND the explicit --force flag are present. Development/test: no gate.
+  if (process.env.NODE_ENV === 'production') {
+    const envGate = process.env.ALLOW_PRODUCTION_SEED === '1';
+    const flagGate = process.argv.includes('--force');
+    if (!(envGate && flagGate)) {
+      throw new Error(
+        'Refusing to seed in production. Required: ALLOW_PRODUCTION_SEED=1 (env) AND --force (argv).'
+      );
+    }
+  }

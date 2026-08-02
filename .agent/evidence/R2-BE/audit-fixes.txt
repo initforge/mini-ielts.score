@@ -1,0 +1,75 @@
+R2-S2-BE audit fixes (INJ-003) — what changed and why
+Date: 2026-08-01T01:35:30Z
+Repo HEAD: 620c111686534899fb980dfb481c9927cb2596bd (worktree dirty by directive; nothing committed)
+
+TASK 1 — AUTH COOKIE-PRIMARY
+- anish-toeic-web-services/src/routes/auth.routes.ts
+  * :74  register 201 response: removed `token` field; body = { user } only.
+  * :122 login 200 response: removed `token` field; body = { user } only.
+  * setAuthCookie unchanged: HttpOnly, sameSite=lax, secure=production, path=/,
+    maxAge=7d. Cookie remains the only place the JWT travels.
+  Why: token in JSON body can be exfiltrated via XSS/log-harvesting. httpOnly
+  cookie is invisible to JS. Test creds flow through cookie only.
+- anish-toeic-web-app/src/pages/user/LoginPage.tsx
+  * :21 success branch switched from `if (data.token)` to `if (data.user)`.
+  * removed `localStorage.setItem('token', data.token)` (was :22).
+  * POST goes through api instance which now sets withCredentials (api.ts).
+  Why: never persist a session token in localStorage (XSS-readable).
+- anish-toeic-web-app/src/api.ts
+  * removed request interceptor that read localStorage 'token' and injected
+    Authorization: Bearer.
+  * axios instance now sets `withCredentials: true` so the httpOnly cookie is
+    sent on every request.
+- anish-toeic-web-services/src/middlewares/auth.middleware.ts
+  * UNCHANGED — already accepts Bearer header OR `token` cookie (extractToken
+    :31-39), never logs the token. Kept for test/defensive compat per INJ-003.
+
+TASK 2 — TRUST PROXY + RATE LIMIT IDENTITY
+- anish-toeic-web-services/src/server.ts
+  * :22-24 app.set('trust proxy', 1) ONLY when TRUST_PROXY==='true'.
+  * :28-37 clientIp(req): returns validated cf-connecting-ip (net.isIP) else
+    req.ip. Header value never logged.
+  * :53-75 authLimiter (20/15min) + new limiters: attemptsCreate 30/15min,
+    responses 120/15min, mediaPresign 60/15min, submit 30/15min,
+    gradingStatus 120/15min. All keyed by clientIp().
+  * :77-87 limiters mounted as router-level middleware on the matching prefixes
+    before the protected toeic router (no change to toeic.routes.ts).
+
+TASK 3 — ENV VALIDATION
+- anish-toeic-web-services/src/config/env.ts
+  * schema + defaults: REDIS_URL (redis://localhost:6379), CLOUDFLARE_AI_WORKER_URL
+    (optional), CLOUDFLARE_AI_WORKER_TOKEN (optional), AI_GRADING_TEST_MODE
+    (enum true/false, default false), TRUST_PROXY (enum true/false, default
+    false), AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY/AWS_REGION/S3_BUCKET
+    (all optional). Fail-fast preserved.
+  * guard: NODE_ENV=production && AI_GRADING_TEST_MODE=true => throw.
+- anish-toeic-web-services/src/workers/grading.worker.ts
+  * :19-22 validateEnv() called at module load, before Redis/DB touched.
+- env.example, env.production.example, anish-toeic-web-services/.env.example
+  * TRUST_PROXY documented (false dev / true prod).
+
+TASK 4 — SEED SCRIPT
+- anish-toeic-web-services/package.json `"seed": "npm run build && node dist/migrations/seed.js"`
+  ts-node is only a transitive dep (via ts-node-dev), so the compiled
+  dist/migrations/seed.js path is the robust choice. Verified seed.ts runs on
+  require.main === module.
+
+TASK 5 — DEAD DEPS
+- rg across anish-toeic-web-services/src: 0 imports of @google/generative-ai,
+  multer, cloudinary.
+- removed from anish-toeic-web-services/package.json dependencies:
+  @google/generative-ai, cloudinary, multer; devDependencies: @types/multer.
+- package-lock.json regenerated via npm install; no multer/cloudinary entries.
+
+TASK 6 — TESTS UPDATED
+- anish-toeic-web-services/src/tests/journey.test.ts :120 register now asserts
+  body.token === undefined and Set-Cookie HttpOnly present.
+- anish-toeic-web-services/src/tests/security.test.ts :85 (register) and :128
+  (login) now assert body.token === undefined + Set-Cookie HttpOnly.
+- auth.middleware.ts untouched => all Bearer-based tests still green.
+
+FOLLOW-UP (documented, not fixed — out of scope)
+- No FE logout button. BE /api/auth/logout exists (auth.routes.ts :139,
+  clearCookie). FE history page owns session UI and is owned by another slot;
+  add logout there (POST /auth/logout with withCredentials) when HistoryPage
+  is next touched.

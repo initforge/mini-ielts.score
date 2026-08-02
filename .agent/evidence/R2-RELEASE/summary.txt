@@ -1,0 +1,80 @@
+R2-RELEASE — Clean-snapshot build/test evidence
+Repo: /home/linhnx/Projects/mini-toeic.score (HEAD=620c111686534899fb980dfb481c9927cb2596bd, worktree dirty)
+Snapshot: /tmp/opencode/anish-snapshot-WxfbOu (removed after evidence collection)
+Date: 2026-08-01
+
+SNAPSHOT
+  Files: 321 (find . -type f | sort)
+  Built via rsync of working tree excluding: .git, node_modules, .agent, scratch, dist, *.log, audio-temp, temp files.
+  Includes 5 untracked build-imported sources:
+    anish-toeic-web-app/src/modules/mock-exam/lib/examCatalog.ts        a3fd5f9c1b2af48e49d9789966193784524fae79fede61ab295fca6d4209b796
+    anish-toeic-web-app/src/modules/mock-exam/runner/sw/WritingView.tsx  592944ce83a92a5884a0fb65760d837605825c6d03108670dc705c901823f285
+    anish-toeic-web-app/src/pages/user/ErrorMapPage.tsx                 9db283d1d6d08f5ccdc881d987746f88328e27812f1c6524fddcee5650723bdd
+    anish-toeic-web-services/src/migrations/seed.ts                     9356926488f82dd8c13cddcb9cd88db367694a9fac845a8ba7b196fd4026ba53
+    anish-toeic-web-services/.env.example                               3cbe3d12c1241367167f1391b355675c7d30e4b8db3314c7c258f5f1c7c144ce
+  Also: gitignored anish-toeic-web-services/.env copied (runtime-local, included in manifest)
+  Manifest: snapshot-manifest.txt (321 sha256 lines)
+
+BUILD (clean npm ci, node v26.4.0 / npm 12.0.1; postinstall scripts approved+rebuilt for esbuild/@swc/core/unrs-resolver)
+  [a] anish-toeic-web-app   npm run typecheck  = 0   PASS
+      anish-toeic-web-app   npm run build      = 0   PASS  (dist built, 5.03s; chunk-size warning only)
+  [b] anish-toeic-web-services npm run typecheck = 0   PASS
+      anish-toeic-web-services npm run lint      = 0   PASS
+      anish-toeic-web-services npm run build      = 0   PASS
+  [c] backend tests: DB_NAME=anish_toeic_test (created in anish-toeic-mysql, root/toeic_root_dev_pw, 127.0.0.1:13306)
+      npm test exit = 1
+      Test Suites: 2 failed, 9 passed, 11 total
+      Tests:       2 failed, 132 passed, 134 total
+      FAIL 1 migrations.test.ts — expects exactly 1 row in schema_migrations, runner applies 2
+            (001_schema.up.sql + untracked 002_media_columns.up.sql). Stale test vs deliverable migration set.
+      FAIL 2 server.test.ts — POST /api/auth/login w/ unknown user returns 401 "Invalid email or password" (real DB reachable);
+            test asserts not-401. Env-sensitive: passes only when MySQL unreachable (then 500).
+      Both failing tests byte-identical to HEAD (diff verified). Pre-existing, known per .agent/evidence/S6-BE/test-results.txt.
+
+DOCKER (scripts/integration/docker-compose.yml)
+  docker compose config -q = 0   PASS
+  images: mysql:8.4, redis:7-alpine
+  ports: mysql 127.0.0.1:13306->3306, redis 127.0.0.1:16379->6379
+
+NGINX
+  nginx binary unavailable (VPS-only per docs/04-infra-nginx-pm2-validation.md)   N/A (documented)
+
+PM2 (ecosystem.config.cjs)
+  require() parses OK = 0   PASS; apps: anish-toeic-web-services, toeic-grading-worker
+  18 env keys vs 20 in env.production.example
+  MISSING: AI_GRADING_TEST_MODE, TRUST_PROXY (both optional, default 'false' in env.ts; safe to omit)
+
+ENV SCHEMA (anish-toeic-web-services/src/config/env.ts zod, 19 fields) vs env.production.example (20 keys)
+  IN EXAMPLE NOT IN SCHEMA: CLOUDFLARE_AI_TIMEOUT_MS (read directly via process.env in ai-grading.adapter.ts:156; unvalidated, has inline default)
+  IN SCHEMA NOT IN EXAMPLE: (none)
+  Gaps: 1 (CLOUDFLARE_AI_TIMEOUT_MS bypasses zod validation; non-breaking)
+
+MIGRATION + SEED FRESH (DB anish_toeic_snap, dropped+recreated)
+  node dist/migrations/runner.js up = 0   PASS (001 + 002 applied, idempotent)
+  node dist/migrations/seed.js        = 0   PASS
+  Verify: tables=14, questions=37, exams=2, sections=9, options=84, users=2, migrations=2   PASS (37 questions confirmed)
+
+AUDIT (npm audit --omit=dev)
+  anish-toeic-web-app: exit=1   total 3: high 2, low 1, critical 0
+    react-router-dom (direct, 7.18.2) high — GHSA-qwww-vcr4-c8h2 "React Router: RSC Mode CSRF Bypass Allows Action Execution Before 400 Response", range >=7.12.0 <8.3.0, RSC-only
+    react-router (transitive) high — same advisory; npm suggests downgrade react-router-dom to 7.11.0 (isSemVerMajor)
+    quill (direct, 2.0.3) low — fixAvailable
+  anish-toeic-web-services: exit=0   total 0: clean
+
+MISSING-FILE DEPENDENCY CHECK (gate G1/G13 critical)
+  NONE. All builds/tests ran from snapshot-only files; npm ci installed fresh in snapshot; no repo-local
+  extras required. Only external runtime dependency = MySQL container (infrastructure, not deliverable source).
+  The 2 test failures are pre-existing deliverable issues (stale migration-count test; env-sensitive auth test),
+  both byte-identical to HEAD — not caused by missing manifest files.
+
+PER-STEP RESULT
+  SNAPSHOT      PASS (321 files, manifest recorded)
+  BUILD app     PASS (typecheck 0, build 0)
+  BUILD svc     PASS (typecheck 0, lint 0, build 0)
+  TESTS         FAIL* 132/134 (2 pre-existing/env-sensitive failures, not snapshot artifacts)
+  DOCKER        PASS (config -q = 0)
+  NGINX         N/A (binary unavailable, VPS-only per docs)
+  PM2           PASS (parses; 2 optional keys not propagated to ecosystem)
+  ENV SCHEMA    PASS (1 unvalidated passthrough key noted)
+  MIGRATION+SEED PASS (14 tables, 37 questions, 2 users)
+  AUDIT         app: 2 high (RSC-only GHSA-qwww-vcr4-c8h2) + 1 low (quill); services: clean

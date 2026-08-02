@@ -1,0 +1,29 @@
+R2-S2-BE test-results
+Date: 2026-08-01T01:35:30Z
+cmd: DB_HOST=127.0.0.1 DB_PORT=13306 DB_USER=toeic DB_PASSWORD=toeic_dev_pw DB_NAME=anish_toeic_test npm test
+cwd: anish-toeic-web-services
+exit: 0
+
+Jest summary:
+  Test Suites: 11 passed, 11 total
+  Tests:       134 passed, 134 total
+  Snapshots:   0 total
+  Time:        13.003 s
+
+Test DB: created in anish-toeic-mysql container (docker exec mysql -uroot -ptoeic_root_dev_pw)
+  CREATE DATABASE IF NOT EXISTS anish_toeic_test ...; GRANT ALL ON anish_toeic_test.* TO 'toeic'@'%';
+  (existing users: toeic / toeic_dev_pw on 127.0.0.1:13306)
+
+Real-DB integration confirmed: migrations.test.ts (Real MySQL Integration) runs
+migrations UP then DOWN against anish_toeic_test — after the suite the DB is a
+clean slate by design (verified: SHOW TABLES in anish_toeic_test is empty post-run).
+Note: this test applies + rolls back the full schema (up/down), exercising the
+FK ownership constraints (user_id->users.id).
+
+Updated tests (INJ-003 token-out-of-body):
+- src/tests/journey.test.ts S7-J3: register asserts body.token undefined + Set-Cookie HttpOnly
+- src/tests/security.test.ts: register (:85) and login (:128) assert body.token undefined + HttpOnly
+
+Pre-existing benign warning (not a failure):
+  "A worker process has failed to exit gracefully and has been force exited...
+  Active timers can also cause this" — Redis/grading suite teardown, present before this change.

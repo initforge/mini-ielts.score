@@ -1,0 +1,16 @@
+{
+  "reference": "references/xoamutoeic/screenshots/desktop/24-exam-sw-speaking-q3-describe-picture.png",
+  "actual": ".agent/evidence/R3-SW/desktop24-q3-picture.png",
+  "rmse": 189.357194,
+  "diffPixelsPct": 97.7371,
+  "dims": {
+    "equal": false,
+    "reference": "1280x720",
+    "actual": "1280x800"
+  },
+  "outputs": {
+    "overlay": ".agent/evidence/R3-VISUAL/states-r3/desktop-24-exam-sw-speaking-q3-describe-picture/overlay.png",
+    "diff": ".agent/evidence/R3-VISUAL/states-r3/desktop-24-exam-sw-speaking-q3-describe-picture/diff.png",
+    "metric": ".agent/evidence/R3-VISUAL/states-r3/desktop-24-exam-sw-speaking-q3-describe-picture/metric.json"
+  }
+}

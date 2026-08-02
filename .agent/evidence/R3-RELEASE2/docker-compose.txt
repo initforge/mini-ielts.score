@@ -1,0 +1,5 @@
+COMPOSE_CONFIG_EXIT=0
+    image: minio/mc:latest
+    image: minio/minio:latest
+    image: mysql:8.4
+    image: redis:7-alpine

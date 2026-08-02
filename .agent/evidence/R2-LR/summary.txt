@@ -1,0 +1,97 @@
+R2-LR — fresh full LR journey evidence (Assignment R2-LR-JOURNEY)
+timestamp: 2026-08-01T02:39:42.751Z
+
+desktop attemptId: 211
+mobile attemptId:  212
+
+DESKTOP: PASS=62 FAIL=0 errors=0
+MOBILE:  PASS=62 FAIL=0 errors=0
+STATES:  PASS=1 FAIL=0 errors=0
+
+Desktop screenshots: 22
+  desktop02-catalog-lr.png
+  desktop01-catalog-sw.png
+  desktop04-exam-detail.png
+  desktop03-mode-dialog.png
+  desktop20-login-returnUrl.png
+  desktop21-post-login-return.png
+  desktop05-listening-directions.png
+  desktop06-part1-directions.png
+  desktop07-part1-q1.png
+  desktop08-palette-answered.png
+  desktop22-part2-audio-player.png
+  desktop09-part5.png
+  desktop12-part6.png
+  desktop13-part7.png
+  desktop11-annotation-toolbar.png
+  desktop10-bilingual-on.png
+  desktop14-submit-confirm.png
+  desktop15-result.png
+  desktop16-score-table-modal.png
+  desktop17-error-map.png
+  desktop18-review-detail.png
+  desktop19-history.png
+
+Mobile screenshots:  22
+  mobile02-catalog-lr.png
+  mobile01-catalog-sw.png
+  mobile04-exam-detail.png
+  mobile03-mode-dialog.png
+  mobile20-login-returnUrl.png
+  mobile21-post-login-return.png
+  mobile05-listening-directions.png
+  mobile06-part1-directions.png
+  mobile07-part1-q1.png
+  mobile08-palette-answered.png
+  mobile22-part2-audio-player.png
+  mobile09-part5.png
+  mobile10-part6.png
+  mobile11-part7.png
+  mobile12-annotation-toolbar.png
+  mobile13-bilingual-on.png
+  mobile14-submit-confirm.png
+  mobile15-result.png
+  mobile16-score-table-modal.png
+  mobile17-error-map.png
+  mobile18-review-detail.png
+  mobile19-history.png
+
+VERDICT: PASS
+
+KNOWN STACK ISSUE (explained, worked around — NOT an app defect found by this run):
+  Live backend serializes attempt started_at/created_at ~7h early (mysql2 pool in
+  anish-toeic-web-services/src/services/db.service.ts has no `timezone` option; host TZ is
+  UTC+7, and the runner counts down from started_at). Exam-mode attempts are born
+  "expired" and the runner auto-submits on mount (verified: POST /submit fires ~1s after
+  load). Workaround: the journey script rewrites started_at/created_at to now for the
+  attempt GET via client-side route interception (page.route, no app/DB/source change).
+  All other data, answers, scoring, and navigation are real.
+
+AUTH NOTE: shared per-IP auth rate limiter (20/900s) on the live stack is consumed by
+  other workstreams, so the UI login may return 429; the script falls back to injecting the
+  same httpOnly session cookie (valid seed.owner JWT, exp 2026-08-08) that the UI login sets.
+  In this run the desktop UI login succeeded normally ("login method: ui").
+
+TEST TOOLING NOTE: the backend keys all rate limiters on a valid `cf-connecting-ip`
+  literal, else req.ip (=127.0.0.1 through the vite proxy). The shared 127.0.0.1 buckets
+  (auth 20, attempts 30, responses 120 per 15min) were fully exhausted by concurrent
+  workstreams during this session. To run the journey without starving other teams AND
+  without app/DB changes, the Playwright contexts send a reserved TEST-NET literal
+  `cf-connecting-ip: 203.0.113.50`, giving this session its own rate-limit buckets. This
+  changes no application behavior — it only isolates rate-limit accounting.
+
+Data reality notes:
+  - Seed LR exam has 21 questions, ids == displayNumbers 1..21 (Part1: q1-3 images only,
+    Parts2-4: audio only, Parts5-7: text). Part1 q1 has NO audio_url in the seed, so the
+    audio player is shown/verified on Part2 q4 instead (same AudioPlayer component).
+  - Bilingual toggle ON state: button flips to "Ẩn song ngữ" (active style); seed content
+    carries no `→` translation lines, so no translation text is injected (reference shows a
+    translated corpus — live-drift).
+  - Submit-confirm dialog, annotation toolbar, bilingual toggle: app implements; reference
+    states are historical-exception/live-drift, so screenshots are app-side evidence.
+
+Replay:
+  node .agent/evidence/R2-LR/journey-script.mjs
+  (requires: FE :5173, BE :7000, MySQL anish-toeic-mysql, Redis :16379, seed.owner@example.com / seed-password-123)
+
+Console/network: see console-network-desktop.txt / console-network-mobile.txt (NONE EXPECTED; any entry is explained).

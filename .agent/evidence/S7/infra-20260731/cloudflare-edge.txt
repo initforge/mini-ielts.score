@@ -1,0 +1,112 @@
+S7 | AC20 | Cloudflare edge configuration contract
+timestamp: 2026-08-01T05:00:00Z
+slice: S7, dimension: cloudflare-edge
+LIVE CONFIGURATION: UNAVAILABLE — no Cloudflare credentials/tokens in this
+environment (no live changes made, nothing verified against the CF API).
+
+================================================================================
+1. TOPOLOGY (DEC-002: Cloudflare is DNS/CDN/TLS in front of the VPS — NOT a
+   Workers backend)
+================================================================================
+Browser
+   │  HTTPS (Cloudflare-terminated TLS, proxy mode / "orange cloud")
+   ▼
+Cloudflare edge (DNS A/AAAA -> VPS IP, CDN cache, WAF, HTTP/3)
+   │  origin HTTPS 443 (full-strict) with Cloudflare Origin Certificate or
+   │  Certbot/Let's Encrypt cert on Nginx
+   ▼
+VPS Nginx :443  (nginx/nginx.conf — serves SPA + proxies /api -> :7000)
+   ├─ /api/*  -> 127.0.0.1:7000 (Express, PM2 anish-toeic-web-services)
+   └─ static  -> anish-toeic-web-app/dist (hashed assets immutable)
+
+================================================================================
+2. REQUIRED CLOUDFLARE CONFIGURATION (to apply when credentials available)
+================================================================================
+DNS
+  - A record webinprogress.click + www -> VPS IP, PROXIED (orange cloud) ON.
+  - Keep MX/TXT untouched if email uses the domain.
+
+SSL/TLS
+  - SSL mode: Full (strict) — requires a valid origin cert (CF Origin
+    Certificate 15y or Let's Encrypt). Nginx already configures
+    /etc/letsencrypt/... — swap in CF origin cert to avoid renewal.
+  - Edge certificates: Automatic (CF-issued). Always Use HTTPS: ON.
+  - HSTS: enable at CF (recommend max-age=31536000, includeSubDomains) —
+    Nginx already sends Strict-Transport-Security as a fallback for
+    direct-origin access.
+
+Caching (CDN)
+  - Cache Rules: default (respect origin Cache-Control).
+      * /assets/*     — Nginx sends `Cache-Control: public, immutable` (1y) —
+                        CF caches at edge.
+      * /index.html   — Nginx sends `Cache-Control: no-cache, no-store` — never
+                        cached at edge (fresh deploys).
+      * /api/*        — Do NOT cache (dynamic JSON, auth headers). Set Cache
+                        Rule: bypass / no-store for path /api/*.
+      * /thi-thu/*    — SPA routes: bypass edge cache (HTML fallback served
+                        fresh; hashed assets come from /assets).
+
+Path routing
+  - No Cloudflare Worker/redirect rule needed for /api: Nginx owns origin
+    routing. Optionally add a Redirect Rule `http->https` (edge does it in
+    proxied mode automatically).
+  - Do NOT add a Page Rule / Worker that rewrites /api (would break the
+    origin proxy). /api must reach the VPS Nginx untouched.
+
+Headers / Security
+  - Automatic HTTPS Rewrites: ON.
+  - Security Level: Medium (or WAF managed ruleset).
+  - Bot Fight Mode: optional; if ON, ensure grading worker callbacks/API calls
+    (Cloudflare AI Worker -> VPS) are not bot-blocked — allow-list the CF AI
+    Worker IP range if needed.
+  - The app also hardens via Nginx headers (X-Frame-Options SAMEORIGIN,
+    X-Content-Type-Options nosniff, Referrer-Policy, HSTS) — these survive even
+    if CF header transforms are off.
+
+Rate limiting
+  - Nginx enforces per-IP 10r/s burst 20 on /api (already in nginx.conf).
+    CF WAF rate-limit rule (e.g. /api/auth/login 20 req/10s per IP) is optional
+    defense-in-depth.
+
+Origin network
+  - VPS firewall: allow 80/443 from Cloudflare edge only (CF publishes IP
+    ranges at https://www.cloudflare.com/ips/), or use Cloudflare Tunnel
+    (cloudflared) so no public origin ports are exposed. Tunnel is the
+    safer option; nginx.conf works either way.
+
+================================================================================
+3. WHY /api MUST NOT BE CACHED / REWRITTEN
+================================================================================
+- Auth (POST /api/auth/login), attempt PATCH autosave, submit, grading-status
+  polling and review responses are per-user and stateful. Edge caching of /api
+  would leak cross-user data and break idempotency.
+- Nginx `proxy_pass http://node_backend` (no URI) preserves the /api prefix —
+  the CF edge needs no path manipulation.
+- Cookies/tokens: auth is Bearer-token + HttpOnly cookie. No edge cookie
+  persistence required.
+
+================================================================================
+4. VERIFICATION STEPS (post-credentials, on the VPS)
+================================================================================
+  curl -sSI https://webinprogress.click/            # cf-ray header present => proxied
+  curl -sSI https://webinprogress.click/assets/...  # cf-cache-status HIT + immutable
+  curl -sSI https://webinprogress.click/api/health  # dynamic JSON, no edge cache
+  curl -sSI https://webinprogress.click/api/        # 308 -> /api/ (not SPA HTML)
+  nginx -t && systemctl reload nginx                # after any origin change
+
+================================================================================
+5. UNAVAILABLE / DEPENDENCIES (no live proof in this environment)
+================================================================================
+- Cloudflare account + zone webinprogress.click credentials  -> UNAVAILABLE.
+- Cloudflare AI Worker (grading endpoint) -> UNAVAILABLE (env vars empty;
+  S&W verified with AI_GRADING_TEST_MODE=true deterministic grading).
+- S3 presigned uploads (AWS_* / S3_BUCKET) -> UNAVAILABLE (media.adapter throws
+  in prod without creds; dev uses mock — see S5 evidence).
+- Live HTTPS/edge smoke tests deferred until deploy (no deploy per task).
+
+================================================================================
+6. VERDICT
+================================================================================
+cloudflare-edge dimension: PASS (contract documented, correct for the
+VPS+Nginx topology; live configuration UNAVAILABLE by constraint, clearly
+marked — nothing fabricated).

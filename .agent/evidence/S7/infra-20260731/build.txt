@@ -1,0 +1,57 @@
+S7 | AC20 | production build + typecheck + lint results
+timestamp: 2026-08-01T05:xx:00Z (approximate — file mtimes)
+slice: S7, dimension: env/nginx/pm2 (build gate for all four AC20 dims)
+
+================================================================================
+1. FRONTEND BUILD — anish-toeic-web-app (cd anish-toeic-web-app && npm run build)
+================================================================================
+EXIT CODE: 0
+Output (tail):
+  npm notice run tsc && vite build
+  vite v5.4.21 building for production...
+  transforming...
+  ✓ 4455 modules transformed.
+  rendering chunks...
+  computing gzip size...
+  dist/index.html                     0.66 kB │ gzip:   0.39 kB
+  dist/assets/index-DJLvsQfd.css     77.49 kB │ gzip:  13.33 kB
+  dist/assets/index-FQ3USSTK.js   1,818.48 kB │ gzip: 558.50 kB
+  ✓ built in 17.53s
+dist outputs confirmed:
+  anish-toeic-web-app/dist/index.html
+  anish-toeic-web-app/dist/assets/index-DJLvsQfd.css
+  anish-toeic-web-app/dist/assets/index-FQ3USSTK.js
+GAP (non-blocking): main JS bundle 1.8 MB (>500 kB chunk warning). Vite warns
+  "some chunks are larger than 500 kB after minification" — future optimization
+  (route-level code-splitting / manualChunks). No impact on correctness; noted
+  for post-merge perf pass.
+
+================================================================================
+2. BACKEND BUILD — anish-toeic-web-services (cd anish-toeic-web-services && npm run build)
+================================================================================
+EXIT CODE: 0
+Output (tail):
+  npm notice run tsc && node -e "copy src/migrations/*.sql -> dist/migrations/"
+dist outputs confirmed:
+  anish-toeic-web-services/dist/server.js
+  anish-toeic-web-services/dist/workers/grading.worker.js
+  anish-toeic-web-services/dist/migrations/001_schema.up.sql (+ .down.sql)
+  (config/controllers/errors/middlewares/routes/services/tests/validations)
+
+================================================================================
+3. TYPECHECK — both workspaces
+================================================================================
+anish-toeic-web-app      npm run typecheck (tsc --noEmit)  EXIT 0
+anish-toeic-web-services npm run typecheck (tsc --noEmit)  EXIT 0
+
+================================================================================
+4. LINT — both workspaces
+================================================================================
+anish-toeic-web-app      npm run lint (eslint . --ext ts,tsx --max-warnings 0)  EXIT 0
+anish-toeic-web-services npm run lint (eslint . --ext ts)                       EXIT 0
+
+================================================================================
+5. VERDICT
+================================================================================
+build + typecheck + lint: PASS (all exit codes 0). dist/ populated in both
+workspaces; PM2 args (dist/server.js, dist/workers/grading.worker.js) resolve.

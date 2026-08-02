@@ -1,0 +1,34 @@
+S5-FE journey r2 — desktop (viewport 1440x900 desktop / 390x844 mobile)
+timestamp: 2026-07-31T15:36:47.582Z
+attemptId: 53
+errors: 0
+PASS attempt created (id=53)
+PASS prep finished
+PASS upload error surfaced (mock S3) with Retry button
+PASS retry failed again (expected, mock S3)
+PASS writing phase reached (Quill editor visible)
+PASS word count rendered :: Từ: 44
+PASS writing restored after reload :: 9841ff40754ade3d
+PASS attempt no longer IN_PROGRESS :: SUBMITTED
+
+STEP logged in
+STEP SW attempt created: 53
+STEP mic-check rendered
+STEP directions rendered
+STEP "Bắt đầu chuẩn bị" visible after directions (bug fixed)
+STEP prep timer shown
+STEP mic granted + test passed
+STEP recording active (timer running)
+STEP recording saved, playback available
+STEP playback played + paused
+STEP upload retry clicked (2nd presign issued)
+STEP speaking q1 recorded + upload retry handled
+STEP recording active (timer running)
+STEP recording saved, playback available
+STEP playback played + paused
+STEP speaking q2 recorded
+STEP writing phase reached
+STEP writing typed, word count: Từ: 44
+STEP reload → resume → writing text restored (autosave persisted)
+STEP submitted → processing page
+STEP attempt status after submit: SUBMITTED

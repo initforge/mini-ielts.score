@@ -1,0 +1,90 @@
+R3-LR-JOURNEY2 — REAL CDP LR journey evidence summary
+timestamp: 2026-08-01T07:09:17.342Z
+
+desktop attemptId: 267
+mobile  attemptId: 268
+
+DESKTOP: PASS=78 FAIL=1 errors=1
+MOBILE:  PASS=76 FAIL=1 errors=1
+GATE:    PASS=0 FAIL=1 errors=1
+
+CDP TOTALS (desktop / mobile / gate):
+  Runtime.exceptionThrown: 0 / 0 / 0
+  Log.entryAdded:          11 / 11 / 5
+  CSP violations:          3 / 3 / 1   (0 real violations; Chrome dev-CSP diagnostic only)
+  Network.loadingFailed:   0 / 0 / 0
+  Security events:         0 / 0 / 0
+  Unhandled exceptions:    0 / 0 / 0
+
+COOKIE flags (desktop): {"httpOnly":true,"secure":false,"sameSite":"Lax","domain":"localhost","path":"/"}
+COOKIE flags (mobile):  {"httpOnly":true,"secure":false,"sameSite":"Lax","domain":"localhost","path":"/"}
+LOCALSTORAGE keys (desktop): ["anish-toeic-catalog:LR%3A-%3A-","anish-toeic-catalog:SW%3A-%3A-"]
+LOCALSTORAGE keys (mobile):  ["anish-toeic-catalog:LR%3A-%3A-"]
+LOCALSTORAGE contains JWT: desktop=false mobile=false (must be false)
+LEAK scan: desktop=PASS mobile=PASS gate=PASS
+
+STATES CAPTURED:
+  desktop:
+    desktop02-catalog-lr.png
+    desktop01-catalog-sw.png
+    desktop04-exam-detail.png
+    desktop03-mode-dialog.png
+    desktop05-listening-directions.png
+    desktop06-part1-directions.png
+    desktop07-part1-q1.png
+    desktop08-palette.png
+    desktop09-part5-q101.png
+    desktop12-part6-q131.png
+    desktop13-part7-q147.png
+    desktop11-annotation.png
+    desktop10-bilingual-on.png
+    desktop14-submit-confirm.png
+    desktop15-result-certificate.png
+    desktop16-score-table-modal.png
+    desktop17-error-map.png
+    desktop18-review-detail.png
+  mobile:
+    mobile02-catalog-lr.png
+    mobile-detail.png
+    mobile03-lr-q1.png
+    mobile-lr-runner.png
+  gate:
+    desktop19-HISTORY-AUTH-GATE.png
+
+KEY FINDINGS:
+  [1] TIMEZONE FIX CONFIRMED (owner P2/P4 rule honoured): attempt started_at is served as REAL UTC
+      (mysql2 pool timezone='Z'). Pre-verified via GET /api/toeic-attempts/<id> before the run
+      (started_at = now UTC). NO timestamp rewriting shim used. Expiry auto-submit did NOT fire
+      during the journey NOR after RELOAD/resume (attempt stayed IN_PROGRESS).
+  [2] REAL UI LOGIN on both viewports (no cookie injection, no Authorization header).
+  [3] REAL BUG (BLOCKER, introduced by React-19 migration — R2 era was React 18 and modals worked):
+      antd v5 STATIC APIs (Modal.confirm used by runner for the "Sang Reading" crossing AND the
+      "Nộp bài?" submit confirm, plus message toasts) render NOTHING under React 19.2.8 because the
+      app does not install/import the official @ant-design/v5-patch-for-react-19. Evidence: clicking
+      "Sang Reading" / "NỘP BÀI" produces no .ant-modal-confirm; a DIRECT antd.Modal.confirm() call in
+      the live page renders 0 DOM nodes; antd logs "antd v5 support React is 16 ~ 18 ... for compatible".
+      Impact: an LR EXAM-mode attempt cannot cross from Listening to Reading nor confirm submission
+      through the UI -> the exam workflow is blocked. R2-LR (React 18) observed these dialogs working.
+      Workaround used for evidence completeness (browser-runtime only, no app/source/network change):
+      patched the broken static Modal.confirm to invoke its onOk synchronously, so the app's REAL
+      store.skipToReading() and store.submit() (real POST /api/toeic-attempts/:id/submit) execute.
+      The FAIL below on the "confirm dialog appears" check is THIS bug, not a journey error.
+  [4] desktop19 HISTORY AUTH GATE: anonymous /thi-thu/lich-su does NOT redirect to /dang-nhap?returnUrl=...
+      (the app renders the 401 error alert "Không thể tải lịch sử" in place). Reference prototype shows a
+      login gate. Evidence: URL stayed /thi-thu/lich-su; screenshot desktop19-HISTORY-AUTH-GATE.png.
+      Classified: REAL GAP (minor) — unauthenticated route renders error instead of prompting login.
+  [5] CSP: no violations. Chrome dev-mode diagnostic only: "connect-src contains an invalid source:
+      https://*.s3.*.amazonaws.com" (vite dev CSP header) — EXPECTED, cosmetic.
+  [6] Console/network unexpected: see console-network-desktop.txt / console-network-mobile.txt.
+  [7] Stack note (outside LR scope): SW attempts (exam_id=2) return 404 on GET /result — the grading
+      worker (grading.worker.js) is NOT running on this stack, so SW attempts have no result rows;
+      HistoryPage result-enrichment therefore 404s for SW rows. Classified EXPECTED in console-network files.
+  [8] Rate-limit isolation: each context sends a UNIQUE reserved TEST-NET cf-connecting-ip literal
+      (203.0.113.50..99) so auth/attempts/responses/submit buckets are per-session. Without this,
+      repeated runs on one IP exhaust the responses limiter (120/15min) and PATCH answers get 429
+      (observed mid-run on a shared bucket) — a stack-contention artifact, not an app defect.
+
+VERDICT: FAIL — 1 REAL BLOCKER BUG (antd v5 static Modal.confirm renders nothing on React 19, breaking the
+  runner's Reading crossing + submit confirmation; see finding [3]). All other flow evidence captured.
+  desktop: PASS=78 FAIL=1 (the 1 FAIL = confirm-dialog bug check), mobile: PASS=76 FAIL=1 (same 1 FAIL),
+  gate: PASS=0 FAIL=1 (1 FAIL = history auth-gate gap, finding [4]).

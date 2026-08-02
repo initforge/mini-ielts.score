@@ -1,0 +1,12 @@
+# R3-P1-MINIO upload byte-integrity verification
+# source: /tmp/opencode/r3-test.wav (deterministic 440Hz PCM WAV)
+
+== local file ==
+sha256: d1d1c3698159db665f6d1237a54fb167a8e2e9784c99b009bc107af875cd0f9a
+size:   32044
+
+== object in MinIO (mc cat local/toeic-media/uploads/attempts/233/q22/test.webm) ==
+sha256: d1d1c3698159db665f6d1237a54fb167a8e2e9784c99b009bc107af875cd0f9a
+size:   32044
+
+MATCH: d1d1c3698159db665f6d1237a54fb167a8e2e9784c99b009bc107af875cd0f9a == d1d1c3698159db665f6d1237a54fb167a8e2e9784c99b009bc107af875cd0f9a

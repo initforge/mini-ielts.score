@@ -1,0 +1,317 @@
+{
+ "desktop/01-exams-sw-list-full": {
+  "actual": "desktop01-catalog-sw.png",
+  "rmse": 101.64422,
+  "diff": 98.8816,
+  "ovlap": 97.022265625,
+  "ref": "1280x2130",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/02-exams-lr-list-full": {
+  "actual": "desktop02-catalog-lr.png",
+  "rmse": 101.11635,
+  "diff": 97.7717,
+  "ovlap": 96.96953125,
+  "ref": "1280x1088",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/03-exam-start-mode-modal": {
+  "actual": "desktop03-mode-dialog.png",
+  "rmse": 49.473297,
+  "diff": 85.9173,
+  "ovlap": 84.3525390625,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/04-exam-lr-detail-start": {
+  "actual": "desktop04-exam-detail.png",
+  "rmse": 60.159078,
+  "diff": 88.2181,
+  "ovlap": 86.90896267361111,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/05-exam-lr-active-part1": {
+  "actual": "desktop05-listening-directions.png",
+  "rmse": 62.041343,
+  "diff": 84.2476,
+  "ovlap": 83.17496244993325,
+  "ref": "1280x749",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/06-exam-lr-part1-directions": {
+  "actual": "desktop06-part1-directions.png",
+  "rmse": 73.892682,
+  "diff": 77.4035,
+  "ovlap": 74.89279513888889,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/07-exam-lr-part1-question1": {
+  "actual": "desktop07-part1-q1.png",
+  "rmse": 66.062377,
+  "diff": 83.7887,
+  "ovlap": 81.98741319444444,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/08-exam-lr-question-palette": {
+  "actual": "desktop08-palette-answered.png",
+  "rmse": 87.53026,
+  "diff": 99.9995,
+  "ovlap": 99.99945746527777,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/09-exam-lr-reading-part5-question101": {
+  "actual": "desktop09-part5.png",
+  "rmse": 32.718691,
+  "diff": 81.2419,
+  "ovlap": 79.15766059027777,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/10-exam-lr-reading-bilingual-marked": {
+  "actual": "desktop10-bilingual-on.png",
+  "rmse": 35.454784,
+  "diff": 77.9905,
+  "ovlap": 75.54503038194444,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/11-exam-lr-annotation-tools": {
+  "actual": "desktop11-annotation-toolbar.png",
+  "rmse": 36.29754,
+  "diff": 76.6727,
+  "ovlap": 74.08072916666667,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/12-exam-lr-reading-part6-question131": {
+  "actual": "desktop12-part6.png",
+  "rmse": 41.78129,
+  "diff": 71.1264,
+  "ovlap": 67.9181857638889,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/13-exam-lr-reading-part7-question147": {
+  "actual": "desktop13-part7.png",
+  "rmse": 42.600856,
+  "diff": 69.938,
+  "ovlap": 66.59776475694444,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/14-exam-lr-submit-confirm": {
+  "actual": "desktop14-submit-confirm.png",
+  "rmse": 68.092272,
+  "diff": 97.1957,
+  "ovlap": 96.88411458333334,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/15-exam-lr-result-certificate": {
+  "actual": "desktop15-result.png",
+  "rmse": 54.310118,
+  "diff": 99.6352,
+  "ovlap": 99.5990728021978,
+  "ref": "1280x728",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/16-exam-lr-result-table": {
+  "actual": "desktop16-score-table-modal.png",
+  "rmse": 97.440757,
+  "diff": 99.9942,
+  "ovlap": 99.99366844093407,
+  "ref": "1280x728",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/17-exam-lr-error-map": {
+  "actual": "desktop17-error-map.png",
+  "rmse": 79.933522,
+  "diff": 69.638,
+  "ovlap": 66.63515195741758,
+  "ref": "1280x728",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/18-exam-lr-review-detail": {
+  "actual": "desktop18-review-detail.png",
+  "rmse": 64.489838,
+  "diff": 92.8053,
+  "ovlap": 92.005859375,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/19-history-auth-gate": {
+  "actual": "desktop19-history.png",
+  "rmse": 105.101061,
+  "diff": 90.085,
+  "ovlap": 88.98328993055556,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "LR"
+ },
+ "desktop/20-exam-sw-detail-start": {
+  "actual": "desktop20-exam-sw-detail.png",
+  "rmse": 87.645486,
+  "diff": 88.2577,
+  "ovlap": 86.95301649305556,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/21-exam-sw-speaking-part1-intro": {
+  "actual": "desktop21-exam-sw-mic-setup.png",
+  "rmse": 50.930734,
+  "diff": 42.3538,
+  "ovlap": 35.94867621527777,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/22-exam-sw-speaking-directions": {
+  "actual": "desktop22-exam-sw-speaking-directions.png",
+  "rmse": 47.38287,
+  "diff": 35.285,
+  "ovlap": 28.094401041666668,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/23-exam-sw-speaking-q1-preparation": {
+  "actual": "desktop23-exam-sw-speaking-q1-prep.png",
+  "rmse": 40.222996,
+  "diff": 74.7657,
+  "ovlap": 71.9619140625,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/24-exam-sw-speaking-q3-describe-picture": {
+  "actual": "desktop24-exam-sw-speaking-q3-image.png",
+  "rmse": 70.004911,
+  "diff": 84.1814,
+  "ovlap": 82.423828125,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/25-exam-sw-speaking-q5-respond": {
+  "actual": "desktop25-exam-sw-speaking-q5.png",
+  "rmse": 38.411958,
+  "diff": 73.4262,
+  "ovlap": 70.47352430555556,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/26-exam-sw-speaking-q8-information": {
+  "actual": "desktop26-exam-sw-speaking-q8.png",
+  "rmse": 51.305029,
+  "diff": 78.9746,
+  "ovlap": 76.63845486111111,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/27-exam-sw-writing-start": {
+  "actual": "desktop27-exam-sw-writing-start.png",
+  "rmse": 73.871897,
+  "diff": 59.1616,
+  "ovlap": 54.6240234375,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/28-exam-sw-writing-q1-picture": {
+  "actual": "desktop28-exam-sw-writing-q1.png",
+  "rmse": 81.775517,
+  "diff": 61.1411,
+  "ovlap": 56.82345920138889,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/29-exam-sw-writing-q6-email": {
+  "actual": "desktop29-exam-sw-writing-q6-email.png",
+  "rmse": 42.539104,
+  "diff": 36.3724,
+  "ovlap": 29.302625868055554,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/30-exam-sw-writing-q8-essay": {
+  "actual": "desktop30-exam-sw-writing-q8-essay.png",
+  "rmse": 41.478711,
+  "diff": 45.1963,
+  "ovlap": 39.10698784722222,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "desktop/31-exam-sw-ai-processing": {
+  "actual": "desktop31-exam-sw-processing.png",
+  "rmse": 27.976131,
+  "diff": 76.5164,
+  "ovlap": 73.90711805555556,
+  "ref": "1280x720",
+  "act": "1280x800",
+  "src": "SW"
+ },
+ "mobile/01-exams-sw-list-full": {
+  "actual": "mobile01-catalog-sw.png",
+  "rmse": 95.584511,
+  "diff": 98.66,
+  "ovlap": 88.61839080459771,
+  "ref": "431x6001",
+  "act": "375x812",
+  "src": "LR"
+ },
+ "mobile/02-exams-lr-list-full": {
+  "actual": "mobile02-catalog-lr.png",
+  "rmse": 99.111573,
+  "diff": 96.5347,
+  "ovlap": 87.78686371100164,
+  "ref": "431x2490",
+  "act": "375x812",
+  "src": "LR"
+ },
+ "mobile/03-exam-lr-q1": {
+  "actual": "mobile07-part1-q1.png",
+  "rmse": 97.008599,
+  "diff": 90.7142,
+  "ovlap": 89.96223316912972,
+  "ref": "390x844",
+  "act": "375x812",
+  "src": "LR"
+ },
+ "mobile/04-exam-sw-writing-q1": {
+  "actual": "mobile04-exam-sw-writing-q1.png",
+  "rmse": 107.796529,
+  "diff": 72.9661,
+  "ovlap": 65.86009852216749,
+  "ref": "390x986",
+  "act": "375x812",
+  "src": "SW"
+ }
+}

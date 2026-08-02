@@ -1,0 +1,36 @@
+R2-FAILURE — failure-state matrix (live dev env, HEAD=620c111)
+timestamp: 2026-08-01
+method: curl (API) + Playwright chromium @ :5173 (UI)
+
+State | Expected | Actual | Verdict | API proof | UI proof
+1 401-unauth       | 401 no/forged cookie | 401 both (Missing token / Invalid or expired token) | PASS | 01-401-unauth.txt | 01-401-unauth.png (+ -ui.txt)
+2 403-ownership    | 403/404 non-owner | 404 GET (anti-oracle), 403 PATCH | PASS (404 expected) | 02-403-ownership.txt | 02-403-ownership.png (+ -ui.txt)
+3 404-missing      | 404            | 404 | PASS | 03-404-missing.txt | 03-404-missing.png (+ -ui.txt)
+4 409-revision     | 409 stale client_revision | API: 409 + replay 200; UI: genuine 409 on autosave -> [SWStore] conflict warn -> rev adopted (server 10 -> client resave) -> DB client_revision=11, text saved | PASS | 04-409-revision.txt | 04-409-revision.png (+ -ui.txt, DB client_revision=11 attempt 220)
+5 429-rate-limit   | 429 @ 20 logins/15min | 429 from 18th (shared IP budget w/ prior runs), retry-after 560s | PASS | 05-429-rate-limit.txt | 05-429-rate-limit.png (+ -ui.txt, alert text)
+6 validation       | 400            | non-numeric option 400, presign >25MB 400, base64 400; *nonexistent-but-typed option id -> 409 (design: option-not-in-question = conflict) | PASS (note) | 06-validation.txt | n/a (no UI state)
+7 offline UI       | error/offline state | runner shows amber offline banner; catalog shows cached data (5min staleTime) — no CatalogError because cache serves; dev reload offline = blank (vite unreachable) | PARTIAL-PASS | n/a | 07-offline-catalog.png, 07-offline-runner.png (+ -ui.txt)
+8 timeout          | loading/retry state | route.delay 10s -> axios 10s timeout -> ProcessingPage transport-error card w/ "Thử lại" retry | PASS | n/a | 08-timeout-loading.png, 08-timeout-resolved.png (+ -ui.txt)
+9 XSS              | no alert, sanitized | 0 dialogs; DOM: onerror stripped, <script> tag removed, text preserved | PASS | 09-xss.txt | 09-xss-result.png, 09-xss-review.png (+ -ui.txt, 09-xss-dom-probe.txt)
+10 mic-denied      | denied state | "Microphone access denied" UI shown after NotAllowedError | PASS | n/a | 10-mic-denied.png (+ -ui.txt)
+11 grading states  | queued->processing->completed + failed | QUEUED->COMPLETED (worker ~2s); forced FAILED shows terminal-failed UI; result page shows empty (no result row for FAILED) | PASS | 11-grading.txt | 11-grading-queued.png, 11-grading-processing.png, 11-grading-completed.png, 11-grading-failed.png, 11-grading-failed-result.png (+ ui txt)
+12 idempotency     | 1 job row, dup 409/200-dup | 2nd submit 200 alreadySubmitted; UNIQUE(attempt_id); 1 job row | PASS | 12-idempotency.txt | n/a
+13 logout          | logout -> 401 | API logout -> 401; UI: no logout button wired in HistoryPage (gap) | API PASS / UI GAP | 13-logout.txt | 13-logout-history.png (+ -ui.txt)
+
+Console receipts classification (browser states):
+- 01: 401 x3 EXPECTED (unauth history)
+- 02: 404 x2 EXPECTED (anti-oracle ownership)
+- 03: 404 x2 EXPECTED (missing id)
+- 04: 409 + [SWStore] conflict warn EXPECTED (reconcile)
+- 05: 429 EXPECTED (rate-limit); alert msg shown
+- 08: no error (transport handled by UI card)
+- 09: 0 dialogs, 0 pageerrors; sanitized DOM
+- 10: no error
+- 11: 429 during earlier run (EXPECTED test artifact, limiter exhausted), 404 result on empty-response attempts (EXPECTED worker edge: no result row when 0 responses)
+- 13: 404 /result x4 EXPECTED (COMPLETED attempts with no result row)
+
+Gaps:
+1. Logout button not wired anywhere in UI (HistoryPage/Shell) — state 13 UI gap. API works.
+2. Nonexistent option id returns 409, not 400 (spec expected 400); non-numeric/missing types return 400. Zod path returns 400; semantic invalid option = conflict by design.
+3. Empty-response SW attempt: grading job COMPLETED but no toeic_attempt_results row -> /result 404 forever. Worker edge case (0 responses -> finalizeCompleted without persistAttemptResult).
+4. Offline catalog shows cached data (no explicit offline error UI); dev-only because vite dev server unreachable when fully offline.

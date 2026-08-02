@@ -1,0 +1,28 @@
+R3-FAILURE2 state 13 — revision conflict 409 + client reconciles by adopting server revision
+Fresh LR attempt 272. PATCH q1 with clientRevision.
+
+--- [1] PATCH clientRevision=0 (fresh) ---
+COMMAND: curl -b owner.jar -X PATCH .../attempts/272/responses/1 -d "{\"selectedOptionId\":1,\"clientRevision\":0}"
+BODY: {"success":true}   STATUS: 200
+
+--- [2] PATCH stale clientRevision=0, different payload → 409 ---
+COMMAND: curl -b owner.jar -X PATCH .../attempts/272/responses/1 -d "{\"selectedOptionId\":2,\"clientRevision\":0}"
+BODY: {"error":"Concurrent update conflict at same client_revision"}   STATUS: 409
+
+--- [3] client adopts server revision (GET shows client_revision=0) then resaves rev=1 ---
+COMMAND: curl -b owner.jar -X PATCH .../attempts/272/responses/1 -d "{\"selectedOptionId\":2,\"clientRevision\":1}"
+BODY: {"success":true}   STATUS: 200
+GET /api/toeic-attempts/272 → responses: [{question_id:1, selected_option_id:2, client_revision:1}] (saved)
+
+--- [4] idempotent replay: same payload + same rev returns replayed:true ---
+COMMAND: curl -b owner.jar -X PATCH .../attempts/272/responses/1 -d "{\"selectedOptionId\":2,\"clientRevision\":1}"
+BODY: {"success":true,"replayed":true}   STATUS: 200
+
+VERDICT: PASS (API). UI reconcile proof appended below after Playwright run.
+
+--- UI proof (Playwright, LR runner, attempt 276) ---
+METHOD: browser answers q1 (client_revision=1) while a foreign PATCH bumps server to rev=2 (option 4) before the stale autosave lands → backend 409 → client refreshFromServer adopts server revision → re-saves dirty draft at rev 3.
+NETWORK: '[bump] server now: 200 {"success":true}' ; browser autosave got 409 (Stale client_revision) and reconciled.
+API PROOF: GET /api/toeic-attempts/276 → q1 {selected_option_id:1, client_revision:3} — user's local answer preserved at the adopted revision.
+UI PROOF: 13-revision-reconcile.png
+VERDICT: PASS

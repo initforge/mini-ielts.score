@@ -39,3 +39,11 @@ backup-*.sql
 
 # Production audio files (chỉ lưu trên VPS, không commit vào repo)
 public/audio/
+
+# Local third-party reference captures; keep for owner review, never publish.
+scratch/
+
+# Playwright-generated runtime state and reports.
+test-results/
+playwright-report/
+blob-report/
